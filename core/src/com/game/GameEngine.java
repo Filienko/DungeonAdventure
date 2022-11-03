@@ -32,32 +32,34 @@ public class GameEngine extends ApplicationAdapter {
 	private Render						myView;
 	private boolean 					myRunning;
 
-	// Constructor
-	public GameEngine()
-	{
-		myAssets 	= new Assets();
-		mySceneMap 	= new ObjectMap<String, Scene>();
-		myRunning 	= true;
-		create();
-
-		run();
-	}
-
 	// Methods
-
-	void update()
-	{
-		if (!myRunning) 			{ return; }
-		if (mySceneMap.isEmpty()) 	{ return; }
-
-		userInput();
-		getCurrentScene().update();
-		render();
-	}
 
 	void userInput()
 	{
+		if (Gdx.input.isKeyPressed(Input.Keys.W))
+		{
+			getCurrentScene().doAction();
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.A))
+		{
 
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.S))
+		{
+
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.D))
+		{
+
+		}
+		if (Gdx.input.isKeyPressed(Input.Buttons.LEFT))
+		{
+
+		}
+		if (Gdx.input.isKeyPressed(Input.Buttons.RIGHT))
+		{
+
+		}
 	}
 
 	void setCurrentScene(final String name, final Scene scene, final boolean endCurrentScene)
@@ -84,38 +86,25 @@ public class GameEngine extends ApplicationAdapter {
 		myCurrentScene = name;
 	}
 
-	Scene getCurrentScene() {}
+	Scene getCurrentScene() { return mySceneMap.get(myCurrentScene); }
 
-	boolean sceneExists() {}
+	boolean sceneExists(final String sceneName) { return mySceneMap.get(sceneName) != null; }
 
-	void run()
-	{
-		while (myRunning)
-		{
-			update();
-		}
-	}
+	OrthographicCamera getMyCamera() { return myCamera; }
 
-	OrthographicCamera getMyCamera() {}
+	Assets getMyAssets() { return myAssets; }
 
-	Assets getMyAssets() {}
-
-	boolean isRunning() {}
-
-	void exit() { dispose(); }
-
+	boolean isRunning() { return myRunning; }
 
 	@Override
 	public void create ()
 	{
 
+		myAssets 	= new Assets();
+		mySceneMap 	= new ObjectMap<String, Scene>();
+		myRunning 	= true;
 		myCamera = new OrthographicCamera();
 		myCamera.setToOrtho(false, 1280, 768);
-
-		Gdx.input.setInputProcessor(new InputAdapter()
-		{
-
-		});
 
 		batch = new SpriteBatch();
 
@@ -127,6 +116,12 @@ public class GameEngine extends ApplicationAdapter {
 	@Override
 	public void render ()
 	{
+		if (!myRunning) 			{ return; }
+		if (mySceneMap.isEmpty()) 	{ return; }
+
+		userInput();
+		getCurrentScene().update();
+
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		myCamera.update();
 		batch.setProjectionMatrix(myCamera.combined);
@@ -137,43 +132,14 @@ public class GameEngine extends ApplicationAdapter {
 			batch.draw(dropImage, raindrop.x, raindrop.y);
 		}
 		batch.end();
-
-		if (Gdx.input.isTouched())
-		{
-			Vector3 touchPos = new Vector3();
-			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			myCamera.unproject(touchPos);
-			bucket.x = touchPos.x - 64 / 2;
-		}
-
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) bucket.x -= 200 * Gdx.graphics.getDeltaTime();
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) bucket.x += 200 * Gdx.graphics.getDeltaTime();
-
-		if (bucket.x < 0) bucket.x = 0;
-		if (bucket.x > 800 - 64) bucket.x = 800 - 64;
-
-		if (TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
-
-		for (Iterator<Rectangle> iter = raindrops.iterator(); iter.hasNext();)
-		{
-			Rectangle raindrop = iter.next();
-			raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-			if (raindrop.y + 64 < 0) iter.remove();
-			if (raindrop.overlaps(bucket))
-			{
-				dropSound.play();
-				iter.remove();
-			}
-		}
 	}
 	
 	@Override
 	public void dispose ()
 	{
-		dropImage.dispose();
-		bucketImage.dispose();
-		dropSound.dispose();
-		rainMusic.dispose();
+		// Dispose all Textures
+
+		// Dispose batches
 		batch.dispose();
 	}
 }
