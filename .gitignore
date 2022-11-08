@@ -1,4 +1,6 @@
 ## Java
+.idea/
+out/
 
 *.class
 *.war
