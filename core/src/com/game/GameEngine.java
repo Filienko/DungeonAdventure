@@ -28,9 +28,13 @@ public class GameEngine extends ApplicationAdapter {
 	private OrthographicCamera 			myCamera;
 	private Assets 						myAssets;
 	private String 						myCurrentScene;
-	private ObjectMap<String, Scene> 	mySceneMap;
-	private Renderer					myView;
+	//private ObjectMap<String, Scene> 	mySceneMap;
+	//private Renderer					myView;
 	private boolean 					myRunning;
+
+	Animation test1;
+	Animation test2;
+	Animation test3;
 
 	// Methods
 
@@ -38,7 +42,7 @@ public class GameEngine extends ApplicationAdapter {
 	{
 		if (Gdx.input.isKeyPressed(Input.Keys.W))
 		{
-			getCurrentScene().doAction();
+			//getCurrentScene().doAction();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A))
 		{
@@ -61,7 +65,7 @@ public class GameEngine extends ApplicationAdapter {
 
 		}
 	}
-
+/*
 	void setCurrentScene(final String name, final Scene scene, final boolean endCurrentScene)
 	{
 		// If a scene was passed, add it to the map with the scene name
@@ -85,10 +89,10 @@ public class GameEngine extends ApplicationAdapter {
 
 		myCurrentScene = name;
 	}
+*/
+//	Scene getCurrentScene() { return mySceneMap.get(myCurrentScene); }
 
-	Scene getCurrentScene() { return mySceneMap.get(myCurrentScene); }
-
-	boolean sceneExists(final String sceneName) { return mySceneMap.get(sceneName) != null; }
+//	boolean sceneExists(final String sceneName) { return mySceneMap.get(sceneName) != null; }
 
 	OrthographicCamera getMyCamera() { return myCamera; }
 
@@ -101,7 +105,7 @@ public class GameEngine extends ApplicationAdapter {
 	{
 
 		myAssets 	= new Assets();
-		mySceneMap 	= new ObjectMap<String, Scene>();
+//		mySceneMap 	= new ObjectMap<String, Scene>();
 		myRunning 	= true;
 		myCamera = new OrthographicCamera();
 		myCamera.setToOrtho(false, 1280, 768);
@@ -110,27 +114,31 @@ public class GameEngine extends ApplicationAdapter {
 
 		myAssets.loadAssets();
 
-		setCurrentScene("Menu", new SceneMenu());
+		test1 = myAssets.getAnimation("runDown");
+		test2 = myAssets.getAnimation("tektite");
+		test3 = myAssets.getAnimation("standDown");
+
+//		setCurrentScene("Menu", new SceneMenu());
 	}
 
 	@Override
 	public void render ()
 	{
 		if (!myRunning) 			{ return; }
-		if (mySceneMap.isEmpty()) 	{ return; }
+	//	if (mySceneMap.isEmpty()) 	{ return; }
 
-		userInput();
-		getCurrentScene().update();
-
+	//	userInput();
+	//	getCurrentScene().update();
+		test1.update();
+		test2.update();
+		test3.update();
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		myCamera.update();
 		batch.setProjectionMatrix(myCamera.combined);
 		batch.begin();
-		batch.draw(bucketImage, bucket.x, bucket.y);
-		for (Rectangle raindrop: raindrops)
-		{
-			batch.draw(dropImage, raindrop.x, raindrop.y);
-		}
+		batch.draw(test1.getSprite(), 640, 384);
+		batch.draw(test2.getSprite(), 100, 100);
+		batch.draw(test3.getSprite(), 75, 444);
 		batch.end();
 	}
 	

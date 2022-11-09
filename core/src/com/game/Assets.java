@@ -19,12 +19,19 @@ public class Assets
     private ArrayList<String> myAnimationNames;
 
     // Constructor
-    public Assets() {}
+    public Assets()
+    {
+        myTextureMap        = new ObjectMap<String, Texture>();
+        myAnimationMap      = new ObjectMap<String, Animation>();
+        myFontMap           = new ObjectMap<String, BitmapFont>();
+        mySoundMap          = new ObjectMap<String, Sound>();
+        myAnimationNames    = new ArrayList<String>();
+    }
 
     // Methods
     void loadAssets()
     {
-        File dir = new File("assets");
+        File dir = new File("E:\\farva\\Documents\\UW\\Fall2022\\TCSS360\\DungeonAdventure\\assets");
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null)
         {
@@ -60,7 +67,8 @@ public class Assets
 
     void addTexture(final String fileName)
     {
-        String textureName = fileName.substring(0, fileName.length() - 4);
+        String[] attributes = fileName.split("_");
+        String textureName = attributes[0];
         myTextureMap.put(textureName, new Texture(Gdx.files.internal(fileName)));
         if (myTextureMap.get(textureName) == null)
         {
@@ -74,13 +82,15 @@ public class Assets
 
     void addAnimation(final String fileName, int frameCount, int speed)
     {
-        String animationName = fileName.substring(0, fileName.length() - 4);
+        String[] attributes = fileName.split("_");
+        String animationName = attributes[0];
         myAnimationMap.put(animationName, new Animation(animationName, getTexture(animationName), frameCount, speed));
     }
 
     void addFont(final String fileName)
     {
-        String fontName = fileName.substring(0, fileName.length() - 4);
+        String[] attributes = fileName.split("_");
+        String fontName = attributes[0];
         myFontMap.put(fontName, new BitmapFont(Gdx.files.internal(fileName)));
         if (myFontMap.get(fontName) == null)
         {
@@ -90,7 +100,8 @@ public class Assets
 
     void addSound( final String fileName)
     {
-        String soundName = fileName.substring(0, fileName.length() - 4);
+        String[] attributes = fileName.split("_");
+        String soundName = attributes[0];
         mySoundMap.put(soundName, Gdx.audio.newSound(Gdx.files.internal(fileName)));
         if (mySoundMap.get(soundName) == null)
         {

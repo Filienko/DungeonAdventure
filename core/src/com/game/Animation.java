@@ -20,9 +20,9 @@ public class Animation
         myCurrentFrame  = 0;
         mySpeed         = speed;
         myName          = animationName;
-        mySize          = Vec2(texture.getWidth() / frameCount, texture.getHeight());
-        mySprite        = new Sprite(texture, 0, 0, mySize.x, mySize.y);
-        mySprite.setOrigin(mySize.x / 2, mySize.y / 2);
+        mySize          = new Vec2((float) texture.getWidth() / frameCount, texture.getHeight());
+        mySprite        = new Sprite(texture, 0, 0, (int) mySize.getMyX(), (int) mySize.getMyY());
+        mySprite.setOrigin(mySize.getMyX() / 2, mySize.getMyY() / 2);
 
     }
 
@@ -35,7 +35,8 @@ public class Animation
         if (mySpeed > 0)
         {
             long frame = (myCurrentFrame / mySpeed) % myFrameCount;
-            mySprite.setRegion(Math.floor(frame) * mySize.x, 0, mySize.x, mySize.y);
+            int leftX = (int) (Math.floor(frame) * mySize.getMyX());
+            mySprite.setRegion(leftX, 0, (int) mySize.getMyX(), (int) mySize.getMyY());
         }
     }
 
