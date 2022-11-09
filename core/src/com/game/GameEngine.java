@@ -29,7 +29,7 @@ public class GameEngine extends ApplicationAdapter {
 	private Assets 						myAssets;
 	private String 						myCurrentScene;
 	private ObjectMap<String, Scene> 	mySceneMap;
-	private Render						myView;
+	private Renderer					myView;
 	private boolean 					myRunning;
 
 	// Methods
