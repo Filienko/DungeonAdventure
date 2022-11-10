@@ -11,6 +11,7 @@ public class Monster extends DungeonCharacter implements Healable
     private final int myMinHeal;
     private final int myMaxHeal;
 
+
     Monster(final double theHealChance, final String theName, int theHitPoints,
             String theCharacterType, final int theMinimumRange,
             final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,
@@ -26,7 +27,7 @@ public class Monster extends DungeonCharacter implements Healable
         this.myMinHeal = theMinHeal;
     }
 
-    public int heal(Monster theMonster)
+    protected int heal(Monster theMonster)
     {
         return healCharacter(theMonster);
     }
@@ -36,7 +37,7 @@ public class Monster extends DungeonCharacter implements Healable
         return myHealChance;
     }
 
-    private void setMyHealChance(final double myHealChance)
+    protected void setMyHealChance(final double myHealChance)
     {
         this.myHealChance = myHealChance;
     }
@@ -49,6 +50,10 @@ public class Monster extends DungeonCharacter implements Healable
     protected int getMaxHeal()
     {
         return myMaxHeal;
+    }
+
+    protected void attack(Hero theHero){
+        super.attack(theHero,super.getMyBoundingBox());
     }
 
     @Override

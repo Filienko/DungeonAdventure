@@ -10,8 +10,6 @@ import java.util.Random;
 
 public class Warrior extends Hero
 {
-    Attackable myWeapon = new Sword();
-
     private String myName;
     public Warrior()
     {
@@ -29,7 +27,7 @@ public class Warrior extends Hero
         double chance = Math.random();
         int damage = 0;
         if (chance < 0.4) {
-            damage = attack(theOpponent, myWeapon.getBoundingBox());
+            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
         } else if (chance < 0.6) {
             Random rand = new Random();
             damage = rand.nextInt(75, 175);

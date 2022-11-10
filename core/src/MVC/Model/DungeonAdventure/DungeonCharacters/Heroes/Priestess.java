@@ -9,8 +9,6 @@ import MVC.Model.Physics.Vec2;
 
 public class Priestess extends Hero implements Healable
 {
-    Attackable myWeapon = new Sword();;
-
     private String myName;
 
     public Priestess()
@@ -36,7 +34,7 @@ public class Priestess extends Hero implements Healable
         if (chance < 0.2) {
             return damage;
         } else if (chance < 0.6) {
-            damage = attack(theOpponent, myWeapon.getBoundingBox());
+            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
         } else if (chance < 1.0) {
             damage += attack(theOpponent);
         }

@@ -37,8 +37,7 @@ public abstract class DungeonCharacter extends Entity
 
     protected int attack(final DungeonCharacter theOpponent, final Vec2 damageArea)
     {
-
-        int damage = 0;
+        int damage = 10;
 
         theOpponent.applyDamage(damage);
 

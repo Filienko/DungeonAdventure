@@ -1,5 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DungeonItems.Weapon.Attackable;
+import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Random;
 
 public abstract class Hero extends DungeonCharacter
 {
+    private Attackable myWeapon = new Sword();;
     private static final Random rand = new Random();
     private final String myName;
     private final String myCharacterType;
@@ -51,5 +54,15 @@ public abstract class Hero extends DungeonCharacter
                 ", myVisionPotions = '" + myVisionPotions + '\'' +
                 ", myPillars = " + myPillars.toString() +
                 '}';
+    }
+
+    public Attackable getWeapon()
+    {
+        return myWeapon;
+    }
+
+    public void setWeapon(final Attackable theWeapon)
+    {
+        myWeapon = theWeapon;
     }
 }

@@ -2,14 +2,10 @@ package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonItems.Weapon.Attackable;
-import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 
 public class Thief extends Hero
 {
-    Attackable myWeapon = new Sword();;
-
     private String myName;
 
     public Thief()
@@ -30,7 +26,7 @@ public class Thief extends Hero
         if (chance < 0.2) {
             return damage;
         } else if (chance < 0.6) {
-            damage = attack(theOpponent, myWeapon.getBoundingBox());
+            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
         } else if (chance < 1.0) {
             damage += supriseAttack(theOpponent);
         }
