@@ -1,9 +1,12 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DB.SQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
+import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.DungeonItems.Items.HealingPotion;
+import MVC.Model.DungeonItems.Items.SpeedPotion;
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
@@ -14,19 +17,28 @@ import java.util.List;
 
 public class EntityFactory
 {
+    SQLConnection DB;
+
+    public Monster generateMonster(String monsterType)
+    {
+        DB = new SQLConnection(monsterType);
+        return new Monster(DB.getTheHealChance(),DB.getTheCharacterType(),DB.getTheHitPoints(),DB.getTheCharacterType(),DB.getTheMinimumRange(), DB.getTheMaxDamageRange(), DB.getTheAgility(), DB.getTheHitChance(), new Vec2(DB.getMyX(),DB.getMyY()),new Vec2(DB.getMyVelocityX(),DB.getMyVelocityY()), DB.getTheMinHeal(), DB.getTheMaxHeal());
+
+    }
+
     public Monster generateOgre()
     {
-        return new Monster(0.1, false,"Ogre",200,"Ogre",30, 60, 0.05, 2, 0.6, new Vec2(), 30, 60);
+        return generateMonster("Ogre");
     }
 
     public Monster generateGremlin()
     {
-        return new Monster(0.4, false,"Gremlin",70,"Gremlin",15, 30, 0.05, 5, 0.8, new Vec2(),20,40);
+        return generateMonster("Gremlin");
     }
 
     public Monster generateElf()
     {
-        return new Monster(0.3, false,"Elf",100,"Elf",30, 50, 0.05, 3, 0.8, new Vec2(), 30, 50);
+        return generateMonster("Elf");
     }
 
     public List<Monster> generateMonsters(int n1)
@@ -150,5 +162,26 @@ public class EntityFactory
 
         return arr;
     }
+    public List<SpeedPotion> generateSpeedPotions(int n1)
+    {
+        var arr = new ArrayList<SpeedPotion>();
 
+        for (int i = 0; i < n1; i++)
+        {
+            arr.add(new SpeedPotion());
+        }
+
+        return arr;
+    }
+    public List<AttackPotion> generateAttackPotions(int n1)
+    {
+    var arr = new ArrayList<AttackPotion>();
+
+    for (int i = 0; i < n1; i++)
+    {
+        arr.add(new AttackPotion());
+    }
+
+    return arr;
+}
 }

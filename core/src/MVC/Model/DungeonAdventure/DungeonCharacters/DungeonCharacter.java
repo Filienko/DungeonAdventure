@@ -1,6 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
+import com.badlogic.gdx.math.collision.BoundingBox;
 
 import java.util.Random;
 
@@ -13,13 +14,14 @@ public abstract class DungeonCharacter extends Entity
     private int myHitPoints;
     private int myMinDamageRange;
     private int myMaxDamageRange;
-    private double myBlockChance;
-    private int myAgility;
+    private int myMaxSpeed;
     private double myHitChance;
     private Vec2 myPos;
+    private Vec2 myVelocity;
 
-    DungeonCharacter(final String theName, final String theCharacterType, final boolean theHero, final int theHitPoints, final int theMinDamageRange, final int theMaxDamageRange, final double theBlockChance,
-                     final int theAgility, final double theHitChance, final Vec2 thePos)
+    DungeonCharacter(final String theName, final String theCharacterType, final boolean theHero, final int theHitPoints,
+                     final int theMinDamageRange, final int theMaxDamageRange, final int theMaxSpeed,
+                     final double theHitChance, final Vec2 thePos, final Vec2 theVelocity)
     {
         this.myCharacterType = theCharacterType;
         this.myName = theName;
@@ -27,27 +29,16 @@ public abstract class DungeonCharacter extends Entity
         this.myMinDamageRange = theMinDamageRange;
         this.myHitPoints = theHitPoints;
         this.myMaxDamageRange = theMaxDamageRange;
-        this.myBlockChance = theBlockChance;
-        this.myAgility = theAgility;
+        this.myMaxSpeed = theMaxSpeed;
         this.myHitChance = theHitChance;
         this.myPos = thePos;
+        this.myVelocity = theVelocity;
     }
 
-    protected int attack(final DungeonCharacter theOpponent)
+    protected int attack(final DungeonCharacter theOpponent, final Vec2 damageArea)
     {
+
         int damage = 0;
-
-        if(this.myHitChance > theOpponent.getBlockChance()) //should hitChances be compared instead ??
-        {
-            Random rand = new Random();
-            damage = rand.nextInt(theOpponent.myMinDamageRange, theOpponent.myMaxDamageRange);
-        }
-
-        //should this be here?
-//        int attacks = this.myAgility/theOpponent.getAgility();
-//        for (int i = 0; i < attacks; i++){
-//            damage += attack(theOpponent);
-//        }
 
         theOpponent.applyDamage(damage);
 
@@ -105,24 +96,14 @@ public abstract class DungeonCharacter extends Entity
         this.myMaxDamageRange = theMaxDamageRange;
     }
 
-    public double getBlockChance()
+    public int getMaxSpeed()
     {
-        return this.myBlockChance;
+        return this.myMaxSpeed;
     }
 
-    public void setBlockChance(final double theBlockChance)
+    public void setMaxSpeed(final int theMaxSpeed)
     {
-        this.myBlockChance = theBlockChance;
-    }
-
-    public int getAgility()
-    {
-        return this.myAgility;
-    }
-
-    public void setAgility(final int theAgility)
-    {
-        this.myAgility = theAgility;
+        this.myMaxSpeed = theMaxSpeed;
     }
 
     public double getHitChance()
@@ -143,5 +124,30 @@ public abstract class DungeonCharacter extends Entity
     public void setPos(final Vec2 thePos)
     {
         this.myPos = thePos;
+    }
+
+    private String getCharacterType()
+    {
+        return myCharacterType;
+    }
+
+    private String getName()
+    {
+        return myName;
+    }
+
+    private boolean isHero()
+    {
+        return isHero;
+    }
+
+    private Vec2 getVelocity()
+    {
+        return myVelocity;
+    }
+
+    private void setVelocity(final Vec2 theVelocity)
+    {
+        myVelocity = theVelocity;
     }
 }

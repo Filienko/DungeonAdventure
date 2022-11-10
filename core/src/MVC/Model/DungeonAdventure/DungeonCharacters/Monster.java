@@ -5,20 +5,20 @@ import MVC.Model.Physics.Vec2;
 public class Monster extends DungeonCharacter implements Healable
 {
     private final String myCharacterType;
-    private final String myName;
     private final boolean isHero;
     private final int myHitPoints;
     private double myHealChance;
     private final int myMinHeal;
     private final int myMaxHeal;
 
-    Monster(final double theHealChance, final boolean theHero, final String theName, int theHitPoints, String theCharacterType, final int theMinimumRange,
-            final int theMaxDamageRange, final double theBlockChance, final int theAgility, final double theHitChance,
-            final Vec2 thePos, int theMinHeal, int theMaxHeal)
+    Monster(final double theHealChance, final String theName, int theHitPoints,
+            String theCharacterType, final int theMinimumRange,
+            final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,
+            final Vec2 thePos, final Vec2 theVelocity, final int theMinHeal, final int theMaxHeal)
     {
-        super(theName, theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theBlockChance, theAgility, theHitChance, thePos);
+        super(theName, theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed,
+                theHitChance, thePos, theVelocity);
         this.myCharacterType = theCharacterType;
-        this.myName = theName;
         this.isHero = false;
         this.myHitPoints = theHitPoints;
         this.myHealChance = theHealChance;

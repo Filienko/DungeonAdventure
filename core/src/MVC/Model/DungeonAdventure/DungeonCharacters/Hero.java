@@ -17,11 +17,12 @@ public abstract class Hero extends DungeonCharacter
     private List<String> myPillars;
     private final int myHitPoints;
 
-    public Hero(String theName, String theCharacterType, boolean theHero, int theHitPoints, final int theMinDamageRange,
-                final int theMaxDamageRange, final double theBlockChance, final int theAgility, final double theHitChance,
-                final Vec2 thePos)
+    public Hero(String theName, String theCharacterType, int theHitPoints, final int theMinDamageRange,
+                final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,
+                final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theName, theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theBlockChance, theAgility, theHitChance, thePos);
+        super(theName, theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
+                theHitChance, thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
         this.isHero = true;

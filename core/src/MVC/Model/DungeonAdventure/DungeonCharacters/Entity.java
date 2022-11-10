@@ -1,7 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
-import com.badlogic.gdx.graphics.Texture;
+import com.game.Animation;
 
 
 public abstract class Entity
@@ -11,7 +11,7 @@ public abstract class Entity
     private Vec2 mySize;
     private Vec2 myBoundingBox;
     private boolean myEntityAnimated;
-    private Texture myTexture;
+    private Animation myAnimation;
 
     public Vec2 getMyPos()
     {
@@ -64,14 +64,63 @@ public abstract class Entity
         this.myEntityAnimated = myEntityAnimated;
     }
 
-
-    public Texture getMyTexture()
+    private Vec2 getPos()
     {
-        return myTexture;
+        return myPos;
     }
 
-    public void setMyTexture(Texture myTexture)
+    private void setPos(final Vec2 thePos)
     {
-        this.myTexture = myTexture;
+        myPos = thePos;
+    }
+
+    private Vec2 getPreviousPos()
+    {
+        return myPreviousPos;
+    }
+
+    private void setPreviousPos(final Vec2 thePreviousPos)
+    {
+        myPreviousPos = thePreviousPos;
+    }
+
+    private Vec2 getSize()
+    {
+        return mySize;
+    }
+
+    private void setSize(final Vec2 theSize)
+    {
+        mySize = theSize;
+    }
+
+    private Vec2 getBoundingBox()
+    {
+        return myBoundingBox;
+    }
+
+    private void setBoundingBox(final Vec2 theBoundingBox)
+    {
+        myBoundingBox = theBoundingBox;
+    }
+
+    private boolean isEntityAnimated()
+    {
+        return myEntityAnimated;
+    }
+
+    private void setEntityAnimated(final boolean theEntityAnimated)
+    {
+        myEntityAnimated = theEntityAnimated;
+    }
+
+    public Animation getAnimation()
+    {
+        return myAnimation;
+    }
+
+    public void setAnimation(final Animation theAnimation)
+    {
+        myAnimation = theAnimation;
     }
 }
