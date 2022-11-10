@@ -6,69 +6,80 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SQLConnection {
-    SQLiteDataSource ds;
-    private double theHealChance;
-    private boolean theHero;
-    private int theHitPoints;
-    private String theCharacterType;
-    private int theMinimumRange;
-    private int theMaxDamageRange;
-    private int theAgility;
-    private double theHitChance;
-    private float myX;
-    private float myY;
-    private float myVelocityX;
-    private float myVelocityY;
-    private int theMinHeal;
-    private int theMaxHeal;
+    public SQLiteDataSource myDS = establishConnection();
+    public double myHealChance;
+    public boolean myHero;
+    public int myHitPoints;
+    public String myCharacterType;
+    public int myMinimumRange;
+    public int myMaxDamageRange;
+    public int myMaxSpeed;
+    public double myHitChance;
+    public float myX;
+    public float myY;
+    public float myVelocityX;
+    public float myVelocityY;
+    public int myMinHeal;
+    public int myMaxHeal;
+
+    public static void main(String[] args)
+    {
+        var db = new SQLConnection("Ogre");
+
+        System.out.println(db.getCharacterType());
+        db = new SQLConnection("Gremlin");
+
+        System.out.println(db.getCharacterType());
+        db = new SQLConnection("Elf");
+
+        System.out.println(db.getCharacterType());
+
+    }
 
     public SQLConnection(final String monsterType)
     {
-        establishConnection();
         if(monsterType.contentEquals("Ogre"))
-        {
-            updateMonsterData(0);
-        }
-        else if(monsterType.contentEquals("Gremlin"))
         {
             updateMonsterData(1);
         }
-        else if (monsterType.contentEquals("Elf"))
+        else if(monsterType.contentEquals("Gremlin"))
         {
             updateMonsterData(2);
         }
+        else if (monsterType.contentEquals("Elf"))
+        {
+            updateMonsterData(3);
+        }
     }
 
-    private static void establishConnection() {
+    static SQLiteDataSource establishConnection() {
         //establish connection (creates db file if it does not exist :-)
+        SQLiteDataSource ds = null;
         try {
             ds = new SQLiteDataSource();
-            ds.setUrl("jdbc:sqlite:localDatabase.db");
+            ds.setUrl("jdbc:sqlite:enemiesDatabase.db");
             System.out.println( "Opened database successfully" );
         } catch ( Exception e ) {
             e.printStackTrace();
             System.exit(0);
         }
-/*
-* final double theHealChance, final boolean theHero, final String theName, int theHitPoints, String theCharacterType, final int theMinimumRange,
-            final int theMaxDamageRange, final double theBlockChance, final int theAgility, final double theHitChance,
-            final Vec2 thePos, int theMinHeal, int theMaxHeal*/
         //now create a table
-        String query = "CREATE TABLE IF NOT EXISTS localDatabase ( " +
-                "theHealChance REAL DEFAULT 0.2, " +
-                "theHero INTEGER DEFAULT 0, " +
-                "theName TEXT NOT NULL, " +
-                "theHitPoints INTEGER DEFAULT 0, " +
-                "theCharacterType TEXT NOT NULL, " +
-                "theMinimumRange INTEGER DEFAULT 0, " +
-                "theMaxDamageRange INTEGER DEFAULT 0, " +
-                "theBlockChance REAL DEFAULT 0.2, " +
-                "theAgility TEXT INTEGER DEFAULT 0, " +
-                "theHitChance TEXT REAL DEFAULT 0.2, " +
+        String query = "CREATE TABLE IF NOT EXISTS enemiesDatabase ( " +
+                "myHealChance REAL DEFAULT 0.2, " +
+                "myHero INTEGER DEFAULT 0, " +
+                "myName TEXT NOT NULL, " +
+                "myHitPoints INTEGER DEFAULT 0, " +
+                "myCharacterType TEXT NOT NULL, " +
+                "myMinimumRange INTEGER DEFAULT 0, " +
+                "myMaxDamageRange INTEGER DEFAULT 0, " +
+                "myMaxSpeed INTEGER DEFAULT 0, " +
+                "myHitChance REAL DEFAULT 0.2, " +
                 "myX REAL DEFAULT 0.0, " +
                 "myY REAL DEFAULT 0.0, " +
-                "theMinHeal INTEGER DEFAULT 0, " +
-                "theMaxHeal INTEGER DEFAULT 1)";
+                "myVelocityX REAL DEFAULT 0.0, " +
+                "myVelocityY REAL DEFAULT 0.0, " +
+                "myMinHeal INTEGER DEFAULT 0, " +
+                "myMaxHeal INTEGER DEFAULT 1)";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement(); ) {
@@ -83,15 +94,15 @@ public class SQLConnection {
         //next insert two rows of data
         System.out.println( "Attempting to insert argument rows into parameters table" );
 
-        String ogreQuery = "INSERT INTO localDatabase ( theHealChance, theHero,theName,theHitPoints, theCharacterType," +
-                " theMinimumRange, theMaxDamageRange,theAgility,theHitChance,myX,myY,myVelocityX,myVelocityY,theMinHeal, " +
-                "theMaxHeal ) VALUES (0.1, 0,'Ogre',200,'Ogre',30,60,2,0.6,0,0,0,0,30,60)";
-        String gremlinQuery = "INSERT INTO localDatabase ( theHealChance, theHero,theName,theHitPoints, theCharacterType," +
-                " theMinimumRange, theMaxDamageRange,theAgility,theHitChance,myX,myY,myVelocityX,myVelocityY,theMinHeal, " +
-                "theMaxHeal ) VALUES (0.4, 0,'Gremlin',70,'Gremlin',15,30,5,0.8,0,0,0,0,20,40)";
-        String elfQuery = "INSERT INTO localDatabase ( theHealChance, theHero,theName,theHitPoints, theCharacterType," +
-                " theMinimumRange, theMaxDamageRange,theAgility,theHitChance,myX,myY,myVelocityX,myVelocityY,theMinHeal, " +
-                "theMaxHeal ) VALUES (0.3, 0,'Elf',100,'Elf',30,50,3,0.8,0,0,0,0,30,50)";
+        String ogreQuery = "INSERT INTO enemiesDatabase ( myHealChance, myHero,myName,myHitPoints, myCharacterType," +
+                " myMinimumRange,myMaxDamageRange,myMaxSpeed,myHitChance,myX,myY,myVelocityX,myVelocityY,myMinHeal, " +
+                "myMaxHeal ) VALUES (0.1, 0,'Ogre',200,'Ogre',30,60,2,0.6,0,0,0,0,30,60)";
+        String gremlinQuery = "INSERT INTO enemiesDatabase ( myHealChance, myHero,myName,myHitPoints, myCharacterType," +
+                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myHitChance,myX,myY,myVelocityX,myVelocityY,myMinHeal, " +
+                "myMaxHeal ) VALUES (0.4, 0,'Gremlin',70,'Gremlin',15,30,5,0.8,0,0,0,0,20,40)";
+        String elfQuery = "INSERT INTO enemiesDatabase ( myHealChance, myHero,myName,myHitPoints, myCharacterType," +
+                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myHitChance,myX,myY,myVelocityX,myVelocityY,myMinHeal, " +
+                "myMaxHeal ) VALUES (0.3, 0,'Elf',100,'Elf',30,50,3,0.8,0,0,0,0,30,50)";
 
 
         try ( Connection conn = ds.getConnection();
@@ -106,109 +117,191 @@ public class SQLConnection {
             e.printStackTrace();
             System.exit( 0 );
         }
+        return ds;
     }
 
 
-    private void updateMonsterData(int n)
-      {
-          //now query the database table for all its contents and display the results
-          String query = "SELECT * FROM localDatabase WHERE rowid = n";
-
-          try ( Connection conn = ds.getConnection();
-                Statement stmt = conn.createStatement(); ) {
-
-              ResultSet rs = stmt.executeQuery(query);
-
-              //walk through each 'row' of results, grab data by column/field name
-              // and print it
-              while ( rs.next() ) {
-                  theHealChance = Double.parseDouble(rs.getString( "theHealChance" ));
-                  theHero = Boolean.parseBoolean(rs.getString( "theHero" ));
-                  theHitPoints = Integer.parseInt(rs.getString( "theHitPoints" ));
-                  theCharacterType = rs.getString( "theCharacterType" );
-                  theMinimumRange = Integer.parseInt(rs.getString( "theMinimumRange" ));
-                  theMaxDamageRange = Integer.parseInt(rs.getString( "theMaxDamageRange" ));
-                  theAgility = Integer.parseInt(rs.getString( "theAgility" ));
-                  theHitChance = Double.parseDouble(rs.getString( "theHitChance" ));
-                  myX = Float.parseFloat(rs.getString( "myX" ));
-                  myY = Float.parseFloat(( "myY" ));
-                  myVelocityX = Float.parseFloat(rs.getString( "myX" ));
-                  myVelocityY = Float.parseFloat(( "myY" ));
-                  theMinHeal = Integer.parseInt(rs.getString( "theMinHeal" ));
-                  theMaxHeal = Integer.parseInt(rs.getString( "theMaxHeal" ));
-              }
-          } catch ( SQLException e ) {
-              e.printStackTrace();
-              System.exit( 0 );
-          }
-      }
-
-    public double getTheHealChance()
+    public void updateMonsterData(int n)
     {
-        return theHealChance;
+        //now query my database table for all its contents and display my results
+        String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + n + "";
+
+        try ( Connection conn = myDS.getConnection();
+              Statement stmt = conn.createStatement(); ) {
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            //walk through each 'row' of results, grab data by column/field name
+            // and print it
+            while ( rs.next() ) {
+                myHealChance = Double.parseDouble(rs.getString( "myHealChance" ));
+                myHero = Boolean.parseBoolean(rs.getString( "myHero" ));
+                myHitPoints = Integer.parseInt(rs.getString( "myHitPoints" ));
+                myCharacterType = rs.getString( "myCharacterType" );
+                myMinimumRange = Integer.parseInt(rs.getString( "myMinimumRange" ));
+                myMaxDamageRange = Integer.parseInt(rs.getString( "myMaxDamageRange" ));
+                myMaxSpeed = Integer.parseInt(rs.getString( "myMaxSpeed" ));
+                myHitChance = Double.parseDouble(rs.getString( "myHitChance" ));
+                myX = Float.parseFloat(rs.getString( "myX" ));
+                myY = Float.parseFloat(rs.getString("myY" ));
+                myVelocityX = Float.parseFloat(rs.getString( "myVelocityX" ));
+                myVelocityY = Float.parseFloat(rs.getString( "myVelocityY" ));
+                myMinHeal = Integer.parseInt(rs.getString( "myMinHeal" ));
+                myMaxHeal = Integer.parseInt(rs.getString( "myMaxHeal" ));
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            System.exit( 0 );
+        }
     }
 
-    public boolean isTheHero()
+    public SQLiteDataSource getDS()
     {
-        return theHero;
+        return myDS;
     }
 
-    public int getTheHitPoints()
+    public void setDS(final SQLiteDataSource theDS)
     {
-        return theHitPoints;
+        myDS = theDS;
     }
 
-    public String getTheCharacterType()
+    public double getHealChance()
     {
-        return theCharacterType;
+        return myHealChance;
     }
 
-    public int getTheMinimumRange()
+    public void setHealChance(final double theHealChance)
     {
-        return theMinimumRange;
+        myHealChance = theHealChance;
     }
 
-    public int getTheMaxDamageRange()
+    public boolean isHero()
     {
-        return theMaxDamageRange;
+        return myHero;
     }
 
-    public int getTheAgility()
+    public void setHero(final boolean theHero)
     {
-        return theAgility;
+        myHero = theHero;
     }
 
-    public double getTheHitChance()
+    public int getHitPoints()
     {
-        return theHitChance;
+        return myHitPoints;
     }
 
-    public float getMyX()
+    public void setHitPoints(final int theHitPoints)
+    {
+        myHitPoints = theHitPoints;
+    }
+
+    public String getCharacterType()
+    {
+        return myCharacterType;
+    }
+
+    public void setCharacterType(final String theCharacterType)
+    {
+        myCharacterType = theCharacterType;
+    }
+
+    public int getMinimumRange()
+    {
+        return myMinimumRange;
+    }
+
+    public void setMinimumRange(final int theMinimumRange)
+    {
+        myMinimumRange = theMinimumRange;
+    }
+
+    public int getMaxDamageRange()
+    {
+        return myMaxDamageRange;
+    }
+
+    public void setMaxDamageRange(final int theMaxDamageRange)
+    {
+        myMaxDamageRange = theMaxDamageRange;
+    }
+
+    public int getMaxSpeed()
+    {
+        return myMaxSpeed;
+    }
+
+    public void setMaxSpeed(final int theMaxSpeed)
+    {
+        myMaxSpeed = theMaxSpeed;
+    }
+
+    public double getHitChance()
+    {
+        return myHitChance;
+    }
+
+    public void setHitChance(final double theHitChance)
+    {
+        myHitChance = theHitChance;
+    }
+
+    public float getX()
     {
         return myX;
     }
 
-    public float getMyY()
+    public void setX(final float theX)
+    {
+        myX = theX;
+    }
+
+    public float getY()
     {
         return myY;
     }
 
-    public int getTheMinHeal()
+    public void setY(final float theY)
     {
-        return theMinHeal;
+        myY = theY;
     }
 
-    public int getTheMaxHeal()
-    {
-        return theMaxHeal;
-    }
-
-    public float getMyVelocityX()
+    public float getVelocityX()
     {
         return myVelocityX;
     }
-    public float getMyVelocityY()
+
+    public void setVelocityX(final float theVelocityX)
+    {
+        myVelocityX = theVelocityX;
+    }
+
+    public float getVelocityY()
     {
         return myVelocityY;
+    }
+
+    public void setVelocityY(final float theVelocityY)
+    {
+        myVelocityY = theVelocityY;
+    }
+
+    public int getMinHeal()
+    {
+        return myMinHeal;
+    }
+
+    public void setMinHeal(final int theMinHeal)
+    {
+        myMinHeal = theMinHeal;
+    }
+
+    public int getMaxHeal()
+    {
+        return myMaxHeal;
+    }
+
+    public void setMaxHeal(final int theMaxHeal)
+    {
+        myMaxHeal = theMaxHeal;
     }
 }

@@ -22,7 +22,7 @@ public class EntityFactory
     public Monster generateMonster(String monsterType)
     {
         DB = new SQLConnection(monsterType);
-        return new Monster(DB.getTheHealChance(),DB.getTheCharacterType(),DB.getTheHitPoints(),DB.getTheCharacterType(),DB.getTheMinimumRange(), DB.getTheMaxDamageRange(), DB.getTheAgility(), DB.getTheHitChance(), new Vec2(DB.getMyX(),DB.getMyY()),new Vec2(DB.getMyVelocityX(),DB.getMyVelocityY()), DB.getTheMinHeal(), DB.getTheMaxHeal());
+        return new Monster(DB.getHealChance(),DB.getCharacterType(),DB.getHitPoints(),DB.getCharacterType(),DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(), DB.getHitChance(), new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()), DB.getMinHeal(), DB.getMaxHeal());
 
     }
 
