@@ -11,7 +11,6 @@ public class Monster extends DungeonCharacter implements Healable
     private final int myMinHeal;
     private final int myMaxHeal;
 
-
     Monster(final double theHealChance, final String theName, int theHitPoints,
             String theCharacterType, final int theMinimumRange,
             final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,
