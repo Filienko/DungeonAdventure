@@ -1,6 +1,8 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DB.MockSQLConnection;
 import MVC.Model.DB.SQLConnection;
+import MVC.Model.DB.SuperSQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.AttackPotion;
@@ -13,11 +15,11 @@ import java.util.List;
 
 public class EntityFactory
 {
-    SQLConnection DB;
+    SuperSQLConnection DB;
 
     public Monster generateMonster(String monsterType)
     {
-        DB = new SQLConnection(monsterType);
+        DB = new MockSQLConnection(monsterType);
         return new Monster(DB.getHealChance(),DB.getCharacterType(),DB.getHitPoints(),DB.getCharacterType(),
                 DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(), DB.getHitChance(),
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()), DB.getMinHeal(),
