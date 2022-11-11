@@ -7,6 +7,8 @@ import MVC.Model.Physics.Vec2;
 public class Thief extends Hero
 {
     private String myName;
+    private boolean myHidden = false;
+    private double myHiddenChance = 0.4;
 
     public Thief()
     {
@@ -31,5 +33,26 @@ public class Thief extends Hero
             damage += surpriseAttack(theOpponent);
         }
         return damage;
+    }
+
+    @Override
+    public String getName()
+    {
+        return myName;
+    }
+
+    private void setName(final String theName)
+    {
+    myName = theName;
+    }
+
+    public boolean isHidden()
+    {
+        return myHidden;
+    }
+
+    private void setHidden(final boolean theHidden)
+    {
+        myHidden = theHidden;
     }
 }

@@ -18,7 +18,10 @@ public class EntityFactory
     public Monster generateMonster(String monsterType)
     {
         DB = new SQLConnection(monsterType);
-        return new Monster(DB.getHealChance(),DB.getCharacterType(),DB.getHitPoints(),DB.getCharacterType(),DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(), DB.getHitChance(), new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()), DB.getMinHeal(), DB.getMaxHeal());
+        return new Monster(DB.getHealChance(),DB.getCharacterType(),DB.getHitPoints(),DB.getCharacterType(),
+                DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(), DB.getHitChance(),
+                new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()), DB.getMinHeal(),
+                DB.getMaxHeal());
     }
 
     public Monster generateOgre()
