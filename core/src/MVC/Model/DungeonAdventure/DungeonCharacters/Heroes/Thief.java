@@ -19,7 +19,7 @@ public class Thief extends Hero
         this.myName = theName;
     }
 
-    public int supriseAttack(DungeonCharacter theOpponent)
+    public int surpriseAttack(DungeonCharacter theOpponent)
     {
         double chance = Math.random();
         int damage = 0;
@@ -28,7 +28,7 @@ public class Thief extends Hero
         } else if (chance < 0.6) {
             damage = attack(theOpponent, super.getWeapon().getBoundingBox());
         } else if (chance < 1.0) {
-            damage += supriseAttack(theOpponent);
+            damage += surpriseAttack(theOpponent);
         }
         return damage;
     }
