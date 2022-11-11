@@ -1,5 +1,6 @@
 package com.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,12 +19,19 @@ public class Assets
     private ArrayList<String> myAnimationNames;
 
     // Constructor
-    public Assets() {}
+    public Assets()
+    {
+        myTextureMap        = new ObjectMap<String, Texture>();
+        myAnimationMap      = new ObjectMap<String, Animation>();
+        myFontMap           = new ObjectMap<String, BitmapFont>();
+        mySoundMap          = new ObjectMap<String, Sound>();
+        myAnimationNames    = new ArrayList<String>();
+    }
 
     // Methods
     void loadAssets()
     {
-        File dir = new File("assets");
+        File dir = new File("E:\\farva\\Documents\\UW\\Fall2022\\TCSS360\\DungeonAdventure\\assets");
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null)
         {
@@ -57,21 +65,80 @@ public class Assets
         }
     }
 
-    void addTexture(final String fileName) {}
+    void addTexture(final String fileName)
+    {
+        String[] attributes = fileName.split("_");
+        String textureName = attributes[0];
+        myTextureMap.put(textureName, new Texture(Gdx.files.internal(fileName)));
+        if (myTextureMap.get(textureName) == null)
+        {
+            System.out.println("Could not load texture file: " + fileName);
+        }
+        else
+        {
+            System.out.println("Loaded texture: " + fileName);
+        }
+    }
 
-    void addAnimation(final String fileName, int frameCount, int speed) {}
+    void addAnimation(final String fileName, int frameCount, int speed)
+    {
+        String[] attributes = fileName.split("_");
+        String animationName = attributes[0];
+        myAnimationMap.put(animationName, new Animation(animationName, getTexture(animationName), frameCount, speed));
+    }
 
-    void addFont(final String fileName) {}
+    void addFont(final String fileName)
+    {
+        String[] attributes = fileName.split("_");
+        String fontName = attributes[0];
+        myFontMap.put(fontName, new BitmapFont(Gdx.files.internal(fileName)));
+        if (myFontMap.get(fontName) == null)
+        {
+            System.out.println("Could not load font: " + fileName);
+        }
+    }
 
-    void addSound( final String fileName) {}
+    void addSound( final String fileName)
+    {
+        String[] attributes = fileName.split("_");
+        String soundName = attributes[0];
+        mySoundMap.put(soundName, Gdx.audio.newSound(Gdx.files.internal(fileName)));
+        if (mySoundMap.get(soundName) == null)
+        {
+            System.out.println("Could not load sound file: " + fileName);
+        }
+        else
+        {
+            System.out.println("Loaded sound: " + fileName);
+        }
+    }
 
-    Texture getTexture(final String textureName) {}
+    Texture getTexture(final String textureName)
+    {
+        assert(myTextureMap.get(textureName) != null);
+        return myTextureMap.get(textureName);
+    }
 
-    Animation getAnimation(final String animationName) {}
+    Animation getAnimation(final String animationName)
+    {
+        assert(myAnimationMap.get(animationName) != null);
+        return myAnimationMap.get(animationName);
+    }
 
-    BitmapFont getFont(final String fontName) {}
+    BitmapFont getFont(final String fontName)
+    {
+        assert(myFontMap.get(fontName) != null);
+        return myFontMap.get(fontName);
+    }
 
-    Sound getSound(final String soundName) {}
+    Sound getSound(final String soundName)
+    {
+        assert(mySoundMap.get(soundName) != null);
+        return mySoundMap.get(soundName);
+    }
 
-    ArrayList<String> getAnimationNames() {}
+    ArrayList<String> getAnimationNames()
+    {
+        return myAnimationNames;
+    }
 }
