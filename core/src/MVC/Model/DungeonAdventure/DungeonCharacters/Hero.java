@@ -29,18 +29,28 @@ public abstract class Hero extends DungeonCharacter
         this.myName = theName;
         this.myCharacterType = theCharacterType;
         this.isHero = true;
-        this.myHitPoints = rand.nextInt(75,100);
+        this.myHitPoints = theHitPoints;
         this.myPillars = new ArrayList<>();
     }
 
-    protected void moveHero(final Vec2 theCoordinates)
+    public void moveHero(final Vec2 theCoordinates)
     {
         super.setPos(theCoordinates);
     }
 
-    protected void healHero(final Hero theHero, final int theHealingHP)
+    public void healHero(final Hero theHero, final int theHealingHP)
     {
         theHero.setHitPoints(theHero.getHitPoints()+theHealingHP);
+    }
+
+    public Attackable getWeapon()
+    {
+        return myWeapon;
+    }
+
+    public void setWeapon(final Attackable theWeapon)
+    {
+        myWeapon = theWeapon;
     }
 
     @Override
@@ -56,13 +66,54 @@ public abstract class Hero extends DungeonCharacter
                 '}';
     }
 
-    public Attackable getWeapon()
+    public String getName()
     {
-        return myWeapon;
+        return myName;
     }
 
-    public void setWeapon(final Attackable theWeapon)
+    public String getCharacterType()
     {
-        myWeapon = theWeapon;
+        return myCharacterType;
+    }
+
+    public boolean isHero()
+    {
+        return isHero;
+    }
+
+    public int getHealingPotions()
+    {
+        return myHealingPotions;
+    }
+
+    public int getVisionPotions()
+    {
+        return myVisionPotions;
+    }
+
+    public List<String> getPillars()
+    {
+        return myPillars;
+    }
+
+    @Override
+    public int getHitPoints()
+    {
+        return myHitPoints;
+    }
+
+    public void setHealingPotions(final int theHealingPotions)
+    {
+        myHealingPotions = theHealingPotions;
+    }
+
+    public void setVisionPotions(final int theVisionPotions)
+    {
+        myVisionPotions = theVisionPotions;
+    }
+
+    public void setPillars(final List<String> thePillars)
+    {
+        myPillars = thePillars;
     }
 }

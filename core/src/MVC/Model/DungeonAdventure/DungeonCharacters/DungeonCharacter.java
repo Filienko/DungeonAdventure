@@ -125,27 +125,27 @@ public abstract class DungeonCharacter extends Entity
         this.myPos = thePos;
     }
 
-    private String getCharacterType()
+    public String getCharacterType()
     {
         return myCharacterType;
     }
 
-    private String getName()
+    public String getName()
     {
         return myName;
     }
 
-    private boolean isHero()
+    public boolean isHero()
     {
         return isHero;
     }
 
-    private Vec2 getVelocity()
+    public Vec2 getVelocity()
     {
         return myVelocity;
     }
 
-    private void setVelocity(final Vec2 theVelocity)
+    public void setVelocity(final Vec2 theVelocity)
     {
         myVelocity = theVelocity;
     }
