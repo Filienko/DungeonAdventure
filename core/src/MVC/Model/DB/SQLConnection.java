@@ -48,7 +48,6 @@ public class SQLConnection extends SuperSQLConnection
         {
             ds = new SQLiteDataSource();
             ds.setUrl("jdbc:sqlite:enemiesDatabase.db");
-            System.out.println("Opened database successfully");
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -66,30 +65,29 @@ public class SQLConnection extends SuperSQLConnection
                 "myX REAL DEFAULT 0.0, " +
                 "myY REAL DEFAULT 0.0, " +
                 "myVelocityX REAL DEFAULT 0.0, " +
-                "myVelocityY REAL DEFAULT 0.0)";
+                "myVelocityY REAL DEFAULT 0.0," +
+                "UNIQUE(myHero,myCharacterType,myName,myHitPoints,myMinimumRange,myMaxDamageRange,myMaxSpeed,myX,myY," +
+                "myVelocityX,myVelocityY))";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
         {
             int rv = stmt.executeUpdate(query);
-            System.out.println("executeUpdate() returned " + rv);
         } catch (SQLException e)
         {
             e.printStackTrace();
             System.exit(0);
         }
-        System.out.println("Created questions table successfully");
 
         //next insert two rows of data
-        System.out.println("Attempting to insert argument rows into parameters table");
 
-        String ogreQuery = "INSERT INTO enemiesDatabase (myHero,myName,myHitPoints, myCharacterType," +
+        String ogreQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myName,myHitPoints, myCharacterType," +
                 " myMinimumRange,myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
                 ") VALUES (0,'Ogre',200,'Ogre',30,60,2,0,0,0,0)";
-        String gremlinQuery = "INSERT INTO enemiesDatabase (myHero,myName,myHitPoints, myCharacterType," +
+        String gremlinQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myName,myHitPoints, myCharacterType," +
                 " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
                 ") VALUES (0,'Gremlin',70,'Gremlin',15,30,5,0,0,0,0)";
-        String elfQuery = "INSERT INTO enemiesDatabase ( myHero,myName,myHitPoints, myCharacterType," +
+        String elfQuery = "INSERT OR IGNORE INTO enemiesDatabase ( myHero,myName,myHitPoints, myCharacterType," +
                 " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
                 ") VALUES (0,'Elf',100,'Elf',30,50,3,0,0,0,0)";
 
@@ -98,11 +96,11 @@ public class SQLConnection extends SuperSQLConnection
              Statement stmt = conn.createStatement();)
         {
             int rv = stmt.executeUpdate(ogreQuery);
-            System.out.println("1st executeUpdate() returned " + rv);
+
             rv = stmt.executeUpdate(gremlinQuery);
-            System.out.println("2nd executeUpdate() returned " + rv);
+
             rv = stmt.executeUpdate(elfQuery);
-            System.out.println("3nd executeUpdate() returned " + rv);
+
         } catch (SQLException e)
         {
             e.printStackTrace();
