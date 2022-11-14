@@ -10,18 +10,16 @@ public abstract class DungeonCharacter extends Entity
     private final String myCharacterType;
     private final String myName;
     private final boolean isHero;
-    //private int myHealPoints;
     private int myHitPoints;
     private int myMinDamageRange;
     private int myMaxDamageRange;
     private int myMaxSpeed;
-    private double myHitChance;
     private Vec2 myPos;
     private Vec2 myVelocity;
 
     DungeonCharacter(final String theName, final String theCharacterType, final boolean theHero, final int theHitPoints,
-                     final int theMinDamageRange, final int theMaxDamageRange, final int theMaxSpeed,
-                     final double theHitChance, final Vec2 thePos, final Vec2 theVelocity)
+                     final int theMinDamageRange, final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos,
+                     final Vec2 theVelocity)
     {
         this.myCharacterType = theCharacterType;
         this.myName = theName;
@@ -30,7 +28,6 @@ public abstract class DungeonCharacter extends Entity
         this.myHitPoints = theHitPoints;
         this.myMaxDamageRange = theMaxDamageRange;
         this.myMaxSpeed = theMaxSpeed;
-        this.myHitChance = theHitChance;
         this.myPos = thePos;
         this.myVelocity = theVelocity;
     }
@@ -103,16 +100,6 @@ public abstract class DungeonCharacter extends Entity
     public void setMaxSpeed(final int theMaxSpeed)
     {
         this.myMaxSpeed = theMaxSpeed;
-    }
-
-    public double getHitChance()
-    {
-        return this.myHitChance;
-    }
-
-    public void setHitChance(final double theHitChance)
-    {
-        this.myHitChance = theHitChance;
     }
 
     public Vec2 getPos()
