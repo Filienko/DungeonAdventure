@@ -22,7 +22,6 @@ public class SQLConnection extends SuperSQLConnection
         db = new SQLConnection("Elf");
 
         System.out.println(db.getCharacterType());
-
     }
 
     public SQLConnection(final String monsterType)
@@ -57,7 +56,6 @@ public class SQLConnection extends SuperSQLConnection
         }
         //now create a table
         String query = "CREATE TABLE IF NOT EXISTS enemiesDatabase ( " +
-                "myHealChance REAL DEFAULT 0.2, " +
                 "myHero INTEGER DEFAULT 0, " +
                 "myName TEXT NOT NULL, " +
                 "myHitPoints INTEGER DEFAULT 0, " +
@@ -65,13 +63,10 @@ public class SQLConnection extends SuperSQLConnection
                 "myMinimumRange INTEGER DEFAULT 0, " +
                 "myMaxDamageRange INTEGER DEFAULT 0, " +
                 "myMaxSpeed INTEGER DEFAULT 0, " +
-                "myHitChance REAL DEFAULT 0.2, " +
                 "myX REAL DEFAULT 0.0, " +
                 "myY REAL DEFAULT 0.0, " +
                 "myVelocityX REAL DEFAULT 0.0, " +
-                "myVelocityY REAL DEFAULT 0.0, " +
-                "myMinHeal INTEGER DEFAULT 0, " +
-                "myMaxHeal INTEGER DEFAULT 1)";
+                "myVelocityY REAL DEFAULT 0.0)";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
@@ -88,15 +83,15 @@ public class SQLConnection extends SuperSQLConnection
         //next insert two rows of data
         System.out.println("Attempting to insert argument rows into parameters table");
 
-        String ogreQuery = "INSERT INTO enemiesDatabase ( myHealChance, myHero,myName,myHitPoints, myCharacterType," +
-                " myMinimumRange,myMaxDamageRange,myMaxSpeed,myHitChance,myX,myY,myVelocityX,myVelocityY,myMinHeal, " +
-                "myMaxHeal ) VALUES (0.1, 0,'Ogre',200,'Ogre',30,60,2,0.6,0,0,0,0,30,60)";
-        String gremlinQuery = "INSERT INTO enemiesDatabase ( myHealChance, myHero,myName,myHitPoints, myCharacterType," +
-                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myHitChance,myX,myY,myVelocityX,myVelocityY,myMinHeal, " +
-                "myMaxHeal ) VALUES (0.4, 0,'Gremlin',70,'Gremlin',15,30,5,0.8,0,0,0,0,20,40)";
-        String elfQuery = "INSERT INTO enemiesDatabase ( myHealChance, myHero,myName,myHitPoints, myCharacterType," +
-                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myHitChance,myX,myY,myVelocityX,myVelocityY,myMinHeal, " +
-                "myMaxHeal ) VALUES (0.3, 0,'Elf',100,'Elf',30,50,3,0.8,0,0,0,0,30,50)";
+        String ogreQuery = "INSERT INTO enemiesDatabase (myHero,myName,myHitPoints, myCharacterType," +
+                " myMinimumRange,myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
+                ") VALUES (0,'Ogre',200,'Ogre',30,60,2,0,0,0,0)";
+        String gremlinQuery = "INSERT INTO enemiesDatabase (myHero,myName,myHitPoints, myCharacterType," +
+                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
+                ") VALUES (0,'Gremlin',70,'Gremlin',15,30,5,0,0,0,0)";
+        String elfQuery = "INSERT INTO enemiesDatabase ( myHero,myName,myHitPoints, myCharacterType," +
+                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
+                ") VALUES (0,'Elf',100,'Elf',30,50,3,0,0,0,0)";
 
 
         try (Connection conn = ds.getConnection();
@@ -130,20 +125,16 @@ public class SQLConnection extends SuperSQLConnection
             //walk through each 'row' of results, grab data by column/field name
             // and print it
             while ( rs.next() ) {
-                myHealChance = Double.parseDouble(rs.getString( "myHealChance" ));
                 myHero = Boolean.parseBoolean(rs.getString( "myHero" ));
                 myHitPoints = Integer.parseInt(rs.getString( "myHitPoints" ));
                 myCharacterType = rs.getString( "myCharacterType" );
                 myMinimumRange = Integer.parseInt(rs.getString( "myMinimumRange" ));
                 myMaxDamageRange = Integer.parseInt(rs.getString( "myMaxDamageRange" ));
                 myMaxSpeed = Integer.parseInt(rs.getString( "myMaxSpeed" ));
-                myHitChance = Double.parseDouble(rs.getString( "myHitChance" ));
                 myX = Float.parseFloat(rs.getString( "myX" ));
                 myY = Float.parseFloat(rs.getString("myY" ));
                 myVelocityX = Float.parseFloat(rs.getString( "myVelocityX" ));
                 myVelocityY = Float.parseFloat(rs.getString( "myVelocityY" ));
-                myMinHeal = Integer.parseInt(rs.getString( "myMinHeal" ));
-                myMaxHeal = Integer.parseInt(rs.getString( "myMaxHeal" ));
             }
         } catch ( SQLException e ) {
             e.printStackTrace();

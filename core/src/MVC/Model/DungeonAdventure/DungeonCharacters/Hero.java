@@ -25,7 +25,7 @@ public abstract class Hero extends DungeonCharacter
                 final Vec2 thePos, final Vec2 theVelocity)
     {
         super(theName, theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
-                theHitChance, thePos, theVelocity);
+                thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
         this.isHero = true;

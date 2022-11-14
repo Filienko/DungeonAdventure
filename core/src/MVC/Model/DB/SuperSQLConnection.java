@@ -6,32 +6,18 @@ import java.sql.Statement;
 
 public abstract class SuperSQLConnection
 {
-    public double myHealChance;
     public boolean myHero;
     public int myHitPoints;
     public String myCharacterType;
     public int myMinimumRange;
     public int myMaxDamageRange;
     public int myMaxSpeed;
-    public double myHitChance;
     public float myX;
     public float myY;
     public float myVelocityX;
     public float myVelocityY;
-    public int myMinHeal;
-    public int myMaxHeal;
 
     public abstract void updateMonsterData(int n);
-
-    public double getHealChance()
-    {
-        return myHealChance;
-    }
-
-    public void setHealChance(final double theHealChance)
-    {
-        myHealChance = theHealChance;
-    }
 
     public boolean isHero()
     {
@@ -93,16 +79,6 @@ public abstract class SuperSQLConnection
         myMaxSpeed = theMaxSpeed;
     }
 
-    public double getHitChance()
-    {
-        return myHitChance;
-    }
-
-    public void setHitChance(final double theHitChance)
-    {
-        myHitChance = theHitChance;
-    }
-
     public float getX()
     {
         return myX;
@@ -141,25 +117,5 @@ public abstract class SuperSQLConnection
     public void setVelocityY(final float theVelocityY)
     {
         myVelocityY = theVelocityY;
-    }
-
-    public int getMinHeal()
-    {
-        return myMinHeal;
-    }
-
-    public void setMinHeal(final int theMinHeal)
-    {
-        myMinHeal = theMinHeal;
-    }
-
-    public int getMaxHeal()
-    {
-        return myMaxHeal;
-    }
-
-    public void setMaxHeal(final int theMaxHeal)
-    {
-        myMaxHeal = theMaxHeal;
     }
 }
