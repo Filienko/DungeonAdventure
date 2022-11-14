@@ -1,7 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DB.MockSQLConnection;
-import MVC.Model.DB.SQLConnection;
 import MVC.Model.DB.SuperSQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
