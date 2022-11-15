@@ -2,7 +2,7 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
 
-public class Monster extends DungeonCharacter
+public class Monster extends DungeonCharacter implements Healable
 {
     private final String myCharacterType;
     private final boolean isHero;
@@ -18,6 +18,11 @@ public class Monster extends DungeonCharacter
         this.myCharacterType = theCharacterType;
         this.isHero = false;
         this.myHitPoints = theHitPoints;
+    }
+
+    protected int heal(Monster theMonster)
+    {
+        return healCharacter(theMonster);
     }
 
     protected void attack(Hero theHero){
