@@ -1,5 +1,5 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
-
+/*
 import MVC.Model.DB.SQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
@@ -184,4 +184,4 @@ public class EntityFactory
 
     return arr;
 }
-}
+} */
