@@ -1,9 +1,9 @@
-package MVC.Model.DungeonItems;
+package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
+import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.Physics.Vec2;
 
-public class Pit extends Entity
+public class Pit extends Item
 {
     private Vec2 myLocation;
     private int damageFall;

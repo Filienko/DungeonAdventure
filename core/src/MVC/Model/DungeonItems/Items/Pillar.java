@@ -1,9 +1,9 @@
-package MVC.Model.DungeonItems;
+package MVC.Model.DungeonItems.Items;
 
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
+import MVC.Model.DungeonItems.Items.Item;
 
-public class Pillar extends Entity
+public class Pillar extends Item
 {
     private String myName;
 

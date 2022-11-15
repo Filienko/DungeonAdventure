@@ -2,21 +2,20 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 
-public class SpeedPotion
+public class SpeedPotion extends Potion
 {
-    private final int myStrength;
-
     public SpeedPotion()
     {
-        this.myStrength = 2;
+         super(2);
     }
 
-    public SpeedPotion(final int myStrength)
+    public SpeedPotion(final int theStrength)
     {
-        this.myStrength = myStrength;
+        super(theStrength);
     }
 
-    public void increaseHealth(DungeonCharacter theCharacter)
+    @Override
+    public void increase(DungeonCharacter theCharacter)
     {
         theCharacter.setMaxSpeed(theCharacter.getMaxSpeed() + myStrength);
     }

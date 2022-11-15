@@ -1,21 +1,17 @@
 package MVC.Model.DB;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 public abstract class SuperSQLConnection
 {
-    public boolean myHero;
-    public int myHitPoints;
-    public String myCharacterType;
-    public int myMinimumRange;
-    public int myMaxDamageRange;
-    public int myMaxSpeed;
-    public float myX;
-    public float myY;
-    public float myVelocityX;
-    public float myVelocityY;
+    private boolean myHero;
+    private int myHitPoints;
+    private String myCharacterType;
+    private int myMinimumRange;
+    private int myMaxDamageRange;
+    private int myMaxSpeed;
+    private float myX;
+    private float myY;
+    private float myVelocityX;
+    private float myVelocityY;
 
     public abstract void updateMonsterData(int n);
 
