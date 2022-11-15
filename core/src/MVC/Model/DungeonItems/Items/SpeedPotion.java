@@ -17,6 +17,6 @@ public class SpeedPotion extends Potion
     @Override
     public void increase(DungeonCharacter theCharacter)
     {
-        theCharacter.setMaxSpeed(theCharacter.getMaxSpeed() + myStrength);
+        theCharacter.setMaxSpeed(theCharacter.getMaxSpeed() + super.getStrength());
     }
 }

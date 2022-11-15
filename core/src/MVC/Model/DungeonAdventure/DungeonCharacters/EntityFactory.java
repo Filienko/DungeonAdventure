@@ -12,9 +12,9 @@ import java.util.List;
 
 public class EntityFactory
 {
-    SuperSQLConnection DB;
+    private static SuperSQLConnection DB;
 
-    public Monster generateMonster(String monsterType)
+    public static Monster generateMonster(String monsterType)
     {
         DB = new SQLConnection(monsterType);
         return new Monster(DB.getHitPoints(),DB.getCharacterType(),
@@ -22,22 +22,22 @@ public class EntityFactory
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }
 
-    public Monster generateOgre()
+    public static Monster generateOgre()
     {
         return generateMonster("Ogre");
     }
 
-    public Monster generateGremlin()
+    public static Monster generateGremlin()
     {
         return generateMonster("Gremlin");
     }
 
-    public Monster generateElf()
+    public static Monster generateElf()
     {
         return generateMonster("Elf");
     }
 
-    public List<Monster> generateMonsters(int n1)
+    public static List<Monster> generateMonsters(int n1)
     {
         var arr = new ArrayList<Monster>();
 
@@ -50,17 +50,17 @@ public class EntityFactory
         return arr;
     }
 
-    public Pit generatePit()
+    public static Pit generatePit()
     {
         return new Pit();
     }
 
-    public Pit generatePit(Vec2 theVec)
+    public static Pit generatePit(Vec2 theVec)
     {
         return new Pit(theVec);
     }
 
-    public ArrayList<Pit> generatePit(int n1)
+    public static ArrayList<Pit> generatePit(int n1)
     {
         var arr = new ArrayList<Pit>();
 
@@ -71,7 +71,7 @@ public class EntityFactory
         return arr;
     }
 
-    public Hero generateHero(String type1)
+    public static Hero generateHero(String type1)
     {
         if (type1.contentEquals("Warrior"))
         {
@@ -88,22 +88,22 @@ public class EntityFactory
         return null;
     }
 
-    public Hero generateWarrior()
+    public static Hero generateWarrior()
     {
         return new Warrior();
     }
 
-    public Hero generateThief()
+    public static Hero generateThief()
     {
         return new Thief();
     }
 
-    public Hero generatePriestess()
+    public static Hero generatePriestess()
     {
         return new Priestess();
     }
 
-    public ArrayList<Room> generateRooms(int n1)
+    public static ArrayList<Room> generateRooms(int n1)
     {
         var arr = new ArrayList<Room>();
         arr.add(new Room(true));
@@ -115,7 +115,7 @@ public class EntityFactory
         return arr;
     }
 
-    public ArrayList<Door> generateDoors(int n1)
+    public static ArrayList<Door> generateDoors(int n1)
     {
         var arr = new ArrayList<Door>();
         for (int i = 0; i < n1; i++)
@@ -125,7 +125,7 @@ public class EntityFactory
         return arr;
     }
 
-    public ArrayList<Pillar> generatePillars()
+    public static ArrayList<Pillar> generatePillars()
     {
         var arr = new ArrayList<Pillar>();
 
@@ -137,17 +137,17 @@ public class EntityFactory
         return arr;
     }
 
-    public Dungeon generateDungeon(int[][] size1)
+    public static Dungeon generateDungeon(Room[][] size1)
     {
         return new Dungeon(size1);
     }
 
-    public Dungeon generateMockDungeon(int[][] size1)
+    public static Dungeon generateMockDungeon(int[][] size1)
     {
         return new Dungeon();
     }
 
-    public List<HealingPotion> generateHealingPotions(int n1)
+    public static List<HealingPotion> generateHealingPotions(int n1)
     {
         var arr = new ArrayList<HealingPotion>();
 
@@ -158,7 +158,7 @@ public class EntityFactory
 
         return arr;
     }
-    public List<SpeedPotion> generateSpeedPotions(int n1)
+    public static List<SpeedPotion> generateSpeedPotions(int n1)
     {
         var arr = new ArrayList<SpeedPotion>();
 
@@ -169,7 +169,7 @@ public class EntityFactory
 
         return arr;
     }
-    public List<AttackPotion> generateAttackPotions(int n1)
+    public static List<AttackPotion> generateAttackPotions(int n1)
     {
     var arr = new ArrayList<AttackPotion>();
 

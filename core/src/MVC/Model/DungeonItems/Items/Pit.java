@@ -1,6 +1,5 @@
 package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.Physics.Vec2;
 
 public class Pit extends Item
@@ -10,18 +9,21 @@ public class Pit extends Item
 
     public Pit()
     {
+        super("Pit");
         this.myLocation = new Vec2();
         this.damageFall = 15;
     }
 
     public Pit(final Vec2 myLocation)
     {
+        super("Pit");
         this.myLocation = myLocation;
         this.damageFall = 15;
     }
 
     public Pit(final Vec2 myLocation, final int damageFall)
     {
+        super("Pit");
         this.myLocation = myLocation;
         this.damageFall = damageFall;
     }

@@ -17,8 +17,8 @@ public class AttackPotion extends Potion
     @Override
     public void increase(DungeonCharacter theCharacter)
     {
-        theCharacter.setMaxDamageRange(theCharacter.getMaxDamageRange() + myStrength);
-        theCharacter.setMinDamageRange(theCharacter.getMinDamageRange() + myStrength);
+        theCharacter.setMaxDamageRange(theCharacter.getMaxDamageRange() + super.getStrength());
+        theCharacter.setMinDamageRange(theCharacter.getMinDamageRange() + super.getStrength());
     }
 
 }

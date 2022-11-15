@@ -17,7 +17,7 @@ public class HealingPotion extends Potion
     @Override
     public void increase(DungeonCharacter theCharacter)
     {
-        theCharacter.setHitPoints(theCharacter.getHitPoints() + myStrength);
+        theCharacter.setHitPoints(theCharacter.getHitPoints() + super.getStrength());
     }
 
 }
