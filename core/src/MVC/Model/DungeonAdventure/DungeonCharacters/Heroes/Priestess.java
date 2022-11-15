@@ -38,4 +38,15 @@ public class Priestess extends Hero implements Healable
         }
         return damage;
     }
+
+    @Override
+    public String getName()
+    {
+        return myName;
+    }
+
+    private void setName(final String theName)
+    {
+        myName = theName;
+    }
 }

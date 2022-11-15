@@ -24,23 +24,79 @@ public abstract class Hero extends DungeonCharacter
                 final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,
                 final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theName, theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
-                theHitChance, thePos, theVelocity);
+        super(theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
+                thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
         this.isHero = true;
-        this.myHitPoints = rand.nextInt(75,100);
+        this.myHitPoints = theHitPoints;
         this.myPillars = new ArrayList<>();
     }
 
-    protected void moveHero(final Vec2 theCoordinates)
+    public void moveHero(final Vec2 theCoordinates)
     {
         super.setPos(theCoordinates);
     }
 
-    protected void healHero(final Hero theHero, final int theHealingHP)
+    public Attackable getWeapon()
     {
-        theHero.setHitPoints(theHero.getHitPoints()+theHealingHP);
+        return myWeapon;
+    }
+
+    public void setWeapon(final Attackable theWeapon)
+    {
+        myWeapon = theWeapon;
+    }
+
+    public String getName()
+    {
+        return myName;
+    }
+
+    public String getCharacterType()
+    {
+        return myCharacterType;
+    }
+
+    public boolean isHero()
+    {
+        return isHero;
+    }
+
+    public int getHealingPotions()
+    {
+        return myHealingPotions;
+    }
+
+    public int getVisionPotions()
+    {
+        return myVisionPotions;
+    }
+
+    public List<String> getPillars()
+    {
+        return myPillars;
+    }
+
+    @Override
+    public int getHitPoints()
+    {
+        return myHitPoints;
+    }
+
+    public void setHealingPotions(final int theHealingPotions)
+    {
+        myHealingPotions = theHealingPotions;
+    }
+
+    public void setVisionPotions(final int theVisionPotions)
+    {
+        myVisionPotions = theVisionPotions;
+    }
+
+    public void setPillars(final List<String> thePillars)
+    {
+        myPillars = thePillars;
     }
 
     @Override
@@ -54,15 +110,5 @@ public abstract class Hero extends DungeonCharacter
                 ", myVisionPotions = '" + myVisionPotions + '\'' +
                 ", myPillars = " + myPillars.toString() +
                 '}';
-    }
-
-    public Attackable getWeapon()
-    {
-        return myWeapon;
-    }
-
-    public void setWeapon(final Attackable theWeapon)
-    {
-        myWeapon = theWeapon;
     }
 }

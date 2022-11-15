@@ -1,29 +1,25 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 /*
 import MVC.Model.DB.SQLConnection;
-import MVC.Model.DungeonAdventure.DungeonCharacters.*;
+import MVC.Model.DB.SuperSQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
-import MVC.Model.DungeonItems.Items.AttackPotion;
-import MVC.Model.DungeonItems.Items.HealingPotion;
-import MVC.Model.DungeonItems.Items.SpeedPotion;
+import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EntityFactory
 {
-    SQLConnection DB;
+    SuperSQLConnection DB;
 
     public Monster generateMonster(String monsterType)
     {
         DB = new SQLConnection(monsterType);
-        return new Monster(DB.getHealChance(),DB.getCharacterType(),DB.getHitPoints(),DB.getCharacterType(),DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(), DB.getHitChance(), new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()), DB.getMinHeal(), DB.getMaxHeal());
-
+        return new Monster(DB.getHitPoints(),DB.getCharacterType(),
+                DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(),
+                new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }
 
     public Monster generateOgre()

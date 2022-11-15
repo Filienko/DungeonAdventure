@@ -7,6 +7,8 @@ import MVC.Model.Physics.Vec2;
 public class Thief extends Hero
 {
     private String myName;
+    private boolean myHidden = false;
+    private double myHiddenChance = 0.4;
 
     public Thief()
     {
@@ -19,7 +21,7 @@ public class Thief extends Hero
         this.myName = theName;
     }
 
-    public int supriseAttack(DungeonCharacter theOpponent)
+    public int surpriseAttack(DungeonCharacter theOpponent)
     {
         double chance = Math.random();
         int damage = 0;
@@ -28,8 +30,29 @@ public class Thief extends Hero
         } else if (chance < 0.6) {
             damage = attack(theOpponent, super.getWeapon().getBoundingBox());
         } else if (chance < 1.0) {
-            damage += supriseAttack(theOpponent);
+            damage += surpriseAttack(theOpponent);
         }
         return damage;
+    }
+
+    @Override
+    public String getName()
+    {
+        return myName;
+    }
+
+    private void setName(final String theName)
+    {
+    myName = theName;
+    }
+
+    public boolean isHidden()
+    {
+        return myHidden;
+    }
+
+    private void setHidden(final boolean theHidden)
+    {
+        myHidden = theHidden;
     }
 }

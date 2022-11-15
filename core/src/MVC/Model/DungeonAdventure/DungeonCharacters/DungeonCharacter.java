@@ -8,29 +8,24 @@ import java.util.Random;
 public abstract class DungeonCharacter extends Entity
 {
     private final String myCharacterType;
-    private final String myName;
     private final boolean isHero;
-    //private int myHealPoints;
     private int myHitPoints;
     private int myMinDamageRange;
     private int myMaxDamageRange;
     private int myMaxSpeed;
-    private double myHitChance;
     private Vec2 myPos;
     private Vec2 myVelocity;
 
-    DungeonCharacter(final String theName, final String theCharacterType, final boolean theHero, final int theHitPoints,
-                     final int theMinDamageRange, final int theMaxDamageRange, final int theMaxSpeed,
-                     final double theHitChance, final Vec2 thePos, final Vec2 theVelocity)
+    DungeonCharacter(final String theCharacterType, final boolean theHero, final int theHitPoints,
+                     final int theMinDamageRange, final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos,
+                     final Vec2 theVelocity)
     {
         this.myCharacterType = theCharacterType;
-        this.myName = theName;
         this.isHero = theHero;
         this.myMinDamageRange = theMinDamageRange;
         this.myHitPoints = theHitPoints;
         this.myMaxDamageRange = theMaxDamageRange;
         this.myMaxSpeed = theMaxSpeed;
-        this.myHitChance = theHitChance;
         this.myPos = thePos;
         this.myVelocity = theVelocity;
     }
@@ -105,16 +100,6 @@ public abstract class DungeonCharacter extends Entity
         this.myMaxSpeed = theMaxSpeed;
     }
 
-    public double getHitChance()
-    {
-        return this.myHitChance;
-    }
-
-    public void setHitChance(final double theHitChance)
-    {
-        this.myHitChance = theHitChance;
-    }
-
     public Vec2 getPos()
     {
         return this.myPos;
@@ -125,22 +110,34 @@ public abstract class DungeonCharacter extends Entity
         this.myPos = thePos;
     }
 
+<<<<<<< HEAD
     protected String getCharacterType()
+=======
+    public String getCharacterType()
+>>>>>>> remote_main
     {
         return myCharacterType;
     }
 
+<<<<<<< HEAD
     protected String getName()
     {
         return myName;
     }
 
     protected boolean isHero()
+=======
+    public boolean isHero()
+>>>>>>> remote_main
     {
         return isHero;
     }
 
+<<<<<<< HEAD
     protected Vec2 getVelocity()
+=======
+    public Vec2 getVelocity()
+>>>>>>> remote_main
     {
         return myVelocity;
     }

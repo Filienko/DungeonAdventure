@@ -64,62 +64,12 @@ public abstract class Entity
         this.myEntityAnimated = myEntityAnimated;
     }
 
-    private Vec2 getPos()
-    {
-        return myPos;
-    }
-
-    private void setPos(final Vec2 thePos)
-    {
-        myPos = thePos;
-    }
-
-    private Vec2 getPreviousPos()
-    {
-        return myPreviousPos;
-    }
-
-    private void setPreviousPos(final Vec2 thePreviousPos)
-    {
-        myPreviousPos = thePreviousPos;
-    }
-
-    private Vec2 getSize()
-    {
-        return mySize;
-    }
-
-    private void setSize(final Vec2 theSize)
-    {
-        mySize = theSize;
-    }
-
-    private Vec2 getBoundingBox()
-    {
-        return myBoundingBox;
-    }
-
-    private void setBoundingBox(final Vec2 theBoundingBox)
-    {
-        myBoundingBox = theBoundingBox;
-    }
-
-    private boolean isEntityAnimated()
-    {
-        return myEntityAnimated;
-    }
-
-    private void setEntityAnimated(final boolean theEntityAnimated)
-    {
-        myEntityAnimated = theEntityAnimated;
-    }
-
-    public Animation getAnimation()
+    public Animation getMyAnimation()
     {
         return myAnimation;
     }
 
-    public void setAnimation(final Animation theAnimation)
+    public void setMyAnimation(final Animation theAnimation)
     {
         myAnimation = theAnimation;
     }
