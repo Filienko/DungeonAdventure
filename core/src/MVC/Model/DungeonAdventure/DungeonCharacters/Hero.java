@@ -24,7 +24,7 @@ public abstract class Hero extends DungeonCharacter
                 final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,
                 final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theName, theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
+        super(theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
                 thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
@@ -38,11 +38,6 @@ public abstract class Hero extends DungeonCharacter
         super.setPos(theCoordinates);
     }
 
-    public void healHero(final Hero theHero, final int theHealingHP)
-    {
-        theHero.setHitPoints(theHero.getHitPoints()+theHealingHP);
-    }
-
     public Attackable getWeapon()
     {
         return myWeapon;
@@ -51,19 +46,6 @@ public abstract class Hero extends DungeonCharacter
     public void setWeapon(final Attackable theWeapon)
     {
         myWeapon = theWeapon;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Name: " + myName +
-                " {" +
-                "myCharacterType + " + myCharacterType +
-                ", Hero status = " + isHero +
-                ", myHealingPotions = '" + myHealingPotions + '\'' +
-                ", myVisionPotions = '" + myVisionPotions + '\'' +
-                ", myPillars = " + myPillars.toString() +
-                '}';
     }
 
     public String getName()
@@ -115,5 +97,18 @@ public abstract class Hero extends DungeonCharacter
     public void setPillars(final List<String> thePillars)
     {
         myPillars = thePillars;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Name: " + myName +
+                " {" +
+                "myCharacterType + " + myCharacterType +
+                ", Hero status = " + isHero +
+                ", myHealingPotions = '" + myHealingPotions + '\'' +
+                ", myVisionPotions = '" + myVisionPotions + '\'' +
+                ", myPillars = " + myPillars.toString() +
+                '}';
     }
 }

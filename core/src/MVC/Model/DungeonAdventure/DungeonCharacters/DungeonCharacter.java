@@ -8,7 +8,6 @@ import java.util.Random;
 public abstract class DungeonCharacter extends Entity
 {
     private final String myCharacterType;
-    private final String myName;
     private final boolean isHero;
     private int myHitPoints;
     private int myMinDamageRange;
@@ -17,12 +16,11 @@ public abstract class DungeonCharacter extends Entity
     private Vec2 myPos;
     private Vec2 myVelocity;
 
-    DungeonCharacter(final String theName, final String theCharacterType, final boolean theHero, final int theHitPoints,
+    DungeonCharacter(final String theCharacterType, final boolean theHero, final int theHitPoints,
                      final int theMinDamageRange, final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos,
                      final Vec2 theVelocity)
     {
         this.myCharacterType = theCharacterType;
-        this.myName = theName;
         this.isHero = theHero;
         this.myMinDamageRange = theMinDamageRange;
         this.myHitPoints = theHitPoints;
@@ -115,11 +113,6 @@ public abstract class DungeonCharacter extends Entity
     public String getCharacterType()
     {
         return myCharacterType;
-    }
-
-    public String getName()
-    {
-        return myName;
     }
 
     public boolean isHero()

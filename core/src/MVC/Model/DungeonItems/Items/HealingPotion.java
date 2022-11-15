@@ -2,21 +2,20 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 
-public class HealingPotion extends Item
+public class HealingPotion extends Potion
 {
-    private final int myStrength;
-
     public HealingPotion()
     {
-        this.myStrength = 15;
+        super(15);
     }
 
-    public HealingPotion(final int myStrength)
+    public HealingPotion(final int theStrength)
     {
-        this.myStrength = myStrength;
+        super(theStrength);
     }
 
-    public void increaseHealth(DungeonCharacter theCharacter)
+    @Override
+    public void increase(DungeonCharacter theCharacter)
     {
         theCharacter.setHitPoints(theCharacter.getHitPoints() + myStrength);
     }

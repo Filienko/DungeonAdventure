@@ -2,29 +2,23 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
 
-public class Monster extends DungeonCharacter implements Healable
+public class Monster extends DungeonCharacter
 {
     private final String myCharacterType;
     private final boolean isHero;
     private final int myHitPoints;
 
-    Monster(final String theName, int theHitPoints,
+    Monster( int theHitPoints,
             String theCharacterType, final int theMinimumRange,
             final int theMaxDamageRange, final int theMaxSpeed,
             final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theName, theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed,
+        super(theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed,
                 thePos, theVelocity);
         this.myCharacterType = theCharacterType;
         this.isHero = false;
         this.myHitPoints = theHitPoints;
     }
-
-    protected int heal(Monster theMonster)
-    {
-        return healCharacter(theMonster);
-    }
-
 
     protected void attack(Hero theHero){
         super.attack(theHero,super.getMyBoundingBox());

@@ -2,21 +2,20 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 
-public class AttackPotion
+public class AttackPotion extends Potion
 {
-    private final int myStrength;
-
     public AttackPotion()
     {
-        this.myStrength = 10;
+        super(15);
     }
 
-    public AttackPotion(final int myStrength)
+    public AttackPotion(final int theStrength)
     {
-        this.myStrength = myStrength;
+        super(theStrength);
     }
 
-    public void increaseAttack(DungeonCharacter theCharacter)
+    @Override
+    public void increase(DungeonCharacter theCharacter)
     {
         theCharacter.setMaxDamageRange(theCharacter.getMaxDamageRange() + myStrength);
         theCharacter.setMinDamageRange(theCharacter.getMinDamageRange() + myStrength);
