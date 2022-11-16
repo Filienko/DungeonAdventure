@@ -106,11 +106,15 @@ public class EntityFactory
     public static ArrayList<Room> generateRooms(int n1)
     {
         var arr = new ArrayList<Room>();
-        arr.add(new Room(true));
-        arr.add(new Room(false));
-        for (int i = 0; i < n1-2; i++)
+
+        arr.add(new Room(true, new Vec2()));
+        arr.add(new Room(false, new Vec2(n1-1, n1-1)));
+
+        for (int i = 1; i < (n1*n1)-1; i++)
         {
-            arr.add(new Room());
+            int row = i/n1;
+            int col = (i % n1);
+            arr.add(new Room(new Vec2(row,col)));
         }
         return arr;
     }
@@ -129,10 +133,10 @@ public class EntityFactory
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation"));
-        arr.add(new Pillar("Inheritance"));
-        arr.add(new Pillar("Abstraction"));
-        arr.add(new Pillar("Polymorphism"));
+        arr.add(new Pillar("Encapsulation", new Vec2()));
+        arr.add(new Pillar("Inheritance", new Vec2()));
+        arr.add(new Pillar("Abstraction", new Vec2()));
+        arr.add(new Pillar("Polymorphism", new Vec2()));
 
         return arr;
     }

@@ -1,20 +1,21 @@
 package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.Physics.Vec2;
 
 public class Exit extends Item
 {
     private static Exit myExit;
 
-    public Exit()
+    public Exit(Vec2 theCoordinate)
     {
-        super("Exit");
+        super("Exit", theCoordinate);
     }
 
-    public static Exit getInstance() {
+    public static Exit getInstance(Vec2 theCoordinate) {
         if (myExit == null) {
             // instantiate it with the  constructor
-            myExit = new Exit();
+            myExit = new Exit(theCoordinate);
         }
         // return the instance
         return myExit;

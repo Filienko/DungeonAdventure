@@ -1,21 +1,40 @@
 package MVC.Model.DungeonItems;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonItems.Items.Exit;
-import MVC.Model.DungeonItems.Items.Item;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
+import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
+import java.util.Random;
 
 //TODO: discuss container Class
-public class Room
+public class Room extends Entity
 {
     /**
      * Boolean that tells if the Room is the Entrance of the Dungeon.
      */
     private boolean myEntrance;
+
+    /**
+     * Boolean that tells if the Room contains an Entrance to the East room.
+     */
+    private boolean myE;
+
+    /**
+     * Boolean that tells if the Room contains an Entrance to the North room.
+     */
+    private boolean myN;
+
+    /**
+     * Boolean that tells if the Room contains an Entrance to the West room.
+     */
+    private boolean myW;
+
+    /**
+     * Boolean that tells if the Room contains an Entrance to the South room.
+     */
+    private boolean myS;
 
     /**
      * Boolean that tells if the Room is the Exit of the Dungeon.
@@ -31,6 +50,11 @@ public class Room
      * Boolean that tells if the Room contains a special item (Potion, Pillar, Pit, etc).
      */
     private boolean myRoomHasItem;
+
+    /**
+     * Boolean that tells if the Room contains a Monster
+     */
+    private boolean myRoomHasMonsters;
 
     /**
      * The Item that the Room contains.
@@ -52,6 +76,7 @@ public class Room
      */
     public Room()
     {
+        super(new Vec2(),new Vec2());
         this.myEntrance = false;
         this.myExit = false;
         this.myDoors = new ArrayList<Door>();
@@ -59,49 +84,124 @@ public class Room
         this.myRoomHasItem = false;
         this.myLocation = new Vec2();
         this.myHeroPresent = false;
+        populateTheRoom();
     }
 
     /**
-     * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
+     * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items and assigns location;
      */
-    public Room(boolean theEntrance)
+    public Room(Vec2 theLocation)
     {
+        super(theLocation,new Vec2());
+        this.myEntrance = false;
+        this.myExit = false;
+        this.myDoors = new ArrayList<Door>();
+        this.myItems = new ArrayList<Item>();
+        this.myRoomHasItem = false;
+        this.myLocation = theLocation;
+        this.myHeroPresent = false;
+        this.myRoomHasMonsters = true;
+        populateTheRoom();
+    }
+
+    /**
+     * Room constructor that creates a Room that is the Entrance or Exit and that has no Items, at the given location.
+     */
+    public Room(boolean theEntrance, Vec2 theLocation)
+    {
+        super(theLocation,new Vec2());
         myItems = new ArrayList<Item>();
         if(theEntrance)
         {
             this.myEntrance = true;
             this.myExit = false;
-
+            this.myHeroPresent = true;
         } else {
             this.myEntrance = false;
             this.myExit = true;
-            myItems.add((new Exit()).getInstance());
+            this.myHeroPresent = false;
+            myItems.add((new Exit(super.getMyBoundingBox())).getInstance(new Vec2(new Random().nextInt(0, (int) super.getMyBoundingBox().getMyX()),
+                    new Random().nextInt(0, (int) super.getMyBoundingBox().getMyY()))));
         }
         this.myDoors = new ArrayList<Door>();
-        this.myRoomHasItem = false;
-        this.myLocation = new Vec2();
-        this.myHeroPresent = false;
+        this.myRoomHasItem = true;
+        this.myRoomHasMonsters = true;
+        this.myLocation = theLocation;
+        populateTheRoom();
     }
+
     /**
      * Room constructor that sets all of its attributes based on its parameters.
      * @param theEntrance Boolean that tells if the Room is the Entrance to the Dungeon.
      * @param theExit Boolean that tells if the Room is the Exit to the Dungeon.
      * @param theDoors List of the Doors to the Room.
      * @param theRoomHasItem Boolean that tells if the Room contains an Item.
+     * @param theRoomHasMonsters
      * @param theItems The Items that the Room contains.
      * @param theLocation The location of the Room in the Dungeon.
      */
     public Room(final boolean theEntrance, final boolean theExit, final List<Door> theDoors, boolean theRoomHasItem,
-                final List<Item> theItems, final Vec2 theLocation)
+                final boolean theRoomHasMonsters, final List<Item> theItems, final Vec2 theLocation)
     {
+        super(theLocation,new Vec2());
         //how to guard against both being entered as true ?
         this.myExit = theExit;
         this.myEntrance = theEntrance;
         this.myDoors = theDoors;
         this.myRoomHasItem = theRoomHasItem;
+        this.myRoomHasMonsters = theRoomHasMonsters;
         this.myItems = theItems;
         this.myLocation = theLocation;
         this.myHeroPresent = false;
+        populateTheRoom();
+    }
+    /**
+     * Populates the rooms with random items.
+     */
+    public void populateTheRoom()
+    {
+        Random random = new Random();
+        populatePotions(random);
+        populatePit(random);
+        populateDoors(random);
+    }
+
+    private void populateDoors(final Random theRandom)
+    {
+        if(myE){myDoors.add(new Door(false));}
+        if(myN){myDoors.add(new Door(false));}
+        if(myW){myDoors.add(new Door(false));}
+        if(myS){myDoors.add(new Door(false));}
+    }
+
+    private void populatePit(final Random theRandom)
+    {
+        if(theRandom.nextDouble() < 0.10)
+        {
+            this.myItems.add(new Pit(new Vec2(theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyX()),
+                theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyY()))));
+        }
+    }
+
+    private void populatePotions(final Random theRandom)
+    {
+        if(theRandom.nextDouble() < 0.333)
+        {
+            this.myItems.add(new HealingPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyY()))));
+        }
+        else if(theRandom.nextDouble() < 0.67)
+        {
+            this.myItems.add(new AttackPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyY()))));
+        } else
+        {
+            this.myItems.add(new SpeedPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyY()))));
+        }
     }
 
     /**
@@ -307,5 +407,84 @@ public class Room
         room.append("| \n *-*");
 
         return room.substring(0, room.length());
+    }
+
+    public boolean isE()
+    {
+        return myE;
+    }
+
+    public boolean isN()
+    {
+        return myN;
+    }
+
+    public boolean isW()
+    {
+        return myW;
+    }
+
+    public boolean isS()
+    {
+        return myS;
+    }
+
+    void setE(final boolean theE)
+    {
+        myE = theE;
+    }
+
+    void setN(final boolean theN)
+    {
+        myN = theN;
+    }
+
+    void setW(final boolean theW)
+    {
+        myW = theW;
+    }
+
+    void setS(final boolean theS)
+    {
+        myS = theS;
+    }
+    public final ArrayList<String> setEntrances(final ArrayList<String> theDirection)
+    {
+        var min = 2;
+        if (myEntrance)
+        {
+            min = 1;
+        }
+
+        final ArrayList<String> arrayList = new ArrayList<>();
+
+        Random random = new Random();
+        for (int i = 0; i < theDirection.size(); i++)
+        {
+            if(random.nextDouble() < Math.max(1/(i+min),0.5))
+            {
+                if(theDirection.get(i).contentEquals("S"))
+                {
+                    myS = true;
+                    arrayList.add("S");
+                }
+                else if (theDirection.get(i).contentEquals("W"))
+                {
+                    myW = true;
+                    arrayList.add("W");
+                }
+                else if (theDirection.get(i).contentEquals("E"))
+                {
+                    myE = true;
+                    arrayList.add("E");
+                }
+                else if (theDirection.get(i).contentEquals("N"))
+                {
+                    myN = true;
+                    arrayList.add("N");
+                }
+            }
+        }
+        return arrayList;
     }
 }

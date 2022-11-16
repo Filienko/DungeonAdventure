@@ -13,6 +13,12 @@ public abstract class Entity
     private boolean myEntityAnimated;
     private Animation myAnimation;
 
+    protected Entity(final Vec2 thePos, final Vec2 theBoundingBox)
+    {
+        myPos = thePos;
+        myBoundingBox = theBoundingBox;
+    }
+
     public Vec2 getMyPos()
     {
         return myPos;

@@ -10,20 +10,21 @@ public class Door extends Entity
 
     public Door()
     {
+        super(new Vec2(),new Vec2());
         this.myLocation = new Vec2();
         this.myDoorOpen = false;
     }
 
-    public Door(final Vec2 myLocation, final boolean myDoorOpen)
+    public Door(final boolean myDoorOpen)
     {
-        this.myLocation = myLocation;
+        super(new Vec2(),new Vec2());
+        this.myLocation = new Vec2();
         this.myDoorOpen = myDoorOpen;
     }
 
     public Vec2 getMyLocation()
     {
         return myLocation;
-
     }
 
     public void setMyLocation(final Vec2 myLocation)

@@ -9,21 +9,20 @@ public class Pit extends Item
 
     public Pit()
     {
-        super("Pit");
-        this.myLocation = new Vec2();
+        super("Pit", new Vec2());
         this.damageFall = 15;
     }
 
     public Pit(final Vec2 myLocation)
     {
-        super("Pit");
+        super("Pit", new Vec2());
         this.myLocation = myLocation;
         this.damageFall = 15;
     }
 
     public Pit(final Vec2 myLocation, final int damageFall)
     {
-        super("Pit");
+        super("Pit", new Vec2());
         this.myLocation = myLocation;
         this.damageFall = damageFall;
     }
