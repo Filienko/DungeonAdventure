@@ -13,6 +13,31 @@ public abstract class Entity
     private boolean myEntityAnimated;
     private Animation myAnimation;
 
+//    private Vec2 myVector;
+//    private long myCurrentFrame;
+//    private long myAttackStart;
+//    private long myAttackDuration;
+//
+//    public void update() {
+//        movement();
+//        attack();
+//        this.myCurrentFrame++;
+//    }
+//
+//    public void movement()
+//    {
+//        myPreviousPos = myPos;
+//        myPos += myVector;
+//    }
+//    public void attack()
+//    {
+//        if (myCurrentFrame >= myAttackStart + myAttackDuration)
+//        {
+//            //attack is occurring
+//            //how to represent this ?
+//        }
+//    }
+
     public Vec2 getMyPos()
     {
         return myPos;
@@ -20,7 +45,6 @@ public abstract class Entity
 
     public void setMyPos(Vec2 myPos)
     {
-
         this.myPos = myPos;
     }
 

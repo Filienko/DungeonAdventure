@@ -16,9 +16,10 @@ public interface Healable
             Random rand = new Random();
             double chance = Math.random();
             //double charHealChance = theCharacter.getHealChance();
+            //change this to Priestess's chance to heal?
             if (chance < 0.1)
             {
-                healPoints = rand.nextInt(30,60); //shouldnt use nums?? use .getMinHeal() ?
+                healPoints = rand.nextInt(30,60);
             } else if (chance < 0.3)
             {
                 healPoints = rand.nextInt(30,50);

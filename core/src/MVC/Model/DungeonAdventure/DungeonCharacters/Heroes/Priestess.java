@@ -7,22 +7,41 @@ import MVC.Model.Physics.Vec2;
 
 public class Priestess extends Hero implements Healable
 {
+    /**
+     * The Priestess's name.
+     */
     private String myName;
 
+    /**
+     * Priestess constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
+     * minimum/maximum damage it can inflict, agility, position, and velocity.
+     */
     public Priestess()
     {
-        super("Priestess", "Priestess", 75, 25, 45, 5, 0.7, new Vec2(), new Vec2());
+        super("Priestess", "Priestess", 75, 25, 45,  5,  new Vec2(), new Vec2());
     }
 
+    /**
+     * Priestess constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
+     * minimum/maximum damage it can inflict, agility, position, and velocity.
+     * @param theName The Priestess's name.
+     * @param thePos The Priestess's location.
+     */
     public Priestess(final String theName, final Vec2 thePos)
     {
-        super(theName,"Priestess",75, 25, 45, 5, 0.7, thePos, new Vec2());
+        super(theName,"Priestess", 75, 25, 45,  5,  thePos, new Vec2());
         this.myName = theName;
     }
 
-    public int healHero(Hero theHero)
+    /**
+     * This is the Priestess's special skill. It allows the Priestess to heal another Hero. This method implements the
+     * healCharacter method from the Healable interface do accomplish this.
+     * @param theHero The Hero the Priestess is healing.
+     * @return The number of the Hero's hit points that the Priestess restored.
+     */
+    public int healCharacter(final Hero theHero)
     {
-        return healCharacter(theHero);
+        return Healable.super.healCharacter(theHero);
     }
 
     public int attack(DungeonCharacter theOpponent)
@@ -39,11 +58,11 @@ public class Priestess extends Hero implements Healable
         return damage;
     }
 
-    @Override
-    public String getName()
-    {
-        return myName;
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return myName;
+//    }
 
     private void setName(final String theName)
     {
