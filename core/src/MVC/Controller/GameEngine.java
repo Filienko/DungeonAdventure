@@ -2,7 +2,6 @@ package MVC.Controller;
 
 import MVC.Model.Scenes.Scene;
 import MVC.Model.Scenes.SceneMenu;
-import MVC.View.Animation;
 import MVC.View.Assets;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -23,18 +22,13 @@ public class GameEngine extends ApplicationAdapter {
 	//private Renderer					myView;
 	private boolean 					myRunning;
 	private SpriteBatch 				batch;
+	private MyInputProcessor 			myInputProcessor;
 
 //	Animation test1;
 //	Animation test2;
 //	Animation test3;
 
 	// Methods
-
-	void userInput()
-	{
-
-	}
-
 	public void setCurrentScene(final String name, final Scene scene, final boolean endCurrentScene)
 	{
 		// If a scene was passed, add it to the map with the scene name
@@ -80,6 +74,8 @@ public class GameEngine extends ApplicationAdapter {
 		myCamera.setToOrtho(false, 1280, 768);
 
 		batch = new SpriteBatch();
+		myInputProcessor = new MyInputProcessor(this);
+		Gdx.input.setInputProcessor(myInputProcessor);
 
 		myAssets.loadAssets();
 
@@ -96,7 +92,6 @@ public class GameEngine extends ApplicationAdapter {
 		if (!myRunning) 			{ return; }
 		if (mySceneMap.isEmpty()) 	{ return; }
 
-		userInput();
 		getCurrentScene().update();
 //		test1.update();
 //		test2.update();

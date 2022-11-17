@@ -35,38 +35,38 @@ public class SceneMenu extends Scene
 
     public void update() { myCurrentFrame++; }
 
-    public void doAction(final String action)
+    public void doAction(final Action action)
     {
-        switch (action)
+        if(action.getType().equals("START"))
         {
-            case "UP":
-                if (myMenuIndex > 0) { myMenuIndex--; }
-                else { myMenuIndex = myMenuSelections.size() - 1; }
-                break;
-            case "DOWN":
-                myMenuIndex = (myMenuIndex + 1) % myMenuSelections.size();
-                break;
-            case "SELECT":
-                if (myMenuIndex == 0)
-                {
-                    myGame.setCurrentScene("Dungeon", new SceneGame(myGame), false);
-                    System.out.println("Selected: 'New Game'");
-                }
-                else if (myMenuIndex == 1)
-                {
-                    // Deserialize
-                    myGame.setCurrentScene("Dungeon", new SceneGame(myGame), false);
-                    System.out.println("Selected: 'Load Game'");
-                }
-                else if (myMenuIndex == 2)
-                {
-                    System.out.println("Selected: 'Quit'");
-                    onEnd();
-                }
-                break;
-        }
+            switch (action.getName()) {
+                case "UP":
+                    if (myMenuIndex > 0) {
+                        myMenuIndex--;
+                    } else {
+                        myMenuIndex = myMenuSelections.size() - 1;
+                    }
+                    break;
+                case "DOWN":
+                    myMenuIndex = (myMenuIndex + 1) % myMenuSelections.size();
+                    break;
+                case "SELECT":
+                    if (myMenuIndex == 0) {
+                        myGame.setCurrentScene("Dungeon", new SceneGame(myGame), false);
+                        System.out.println("Selected: 'New Game'");
+                    } else if (myMenuIndex == 1) {
+                        // Deserialize
+                        myGame.setCurrentScene("Dungeon", new SceneGame(myGame), false);
+                        System.out.println("Selected: 'Load Game'");
+                    } else if (myMenuIndex == 2) {
+                        System.out.println("Selected: 'Quit'");
+                        onEnd();
+                    }
+                    break;
+            }
 
-        System.out.println("Indexed at " + myMenuSelections.get(myMenuIndex));
+            System.out.println("Indexed at " + myMenuSelections.get(myMenuIndex));
+        }
     }
 
     public int getMenuIndex() { return myMenuIndex; }
