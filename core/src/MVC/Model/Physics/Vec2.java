@@ -19,13 +19,7 @@ private float myY;
 
     public boolean equals(final Vec2 myVector)
     {
-        boolean answer = false;
-
-        if(myX == myVector.getMyX() && myY == myVector.getMyY())
-        {
-            answer = true;
-        }
-        return answer;
+        return myX == myVector.getMyX() && myY == myVector.getMyY();
     };
 
     public Vec2 add(final Vec2 myVector)

@@ -22,6 +22,8 @@ public class EntityFactory
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }
 
+    public void update() {}
+
     public Monster generateOgre()
     {
         return generateMonster("Ogre");

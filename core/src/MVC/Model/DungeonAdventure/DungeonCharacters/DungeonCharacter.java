@@ -110,6 +110,7 @@ public abstract class DungeonCharacter extends Entity
         this.myPos = thePos;
     }
 
+
     public String getCharacterType()
     {
         return myCharacterType;
@@ -129,4 +130,8 @@ public abstract class DungeonCharacter extends Entity
     {
         myVelocity = theVelocity;
     }
+
+    public void setVelocity(final float x, final float y) { myVelocity.setMyX(x); myVelocity.setMyY(y); }
+
+
 }
