@@ -8,15 +8,26 @@ public abstract class Entity
 {
     private Vec2 myPos;
     private Vec2 myPreviousPos;
-    private Vec2 mySize;
-    private Vec2 myBoundingBox;
+    private final Vec2 mySize;
+    private final Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
 
     protected Entity(final Vec2 thePos, final Vec2 theBoundingBox)
     {
         myPos = thePos;
+        mySize = new Vec2();
         myBoundingBox = theBoundingBox;
+    }
+
+    private Entity(final Vec2 theSize, final Vec2 theBoundingBox, final boolean theEntityAnimated, final Animation theAnimation)
+    {
+        myPos = new Vec2();
+        myPreviousPos = new Vec2();
+        mySize = theSize;
+        myBoundingBox = theBoundingBox;
+        myEntityAnimated = theEntityAnimated;
+        myAnimation = theAnimation;
     }
 
     public Vec2 getMyPos()
@@ -35,11 +46,6 @@ public abstract class Entity
         return mySize;
     }
 
-    public void setMySize(Vec2 mySize)
-    {
-        this.mySize = mySize;
-    }
-
     public Vec2 getMyPreviousPos()
     {
         return myPreviousPos;
@@ -53,11 +59,6 @@ public abstract class Entity
     public Vec2 getMyBoundingBox()
     {
         return myBoundingBox;
-    }
-
-    public void setMyBoundingBox(final Vec2 myBoundingBox)
-    {
-        this.myBoundingBox = myBoundingBox;
     }
 
     public boolean isMyEntityAnimated()

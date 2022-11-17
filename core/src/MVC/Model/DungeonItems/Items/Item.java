@@ -16,6 +16,8 @@ public abstract class Item extends Entity
         myLocation = theLocation;
     }
 
+
+
     protected Vec2 getMyLocation()
     {
         return myLocation;

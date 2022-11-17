@@ -1,6 +1,7 @@
 package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 
 public class Exit extends Item

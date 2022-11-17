@@ -141,9 +141,9 @@ public class EntityFactory
         return arr;
     }
 
-    public static Dungeon generateDungeon(Room[][] size1)
+    public static Dungeon generateDungeon()
     {
-        return new Dungeon(size1);
+        return new Dungeon();
     }
 
     public static Dungeon generateMockDungeon(int[][] size1)
@@ -184,4 +184,5 @@ public class EntityFactory
 
     return arr;
 }
+
 }

@@ -1,6 +1,8 @@
 package MVC.Model.DungeonItems;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
@@ -44,12 +46,12 @@ public class Room extends Entity
     /**
      * List of the Doors that the Room has (North, South, East, West).
      */
-    private final List<Door> myDoors;
+    private List<Door> myDoors;
 
     /**
      * Boolean that tells if the Room contains a special item (Potion, Pillar, Pit, etc).
      */
-    private boolean myRoomHasItem;
+    private boolean myRoomHasItems;
 
     /**
      * Boolean that tells if the Room contains a Monster
@@ -57,9 +59,14 @@ public class Room extends Entity
     private boolean myRoomHasMonsters;
 
     /**
-     * The Item that the Room contains.
+     * The Items that the Room contains.
      */
     private List<Item> myItems;
+
+    /**
+     * The Monsters that the Room contains.
+     */
+    private List<Monster> myMonsters;
 
     /**
      * The location of the Room in the Dungeon.
@@ -79,9 +86,7 @@ public class Room extends Entity
         super(new Vec2(),new Vec2());
         this.myEntrance = false;
         this.myExit = false;
-        this.myDoors = new ArrayList<Door>();
-        this.myItems = new ArrayList<Item>();
-        this.myRoomHasItem = false;
+        this.myRoomHasItems = false;
         this.myLocation = new Vec2();
         this.myHeroPresent = false;
         populateTheRoom();
@@ -95,9 +100,7 @@ public class Room extends Entity
         super(theLocation,new Vec2());
         this.myEntrance = false;
         this.myExit = false;
-        this.myDoors = new ArrayList<Door>();
-        this.myItems = new ArrayList<Item>();
-        this.myRoomHasItem = false;
+        this.myRoomHasItems = false;
         this.myLocation = theLocation;
         this.myHeroPresent = false;
         this.myRoomHasMonsters = true;
@@ -110,7 +113,6 @@ public class Room extends Entity
     public Room(boolean theEntrance, Vec2 theLocation)
     {
         super(theLocation,new Vec2());
-        myItems = new ArrayList<Item>();
         if(theEntrance)
         {
             this.myEntrance = true;
@@ -123,8 +125,7 @@ public class Room extends Entity
             myItems.add((new Exit(super.getMyBoundingBox())).getInstance(new Vec2(new Random().nextInt(0, (int) super.getMyBoundingBox().getMyX()),
                     new Random().nextInt(0, (int) super.getMyBoundingBox().getMyY()))));
         }
-        this.myDoors = new ArrayList<Door>();
-        this.myRoomHasItem = true;
+        this.myRoomHasItems = true;
         this.myRoomHasMonsters = true;
         this.myLocation = theLocation;
         populateTheRoom();
@@ -148,7 +149,7 @@ public class Room extends Entity
         this.myExit = theExit;
         this.myEntrance = theEntrance;
         this.myDoors = theDoors;
-        this.myRoomHasItem = theRoomHasItem;
+        this.myRoomHasItems = theRoomHasItem;
         this.myRoomHasMonsters = theRoomHasMonsters;
         this.myItems = theItems;
         this.myLocation = theLocation;
@@ -164,6 +165,13 @@ public class Room extends Entity
         populatePotions(random);
         populatePit(random);
         populateDoors(random);
+        populateMonsters();
+    }
+
+    private void populateMonsters()
+    {
+        myRoomHasMonsters = true;
+        myMonsters.addAll(EntityFactory.generateMonsters(1));
     }
 
     private void populateDoors(final Random theRandom)
@@ -257,42 +265,42 @@ public class Room extends Entity
      * This method sets the Items in the Room.
      * @param theItems The Items to be contained in the Room.
      */
-    public void setItems (List<Item> theItems) { this.myItems = theItems; this.myRoomHasItem = true; }
+    public void setItems (List<Item> theItems) { this.myItems = theItems; this.myRoomHasItems = myItems.size() < 1 ? false : true;; }
 
     /**
      * This method adds the Items in the Room.
      * @param theItems The Items to be contained in the Room.
      */
-    public void addItems (List<Item> theItems) { this.myItems.addAll(theItems); this.myRoomHasItem = true; }
+    public void addItems (List<Item> theItems) { this.myItems.addAll(theItems); this.myRoomHasItems = true; }
 
     /**
      * This method sets the Item in the Room.
      * @param theItem The Item to be contained in the Room.
      */
-    public void addItem (Item theItem) { this.myItems.add(theItem); this.myRoomHasItem = true; };
+    public void addItem (Item theItem) { this.myItems.add(theItem); this.myRoomHasItems = true; };
 
     /**
      * This method removes all Items from the Room.
      */
-    public void clearRoom () { this.myItems.clear(); this.myRoomHasItem = true; }
+    public void clearRoom () { this.myItems.clear(); this.myRoomHasItems = false; }
 
     /**
      * This method removes the Item from the Room.
      * @param theItem The Item to be removed from the Room.
      */
-    public void removeItem (Item theItem) { this.myItems.remove(theItem); this.myRoomHasItem = true; }
+    public void removeItem (Item theItem) { this.myItems.remove(theItem); this.myRoomHasItems = myItems.size() < 1 ? false : true; }
 
     /**
      * This method returns a boolean that tells whether the Room contains an Item.
      * @return True if the Room contains an Item, false if it does not.
      */
-    public boolean getItemStatus() { return this.myRoomHasItem; }
+    public boolean getItemStatus() { return this.myRoomHasItems; }
 
     /**
      * This method sets a boolean that tells whether the Room contains an Item.
      * @param theRoomHasItem True if the Room contains an Item, false if it does not.
      */
-    public void setItemStatus(final boolean theRoomHasItem) { this.myRoomHasItem = theRoomHasItem; }
+    public void setItemStatus(final boolean theRoomHasItem) { this.myRoomHasItems = theRoomHasItem; }
 
     /**
      * This method retrieves the location of the Room in the Dungeon.
@@ -346,9 +354,9 @@ public class Room extends Entity
     /**
      * @return whether Rooms contains Items.
      */
-    private boolean isRoomHasItem()
+    private boolean isRoomHasItems()
     {
-        return myRoomHasItem;
+        return myRoomHasItems;
     }
 
     /**
@@ -365,6 +373,107 @@ public class Room extends Entity
     private void setHeroPresent(final boolean theHeroPresent)
     {
         myHeroPresent = theHeroPresent;
+    }
+
+    /**
+     * @return whether Room has East entry.
+     */
+    public boolean isE()
+    {
+        return myE;
+    }
+    /**
+     * @return whether Room has North entry.
+     */
+    public boolean isN()
+    {
+        return myN;
+    }
+    /**
+     * @return whether Room has West entry.
+     */
+    public boolean isW()
+    {
+        return myW;
+    }
+    /**
+     * @return whether Room has South entry.
+     */
+    public boolean isS()
+    {
+        return myS;
+    }
+    /**
+     * @param theE signifies that Room has East Entry.
+     */
+    void setE(final boolean theE)
+    {
+        myE = theE;
+    }
+    /**
+     * @param theN signifies that Room has North Entry.
+     */
+    void setN(final boolean theN)
+    {
+        myN = theN;
+    }
+    /**
+     * @param theW signifies that Room has West Entry.
+     */
+    void setW(final boolean theW)
+    {
+        myW = theW;
+    }
+    /**
+     * @param theS signifies that Room has South Entry.
+     */
+    void setS(final boolean theS)
+    {
+        myS = theS;
+    }
+    /**
+     * @return entrance direction contained in the Room
+     * @theDirection signifies that Room can have contained entrance direction.
+     */
+    public final ArrayList<String> setEntrances(final ArrayList<String> theDirection)
+    {
+        var min = 2;
+
+        if (myEntrance)
+        {
+            min = 1;
+        }
+
+        final ArrayList<String> arrayList = new ArrayList<>();
+
+        Random random = new Random();
+        for (int i = 0; i < theDirection.size(); i++)
+        {
+            if(random.nextDouble() < Math.max(1/(i+min),0.5))
+            {
+                if(theDirection.get(i).contentEquals("S"))
+                {
+                    myS = true;
+                    arrayList.add("S");
+                }
+                else if (theDirection.get(i).contentEquals("W"))
+                {
+                    myW = true;
+                    arrayList.add("W");
+                }
+                else if (theDirection.get(i).contentEquals("E"))
+                {
+                    myE = true;
+                    arrayList.add("E");
+                }
+                else if (theDirection.get(i).contentEquals("N"))
+                {
+                    myN = true;
+                    arrayList.add("N");
+                }
+            }
+        }
+        return arrayList;
     }
 
     /**
@@ -407,84 +516,5 @@ public class Room extends Entity
         room.append("| \n *-*");
 
         return room.substring(0, room.length());
-    }
-
-    public boolean isE()
-    {
-        return myE;
-    }
-
-    public boolean isN()
-    {
-        return myN;
-    }
-
-    public boolean isW()
-    {
-        return myW;
-    }
-
-    public boolean isS()
-    {
-        return myS;
-    }
-
-    void setE(final boolean theE)
-    {
-        myE = theE;
-    }
-
-    void setN(final boolean theN)
-    {
-        myN = theN;
-    }
-
-    void setW(final boolean theW)
-    {
-        myW = theW;
-    }
-
-    void setS(final boolean theS)
-    {
-        myS = theS;
-    }
-    public final ArrayList<String> setEntrances(final ArrayList<String> theDirection)
-    {
-        var min = 2;
-        if (myEntrance)
-        {
-            min = 1;
-        }
-
-        final ArrayList<String> arrayList = new ArrayList<>();
-
-        Random random = new Random();
-        for (int i = 0; i < theDirection.size(); i++)
-        {
-            if(random.nextDouble() < Math.max(1/(i+min),0.5))
-            {
-                if(theDirection.get(i).contentEquals("S"))
-                {
-                    myS = true;
-                    arrayList.add("S");
-                }
-                else if (theDirection.get(i).contentEquals("W"))
-                {
-                    myW = true;
-                    arrayList.add("W");
-                }
-                else if (theDirection.get(i).contentEquals("E"))
-                {
-                    myE = true;
-                    arrayList.add("E");
-                }
-                else if (theDirection.get(i).contentEquals("N"))
-                {
-                    myN = true;
-                    arrayList.add("N");
-                }
-            }
-        }
-        return arrayList;
     }
 }

@@ -7,6 +7,11 @@ public abstract class Potion extends Item
 {
     private final int myStrength;
 
+    protected Potion()
+    {
+        super("Potion", new Vec2());
+        myStrength = 15;
+    }
     protected Potion(final int theStrength, Vec2 thePosition)
     {
         super("Potion", thePosition);

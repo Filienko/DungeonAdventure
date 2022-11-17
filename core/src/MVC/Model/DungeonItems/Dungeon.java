@@ -19,8 +19,6 @@ public class Dungeon
 
     private final Hero myHero;
 
-    private Vec2 myHeroPosition;
-
     private List<Room> myRooms;
 
     private int myDimension;
@@ -28,13 +26,28 @@ public class Dungeon
     public Dungeon()
     {
         myHero = new Warrior("Brave Warrior",new Vec2());
-        myHeroPosition = new Vec2();
         myDimension = 3;
         myRooms = EntityFactory.generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myDimension);
     }
 
-    Room[][] generateDungeonFromRooms(int theDimension)
+    public Dungeon(final Room[][] theDungeon)
+    {
+        myDungeon = theDungeon;
+        myHero = new Warrior("Brave Warrior",new Vec2());
+        myDimension = myDungeon.length;
+        myRooms = EntityFactory.generateRooms(myDimension);
+    }
+
+    public Dungeon(final Room[][] theDungeon, final Hero theHero, final Vec2 theHeroPosition)
+    {
+        myDungeon = theDungeon;
+        myHero = theHero;
+        myDimension = myDungeon.length;
+        myRooms = EntityFactory.generateRooms(myDimension);
+    }
+
+    private Room[][] generateDungeonFromRooms(int theDimension)
     {
         Random random = new Random();
         var entrances = new ArrayList<String>();
@@ -87,7 +100,7 @@ public class Dungeon
         return answer;
     }
 
-    public final void setAdjacent(final ArrayList<String> theDirection, int theI)
+    private final void setAdjacent(final ArrayList<String> theDirection, int theI)
     {
         for (int i = 0; i < theDirection.size(); i++)
         {
@@ -108,34 +121,5 @@ public class Dungeon
                 myRooms.get(theI - myDimension).setS(true);
             }
         }
-    }
-
-    public Dungeon(final Room[][] theDungeon)
-    {
-        myDungeon = theDungeon;
-        myHero = new Warrior("Brave Warrior",new Vec2());
-        myHeroPosition = new Vec2();
-        myDimension = myDungeon.length;
-        myRooms = EntityFactory.generateRooms(myDimension);
-    }
-
-    public Dungeon(final Room[][] theDungeon, final Hero theHero, final Vec2 theHeroPosition)
-    {
-        myDungeon = theDungeon;
-        myHero = theHero;
-        myHeroPosition = theHeroPosition;
-        myDimension = myDungeon.length;
-        myRooms = EntityFactory.generateRooms(myDimension);
-    }
-
-    public Vec2 getHeroCoordinates()
-    {
-        return myHeroPosition;
-    }
-
-    public void setHeroCoordinates(final Vec2 thePosition)
-    {
-        myHeroPosition.setMyX(thePosition.getMyX());
-        myHeroPosition.setMyY(thePosition.getMyY());
     }
 }
