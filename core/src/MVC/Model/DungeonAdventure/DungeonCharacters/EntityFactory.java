@@ -1,5 +1,5 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
-/*
+
 import MVC.Model.DB.SQLConnection;
 import MVC.Model.DB.SuperSQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
@@ -21,6 +21,8 @@ public class EntityFactory
                 DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(),
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }
+
+    public void update() {}
 
     public Monster generateOgre()
     {
@@ -180,4 +182,4 @@ public class EntityFactory
 
     return arr;
 }
-} */
+}

@@ -9,13 +9,14 @@ import java.util.ArrayList;
 
 public class SceneMenu extends Scene
 {
-    final private String myTitle;
-    private ArrayList<String> myMenuSelections;
+    final private String myTitle = "Dungeon Adventure";
+    final private ArrayList<String> myMenuSelections;
     private int myMenuIndex;
 
     public SceneMenu(GameEngine gameEngine)
     {
-        myTitle = "Dungeon Adventure";
+        myGame = gameEngine;
+        myMenuSelections = new ArrayList<String>();
 
         registerAction(Input.Keys.W, "UP");
         registerAction(Input.Keys.S, "DOWN");
@@ -36,7 +37,8 @@ public class SceneMenu extends Scene
 
     public void doAction(final String action)
     {
-        switch (action) {
+        switch (action)
+        {
             case "UP":
                 if (myMenuIndex > 0) { myMenuIndex--; }
                 else { myMenuIndex = myMenuSelections.size() - 1; }
@@ -44,20 +46,28 @@ public class SceneMenu extends Scene
             case "DOWN":
                 myMenuIndex = (myMenuIndex + 1) % myMenuSelections.size();
                 break;
-            case "QUIT":
+            case "SELECT":
                 if (myMenuIndex == 0)
                 {
-                    myGame.setCurrentScene("Dungeon", new SceneGame(myGame,true), false);
+                    myGame.setCurrentScene("Dungeon", new SceneGame(myGame), false);
+                    System.out.println("Selected: 'New Game'");
                 }
                 else if (myMenuIndex == 1)
                 {
-                    myGame.setCurrentScene("Dungeon", new SceneGame(myGame,false), false);
+                    // Deserialize
+                    myGame.setCurrentScene("Dungeon", new SceneGame(myGame), false);
+                    System.out.println("Selected: 'Load Game'");
                 }
                 else if (myMenuIndex == 2)
                 {
+                    System.out.println("Selected: 'Quit'");
                     onEnd();
                 }
                 break;
         }
+
+        System.out.println("Indexed at " + myMenuSelections.get(myMenuIndex));
     }
+
+    public int getMenuIndex() { return myMenuIndex; }
 }

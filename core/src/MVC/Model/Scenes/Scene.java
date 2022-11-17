@@ -2,14 +2,14 @@ package MVC.Model.Scenes;
 
 import MVC.Controller.GameEngine;
 import com.badlogic.gdx.utils.ObjectMap;
-import MVC.Controller.Action;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 
 public abstract class Scene
 {
     protected GameEngine myGame;
-    //private EntityFactory myEntityFactory;
-    private ObjectMap<Integer, String> myActionMap;
-    private boolean myPaused;
+    protected EntityFactory myEntityFactory;
+    private final ObjectMap<Integer, String> myActionMap;
+    protected boolean myPaused;
     private boolean myHasEnded;
     protected long myCurrentFrame;
 

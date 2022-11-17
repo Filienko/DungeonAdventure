@@ -1,6 +1,7 @@
 package MVC.Model.Scenes;
 
 import MVC.Controller.GameEngine;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
@@ -10,18 +11,10 @@ public class SceneGame extends Scene
 {
     private Hero myHero;
 
-    public SceneGame(GameEngine game, boolean newGame)
+    public SceneGame(GameEngine game)
     {
-        if (newGame)
-        {
-            // Call method to generate dungeon
-            initialize();
-        }
-        else
-        {
-            // deserialize
-            loadLevel();
-        }
+        myEntityFactory = new EntityFactory();
+        initialize();
 
         registerAction(Input.Keys.ESCAPE, "PAUSE");
         registerAction(Input.Keys.W, "UP");
@@ -30,15 +23,13 @@ public class SceneGame extends Scene
         registerAction(Input.Keys.D, "RIGHT");
         registerAction(Input.Buttons.LEFT, "ATTACK");
         registerAction(Input.Keys.SPACE, "ATTACK");
+
+        myHero = myEntityFactory.generateWarrior();
     }
 
     private void initialize() {}
 
-    private void loadLevel() {}
-
     protected void onEnd() {}
-
-    private void spawnPlayer() {}
 
     private Vec2 getPosition(final int rx, final int ry, final int tx, final int ty)
     {
@@ -52,25 +43,14 @@ public class SceneGame extends Scene
         return new Vec2(pixelX, pixelY);
     }
 
-    private void Movement() { }
-
     public  void doAction(final String action) {}
 
-    private void AI() {}
-
-    private void status() {}
-
-    private void collisions() {}
-
-    private void animation() {}
-
-    private void entityTileCollisions() {}
-
-    private void playerEnemyCollisions() {}
-
-    private void weaponEnemyCollisions() {}
-
-    private void playerItemCollisions() {}
-
-    public void update() {}
+    public void update()
+    {
+        if (!myPaused)
+        {
+            myEntityFactory.update();
+            myCurrentFrame++;
+        }
+    }
 }

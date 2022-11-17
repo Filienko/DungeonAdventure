@@ -1,6 +1,7 @@
 package MVC.Controller;
 
 import MVC.Model.Scenes.Scene;
+import MVC.Model.Scenes.SceneMenu;
 import MVC.View.Animation;
 import MVC.View.Assets;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -23,38 +24,15 @@ public class GameEngine extends ApplicationAdapter {
 	private boolean 					myRunning;
 	private SpriteBatch 				batch;
 
-	Animation test1;
-	Animation test2;
-	Animation test3;
+//	Animation test1;
+//	Animation test2;
+//	Animation test3;
 
 	// Methods
 
 	void userInput()
 	{
-		if (Gdx.input.isKeyPressed(Input.Keys.W))
-		{
-			//getCurrentScene().doAction();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.A))
-		{
 
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.S))
-		{
-
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.D))
-		{
-
-		}
-		if (Gdx.input.isKeyPressed(Input.Buttons.LEFT))
-		{
-
-		}
-		if (Gdx.input.isKeyPressed(Input.Buttons.RIGHT))
-		{
-
-		}
 	}
 
 	public void setCurrentScene(final String name, final Scene scene, final boolean endCurrentScene)
@@ -81,9 +59,9 @@ public class GameEngine extends ApplicationAdapter {
 		myCurrentScene = name;
 	}
 
-//	Scene getCurrentScene() { return mySceneMap.get(myCurrentScene); }
+	public Scene getCurrentScene() { return mySceneMap.get(myCurrentScene); }
 
-//	boolean sceneExists(final String sceneName) { return mySceneMap.get(sceneName) != null; }
+	boolean sceneExists(final String sceneName) { return mySceneMap.get(sceneName) != null; }
 
 	public OrthographicCamera getMyCamera() { return myCamera; }
 
@@ -96,40 +74,40 @@ public class GameEngine extends ApplicationAdapter {
 	{
 
 		myAssets 	= new Assets();
-//		mySceneMap 	= new ObjectMap<String, Scene>();
+		mySceneMap 	= new ObjectMap<>();
 		myRunning 	= true;
-		myCamera = new OrthographicCamera();
+		myCamera 	= new OrthographicCamera();
 		myCamera.setToOrtho(false, 1280, 768);
 
 		batch = new SpriteBatch();
 
 		myAssets.loadAssets();
 
-		test1 = myAssets.getAnimation("runDown");
-		test2 = myAssets.getAnimation("tektite");
-		test3 = myAssets.getAnimation("standDown");
+//		test1 = myAssets.getAnimation("runDown");
+//		test2 = myAssets.getAnimation("tektite");
+//		test3 = myAssets.getAnimation("standDown");
 
-//		setCurrentScene("Menu", new SceneMenu());
+		setCurrentScene("Menu", new SceneMenu(this), false);
 	}
 
 	@Override
 	public void render ()
 	{
 		if (!myRunning) 			{ return; }
-	//	if (mySceneMap.isEmpty()) 	{ return; }
+		if (mySceneMap.isEmpty()) 	{ return; }
 
-	//	userInput();
-	//	getCurrentScene().update();
-		test1.update();
-		test2.update();
-		test3.update();
+		userInput();
+		getCurrentScene().update();
+//		test1.update();
+//		test2.update();
+//		test3.update();
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		myCamera.update();
 		batch.setProjectionMatrix(myCamera.combined);
 		batch.begin();
-		batch.draw(test1.getSprite(), 0, 0);
-		batch.draw(test2.getSprite(), 100, 100);
-		batch.draw(test3.getSprite(), 75, 444);
+//		batch.draw(test1.getSprite(), 0, 0);
+//		batch.draw(test2.getSprite(), 100, 100);
+//		batch.draw(test3.getSprite(), 75, 444);
 		batch.end();
 	}
 	

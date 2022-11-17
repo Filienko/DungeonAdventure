@@ -110,34 +110,18 @@ public abstract class DungeonCharacter extends Entity
         this.myPos = thePos;
     }
 
-<<<<<<< HEAD
-    protected String getCharacterType()
-=======
+
     public String getCharacterType()
->>>>>>> remote_main
     {
         return myCharacterType;
     }
 
-<<<<<<< HEAD
-    protected String getName()
-    {
-        return myName;
-    }
-
-    protected boolean isHero()
-=======
     public boolean isHero()
->>>>>>> remote_main
     {
         return isHero;
     }
 
-<<<<<<< HEAD
-    protected Vec2 getVelocity()
-=======
     public Vec2 getVelocity()
->>>>>>> remote_main
     {
         return myVelocity;
     }
