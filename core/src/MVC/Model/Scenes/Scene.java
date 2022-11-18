@@ -1,5 +1,6 @@
 package MVC.Model.Scenes;
 
+import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
 import com.badlogic.gdx.utils.ObjectMap;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
@@ -28,7 +29,7 @@ public abstract class Scene
 
     public abstract void update();
 
-    public abstract void doAction(final String action);
+    public abstract void doAction(final Action action);
 
     public void setPaused() { myPaused = !myPaused; }
 

@@ -1,5 +1,6 @@
 package Tests;
 
+import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
 import MVC.Model.Scenes.SceneGame;
 import MVC.Model.Scenes.SceneMenu;
@@ -24,22 +25,22 @@ class SceneMenuTest
     @Test
     void cycleUp()
     {
-        menu.doAction("UP");
+        menu.doAction(new Action("UP", "START"));
         assertEquals(2, menu.getMenuIndex());
-        menu.doAction("UP");
+        menu.doAction(new Action("UP", "START"));
         assertEquals(1, menu.getMenuIndex());
-        menu.doAction("UP");
+        menu.doAction(new Action("UP", "START"));
         assertEquals(0, menu.getMenuIndex());
     }
 
     @Test
     void cycleDown()
     {
-        menu.doAction("DOWN");
+        menu.doAction(new Action("DOWN", "START"));
         assertEquals(1, menu.getMenuIndex());
-        menu.doAction("DOWN");
+        menu.doAction(new Action("DOWN", "START"));
         assertEquals(2, menu.getMenuIndex());
-        menu.doAction("DOWN");
+        menu.doAction(new Action("DOWN", "START"));
         assertEquals(0, menu.getMenuIndex());
     }
 

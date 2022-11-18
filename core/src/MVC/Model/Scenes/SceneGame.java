@@ -1,5 +1,6 @@
 package MVC.Model.Scenes;
 
+import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
@@ -43,7 +44,7 @@ public class SceneGame extends Scene
         return new Vec2(pixelX, pixelY);
     }
 
-    public  void doAction(final String action) {}
+    public  void doAction(final Action action) {}
 
     public void update()
     {
