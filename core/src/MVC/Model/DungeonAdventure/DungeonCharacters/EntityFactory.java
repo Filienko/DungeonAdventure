@@ -5,6 +5,7 @@ import MVC.Model.DB.SuperSQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
+import MVC.Model.DungeonUtils.Graph;
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
@@ -106,15 +107,22 @@ public class EntityFactory
     public static ArrayList<Room> generateRooms(int n1)
     {
         var arr = new ArrayList<Room>();
+        int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2); // Number of rooms + boundary rooms
 
-        arr.add(new Room(true, new Vec2()));
-        arr.add(new Room(false, new Vec2(n1-1, n1-1)));
+        arr.add(new Room(true, 1, new Vec2()));
+        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
 
-        for (int i = 1; i < (n1*n1)-1; i++)
+        for (int i = 2; i < ((n1+2)*n1)-1; i++)
         {
-            int row = i/n1;
-            int col = (i % n1);
-            arr.add(new Room(new Vec2(row,col)));
+            //Skip first and last buffer rooms in the row
+            if(i % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1 || i % Math.sqrt(allVertices) == 0)
+            {
+                continue;
+            }
+            //Account for buffer offset
+            int row = i / (n1+2);
+            int col = (i % (n1+2))-1;
+            arr.add(new Room(i, new Vec2(row,col)));
         }
         return arr;
     }

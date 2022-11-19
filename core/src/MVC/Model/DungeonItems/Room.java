@@ -6,13 +6,17 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 //TODO: discuss container Class
 public class Room extends Entity
 {
+    /**
+     * The int indicating room's number.
+     */
+    private int myNumber;
+
     /**
      * Boolean that tells if the Room is the Entrance of the Dungeon.
      */
@@ -95,9 +99,10 @@ public class Room extends Entity
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items and assigns location;
      */
-    public Room(Vec2 theLocation)
+    public Room(final int theNumber, Vec2 theLocation)
     {
         super(theLocation,new Vec2());
+        this.myNumber = theNumber;
         this.myEntrance = false;
         this.myExit = false;
         this.myRoomHasItems = false;
@@ -110,7 +115,7 @@ public class Room extends Entity
     /**
      * Room constructor that creates a Room that is the Entrance or Exit and that has no Items, at the given location.
      */
-    public Room(boolean theEntrance, Vec2 theLocation)
+    public Room(boolean theEntrance, int theNumber, Vec2 theLocation)
     {
         super(theLocation,new Vec2());
         if(theEntrance)
@@ -118,13 +123,16 @@ public class Room extends Entity
             this.myEntrance = true;
             this.myExit = false;
             this.myHeroPresent = true;
-        } else {
+        }
+        else
+        {
             this.myEntrance = false;
             this.myExit = true;
             this.myHeroPresent = false;
             myItems.add((new Exit(super.getMyBoundingBox())).getInstance(new Vec2(new Random().nextInt(0, (int) super.getMyBoundingBox().getMyX()),
                     new Random().nextInt(0, (int) super.getMyBoundingBox().getMyY()))));
         }
+        this.myNumber = theNumber;
         this.myRoomHasItems = true;
         this.myRoomHasMonsters = true;
         this.myLocation = theLocation;
@@ -376,6 +384,14 @@ public class Room extends Entity
     }
 
     /**
+     * @return the number of the Room.
+     */
+    int getNumber()
+    {
+        return myNumber;
+    }
+
+    /**
      * @return whether Room has East entry.
      */
     public boolean isE()
@@ -430,50 +446,6 @@ public class Room extends Entity
     void setS(final boolean theS)
     {
         myS = theS;
-    }
-    /**
-     * @return entrance direction contained in the Room
-     * @theDirection signifies that Room can have contained entrance direction.
-     */
-    public final ArrayList<String> setEntrances(final ArrayList<String> theDirection)
-    {
-        var min = 2;
-
-        if (myEntrance)
-        {
-            min = 1;
-        }
-
-        final ArrayList<String> arrayList = new ArrayList<>();
-
-        Random random = new Random();
-        for (int i = 0; i < theDirection.size(); i++)
-        {
-            if(random.nextDouble() < Math.max(1/(i+min),0.5))
-            {
-                if(theDirection.get(i).contentEquals("S"))
-                {
-                    myS = true;
-                    arrayList.add("S");
-                }
-                else if (theDirection.get(i).contentEquals("W"))
-                {
-                    myW = true;
-                    arrayList.add("W");
-                }
-                else if (theDirection.get(i).contentEquals("E"))
-                {
-                    myE = true;
-                    arrayList.add("E");
-                }
-                else if (theDirection.get(i).contentEquals("N"))
-                {
-                    myN = true;
-                    arrayList.add("N");
-                }
-            }
-        }
-        return arrayList;
     }
 
     /**
