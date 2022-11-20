@@ -1,12 +1,18 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Healable;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
-public class Priestess extends Hero implements Healable
+import java.util.Random;
+
+public class Priestess extends Hero
 {
+    /**
+     * Maximum number of hit points the Priestess can heal.
+     */
+    private static final int MY_MAX_HEAL = 25;
+
     /**
      * The Priestess's name.
      */
@@ -34,14 +40,17 @@ public class Priestess extends Hero implements Healable
     }
 
     /**
-     * This is the Priestess's special skill. It allows the Priestess to heal another Hero. This method implements the
-     * healCharacter method from the Healable interface do accomplish this.
+     * This is the Priestess's special skill. It allows the Priestess to heal another Hero.
      * @param theHero The Hero the Priestess is healing.
      * @return The number of the Hero's hit points that the Priestess restored.
      */
-    public int healCharacter(final Hero theHero)
+    public int healHero(final Hero theHero)
     {
-        return Healable.super.healCharacter(theHero);
+        int healPoints;
+        Random rand = new Random();
+        healPoints = rand.nextInt(MY_MAX_HEAL) + 1;
+        theHero.setHitPoints(theHero.getHitPoints() + healPoints);
+        return healPoints;
     }
 
     public int attack(DungeonCharacter theOpponent)
@@ -61,11 +70,15 @@ public class Priestess extends Hero implements Healable
 //    @Override
 //    public String getName()
 //    {
-//        return myName;
+//        return this.myName;
 //    }
 
+    /**
+     * This method sets the Priestess's name.
+     * @param theName The Priestess's new name.
+     */
     private void setName(final String theName)
     {
-        myName = theName;
+        this.myName = theName;
     }
 }

@@ -93,9 +93,13 @@ public class Thief extends Hero
 //        return myName;
 //    }
 
+    /**
+     * This method sets the Thief's name.
+     * @param theName The Thief's new name.
+     */
     private void setName(final String theName)
     {
-    myName = theName;
+        this.myName = theName;
     }
 
 }

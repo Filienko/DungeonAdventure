@@ -40,7 +40,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * A list of all the Potions in the Hero's inventory.
      */
-    private List<Item> myHealingPotions; //Item is ok?
+    private List<Item> myHealingPotions;
 
     /**
      * A list of all the Pillars in the Hero's inventory.
@@ -69,14 +69,12 @@ public abstract class Hero extends DungeonCharacter
     public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theMinDamageRange,
                 final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
+        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
-        //this.myHeroStatus = true;
         this.myHealingPotions = new ArrayList<>();
         this.myPillars = new ArrayList<>();
         this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
-        //is hero status necessary ?? should it just be a static final field?
     }
 
     /**
@@ -88,11 +86,6 @@ public abstract class Hero extends DungeonCharacter
         super.setPos(theCoordinates);
     }
 
-    public void healHero(final Hero theHero, final int theHealingHP)
-    {
-        theHero.setHitPoints(theHero.getHitPoints()+theHealingHP);
-    }
-
     public Attackable getWeapon()
     {
         return myWeapon;
@@ -100,7 +93,7 @@ public abstract class Hero extends DungeonCharacter
 
     public void setWeapon(final Attackable theWeapon)
     {
-        myWeapon = theWeapon;
+        this.myWeapon = theWeapon;
     }
 
     /**
@@ -174,15 +167,14 @@ public abstract class Hero extends DungeonCharacter
                 '}';
     }
 
-//    /**
-//     * This method retrieves the Hero's name, as determined by the user.
-//     * @return The Hero's name in String form.
-//     */
-//    @Override
-//    public String getName()
-//    {
-//        return myName;
-//    }
+    /**
+     * This method retrieves the Hero's name, as determined by the user.
+     * @return The Hero's name in String form.
+     */
+    public String getName()
+    {
+        return myName;
+    }
 
     /**
      * This method returns a String describing the type of Hero it is.

@@ -19,7 +19,7 @@ public class EntityFactory
     public Monster generateMonster(String monsterType)
     {
         DB = new MockSQLConnection(monsterType);
-        return new Monster(DB.getCharacterType(),DB.getHitPoints(),DB.getCharacterType(),
+        return new Monster(DB.getCharacterType(),DB.getHitPoints(),
                 DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(),
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }

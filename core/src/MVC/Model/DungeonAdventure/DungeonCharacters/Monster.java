@@ -19,6 +19,8 @@ public class Monster extends DungeonCharacter
      */
     private final int myHitPoints;
 
+    //^^ should this be deleted or should maxSpeed, min/max damage range be fields
+
 
     /**
      * Monster constructor that calls its parent constructor to initialize the Monster's name, character type, hero status, hit points,
@@ -31,26 +33,15 @@ public class Monster extends DungeonCharacter
      * @param thePos The Monster's location.
      * @param theVelocity The Monster's velocity.
      */
-    Monster(final String theCharacterType, final int theHitPoints, final int theMinimumRange,
+    public Monster(final String theCharacterType, final int theHitPoints, final int theMinimumRange,
             final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
         super(theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
         this.myCharacterType = theCharacterType;
         //this.myHeroStatus = false;
-        this.myHitPoints = theHitPoints;
+        this.myHitPoints = theHitPoints; //necessary?
         //is hero status necessary ?? should it just be a static final field?
     }
-
-//    /**
-//     * This method allows a Monster to heal itself by calling the healCharacter method from the
-//     * Healable interface.
-//     * @return The number of hit points that were restored.
-//     */
-//    protected int heal()
-//    {
-//        return healCharacter(this);
-//    }
-
 
     protected void attack(Hero theHero){
         super.attack(theHero,super.getMyBoundingBox());

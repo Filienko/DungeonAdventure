@@ -60,8 +60,12 @@ public class Warrior extends Hero
 //        return myName;
 //    }
 
+    /**
+     * This method sets the Warrior's name.
+     * @param theName The Warrior's new name.
+     */
     private void setName(final String theName)
     {
-        myName = theName;
+        this.myName = theName;
     }
 }

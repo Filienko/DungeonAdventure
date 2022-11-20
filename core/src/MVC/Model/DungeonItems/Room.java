@@ -22,6 +22,7 @@ public class Room
      * List of the Doors that the Room has (North, South, East, West).
      */
     private List<Door> myDoors;
+
     /**
      * Boolean that tells if the Room contains a special item (Potion, Pillar, Pit, etc).
      */
