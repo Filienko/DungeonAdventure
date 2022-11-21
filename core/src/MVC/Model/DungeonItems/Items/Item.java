@@ -7,6 +7,17 @@ public abstract class Item extends Entity
 {
     private Vec2 myLocation;
 
+    private static String myType;
+
+    protected Item(final String theType, Vec2 theLocation)
+    {
+        super(theLocation,new Vec2());
+        myType = theType;
+        myLocation = theLocation;
+    }
+
+
+
     protected Vec2 getMyLocation()
     {
         return myLocation;
@@ -15,5 +26,10 @@ public abstract class Item extends Entity
     protected void setMyLocation(final Vec2 myLocation)
     {
         this.myLocation = myLocation;
+    }
+
+    public String getType()
+    {
+        return myType;
     }
 }

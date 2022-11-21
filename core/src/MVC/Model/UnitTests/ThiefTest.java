@@ -1,5 +1,8 @@
 package MVC.Model.UnitTests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -9,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ThiefTest
 {
 
-    //javadoc these tests!!!
-
-
+    /**
+     * Test method for Thief's default constructor.
+     */
     @Test
     void testThiefConstructor()
     {
@@ -27,6 +30,9 @@ class ThiefTest
         assertFalse(myThief.getHiddenStatus());
     }
 
+    /**
+     * Test method for Thief's overloaded constructor.
+     */
     @Test
     void testThiefOLConstructor()
     {
@@ -41,13 +47,18 @@ class ThiefTest
         assertEquals(40, myThief.getMaxDamageRange());
     }
 
-
+    /**
+     * Test method for {@link Thief#surpriseAttack(DungeonCharacter)}
+     */
     @Test
     void testSurpriseAttack()
     {
         //finish surpriseAttack() method and then write these tests
     }
 
+    /**
+     * Test method for {@link Thief#getHiddenStatus()}
+     */
     @Test
     void testGetHiddenStatus()
     {
@@ -56,14 +67,17 @@ class ThiefTest
         assertFalse(myThief.getHiddenStatus());
     }
 
+    /**
+     * Test method for {@link Thief#setHiddenStatus(boolean)}
+     */
     @Test
-    void testGetMyHiddenStatus()
+    void testSetMyHiddenStatus()
     {
         final Thief myThief = new Thief();
 
         assertFalse(myThief.getHiddenStatus());
 
-        myThief.setMyHiddenStatus(true);
+        myThief.setHiddenStatus(true);
 
         assertTrue(myThief.getHiddenStatus());
 

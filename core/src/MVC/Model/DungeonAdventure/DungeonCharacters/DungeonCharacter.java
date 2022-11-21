@@ -18,11 +18,6 @@ public abstract class DungeonCharacter extends Entity
     private final boolean myHeroStatus;
 
     /**
-     * The character's hit points (health).
-     */
-    private int myHitPoints;
-
-    /**
      * The minimum amount of damage the character can inflict.
      */
     private final int myMinDamageRange;
@@ -31,6 +26,11 @@ public abstract class DungeonCharacter extends Entity
      * The maximum amount of damage the character can inflict.
      */
     private final int myMaxDamageRange;
+
+    /**
+     * The character's hit points (health).
+     */
+    private int myHitPoints;
 
     /**
      * The maximum speed of the character.
@@ -48,8 +48,8 @@ public abstract class DungeonCharacter extends Entity
     private Vec2 myVelocity;
 
     /**
-     * DungeonCharacter constructor that initializes the Character's name, character type, hero status, hit points,
-     * agility, and position.
+     * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
+     * minimum and maximum damage amounts, maximum speed, and position.
      *
      * @param theCharacterType The character's type.
      * @param theHeroStatus The character's hero status (true means Hero, false means Monster).
@@ -63,6 +63,7 @@ public abstract class DungeonCharacter extends Entity
     DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints, final int theMinDamageRange, final int theMaxDamageRange,
                      final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
+        super(new Vec2(), new Vec2());
         this.myCharacterType = theCharacterType;
         this.myHeroStatus = theHeroStatus;
         this.myMinDamageRange = theMinDamageRange;
@@ -75,7 +76,10 @@ public abstract class DungeonCharacter extends Entity
 
     protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
     {
-        int damage = 10;
+        //while (Physics.isInside(theDamageArea, theOpponent)) {
+        //  -- attack the opponent
+        //}
+        int damage = 10; //damage should be generated between min/max damage range ?
 
         theOpponent.applyDamage(damage);
 

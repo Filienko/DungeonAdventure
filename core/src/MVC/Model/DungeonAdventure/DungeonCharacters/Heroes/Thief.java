@@ -31,13 +31,41 @@ public class Thief extends Hero
     }
 
     /**
-     * Thief constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
+     * Thief overloaded constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
      */
     public Thief(final String theName, final Vec2 thePos)
     {
         super(theName, "Thief",75, 20, 40, 6,  thePos, new Vec2());
         this.myName = theName;
+    }
+
+    /**
+     *
+     * @param theOpponent The DungeonCharacter the Thief is attacking.
+     * @param theDamageArea --
+     * @return The amount of damage done to theOpponent's hit point count.
+     */
+    @Override
+    public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+    {
+        double chance = Math.random();
+        if (chance < myHiddenChance) {
+            myHiddenStatus = true;
+        }
+
+        int damage = 0;
+        if (myHiddenStatus) {
+            chance = Math.random();
+            if (chance < 0.4) {
+                damage = surpriseAttack(theOpponent);
+            }
+            myHiddenStatus = false;
+        } else {
+            damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
+        }
+        theOpponent.applyDamage(damage);
+        return damage;
     }
 
     /**
@@ -52,20 +80,10 @@ public class Thief extends Hero
     {
         //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are, they get the chance to surprise attack
         // otherwise, they do a regular attack
-        myHiddenStatus = true;
-        double chance = Math.random();
-        int damage = 0;
-        if (chance < 0.2) {
-            myHiddenStatus = false;
-            return damage;
-        } else if (chance < 0.6) {
-            myHiddenStatus = false;
-            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
-        } else if (chance < 1.0) {
-            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
-            damage += surpriseAttack(theOpponent);
-        }
-        theOpponent.applyDamage(damage);
+
+        int damage = attack(theOpponent, super.getWeapon().getBoundingBox());
+        damage += surpriseAttack(theOpponent);
+
         return damage;
     }
 
@@ -82,7 +100,7 @@ public class Thief extends Hero
      * This method sets the Thief's hidden status.
      * @param theStatus Thief's new hidden status - true if hidden, false if visible.
      */
-    public void setMyHiddenStatus(final boolean theStatus)
+    public void setHiddenStatus(final boolean theStatus)
     {
         this.myHiddenStatus = theStatus;
     }

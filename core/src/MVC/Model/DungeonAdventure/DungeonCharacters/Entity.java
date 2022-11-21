@@ -13,30 +13,41 @@ public abstract class Entity
     private boolean myEntityAnimated;
     private Animation myAnimation;
 
-//    private Vec2 myVector;
-//    private long myCurrentFrame;
-//    private long myAttackStart;
-//    private long myAttackDuration;
-//
-//    public void update() {
-//        movement();
-//        attack();
-//        this.myCurrentFrame++;
-//    }
-//
-//    public void movement()
-//    {
-//        myPreviousPos = myPos;
-//        myPos += myVector;
-//    }
-//    public void attack()
-//    {
-//        if (myCurrentFrame >= myAttackStart + myAttackDuration)
-//        {
-//            //attack is occurring
-//            //how to represent this ?
-//        }
-//    }
+    private Vec2 myVector;
+    private long myCurrentFrame;
+    private long myAttackStart;
+    private long myAttackDuration;
+
+    protected Entity(final Vec2 thePos, final Vec2 theBoundingBox)
+    {
+        myPos = thePos;
+        mySize = new Vec2();
+        myBoundingBox = theBoundingBox;
+    }
+
+    private Entity(final Vec2 theSize, final Vec2 theBoundingBox, final boolean theEntityAnimated, final Animation theAnimation)
+    {
+        myPos = new Vec2();
+        myPreviousPos = new Vec2();
+        mySize = theSize;
+        myBoundingBox = theBoundingBox;
+        myEntityAnimated = theEntityAnimated;
+        myAnimation = theAnimation;
+    }
+
+    public void update() {
+        movement();
+        attack();
+        this.myCurrentFrame++;
+    }
+
+    public void movement()
+    {
+        myPreviousPos = myPos;
+        myPos = myPos.add(myVector);
+    }
+
+    public void attack() {};
 
     public Vec2 getMyPos()
     {

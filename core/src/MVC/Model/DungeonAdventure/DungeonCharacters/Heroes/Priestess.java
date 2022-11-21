@@ -1,12 +1,13 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Healable;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
 import java.util.Random;
 
-public class Priestess extends Hero
+public class Priestess extends Hero implements Healable
 {
     /**
      * Maximum number of hit points the Priestess can heal.
@@ -28,7 +29,7 @@ public class Priestess extends Hero
     }
 
     /**
-     * Priestess constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
+     * Priestess overloaded constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, agility, position, and velocity.
      * @param theName The Priestess's name.
      * @param thePos The Priestess's location.
@@ -40,32 +41,17 @@ public class Priestess extends Hero
     }
 
     /**
-     * This is the Priestess's special skill. It allows the Priestess to heal another Hero.
+     * This is the Priestess's special skill. It allows the Priestess to heal another Hero by utilizing the heal method
+     * from the Healable interface. The maximum number of hit points the Priestess can restore is determined by
+     * MY_MAX_HEAL.
      * @param theHero The Hero the Priestess is healing.
      * @return The number of the Hero's hit points that the Priestess restored.
      */
     public int healHero(final Hero theHero)
     {
-        int healPoints;
-        Random rand = new Random();
-        healPoints = rand.nextInt(MY_MAX_HEAL) + 1;
-        theHero.setHitPoints(theHero.getHitPoints() + healPoints);
-        return healPoints;
+        return heal(theHero, MY_MAX_HEAL);
     }
 
-    public int attack(DungeonCharacter theOpponent)
-    {
-        double chance = Math.random();
-        int damage = 0;
-        if (chance < 0.2) {
-            return damage;
-        } else if (chance < 0.6) {
-            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
-        } else if (chance < 1.0) {
-            damage += attack(theOpponent);
-        }
-        return damage;
-    }
 
 //    @Override
 //    public String getName()

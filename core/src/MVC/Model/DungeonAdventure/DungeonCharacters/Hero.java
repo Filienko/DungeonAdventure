@@ -1,10 +1,11 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
-import MVC.Model.DungeonItems.Pillar;
+import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.DungeonItems.Weapon.Attackable;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * A list of all the Potions in the Hero's inventory.
      */
-    private List<Item> myHealingPotions;
+    private List<Item> myPotions;
 
     /**
      * A list of all the Pillars in the Hero's inventory.
@@ -72,7 +73,7 @@ public abstract class Hero extends DungeonCharacter
         super(theCharacterType, MY_HERO_STATUS, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
-        this.myHealingPotions = new ArrayList<>();
+        this.myPotions = new ArrayList<>();
         this.myPillars = new ArrayList<>();
         this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
     }
@@ -96,13 +97,22 @@ public abstract class Hero extends DungeonCharacter
         this.myWeapon = theWeapon;
     }
 
+    @Override
+    public void attack()
+    {
+        if (myWeapon == null)
+        {
+            myWeapon = EntityFactory.generateSword();
+        }
+    }
+
     /**
      * This method sets the Potions in the Hero's inventory.
      * @param thePotions Potions to be put into inventory.
      */
     protected void setPotions(final List<Item> thePotions)
     {
-        this.myHealingPotions = thePotions;
+        this.myPotions = thePotions;
     }
 
     /**
@@ -111,7 +121,7 @@ public abstract class Hero extends DungeonCharacter
      */
     protected void addPotion(Item thePotion)
     {
-        this.myHealingPotions.add(thePotion);
+        this.myPotions.add(thePotion);
     }
 
     /**
@@ -120,7 +130,7 @@ public abstract class Hero extends DungeonCharacter
      */
     protected List<Item> getPotions()
     {
-        return this.myHealingPotions;
+        return this.myPotions;
     }
 
     /**
@@ -151,6 +161,15 @@ public abstract class Hero extends DungeonCharacter
     }
 
     /**
+     * This method retrieves the Hero's name, as determined by the user.
+     * @return The Hero's name in String form.
+     */
+    public String getName()
+    {
+        return myName;
+    }
+
+    /**
      * Method that returns details about the Hero.
      * @return A String that lists the Hero's name, what type of Hero it is,
      * the Hero's hero status, and the Potions and Pillars in its inventory.
@@ -162,18 +181,9 @@ public abstract class Hero extends DungeonCharacter
                 " {" +
                 "myCharacterType + " + myCharacterType +
                 ", Hero status = " + MY_HERO_STATUS +
-                ", myHealingPotions = '" + myHealingPotions.toString() + '\'' +
-                ", myPillars = " + myPillars.toString() +
+                ", Potions = '" + myPotions.toString() + '\'' +
+                ", Pillars = " + myPillars.toString() +
                 '}';
-    }
-
-    /**
-     * This method retrieves the Hero's name, as determined by the user.
-     * @return The Hero's name in String form.
-     */
-    public String getName()
-    {
-        return myName;
     }
 
     /**

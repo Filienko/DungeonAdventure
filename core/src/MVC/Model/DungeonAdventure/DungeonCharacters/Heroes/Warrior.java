@@ -23,7 +23,7 @@ public class Warrior extends Hero
     }
 
     /**
-     * Warrior constructor that calls its parent constructor to initialize the Warrior's name, character type, hero status, hit points,
+     * Warrior overloaded constructor that calls its parent constructor to initialize the Warrior's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity.
      * @param theName The Warrior's name.
      * @param thePos The Warrior's location.
@@ -35,23 +35,34 @@ public class Warrior extends Hero
     }
 
     /**
-     * The Warrior's special skill. This crushingBlow attack has a 40% chance of success, and if it is successful,
-     * a damage amount between 75 and 175 is randomly generated. There is a 40% chance that a simple attack is performed.
+     * This method allows the Warrior to attack another DungeonCharacter. There is a 40% chance that a simple attack is
+     * performed. The Warrior also has a special skill called Crushing Blow, which also has a 40% chance of success.
+     * @param theOpponent The DungeonCharacter the Warrior is attacking.
+     * @param theDamageArea --
+     * @return The amount of damage done to theOpponent's hit points.
+     */
+    @Override
+    public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+    {
+        double chance = Math.random();
+        int damage = 0;
+        if (chance < 0.4) {
+            damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
+        } else if (chance < 0.6) {
+            damage = crushingBlow(theOpponent);
+        }
+        theOpponent.applyDamage(damage);
+        return damage;
+    }
+    /**
+     * The Warrior's special skill. damage amount between 75 and 175 is randomly generated.
      * @param theOpponent The DungeonCharacter the Warrior is attacking.
      * @return The amount of damage done to theOpponent's hit points.
      */
     public int crushingBlow(final DungeonCharacter theOpponent)
     {
-        double chance = Math.random();
-        int damage = 0;
-        if (chance < 0.4) {
-            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
-        } else if (chance < 0.6) {
-            Random rand = new Random();
-            damage = rand.nextInt(75, 175);
-        }
-        theOpponent.applyDamage(damage);
-        return damage;
+        Random rand = new Random();
+        return rand.nextInt(75, 175);
     }
 
 //    @Override

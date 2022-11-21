@@ -1,6 +1,8 @@
 package MVC.Model.UnitTests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -9,8 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WarriorTest
 {
-    //javadoc these tests!!!
-
+    /**
+     * Test method for Warrior's default constructor.
+     */
     @Test
     void testWarriorConstructor()
     {
@@ -25,6 +28,9 @@ class WarriorTest
         assertEquals(60, myWarrior.getMaxDamageRange());
     }
 
+    /**
+     * Test method for Warrior's overloaded constructor.
+     */
     @Test
     void testWarriorOLConstructor()
     {
@@ -39,6 +45,27 @@ class WarriorTest
         assertEquals(30, myWarrior.getMaxDamageRange());
     }
 
+    /**
+     * Test method for {@link Warrior#attack(DungeonCharacter, Vec2)}
+     */
+    @Test
+    void testAttack()
+    {
+        //do we need to test if crushing blow happens 40% of the time?
+
+        final Warrior myWarrior1 = new Warrior();
+        final Warrior myWarrior2 = new Warrior();
+
+        int oldHealth = myWarrior1.getHitPoints();
+        int damage = myWarrior1.attack(myWarrior2, new Vec2());
+
+        assertTrue(myWarrior2.getHitPoints() < oldHealth);
+        assertEquals(myWarrior2.getHitPoints(), oldHealth - damage);
+    }
+
+    /**
+     * Test method for {@link Warrior#crushingBlow(DungeonCharacter)}
+     */
     @Test
     void testCrushingBlow()
     {
@@ -48,8 +75,9 @@ class WarriorTest
         final Warrior myWarrior2 = new Warrior();
 
         int oldHealth = myWarrior1.getHitPoints();
-        myWarrior1.crushingBlow(myWarrior2);
+        int damage = myWarrior1.crushingBlow(myWarrior2);
 
         assertTrue(myWarrior2.getHitPoints() < oldHealth);
+        assertEquals(myWarrior2.getHitPoints(), oldHealth - damage);
     }
 }

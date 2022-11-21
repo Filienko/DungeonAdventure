@@ -1,7 +1,9 @@
 package MVC.Model.UnitTests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class PriestessTest
 {
 
-    //javadoc these tests!!!
-
+    /**
+     * Test method for Priestess's default constructor.
+     */
     @Test
     void testPriestessConstructor()
     {
@@ -27,6 +30,9 @@ class PriestessTest
 
     }
 
+    /**
+     * Test method for Priestess's overloaded constructor.
+     */
     @Test
     void testPriestessOLConstructor()
     {
@@ -41,21 +47,29 @@ class PriestessTest
         assertEquals(45, myPriestess.getMaxDamageRange());
     }
 
+    /**
+     * Test method for {@link Priestess#healHero(Hero)}.
+     */
     @Test
-    void testHealHero()
-    {
+    void testHealHero() {
         final Priestess myPriestess1 = new Priestess();
         final Priestess myPriestess2 = new Priestess();
 
         int oldHealth = myPriestess1.getHitPoints();
-        myPriestess1.healHero(myPriestess2);
+        int restoredHealth = myPriestess1.healHero(myPriestess2);
 
         assertTrue(myPriestess2.getHitPoints() > oldHealth);
+        assertEquals(myPriestess2.getHitPoints(), restoredHealth + oldHealth);
     }
 
+    /**
+     * Test method for {@link Priestess#toString()}
+     */
     @Test
-    void testAttack()
+    void testToString()
     {
-        //finish attack() method and then write these tests
+        final Priestess myPriestess = new Priestess("P", new Vec2());
+
+        assertEquals("Name: P {myCharacterType = Priestess, \n Hero status = true, \n Potions = [], \n Pillars = []}", myPriestess.toString());
     }
 }
