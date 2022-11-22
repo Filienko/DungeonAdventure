@@ -1,5 +1,6 @@
-package com.game;
+package MVC.View;
 
+import MVC.View.Animation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,33 +30,33 @@ public class Assets
     }
 
     // Methods
-    void loadAssets()
+    public void loadAssets()
     {
-        File dir = new File("E:\\farva\\Documents\\UW\\Fall2022\\TCSS360\\DungeonAdventure\\assets");
+        File dir = new File(System.getProperty("user.dir"));
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null)
         {
             for (File child : directoryListing)
             {
                 String fileName = child.getName();
+                String[] attributes = fileName.split("_");
                 if (fileName.contains(".png"))
                 {
-                    addTexture(fileName);
+                    addTexture(attributes[0], fileName);
 
-                    String[] attributes = fileName.split("_");
                     if (attributes.length > 2)
                     {
-                        addAnimation(fileName, Integer.parseInt(attributes[1]), Integer.parseInt(attributes[2]));
+                        addAnimation(attributes[0], fileName, Integer.parseInt(attributes[1]), Integer.parseInt(attributes[2]));
                         myAnimationNames.add(attributes[0]);
                     }
                 }
                 else if (fileName.contains(".ttf"))
                 {
-                    addFont(fileName);
+                    addFont(attributes[0], fileName);
                 }
                 else if (fileName.contains(".wav"))
                 {
-                    addSound(fileName);
+                    addSound(attributes[0], fileName);
                 }
                 else
                 {
@@ -65,10 +66,8 @@ public class Assets
         }
     }
 
-    void addTexture(final String fileName)
+    private void addTexture(final String textureName, final String fileName)
     {
-        String[] attributes = fileName.split("_");
-        String textureName = attributes[0];
         myTextureMap.put(textureName, new Texture(Gdx.files.internal(fileName)));
         if (myTextureMap.get(textureName) == null)
         {
@@ -80,17 +79,13 @@ public class Assets
         }
     }
 
-    void addAnimation(final String fileName, int frameCount, int speed)
+    private void addAnimation(final String animationName, final String fileName, int frameCount, int speed)
     {
-        String[] attributes = fileName.split("_");
-        String animationName = attributes[0];
         myAnimationMap.put(animationName, new Animation(animationName, getTexture(animationName), frameCount, speed));
     }
 
-    void addFont(final String fileName)
+    private void addFont(final String fontName, final String fileName)
     {
-        String[] attributes = fileName.split("_");
-        String fontName = attributes[0];
         myFontMap.put(fontName, new BitmapFont(Gdx.files.internal(fileName)));
         if (myFontMap.get(fontName) == null)
         {
@@ -98,10 +93,8 @@ public class Assets
         }
     }
 
-    void addSound( final String fileName)
+    private void addSound(final String soundName, final String fileName)
     {
-        String[] attributes = fileName.split("_");
-        String soundName = attributes[0];
         mySoundMap.put(soundName, Gdx.audio.newSound(Gdx.files.internal(fileName)));
         if (mySoundMap.get(soundName) == null)
         {
@@ -113,31 +106,31 @@ public class Assets
         }
     }
 
-    Texture getTexture(final String textureName)
+    public Texture getTexture(final String textureName)
     {
         assert(myTextureMap.get(textureName) != null);
         return myTextureMap.get(textureName);
     }
 
-    Animation getAnimation(final String animationName)
+    public Animation getAnimation(final String animationName)
     {
         assert(myAnimationMap.get(animationName) != null);
         return myAnimationMap.get(animationName);
     }
 
-    BitmapFont getFont(final String fontName)
+    public BitmapFont getFont(final String fontName)
     {
         assert(myFontMap.get(fontName) != null);
         return myFontMap.get(fontName);
     }
 
-    Sound getSound(final String soundName)
+    public Sound getSound(final String soundName)
     {
         assert(mySoundMap.get(soundName) != null);
         return mySoundMap.get(soundName);
     }
 
-    ArrayList<String> getAnimationNames()
+    public ArrayList<String> getAnimationNames()
     {
         return myAnimationNames;
     }

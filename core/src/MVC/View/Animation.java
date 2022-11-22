@@ -1,17 +1,19 @@
-package com.game;
+package MVC.View;
 
+import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+
 
 public class Animation
 {
     // Instance fields
-    private Sprite  mySprite;
-    private long    myFrameCount;      // total number of frames of animation
-    private long    myCurrentFrame;    // the current frame of animation
-    private long    mySpeed;           // the speed to play this animation
-    private Vec2    mySize;            // the size of the animation frame
-    private String  myName;
+    final private Sprite    mySprite;
+    final private long      myFrameCount;      // total number of frames of animation
+    private long            myCurrentFrame;    // the current frame of animation
+    final private long      mySpeed;           // the speed to play this animation
+    final private Vec2      mySize;            // the size of the animation frame
+    final private String    myName;
 
     // Constructor
     public Animation(final String animationName, final Texture texture, final int frameCount, final int speed)
@@ -28,7 +30,7 @@ public class Animation
 
     // updates the animation to show the next frame, depending on its speed
     // animation loops when it reaches the end
-    void update()
+    public void update()
     {
         myCurrentFrame++;
 
@@ -40,11 +42,11 @@ public class Animation
         }
     }
 
-    boolean hasEnded()  { return myCurrentFrame == (mySpeed * myFrameCount) - 1; }
+    public boolean hasEnded()  { return myCurrentFrame == (mySpeed * myFrameCount) - 1; }
 
-    String getName()    { return myName; }
+    public String getName()    { return myName; }
 
-    Vec2 getSize()      { return mySize; }
+    public Vec2 getSize()      { return mySize; }
 
-    Sprite getSprite()  { return mySprite; }
+    public Sprite getSprite()  { return mySprite; }
 }

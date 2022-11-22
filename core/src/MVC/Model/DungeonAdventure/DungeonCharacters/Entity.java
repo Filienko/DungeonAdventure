@@ -1,7 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
-import com.game.Animation;
+import MVC.View.Animation;
 
 
 public abstract class Entity
