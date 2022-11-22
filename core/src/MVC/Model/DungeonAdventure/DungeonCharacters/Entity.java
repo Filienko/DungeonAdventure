@@ -1,15 +1,15 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
-import com.game.Animation;
+import MVC.View.Animation;
 
 
 public abstract class Entity
 {
     private Vec2 myPos;
     private Vec2 myPreviousPos;
-    private Vec2 mySize;
-    private Vec2 myBoundingBox;
+    private final Vec2 mySize;
+    private final Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
 
@@ -54,6 +54,7 @@ public abstract class Entity
     public void destroy() {
         this.myActiveStatus = false; //if an entity is killed, use this method
     }
+
     public Vec2 getMyPos()
     {
         return myPos;
@@ -69,11 +70,6 @@ public abstract class Entity
         return mySize;
     }
 
-    public void setMySize(Vec2 mySize)
-    {
-        this.mySize = mySize;
-    }
-
     public Vec2 getMyPreviousPos()
     {
         return myPreviousPos;
@@ -87,11 +83,6 @@ public abstract class Entity
     public Vec2 getMyBoundingBox()
     {
         return myBoundingBox;
-    }
-
-    public void setMyBoundingBox(final Vec2 myBoundingBox)
-    {
-        this.myBoundingBox = myBoundingBox;
     }
 
     public boolean isMyEntityAnimated()

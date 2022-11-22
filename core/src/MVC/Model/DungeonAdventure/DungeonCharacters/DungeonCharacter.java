@@ -20,6 +20,7 @@ public abstract class DungeonCharacter extends Entity
     /**
      * The minimum amount of damage the character can inflict.
      */
+
     private int myMinDamageRange;
 
     /**
@@ -66,6 +67,7 @@ public abstract class DungeonCharacter extends Entity
         super(new Vec2(), new Vec2());
         this.myCharacterType = theCharacterType;
         this.myHeroStatus = theHeroStatus;
+
         this.myMinDamageRange = theMinDamageRange;
         this.myHitPoints = theHitPoints;
         this.myMaxDamageRange = theMaxDamageRange;
@@ -187,6 +189,7 @@ public abstract class DungeonCharacter extends Entity
      * This method retrieves the character's velocity.
      * @return The character's velocity.
      */
+
     public Vec2 getVelocity()
     {
         return this.myVelocity;

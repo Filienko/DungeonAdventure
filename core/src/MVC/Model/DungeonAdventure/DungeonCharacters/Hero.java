@@ -25,6 +25,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The Hero's name that is input by the user.
      */
+
     private final String myName;
 
     /**
@@ -93,6 +94,7 @@ public abstract class Hero extends DungeonCharacter
     {
         super.setPos(theCoordinates);
     }
+    
 
     public Sword getWeapon()
     {
@@ -124,6 +126,8 @@ public abstract class Hero extends DungeonCharacter
      * @param thePotions Potions to be put into inventory.
      */
     protected void setPotions(final List<Item> thePotions)
+
+    public String getName()
     {
         this.myPotions = thePotions;
     }
@@ -227,6 +231,19 @@ public abstract class Hero extends DungeonCharacter
     public int getHitPoints()
     {
         return this.myHitPoints;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Name: " + myName +
+                " {" +
+                "myCharacterType + " + myCharacterType +
+                ", Hero status = " + isHero +
+                ", myHealingPotions = '" + myHealingPotions + '\'' +
+                ", myVisionPotions = '" + myVisionPotions + '\'' +
+                ", myPillars = " + myPillars.toString() +
+                '}';
     }
 
 }

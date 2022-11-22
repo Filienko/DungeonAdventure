@@ -1,11 +1,13 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
-import MVC.Model.DB.MockSQLConnection;
+import MVC.Model.DB.SQLConnection;
 import MVC.Model.DB.SuperSQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.DungeonItems.Weapon.Sword;
+import MVC.Model.DungeonUtils.Graph;
+
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
@@ -13,32 +15,33 @@ import java.util.List;
 
 public class EntityFactory
 {
-    SuperSQLConnection DB;
+    private static SuperSQLConnection DB;
 
-    public Monster generateMonster(String monsterType)
+    public static Monster generateMonster(String monsterType)
     {
-        DB = new MockSQLConnection(monsterType);
-        return new Monster(DB.getCharacterType(),DB.getHitPoints(),
+
+        DB = new SQLConnection(monsterType);
+        return new Monster(DB.getHitPoints(),DB.getCharacterType(),
                 DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(),
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }
 
-    public Monster generateOgre()
+    public static Monster generateOgre()
     {
         return generateMonster("Ogre");
     }
 
-    public Monster generateGremlin()
+    public static Monster generateGremlin()
     {
         return generateMonster("Gremlin");
     }
 
-    public Monster generateElf()
+    public static Monster generateElf()
     {
         return generateMonster("Elf");
     }
 
-    public List<Monster> generateMonsters(int n1)
+    public static List<Monster> generateMonsters(int n1)
     {
         var arr = new ArrayList<Monster>();
 
@@ -51,17 +54,17 @@ public class EntityFactory
         return arr;
     }
 
-    public Pit generatePit()
+    public static Pit generatePit()
     {
         return new Pit();
     }
 
-    public Pit generatePit(Vec2 theVec)
+    public static Pit generatePit(Vec2 theVec)
     {
         return new Pit(theVec);
     }
 
-    public ArrayList<Pit> generatePit(int n1)
+    public static ArrayList<Pit> generatePit(int n1)
     {
         var arr = new ArrayList<Pit>();
 
@@ -72,7 +75,7 @@ public class EntityFactory
         return arr;
     }
 
-    public Hero generateHero(String type1)
+    public static Hero generateHero(String type1)
     {
         if (type1.contentEquals("Warrior"))
         {
@@ -89,34 +92,45 @@ public class EntityFactory
         return null;
     }
 
-    public Hero generateWarrior()
+    public static Hero generateWarrior()
     {
         return new Warrior();
     }
 
-    public Hero generateThief()
+    public static Hero generateThief()
     {
         return new Thief();
     }
 
-    public Hero generatePriestess()
+    public static Hero generatePriestess()
     {
         return new Priestess();
     }
 
-    public ArrayList<Room> generateRooms(int n1)
+    public static ArrayList<Room> generateRooms(int n1)
     {
         var arr = new ArrayList<Room>();
-        arr.add(new Room(true));
-        arr.add(new Room(false));
-        for (int i = 0; i < n1-2; i++)
+        int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2); // Number of rooms + boundary rooms
+
+        arr.add(new Room(true, 1, new Vec2()));
+        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
+
+        for (int i = 2; i < ((n1+2)*n1)-1; i++)
         {
-            arr.add(new Room());
+            //Skip first and last buffer rooms in the row
+            if(i % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1 || i % Math.sqrt(allVertices) == 0)
+            {
+                continue;
+            }
+            //Account for buffer offset
+            int row = i / (n1+2);
+            int col = (i % (n1+2))-1;
+            arr.add(new Room(i, new Vec2(row,col)));
         }
         return arr;
     }
 
-    public ArrayList<Door> generateDoors(int n1)
+    public static ArrayList<Door> generateDoors(int n1)
     {
         var arr = new ArrayList<Door>();
         for (int i = 0; i < n1; i++)
@@ -126,29 +140,29 @@ public class EntityFactory
         return arr;
     }
 
-    public ArrayList<Pillar> generatePillars()
+    public static ArrayList<Pillar> generatePillars()
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation"));
-        arr.add(new Pillar("Inheritance"));
-        arr.add(new Pillar("Abstraction"));
-        arr.add(new Pillar("Polymorphism"));
+        arr.add(new Pillar("Encapsulation", new Vec2()));
+        arr.add(new Pillar("Inheritance", new Vec2()));
+        arr.add(new Pillar("Abstraction", new Vec2()));
+        arr.add(new Pillar("Polymorphism", new Vec2()));
 
         return arr;
     }
 
-    public Dungeon generateDungeon(int[][] size1)
-    {
-        return new Dungeon(size1);
-    }
-
-    public Dungeon generateMockDungeon(int[][] size1)
+    public static Dungeon generateDungeon()
     {
         return new Dungeon();
     }
 
-    public List<HealingPotion> generateHealingPotions(int n1)
+    public static Dungeon generateMockDungeon(int[][] size1)
+    {
+        return new Dungeon();
+    }
+
+    public static List<HealingPotion> generateHealingPotions(int n1)
     {
         var arr = new ArrayList<HealingPotion>();
 
@@ -159,7 +173,7 @@ public class EntityFactory
 
         return arr;
     }
-    public List<SpeedPotion> generateSpeedPotions(int n1)
+    public static List<SpeedPotion> generateSpeedPotions(int n1)
     {
         var arr = new ArrayList<SpeedPotion>();
 
@@ -170,7 +184,7 @@ public class EntityFactory
 
         return arr;
     }
-    public List<AttackPotion> generateAttackPotions(int n1)
+    public static List<AttackPotion> generateAttackPotions(int n1)
     {
     var arr = new ArrayList<AttackPotion>();
 
@@ -180,10 +194,15 @@ public class EntityFactory
     }
 
     return arr;
+
     }
 
     //added this method
-    public static Sword generateSword() {
+    public static Sword generateSword() 
+    {
         return new Sword();
     }
+
+}
+
 }

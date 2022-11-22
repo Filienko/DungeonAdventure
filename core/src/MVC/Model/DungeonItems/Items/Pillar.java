@@ -1,6 +1,5 @@
 package MVC.Model.DungeonItems.Items;
 
-
 import MVC.Model.Physics.Vec2;
 
 public class Pillar extends Item
@@ -22,4 +21,6 @@ public class Pillar extends Item
     {
         this.myName = myName;
     }
+
 }
+
