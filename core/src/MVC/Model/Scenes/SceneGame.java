@@ -50,7 +50,7 @@ public class SceneGame extends Scene
     {
         if (!myPaused)
         {
-            myEntityFactory.update();
+            //myEntityFactory.update();
             myCurrentFrame++;
         }
     }

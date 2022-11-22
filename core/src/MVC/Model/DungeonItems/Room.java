@@ -6,11 +6,13 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 //TODO: discuss container Class
-public class Room extends Entity
+public class Room extends Entity implements Serializable
 {
     /**
      * The int indicating room's number.
@@ -50,7 +52,7 @@ public class Room extends Entity
     /**
      * List of the Doors that the Room has (North, South, East, West).
      */
-    private List<Door> myDoors;
+    private List<Door> myDoors = new ArrayList<>();
 
     /**
      * Boolean that tells if the Room contains a special item (Potion, Pillar, Pit, etc).
@@ -65,12 +67,12 @@ public class Room extends Entity
     /**
      * The Items that the Room contains.
      */
-    private List<Item> myItems;
+    private List<Item> myItems =  new ArrayList<>();
 
     /**
      * The Monsters that the Room contains.
      */
-    private List<Monster> myMonsters;
+    private List<Monster> myMonsters =  new ArrayList<>();
 
     /**
      * The location of the Room in the Dungeon.
@@ -129,8 +131,8 @@ public class Room extends Entity
             this.myEntrance = false;
             this.myExit = true;
             this.myHeroPresent = false;
-            myItems.add((new Exit(super.getMyBoundingBox())).getInstance(new Vec2(new Random().nextInt(0, (int) super.getMyBoundingBox().getMyX()),
-                    new Random().nextInt(0, (int) super.getMyBoundingBox().getMyY()))));
+            myItems.add((new Exit(super.getMyBoundingBox())).getInstance(new Vec2(new Random().nextInt(0, (int) super.getMyBoundingBox().getMyX()+10),
+                    new Random().nextInt(0, (int) super.getMyBoundingBox().getMyY()+10))));
         }
         this.myNumber = theNumber;
         this.myRoomHasItems = true;
@@ -194,8 +196,8 @@ public class Room extends Entity
     {
         if(theRandom.nextDouble() < 0.10)
         {
-            this.myItems.add(new Pit(new Vec2(theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyX()),
-                theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyY()))));
+            this.myItems.add(new Pit(new Vec2(theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyX()+10),
+                theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyY()+10))));
         }
     }
 
@@ -204,19 +206,19 @@ public class Room extends Entity
         if(theRandom.nextDouble() < 0.333)
         {
             this.myItems.add(new HealingPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()))));
+                    (int) super.getMyBoundingBox().getMyX()+10), theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyY()+10))));
         }
         else if(theRandom.nextDouble() < 0.67)
         {
             this.myItems.add(new AttackPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()))));
+                    (int) super.getMyBoundingBox().getMyX()+10), theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyY()+10))));
         } else
         {
             this.myItems.add(new SpeedPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()))));
+                    (int) super.getMyBoundingBox().getMyX()+10), theRandom.nextInt(0,
+                    (int) super.getMyBoundingBox().getMyY()+10))));
         }
     }
 

@@ -6,19 +6,18 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonUtils.Graph;
 import MVC.Model.Physics.Vec2;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Random;
 
-public class Dungeon
+public class Dungeon implements Serializable
 {
     //DUNGEON KEEPS TRACK OF THE LOCATION OF THE HERO
-    //DUNGEON KNOWS ONLY GENERAL ENTRANCE/EXIT LOGIC
-    //ROOM KNOWS SPECIFIC
+    //DUNGEON KNOWS ONLY GENERAL ROOM POSITION
+    //ROOM KNOWS SPECIFIC ENTRANCE/EXIT
 
-    private final Room[][] myDungeon;
+    private Room[][] myDungeon;
 
-    private final Hero myHero;
+    private Hero myHero;
 
     private List<Room> myRooms;
 
@@ -28,6 +27,14 @@ public class Dungeon
     {
         myHero = new Warrior("Brave Warrior",new Vec2());
         myDimension = 3;
+        myRooms = EntityFactory.generateRooms(myDimension);
+        myDungeon = generateDungeonFromRooms(myDimension);
+    }
+
+    public Dungeon(Hero theHero, int theDimension)
+    {
+        myHero = theHero;
+        myDimension = theDimension;
         myRooms = EntityFactory.generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myDimension);
     }
@@ -46,6 +53,14 @@ public class Dungeon
         myHero = theHero;
         myDimension = myDungeon.length;
         myRooms = EntityFactory.generateRooms(myDimension);
+    }
+
+    private Dungeon(final Room[][] theDungeon, final Hero theHero, final List<Room> theRooms, final int theDimension)
+    {
+        myDungeon = theDungeon;
+        myHero = theHero;
+        myRooms = theRooms;
+        myDimension = theDimension;
     }
 
     /**
@@ -136,5 +151,85 @@ public class Dungeon
             answer[(int) room.getLocation().getMyX()][(int) room.getLocation().getMyX()] = room;
         }
         return answer;
+    }
+
+    public Room[][] getDungeon()
+    {
+        return myDungeon;
+    }
+
+    public Hero getHero()
+    {
+        return myHero;
+    }
+
+    public List<Room> getRooms()
+    {
+        return myRooms;
+    }
+
+    public int getDimension()
+    {
+        return myDimension;
+    }
+
+
+    public void setDungeon(final Room[][] theDungeon)
+    {
+        myDungeon = theDungeon;
+    }
+
+    public void setHero(final Hero theHero)
+    {
+        myHero = theHero;
+    }
+
+    public void setRooms(final List<Room> theRooms)
+    {
+        myRooms = theRooms;
+    }
+
+    public void setDimension(final int theDimension)
+    {
+        myDimension = theDimension;
+    }
+
+    public Memento saveToMemento()
+    {
+
+        return new Memento(this.myDungeon, this.myHero, this.myRooms, this.myDimension);
+    }
+
+    public void restoreFromMemento(Memento memento)
+    {
+        var dungeon = memento.getSavedState();
+        this.myDungeon = dungeon.getDungeon();
+        this.myHero = dungeon.getHero();
+        this.myRooms = dungeon.getRooms();
+        this.myDimension = dungeon.getDimension();
+    }
+
+    public static class Memento
+    {
+        private final Room[][] myDungeon;
+
+        private final Hero myHero;
+
+        private List<Room> myRooms;
+
+        private int myDimension;
+
+        public Memento(final Room[][] theDungeon, final Hero theHero, final List<Room> theRooms, final int theDimension)
+        {
+            this.myDimension =theDimension;
+            this.myDungeon = theDungeon;
+            this.myHero = theHero;
+            this.myRooms = theRooms;
+        }
+
+        private Dungeon getSavedState()
+        {
+            return new Dungeon(myDungeon,myHero,myRooms,myDimension);
+        }
     }
 }

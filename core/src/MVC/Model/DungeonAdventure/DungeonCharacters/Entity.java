@@ -3,8 +3,10 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
 
+import java.io.Serializable;
 
-public abstract class Entity
+
+public abstract class Entity implements Serializable
 {
     private Vec2 myPos;
     private Vec2 myPreviousPos;
