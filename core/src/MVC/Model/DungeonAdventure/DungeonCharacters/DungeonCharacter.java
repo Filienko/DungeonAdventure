@@ -20,12 +20,12 @@ public abstract class DungeonCharacter extends Entity
     /**
      * The minimum amount of damage the character can inflict.
      */
-    private final int myMinDamageRange;
+    private int myMinDamageRange;
 
     /**
      * The maximum amount of damage the character can inflict.
      */
-    private final int myMaxDamageRange;
+    private int myMaxDamageRange;
 
     /**
      * The character's hit points (health).
@@ -79,7 +79,14 @@ public abstract class DungeonCharacter extends Entity
         //while (Physics.isInside(theDamageArea, theOpponent)) {
         //  -- attack the opponent
         //}
-        int damage = 10; //damage should be generated between min/max damage range ?
+        int damage = 1; //damage should be generated between min/max damage range ?
+
+
+        //apply invincibility for Heros for 30 frames after each hit from Monsters
+
+
+        //get overlap between opponenets
+        //if overlap.x and overlap.y > 0, this means an overlap
 
         theOpponent.applyDamage(damage);
 
@@ -144,6 +151,10 @@ public abstract class DungeonCharacter extends Entity
     {
         return this.myMaxDamageRange;
     }
+
+
+    // add setters for damage range
+
 
     /**
      * This method retrieves the character's maximum speed.

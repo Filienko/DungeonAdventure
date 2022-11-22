@@ -13,6 +13,8 @@ public abstract class Entity
     private boolean myEntityAnimated;
     private Animation myAnimation;
 
+    private boolean myActiveStatus;
+
     private Vec2 myVector;
     private long myCurrentFrame;
     private long myAttackStart;
@@ -49,6 +51,9 @@ public abstract class Entity
 
     public void attack() {};
 
+    public void destroy() {
+        this.myActiveStatus = false; //if an entity is killed, use this method
+    }
     public Vec2 getMyPos()
     {
         return myPos;

@@ -16,6 +16,7 @@ public interface Healable {
         Random rand = new Random();
         int healPoints = rand.nextInt(theHealMax) + 1;
         //what if adding healPoints pushes the character past its hit points maximum?
+
         theCharacter.setHitPoints(theCharacter.getHitPoints() + healPoints);
         return healPoints;
     }

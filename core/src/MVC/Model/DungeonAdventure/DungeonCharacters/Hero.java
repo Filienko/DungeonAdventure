@@ -2,7 +2,6 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.DungeonItems.Items.Pillar;
-import MVC.Model.DungeonItems.Weapon.Attackable;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
@@ -36,7 +35,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The Hero's weapon.
      */
-    private Attackable myWeapon = new Sword();
+    private Sword myWeapon = new Sword();
 
     /**
      * A list of all the Potions in the Hero's inventory.
@@ -52,6 +51,12 @@ public abstract class Hero extends DungeonCharacter
      * The Hero's hit points (health).
      */
     private final int myHitPoints;
+
+    boolean up;
+    boolean down;
+    boolean left;
+    boolean right;
+    boolean attack;
 
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -76,6 +81,8 @@ public abstract class Hero extends DungeonCharacter
         this.myPotions = new ArrayList<>();
         this.myPillars = new ArrayList<>();
         this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+
+        //all booleans to false
     }
 
     /**
@@ -87,12 +94,12 @@ public abstract class Hero extends DungeonCharacter
         super.setPos(theCoordinates);
     }
 
-    public Attackable getWeapon()
+    public Sword getWeapon()
     {
         return myWeapon;
     }
 
-    public void setWeapon(final Attackable theWeapon)
+    public void setWeapon(final Sword theWeapon)
     {
         this.myWeapon = theWeapon;
     }
@@ -104,6 +111,12 @@ public abstract class Hero extends DungeonCharacter
         {
             myWeapon = EntityFactory.generateSword();
         }
+    }
+
+    @Override
+    public void movement()
+    {
+        //set velocity based on booleans passed
     }
 
     /**
