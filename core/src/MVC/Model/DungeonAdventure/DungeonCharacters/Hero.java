@@ -1,16 +1,14 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
-import MVC.Model.DungeonItems.Weapon.Attackable;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public abstract class Hero extends DungeonCharacter
 {
-    private Attackable myWeapon = new Sword();;
+    private Sword myWeapon = new Sword();;
     private final String myName;
     private final String myCharacterType;
     private final boolean isHero;
@@ -37,12 +35,12 @@ public abstract class Hero extends DungeonCharacter
         super.setPos(theCoordinates);
     }
 
-    public Attackable getWeapon()
+    public Sword getWeapon()
     {
         return myWeapon;
     }
 
-    public void setWeapon(final Attackable theWeapon)
+    public void setWeapon(final Sword theWeapon)
     {
         myWeapon = theWeapon;
     }

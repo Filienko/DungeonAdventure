@@ -3,16 +3,18 @@ package MVC.Model.DungeonItems.Items;
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.Physics.Vec2;
 
+import java.util.Random;
+
 public class HealingPotion extends Potion
 {
     public HealingPotion()
     {
-        super(15,new Vec2());
+        super(15);
     }
 
-    public HealingPotion(final int theStrength, Vec2 thePosition)
+    public HealingPotion(final int theStrength)
     {
-        super(theStrength, thePosition);
+        super(theStrength);
     }
 
     @Override

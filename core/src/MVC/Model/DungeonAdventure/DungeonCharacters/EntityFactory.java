@@ -10,6 +10,7 @@ import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class EntityFactory
 {
@@ -107,23 +108,44 @@ public class EntityFactory
     public static ArrayList<Room> generateRooms(int n1)
     {
         var arr = new ArrayList<Room>();
-        int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2); // Number of rooms + boundary rooms
+        // Number of rooms + boundary rooms
+        int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2);
 
-        arr.add(new Room(true, 1, new Vec2()));
-        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
-
-        for (int i = 2; i < ((n1+2)*n1)-1; i++)
+        //More random Position of entrance and exit
+        int entrance = new Random().nextInt(1,(n1+2)*n1);
+        int exit = new Random().nextInt(1,(n1+2)*n1);
+        while(exit == entrance || entrance % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1
+                || entrance % Math.sqrt(allVertices) == 0 || exit % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1
+                || exit % Math.sqrt(allVertices) == 0)
         {
-            //Skip first and last buffer rooms in the row
+            entrance = new Random().nextInt(1,(n1+2)*n1);
+            exit = new Random().nextInt(1,(n1+2)*n1);
+        }
+
+        //Alternative approach to generate maze with the position of a hero at 0 and end at the last square
+//        arr.add(new Room(true, 1, new Vec2()));
+//        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
+
+        for (int i = 1; i < ((n1+2)*n1)-1; i++)
+        {
+            //Skip buffer rooms
             if(i % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1 || i % Math.sqrt(allVertices) == 0)
             {
                 continue;
             }
-            //Account for buffer offset
-            int row = i / (n1+2);
-            int col = (i % (n1+2))-1;
+            int row = i / n1;
+            int col = (i % n1);
             arr.add(new Room(i, new Vec2(row,col)));
         }
+
+        var pillars = generatePillars();
+        for (int i = 0; i < 4; i++)
+        {
+            arr.get(new Random().nextInt(0,arr.size())).addItem(pillars.get(i));
+        }
+
+        arr.get(new Random().nextInt(0,arr.size())).setExitStatus(true).addItem(new Exit());
+        arr.get(new Random().nextInt(0,arr.size())).setEntranceStatus(true);
         return arr;
     }
 
@@ -136,15 +158,14 @@ public class EntityFactory
         }
         return arr;
     }
-
     public static ArrayList<Pillar> generatePillars()
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation", new Vec2()));
-        arr.add(new Pillar("Inheritance", new Vec2()));
-        arr.add(new Pillar("Abstraction", new Vec2()));
-        arr.add(new Pillar("Polymorphism", new Vec2()));
+        arr.add(new Pillar("Encapsulation"));
+        arr.add(new Pillar("Inheritance"));
+        arr.add(new Pillar("Abstraction"));
+        arr.add(new Pillar("Polymorphism"));
 
         return arr;
     }

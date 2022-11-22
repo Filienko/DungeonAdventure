@@ -4,19 +4,22 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 
+import java.util.Random;
+
 public class Exit extends Item
 {
     private static Exit myExit;
 
-    public Exit(Vec2 theCoordinate)
+    public Exit()
     {
-        super("Exit", theCoordinate);
+        super("Exit", new Vec2((new Random()).nextInt(0, 20),
+                (new Random()).nextInt(0, 12)));
     }
 
-    public static Exit getInstance(Vec2 theCoordinate) {
+    public static Exit getInstance() {
         if (myExit == null) {
             // instantiate it with the  constructor
-            myExit = new Exit(theCoordinate);
+            myExit = new Exit();
         }
         // return the instance
         return myExit;

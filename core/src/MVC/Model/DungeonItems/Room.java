@@ -6,13 +6,11 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-//TODO: discuss container Class
-public class Room extends Entity implements Serializable
+public class Room
 {
     /**
      * The int indicating room's number.
@@ -89,7 +87,6 @@ public class Room extends Entity implements Serializable
      */
     public Room()
     {
-        super(new Vec2(),new Vec2());
         this.myEntrance = false;
         this.myExit = false;
         this.myRoomHasItems = false;
@@ -103,7 +100,6 @@ public class Room extends Entity implements Serializable
      */
     public Room(final int theNumber, Vec2 theLocation)
     {
-        super(theLocation,new Vec2());
         this.myNumber = theNumber;
         this.myEntrance = false;
         this.myExit = false;
@@ -119,7 +115,6 @@ public class Room extends Entity implements Serializable
      */
     public Room(boolean theEntrance, int theNumber, Vec2 theLocation)
     {
-        super(theLocation,new Vec2());
         if(theEntrance)
         {
             this.myEntrance = true;
@@ -131,9 +126,9 @@ public class Room extends Entity implements Serializable
             this.myEntrance = false;
             this.myExit = true;
             this.myHeroPresent = false;
-            myItems.add((new Exit(super.getMyBoundingBox())).getInstance(new Vec2(new Random().nextInt(0, (int) super.getMyBoundingBox().getMyX()+10),
-                    new Random().nextInt(0, (int) super.getMyBoundingBox().getMyY()+10))));
+            myItems.add(new Exit());
         }
+
         this.myNumber = theNumber;
         this.myRoomHasItems = true;
         this.myRoomHasMonsters = true;
@@ -154,7 +149,6 @@ public class Room extends Entity implements Serializable
     public Room(final boolean theEntrance, final boolean theExit, final List<Door> theDoors, boolean theRoomHasItem,
                 final boolean theRoomHasMonsters, final List<Item> theItems, final Vec2 theLocation)
     {
-        super(theLocation,new Vec2());
         //how to guard against both being entered as true ?
         this.myExit = theExit;
         this.myEntrance = theEntrance;
@@ -172,7 +166,7 @@ public class Room extends Entity implements Serializable
     public void populateTheRoom()
     {
         Random random = new Random();
-        populatePotions(random);
+        populatePotions(random,1);
         populatePit(random);
         populateDoors(random);
         populateMonsters();
@@ -186,39 +180,39 @@ public class Room extends Entity implements Serializable
 
     private void populateDoors(final Random theRandom)
     {
-        if(myE){myDoors.add(new Door(false));}
-        if(myN){myDoors.add(new Door(false));}
-        if(myW){myDoors.add(new Door(false));}
-        if(myS){myDoors.add(new Door(false));}
+        myDoors.add(new Door(false));
+        myDoors.add(new Door(false));
+        myDoors.add(new Door(false));
+        myDoors.add(new Door(false));
     }
 
     private void populatePit(final Random theRandom)
     {
         if(theRandom.nextDouble() < 0.10)
         {
-            this.myItems.add(new Pit(new Vec2(theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyX()+10),
-                theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyY()+10))));
+            this.myItems.add(new Pit(new Vec2((new Random()).nextInt(0, 20),
+                    (new Random()).nextInt(0, 12))));
         }
     }
 
-    private void populatePotions(final Random theRandom)
+    private void populatePotions(final Random theRandom, int theNumber)
     {
-        if(theRandom.nextDouble() < 0.333)
+        for (int i = 0; i < theNumber; i++)
         {
-            this.myItems.add(new HealingPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyX()+10), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()+10))));
-        }
-        else if(theRandom.nextDouble() < 0.67)
-        {
-            this.myItems.add(new AttackPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyX()+10), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()+10))));
-        } else
-        {
-            this.myItems.add(new SpeedPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyX()+10), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()+10))));
+            var randD = theRandom.nextDouble();
+            if (randD < 0.333)
+            {
+                //20 wide and 12 tall tiles per room
+                this.myItems.add(new HealingPotion(theRandom.nextInt(15, 46)));
+            }
+            else if (randD < 0.67)
+            {
+                this.myItems.add(new AttackPotion(theRandom.nextInt(15, 46)));
+            }
+            else
+            {
+                this.myItems.add(new SpeedPotion());
+            }
         }
     }
 
@@ -237,7 +231,7 @@ public class Room extends Entity implements Serializable
      */
     public void setEntranceStatus(final boolean theEntrance)
     {
-        if (this.myExit && theEntrance)
+        if (this.myExit)
         {
             return;
         }
@@ -257,12 +251,12 @@ public class Room extends Entity implements Serializable
      * This method allows you to set the Exit status of the Room (cannot be set to true if myEntrance is set to true).
      * @param theExit Boolean that determines whether the Room is the Entrance to the Dungeon.
      */
-    public void setExitStatus(final boolean theExit) {
-        if (this.myEntrance && theExit)
+    public Room setExitStatus(final boolean theExit) {
+        if (!this.myEntrance)
         {
-            return;
+            this.myEntrance = theExit;
         }
-        this.myEntrance = theExit;
+        return this;
     }
 
     /**

@@ -14,6 +14,7 @@ public abstract class Entity implements Serializable
     private final Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
+    private static final long serialVersionUID = 42L;
 
     protected Entity(final Vec2 thePos, final Vec2 theBoundingBox)
     {

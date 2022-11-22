@@ -1,14 +1,12 @@
-package MVC.Model.DungeonAdventure.DungeonCharacters;
+package MVC.Model.Saver;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,20 +23,22 @@ public class Saver
         dungeon.getRooms().add(new Room());
         System.out.println(dungeon.getRooms().size());
         var caretaker = new Saver();
-        caretaker.saveStateDungeon(dungeon);
+        caretaker.saveTheGame(dungeon);
         dungeon.setHero(new Priestess());
+        dungeon.getRooms().add(new Room());
         dungeon.getRooms().add(new Room());
         System.out.println(dungeon.getRooms().size());
         dungeon = caretaker.loadTheGame();
         System.out.println(dungeon.getRooms().size());
-
     }
+
     public void saveTheGame(Dungeon theDungeon)
     {
         try
         {
             //Creating stream and writing the object
-            ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream("dungeon.da"));
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(
+                    new File("core/src/MVC/Model/Saver/dungeon.ser")));
             out.writeObject(theDungeon);
             out.flush();
             //closing the stream
@@ -53,11 +53,12 @@ public class Saver
 
     public Dungeon loadTheGame()
     {
-        Dungeon game = new Dungeon();
+        Dungeon game = null;
         try
         {
             //Creating stream to read the object
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("dungeon.da"));
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(
+                    new File("core/src/MVC/Model/Saver/dungeon.ser")));
             game = (Dungeon) in.readObject();
             //printing the data of the serialized object
             System.out.println(game.getRooms());

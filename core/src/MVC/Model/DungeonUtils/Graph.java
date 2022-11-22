@@ -158,6 +158,7 @@ public class Graph
                 G.edge[4*i+3].weight = new Random().nextInt(0,7);
             }
         }
+
         return G.KruskalAlgo(allVertices);
     }
 }

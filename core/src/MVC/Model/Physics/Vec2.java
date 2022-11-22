@@ -1,6 +1,8 @@
 package MVC.Model.Physics;
 
-public class Vec2
+import java.io.Serializable;
+
+public class Vec2 implements Serializable
 {
 private float myX;
 private float myY;

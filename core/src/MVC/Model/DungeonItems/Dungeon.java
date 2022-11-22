@@ -26,15 +26,24 @@ public class Dungeon implements Serializable
     public Dungeon()
     {
         myHero = new Warrior("Brave Warrior",new Vec2());
-        myDimension = 3;
+        myDimension = 4;
         myRooms = EntityFactory.generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myDimension);
     }
 
-    public Dungeon(Hero theHero, int theDimension)
+    public Dungeon(final Hero theHero, final int theDimension)
     {
+        if(theDimension<4)
+        {
+            System.out.println("Minimum Dimension for the dungeon is 4 by 4. We are setting up the 4 by 4 maze");
+            myDimension = 4;
+        }
+        else
+        {
+            myDimension = theDimension;
+        }
+
         myHero = theHero;
-        myDimension = theDimension;
         myRooms = EntityFactory.generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myDimension);
     }
@@ -57,10 +66,18 @@ public class Dungeon implements Serializable
 
     private Dungeon(final Room[][] theDungeon, final Hero theHero, final List<Room> theRooms, final int theDimension)
     {
+        if(theDimension<4)
+        {
+            System.out.println("Minimum Dimension for the dungeon is 4 by 4. We are setting up the 4 by 4 maze");
+            myDimension = 4;
+        }
+        else
+        {
+            myDimension = theDimension;
+        }
         myDungeon = theDungeon;
         myHero = theHero;
         myRooms = theRooms;
-        myDimension = theDimension;
     }
 
     /**
@@ -134,21 +151,14 @@ public class Dungeon implements Serializable
                     }
                 }
             }
-
-        }
-        for (int i = 0; i < myRooms.get(myRooms.size()-1).getNumber(); i++)
-        {
-            myRooms.get(i).getNumber();
-        }
-        for (int i = 0; i < (theDimension+2)*(theDimension+2); i++)
-        {
-
         }
 
         var answer = new Room[(theDimension)][(theDimension)];
+
         for (var room:myRooms)
         {
             answer[(int) room.getLocation().getMyX()][(int) room.getLocation().getMyX()] = room;
+            System.out.println("Room "+room.getNumber());
         }
         return answer;
     }

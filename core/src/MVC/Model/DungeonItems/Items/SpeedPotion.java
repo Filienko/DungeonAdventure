@@ -7,12 +7,12 @@ public class SpeedPotion extends Potion
 {
     public SpeedPotion()
     {
-        super(5,new Vec2());
+        super(5);
     }
 
-    public SpeedPotion(final int theStrength, Vec2 thePosition)
+    public SpeedPotion(final int theStrength)
     {
-        super(theStrength, thePosition);
+        super(theStrength);
     }
 
     @Override

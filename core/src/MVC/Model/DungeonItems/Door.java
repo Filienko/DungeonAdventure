@@ -1,15 +1,10 @@
 package MVC.Model.DungeonItems;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
-import MVC.Model.DungeonUtils.Graph;
 import MVC.Model.Physics.Vec2;
 
-public class Door extends Entity implements Comparable<Door>
+public class Door extends Entity
 {
-    private int src;
-    private int dest;
-    private int weight;
-
     private Vec2 myLocation;
     private boolean myDoorOpen;
 
@@ -45,10 +40,5 @@ public class Door extends Entity implements Comparable<Door>
     public void setMyDoorOpen(final boolean myDoorOpen)
     {
         this.myDoorOpen = myDoorOpen;
-    }
-
-    public int compareTo(Door compareEdge)
-    {
-        return this.weight - compareEdge.weight;
     }
 }

@@ -29,11 +29,16 @@ public class Priestess extends Hero implements Healable
     {
         double chance = Math.random();
         int damage = 0;
-        if (chance < 0.2) {
+        if (chance < 0.2)
+        {
             return damage;
-        } else if (chance < 0.6) {
-            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
-        } else if (chance < 1.0) {
+        }
+        else if (chance < 0.6)
+        {
+            damage = attack(theOpponent, super.getWeapon().getMyBoundingBox());
+        }
+        else if (chance < 1.0)
+        {
             damage += attack(theOpponent);
         }
         return damage;

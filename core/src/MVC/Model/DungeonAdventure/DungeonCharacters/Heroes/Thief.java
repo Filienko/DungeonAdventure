@@ -28,7 +28,7 @@ public class Thief extends Hero
         if (chance < 0.2) {
             return damage;
         } else if (chance < 0.6) {
-            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
+            damage = attack(theOpponent, super.getWeapon().getMyBoundingBox());
         } else if (chance < 1.0) {
             damage += surpriseAttack(theOpponent);
         }

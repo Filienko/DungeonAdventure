@@ -85,10 +85,10 @@ public class SQLConnection extends SuperSQLConnection
                 ") VALUES (0,200,'Ogre',30,60,2,0,0,0,0)";
         String gremlinQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,'Gremlin',70,'Gremlin',15,30,5,0,0,0,0)";
+                ") VALUES (0,70,'Gremlin',15,30,5,0,0,0,0)";
         String elfQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,'Elf',100,'Elf',30,50,3,0,0,0,0)";
+                ") VALUES (0,100,'Elf',30,50,3,0,0,0,0)";
 
 
         try (Connection conn = ds.getConnection();
@@ -127,7 +127,7 @@ public class SQLConnection extends SuperSQLConnection
                 super.setCharacterType(rs.getString( "myCharacterType" ));
                 super.setMaxSpeed( Integer.parseInt(rs.getString( "myMaxSpeed" )));
                 super.setMinimumRange( Integer.parseInt(rs.getString( "myMaxDamageRange" )));
-                super.setMaxDamageRange(Integer.parseInt(rs.getString( "myMinDamageRange" )));
+                super.setMaxDamageRange(Integer.parseInt(rs.getString( "myMinimumRange" )));
                 super.setX(Float.parseFloat(rs.getString( "myX" )));
                 super.setY(Float.parseFloat(rs.getString( "myY" )));
                 super.setVelocityX(Float.parseFloat(rs.getString( "myVelocityX" )));

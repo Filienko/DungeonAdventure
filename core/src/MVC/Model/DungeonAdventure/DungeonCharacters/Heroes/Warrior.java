@@ -25,7 +25,7 @@ public class Warrior extends Hero
         double chance = Math.random();
         int damage = 0;
         if (chance < 0.4) {
-            damage = attack(theOpponent, super.getWeapon().getBoundingBox());
+            damage = attack(theOpponent, super.getWeapon().getMyBoundingBox());
         } else if (chance < 0.6) {
             Random rand = new Random();
             damage = rand.nextInt(75, 175);
