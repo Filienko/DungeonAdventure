@@ -11,14 +11,13 @@ import java.util.Random;
 public abstract class Hero extends DungeonCharacter
 {
     private Attackable myWeapon = new Sword();;
-    private static final Random rand = new Random();
     private final String myName;
     private final String myCharacterType;
     private final boolean isHero;
     private int myHealingPotions = 0;
     private int myVisionPotions = 0 ;
     private List<String> myPillars;
-    private final int myHitPoints;
+    private int myHitPoints;
 
     public Hero(String theName, String theCharacterType, int theHitPoints, final int theMinDamageRange,
                 final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,

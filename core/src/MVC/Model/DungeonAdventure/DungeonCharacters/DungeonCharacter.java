@@ -20,6 +20,7 @@ public abstract class DungeonCharacter extends Entity
                      final int theMinDamageRange, final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos,
                      final Vec2 theVelocity)
     {
+        super(new Vec2(),new Vec2());
         this.myCharacterType = theCharacterType;
         this.isHero = theHero;
         this.myMinDamageRange = theMinDamageRange;

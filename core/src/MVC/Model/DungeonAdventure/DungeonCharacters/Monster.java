@@ -6,9 +6,9 @@ public class Monster extends DungeonCharacter implements Healable
 {
     private final String myCharacterType;
     private final boolean isHero;
-    private final int myHitPoints;
+    private int myHitPoints;
 
-    Monster( int theHitPoints,
+    Monster(final int theHitPoints,
             String theCharacterType, final int theMinimumRange,
             final int theMaxDamageRange, final int theMaxSpeed,
             final Vec2 thePos, final Vec2 theVelocity)
