@@ -14,7 +14,7 @@ public class Physics {
         return getOverlapVector(theEntity1, theEntity2, theEntity1.getMyPreviousPos(), theEntity2.getMyPreviousPos());
     }
 
-    private static Vec2 getOverlapVector(final Entity theEntity1, final Entity theEntity2, final Vec2 thePosition1, final Vec2 thePosition2)
+    public static Vec2 getOverlapVector(final Entity theEntity1, final Entity theEntity2, final Vec2 thePosition1, final Vec2 thePosition2)
     {
         Vec2 en1HalfSize= theEntity1.getMySize().divide(2);
         Vec2 en2HalfSize= theEntity2.getMySize().divide(2);
@@ -47,7 +47,6 @@ public class Physics {
         }
 
         return inside;
-
     };
 
     public static Intersect lineIntersect(final Vec2 theVec1, final Vec2 theVec2, final Vec2 theVec3, final Vec2 theVec4)
@@ -70,8 +69,7 @@ public class Physics {
         return result;
     };
 
-    //TODO:Assess for quality
-    public static boolean entityIntersect(final Vec2 theVec1, final Vec2 theVec2, Entity theEntity)
+    public static boolean entityIntersect(final Vec2 theVec1, final Vec2 theVec2, final Entity theEntity)
     {
         float halfSizeX= theEntity.getMySize().divide(2).getMyX();
         float halfSizeY= theEntity.getMySize().divide(2).getMyY();

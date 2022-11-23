@@ -11,19 +11,6 @@ public class SQLConnection extends SuperSQLConnection
 {
     public SQLiteDataSource myDS = establishConnection();
 
-    public static void main(String[] args)
-    {
-        SQLConnection db = new SQLConnection("Ogre");
-
-        System.out.println(db.getCharacterType());
-        db = new SQLConnection("Gremlin");
-
-        System.out.println(db.getCharacterType());
-        db = new SQLConnection("Elf");
-
-        System.out.println(db.getCharacterType());
-    }
-
     public SQLConnection(final String monsterType)
     {
         if(monsterType.contentEquals("Ogre"))
@@ -40,7 +27,7 @@ public class SQLConnection extends SuperSQLConnection
         }
     }
 
-    static SQLiteDataSource establishConnection()
+    public static SQLiteDataSource establishConnection()
     {
         //establish connection (creates db file if it does not exist :-)
         SQLiteDataSource ds = null;
@@ -78,8 +65,7 @@ public class SQLConnection extends SuperSQLConnection
             System.exit(0);
         }
 
-        //next insert two rows of data
-
+        //next insert three rows of data
         String ogreQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myMinimumRange,myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
                 ") VALUES (0,200,'Ogre',30,60,2,0,0,0,0)";

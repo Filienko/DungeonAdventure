@@ -79,7 +79,7 @@ public class Graph
     {
         Edge result[] = new Edge[vertices];
         int e = 0;
-        int i = 0;
+        int i;
         for (i = 0; i < vertices; ++i)
             result[i] = new Edge();
 
@@ -116,7 +116,6 @@ public class Graph
         }
         var answer = new ArrayList<Edge>();
         for (i = 0; i < e; ++i){
-            System.out.println(result[i].src + " - " + result[i].dest + ": " + result[i].weight);
             int trueVertices = (int) Math.pow( Math.sqrt(theVertices)-2,2);
             if(result[i].dest % Math.sqrt(theVertices) != Math.sqrt(theVertices)-1 &&
                     result[i].dest % Math.sqrt(theVertices) != 0 &&
@@ -133,10 +132,11 @@ public class Graph
     //Customized Method
     public static ArrayList<Edge> generateMaze(int theDimension)
     {
-        int allVertices = (int) Math.pow((Math.sqrt(theDimension*theDimension)+2),2); // Number of rooms + boundary rooms
-        Graph G = new Graph(allVertices, allVertices*theDimension*2);
+        var dimensionWithBuffer = theDimension + 2;
+        int allVertices = (int) Math.pow(dimensionWithBuffer,2); // Number of rooms + boundary rooms
+        Graph G = new Graph(allVertices, allVertices*allVertices-1);
 
-        for (int i = (int) Math.sqrt(allVertices)+1; i < (theDimension*4+2*((int) Math.sqrt(allVertices))); i++)
+        for (int i = dimensionWithBuffer+1; i < (allVertices-1)-(dimensionWithBuffer); i++)
         {
             if(i % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1 || i % Math.sqrt(allVertices) == 0)
             {

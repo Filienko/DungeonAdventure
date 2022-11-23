@@ -1,16 +1,16 @@
 package MVC.Model.DungeonItems;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Room
+public class Room implements Serializable, Cloneable
 {
     /**
      * The int indicating room's number.
@@ -92,7 +92,6 @@ public class Room
         this.myRoomHasItems = false;
         this.myLocation = new Vec2();
         this.myHeroPresent = false;
-        populateTheRoom();
     }
 
     /**
@@ -107,7 +106,6 @@ public class Room
         this.myLocation = theLocation;
         this.myHeroPresent = false;
         this.myRoomHasMonsters = true;
-        populateTheRoom();
     }
 
     /**
@@ -133,7 +131,6 @@ public class Room
         this.myRoomHasItems = true;
         this.myRoomHasMonsters = true;
         this.myLocation = theLocation;
-        populateTheRoom();
     }
 
     /**
@@ -158,44 +155,48 @@ public class Room
         this.myItems = theItems;
         this.myLocation = theLocation;
         this.myHeroPresent = false;
-        populateTheRoom();
     }
     /**
      * Populates the rooms with random items.
      */
-    public void populateTheRoom()
+    public void populateTheRoom(boolean theTest)
     {
         Random random = new Random();
         populatePotions(random,1);
-        populatePit(random);
-        populateDoors(random);
+        if(theTest){
+            populatePit(0.09);
+        } else
+        {
+            populatePit(random.nextDouble());
+        }
+        populateDoors();
         populateMonsters();
     }
 
-    private void populateMonsters()
+    public void populateMonsters()
     {
         myRoomHasMonsters = true;
         myMonsters.addAll(EntityFactory.generateMonsters(1));
     }
 
-    private void populateDoors(final Random theRandom)
+    public void populateDoors()
     {
-        myDoors.add(new Door(false));
-        myDoors.add(new Door(false));
-        myDoors.add(new Door(false));
-        myDoors.add(new Door(false));
+        if(myE){myDoors.add(new Door(false));}
+        if(myN){myDoors.add(new Door(false));}
+        if(myW){myDoors.add(new Door(false));}
+        if(myS){myDoors.add(new Door(false));}
     }
 
-    private void populatePit(final Random theRandom)
+    public void populatePit(double theChance)
     {
-        if(theRandom.nextDouble() < 0.10)
+        if(theChance < 0.10)
         {
             this.myItems.add(new Pit(new Vec2((new Random()).nextInt(0, 20),
                     (new Random()).nextInt(0, 12))));
         }
     }
 
-    private void populatePotions(final Random theRandom, int theNumber)
+    public void populatePotions(final Random theRandom, int theNumber)
     {
         for (int i = 0; i < theNumber; i++)
         {
@@ -229,13 +230,13 @@ public class Room
      * This method allows you to set the Entrance status of the Room (cannot be set to true if myExit is set to true).
      * @param theEntrance Boolean that determines whether the Room is the Entrance to the Dungeon.
      */
-    public void setEntranceStatus(final boolean theEntrance)
+    public Room setEntranceStatus(final boolean theEntrance)
     {
-        if (this.myExit)
+        if (!myExit)
         {
-            return;
+            this.myEntrance = theEntrance;
         }
-        this.myEntrance = theEntrance;
+        return this;
     }
 
     /**
@@ -251,10 +252,11 @@ public class Room
      * This method allows you to set the Exit status of the Room (cannot be set to true if myEntrance is set to true).
      * @param theExit Boolean that determines whether the Room is the Entrance to the Dungeon.
      */
-    public Room setExitStatus(final boolean theExit) {
-        if (!this.myEntrance)
+    public Room setExitStatus(final boolean theExit)
+    {
+        if (!myEntrance)
         {
-            this.myEntrance = theExit;
+            this.myExit = theExit;
         }
         return this;
     }
@@ -323,20 +325,13 @@ public class Room
      * @return A list of Doors.
      */
     public List<Door> getDoors() { return this.myDoors; }
+
     /**
      * @return whether Room is an entrance.
      */
     private boolean isEntrance()
     {
         return myEntrance;
-    }
-
-    /**
-     * @param theEntrance the Entrance status of the room.
-     */
-    private void setEntrance(final boolean theEntrance)
-    {
-        myEntrance = theEntrance;
     }
 
     /**
@@ -364,27 +359,19 @@ public class Room
     }
 
     /**
-     * @return whether Hero in the Room.
-     */
-    private boolean isHeroPresent()
-    {
-        return myHeroPresent;
-    }
-
-    /**
-     * @param theHeroPresent define whether Hero would be present in the room.
-     */
-    private void setHeroPresent(final boolean theHeroPresent)
-    {
-        myHeroPresent = theHeroPresent;
-    }
-
-    /**
      * @return the number of the Room.
      */
-    int getNumber()
+    public int getNumber()
     {
         return myNumber;
+    }
+
+    /**
+     * @param theNumber intended number of the Room.
+     */
+    public void setNumber(final int theNumber)
+    {
+        myNumber = theNumber;
     }
 
     /**
@@ -418,30 +405,56 @@ public class Room
     /**
      * @param theE signifies that Room has East Entry.
      */
-    void setE(final boolean theE)
+    public void setE(final boolean theE)
     {
         myE = theE;
     }
     /**
      * @param theN signifies that Room has North Entry.
      */
-    void setN(final boolean theN)
+    public void setN(final boolean theN)
     {
         myN = theN;
     }
     /**
      * @param theW signifies that Room has West Entry.
      */
-    void setW(final boolean theW)
+    public void setW(final boolean theW)
     {
         myW = theW;
     }
     /**
      * @param theS signifies that Room has South Entry.
      */
-    void setS(final boolean theS)
+    public void setS(final boolean theS)
     {
         myS = theS;
+    }
+
+    public boolean isRoomHasMonsters()
+    {
+        return myRoomHasMonsters;
+    }
+
+    public void setRoomHasMonsters(final boolean theRoomHasMonsters)
+    {
+        myRoomHasMonsters = theRoomHasMonsters;
+    }
+
+    public List<Monster> getMonsters()
+    {
+        return myMonsters;
+    }
+
+    public void setMonsters(final List<Monster> theMonsters)
+    {
+        myMonsters = theMonsters;
+    }
+
+    protected Room clone() throws CloneNotSupportedException
+    {
+        Room s = (Room)super.clone();
+        return s;
     }
 
     /**

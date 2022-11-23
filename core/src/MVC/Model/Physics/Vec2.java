@@ -1,11 +1,18 @@
 package MVC.Model.Physics;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+
 import java.io.Serializable;
 
 public class Vec2 implements Serializable
 {
 private float myX;
 private float myY;
+
+     public static boolean equals(final Vec2 vec1,final Vec2 vec2)
+    {
+        return vec1.getMyX()==vec2.getMyX() && vec1.getMyY()==vec2.getMyY();
+    };
 
     public Vec2()
     {
@@ -19,14 +26,14 @@ private float myY;
         this.myY = myY;
     }
 
-    public boolean equals(final Vec2 myVector)
+    public boolean equals(final Vec2 theVector)
     {
-        return myX == myVector.getMyX() && myY == myVector.getMyY();
+        return myX == theVector.getMyX() && myY == theVector.getMyY();
     };
 
-    public Vec2 add(final Vec2 myVector)
+    public Vec2 add(final Vec2 theVector)
     {
-        return new Vec2(this.myX + myVector.getMyX(),this.myY + myVector.getMyY());
+        return new Vec2(this.myX + theVector.getMyX(),this.myY + theVector.getMyY());
     };
 
     public Vec2 add(final float theX, final float theY)
@@ -34,9 +41,9 @@ private float myY;
         return new Vec2(this.myX + theX,this.myY + theY);
     };
 
-    public Vec2 minus(final Vec2 myVector)
+    public Vec2 minus(final Vec2 theVector)
     {
-        return new Vec2(this.myX - myVector.getMyX(),this.myY - myVector.getMyY());
+        return new Vec2(this.myX - theVector.getMyX(),this.myY - theVector.getMyY());
     };
 
     public Vec2 divide(final float myFloat)
@@ -49,21 +56,21 @@ private float myY;
         return new Vec2(this.myX*myFloat,this.myY*myFloat);
     };
 
-    public void copy(final Vec2 myVector)
+    public void copy(final Vec2 theVector)
     {
-       myY = myVector.getMyY();
-       myX = myVector.getMyX();
+       myY = theVector.getMyY();
+       myX = theVector.getMyX();
     };
 
-    public float computeDistance(final Vec2 myVector)
+    public float computeDistance(final Vec2 theVector)
     {
-        return (float) Math.sqrt(getDistanceSquared(myVector));
+        return (float) Math.sqrt(getDistanceSquared(theVector));
     };
 
-    public float getDistanceSquared(final Vec2 myVector)
+    public float getDistanceSquared(final Vec2 theVector)
     {
-        return (myY - myVector.getMyY())*(myY - myVector.getMyY()) +
-                (myX - myVector.getMyX())*(myX - myVector.getMyX());
+        return (myY - theVector.getMyY())*(myY - theVector.getMyY()) +
+                (myX - theVector.getMyX())*(myX - theVector.getMyX());
     };
 
     public float getMagnitudeSquared()
@@ -72,7 +79,7 @@ private float myY;
     };
 
     //TODO:Research the efficiency, algorithm from StackOverflow
-    public float quickInverseSquareRoot(float x)
+    public float quickInverseMagnitude(float x)
     {
         float xhalf = 0.5f * x;
         int i = Float.floatToIntBits(x);
@@ -82,15 +89,15 @@ private float myY;
         return x;
     };
 
-    public float crossProduct(final Vec2 myVector)
+    public float crossProduct(final Vec2 theVector)
     {
-        return myX * myVector.getMyY() - myY * myVector.getMyX();
+        return myX * theVector.getMyY() - myY * theVector.getMyX();
     };
 
-    public float dotProduct(final Vec2 myVector)
+    public float dotProduct(final Vec2 theVector)
     {
 
-        return myX * myVector.getMyX() + myY * myVector.getMyY();
+        return myX * theVector.getMyX() + myY * theVector.getMyY();
     };
 
     public float getMyX()
@@ -112,4 +119,5 @@ private float myY;
     {
         this.myY = myY;
     }
+
 }

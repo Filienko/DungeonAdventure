@@ -111,17 +111,6 @@ public class EntityFactory
         // Number of rooms + boundary rooms
         int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2);
 
-        //More random Position of entrance and exit
-        int entrance = new Random().nextInt(1,(n1+2)*n1);
-        int exit = new Random().nextInt(1,(n1+2)*n1);
-        while(exit == entrance || entrance % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1
-                || entrance % Math.sqrt(allVertices) == 0 || exit % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1
-                || exit % Math.sqrt(allVertices) == 0)
-        {
-            entrance = new Random().nextInt(1,(n1+2)*n1);
-            exit = new Random().nextInt(1,(n1+2)*n1);
-        }
-
         //Alternative approach to generate maze with the position of a hero at 0 and end at the last square
 //        arr.add(new Room(true, 1, new Vec2()));
 //        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
@@ -133,19 +122,22 @@ public class EntityFactory
             {
                 continue;
             }
-            int row = i / n1;
-            int col = (i % n1);
+
+            //Account for the buffer offset
+            int row = i / (n1 + 2);
+            int col = (i % (n1 + 2)) - 1;
             arr.add(new Room(i, new Vec2(row,col)));
         }
 
         var pillars = generatePillars();
         for (int i = 0; i < 4; i++)
         {
-            arr.get(new Random().nextInt(0,arr.size())).addItem(pillars.get(i));
+            arr.get(new Random().nextInt(1,arr.size())).addItem(pillars.get(i));
         }
 
-        arr.get(new Random().nextInt(0,arr.size())).setExitStatus(true).addItem(new Exit());
-        arr.get(new Random().nextInt(0,arr.size())).setEntranceStatus(true);
+        arr.get(0).setEntranceStatus(true);
+        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(new Exit());
+
         return arr;
     }
 

@@ -14,24 +14,6 @@ public class Saver
 {
     private List<Dungeon.Memento> mySavedStates = new ArrayList<>();
 
-    public static void main(String[] args)
-    {
-        var entityFactory = new EntityFactory();
-        var dungeon = entityFactory.generateDungeon();
-        dungeon.setHero(new Thief());
-        System.out.println(dungeon.getRooms().size());
-        dungeon.getRooms().add(new Room());
-        System.out.println(dungeon.getRooms().size());
-        var caretaker = new Saver();
-        caretaker.saveTheGame(dungeon);
-        dungeon.setHero(new Priestess());
-        dungeon.getRooms().add(new Room());
-        dungeon.getRooms().add(new Room());
-        System.out.println(dungeon.getRooms().size());
-        dungeon = caretaker.loadTheGame();
-        System.out.println(dungeon.getRooms().size());
-    }
-
     public void saveTheGame(Dungeon theDungeon)
     {
         try
@@ -72,13 +54,23 @@ public class Saver
         return game;
     }
 
-    public void saveStateDungeon(Dungeon theDungeon)
+    public void saveStateDungeon(Dungeon theDungeon) throws CloneNotSupportedException
     {
         mySavedStates.add(theDungeon.saveToMemento());
     }
 
-    public void restoreStateDungeon(Dungeon theDungeon)
+    public void restoreLastStateDungeon(Dungeon theDungeon)
     {
         theDungeon.restoreFromMemento(mySavedStates.get(mySavedStates.size()-1));
+    }
+
+    public void restoreNthStateDungeon(Dungeon theDungeon,int thOrder)
+    {
+        theDungeon.restoreFromMemento(mySavedStates.get(thOrder-1));
+    }
+
+    public List<Dungeon.Memento> getSavedStates()
+    {
+        return mySavedStates;
     }
 }
