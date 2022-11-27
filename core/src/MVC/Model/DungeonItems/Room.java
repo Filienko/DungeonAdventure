@@ -6,6 +6,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
+
 import java.util.List;
 import java.util.Random;
 
@@ -464,6 +465,7 @@ public class Room extends Entity
         StringBuilder room = new StringBuilder();
 
         room.append("*-* \n | ");
+
         for (var Item:myItems)
         {
             switch (Item.getType()) {
@@ -478,6 +480,7 @@ public class Room extends Entity
                     break;
             }
         }
+
         if (myEntrance)
         {
             room.append("i");

@@ -13,6 +13,13 @@ public abstract class Entity
     private boolean myEntityAnimated;
     private Animation myAnimation;
 
+    private boolean myActiveStatus;
+
+    private Vec2 myVector;
+    private long myCurrentFrame;
+    private long myAttackStart;
+    private long myAttackDuration;
+
     protected Entity(final Vec2 thePos, final Vec2 theBoundingBox)
     {
         myPos = thePos;
@@ -30,6 +37,24 @@ public abstract class Entity
         myAnimation = theAnimation;
     }
 
+    public void update() {
+        movement();
+        attack();
+        this.myCurrentFrame++;
+    }
+
+    public void movement()
+    {
+        myPreviousPos = myPos;
+        myPos = myPos.add(myVector);
+    }
+
+    public void attack() {};
+
+    public void destroy() {
+        this.myActiveStatus = false; //if an entity is killed, use this method
+    }
+
     public Vec2 getMyPos()
     {
         return myPos;
@@ -37,7 +62,6 @@ public abstract class Entity
 
     public void setMyPos(Vec2 myPos)
     {
-
         this.myPos = myPos;
     }
 

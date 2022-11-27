@@ -5,7 +5,9 @@ import MVC.Model.DB.SuperSQLConnection;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
+import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.DungeonUtils.Graph;
+
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class EntityFactory
 
     public static Monster generateMonster(String monsterType)
     {
+
         DB = new SQLConnection(monsterType);
         return new Monster(DB.getHitPoints(),DB.getCharacterType(),
                 DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(),
@@ -191,6 +194,15 @@ public class EntityFactory
     }
 
     return arr;
+
+    }
+
+    //added this method
+    public static Sword generateSword() 
+    {
+        return new Sword();
+    }
+
 }
 
 }
