@@ -9,6 +9,12 @@ public class Sword extends Entity
     private int myLifeSpan; //must initialize this
     private long myCurrentFrame;
 
+    //must fix this constructor!!
+    public Sword()
+    {
+        super(new Vec2(), new Vec2());
+    }
+
     //should attackable extend Entity to get super.movement/super.attack or should attackable implement its own methods
     @Override
     public void update() {
@@ -23,13 +29,12 @@ public class Sword extends Entity
         this.myCurrentFrame++;
     }
 
-    @Override
+
     public Vec2 getBoundingBox()
     {
         return myBoundingBox;
     }
 
-    @Override
     public void setBoundingBox(final Vec2 theBoundingBox)
     {
         myBoundingBox = theBoundingBox;

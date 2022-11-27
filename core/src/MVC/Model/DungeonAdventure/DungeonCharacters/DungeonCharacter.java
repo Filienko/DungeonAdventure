@@ -146,6 +146,15 @@ public abstract class DungeonCharacter extends Entity
     }
 
     /**
+     * This method sets the minimum amount of damage a character can inflict.
+     * @param theMinDamageRange The minimum number of hit points a character's attack can affect.
+     */
+    public void setMinDamageRange(final int theMinDamageRange)
+    {
+        this.myMinDamageRange = theMinDamageRange;
+    }
+
+    /**
      * This method retrieves the maximum amount of damage a character can inflict.
      * @return The maximum number of hit points a character's attack can affect.
      */
@@ -154,9 +163,14 @@ public abstract class DungeonCharacter extends Entity
         return this.myMaxDamageRange;
     }
 
-
-    // add setters for damage range
-
+    /**
+     * This method sets the maximum amount of damage a character can inflict.
+     * @param theMaxDamageRange The maximum number of hit points a character's attack can affect.
+     */
+    public void setMaxDamageRange(final int theMaxDamageRange)
+    {
+        this.myMaxDamageRange = theMaxDamageRange;
+    }
 
     /**
      * This method retrieves the character's maximum speed.
@@ -165,6 +179,15 @@ public abstract class DungeonCharacter extends Entity
     public int getMaxSpeed()
     {
         return this.myMaxSpeed;
+    }
+
+    /**
+     * This method sets the character's maximum speed.
+     * @param theMaxSpeed How fast a character can move, expressed as an int.
+     */
+    public void setMaxSpeed(final int theMaxSpeed)
+    {
+        this.myMaxSpeed = theMaxSpeed;
     }
 
     /**

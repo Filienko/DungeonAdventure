@@ -22,7 +22,8 @@ public abstract class Potion extends Item
     public abstract void increase(DungeonCharacter theCharacter);
 
 
-    int getStrength()
+    //made public for testing!! change back to default
+    public int getStrength()
     {
         return myStrength;
     }

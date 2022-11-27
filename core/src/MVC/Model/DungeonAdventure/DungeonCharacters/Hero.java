@@ -53,11 +53,11 @@ public abstract class Hero extends DungeonCharacter
      */
     private final int myHitPoints;
 
-    boolean up;
-    boolean down;
-    boolean left;
-    boolean right;
-    boolean attack;
+    boolean myUp;
+    boolean myDown;
+    boolean myLeft;
+    boolean myRight;
+    boolean myAttack;
 
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -83,7 +83,11 @@ public abstract class Hero extends DungeonCharacter
         this.myPillars = new ArrayList<>();
         this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
 
-        //all booleans to false
+        this.myUp = false;
+        this.myDown = false;
+        this.myLeft = false;
+        this.myRight = false;
+        this.myAttack = false;
     }
 
     /**
@@ -112,6 +116,7 @@ public abstract class Hero extends DungeonCharacter
         if (myWeapon == null)
         {
             myWeapon = EntityFactory.generateSword();
+            super.attack();
         }
     }
 
@@ -125,12 +130,7 @@ public abstract class Hero extends DungeonCharacter
      * This method sets the Potions in the Hero's inventory.
      * @param thePotions Potions to be put into inventory.
      */
-    protected void setPotions(final List<Item> thePotions)
-
-    public String getName()
-    {
-        this.myPotions = thePotions;
-    }
+    protected void setPotions(final List<Item> thePotions) { this.myPotions = thePotions; }
 
     /**
      * This method adds a Potion to the Hero's inventory.
@@ -168,11 +168,12 @@ public abstract class Hero extends DungeonCharacter
         this.myPillars.add(thePillar);
     }
 
+    //changed visibility for testing!!! reevaluate if this should be protected (was originally) or public
     /**
      * This method retrieves the Pillars in the Hero's inventory.
      * @return Pillars in inventory.
      */
-    protected List<Pillar> getPillars()
+    public List<Pillar> getPillars()
     {
         return this.myPillars;
     }
@@ -220,7 +221,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public boolean getHeroStatus()
     {
-        return this.MY_HERO_STATUS;
+        return MY_HERO_STATUS;
     }
 
     /**
@@ -233,17 +234,5 @@ public abstract class Hero extends DungeonCharacter
         return this.myHitPoints;
     }
 
-    @Override
-    public String toString()
-    {
-        return "Name: " + myName +
-                " {" +
-                "myCharacterType + " + myCharacterType +
-                ", Hero status = " + isHero +
-                ", myHealingPotions = '" + myHealingPotions + '\'' +
-                ", myVisionPotions = '" + myVisionPotions + '\'' +
-                ", myPillars = " + myPillars.toString() +
-                '}';
-    }
 
 }

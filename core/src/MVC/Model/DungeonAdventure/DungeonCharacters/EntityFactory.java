@@ -21,9 +21,12 @@ public class EntityFactory
     {
 
         DB = new SQLConnection(monsterType);
-        return new Monster(DB.getHitPoints(),DB.getCharacterType(),
+                return new Monster(DB.getCharacterType(), DB.getHitPoints(),
                 DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(),
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
+//        return new Monster(DB.getHitPoints(),DB.getCharacterType(),
+//                DB.getMinimumRange(), DB.getMaxDamageRange(), DB.getMaxSpeed(),
+//                new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }
 
     public static Monster generateOgre()
@@ -202,7 +205,5 @@ public class EntityFactory
     {
         return new Sword();
     }
-
-}
 
 }

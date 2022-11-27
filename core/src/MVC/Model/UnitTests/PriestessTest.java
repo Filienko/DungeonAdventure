@@ -1,9 +1,7 @@
 package MVC.Model.UnitTests;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +49,8 @@ class PriestessTest
      * Test method for {@link Priestess#healHero(Hero)}.
      */
     @Test
-    void testHealHero() {
+    void testHealHero()
+    {
         final Priestess myPriestess1 = new Priestess();
         final Priestess myPriestess2 = new Priestess();
 

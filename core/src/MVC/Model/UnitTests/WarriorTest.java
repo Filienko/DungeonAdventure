@@ -1,8 +1,6 @@
 package MVC.Model.UnitTests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;

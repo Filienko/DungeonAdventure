@@ -7,6 +7,11 @@ import MVC.Model.Physics.Vec2;
 public class Thief extends Hero
 {
     /**
+     * Chance of being hidden when entering a room.
+     */
+    private static final double MY_HIDDEN_CHANCE = 0.4;
+
+    /**
      * The Thief's name
      */
     private String myName;
@@ -16,10 +21,7 @@ public class Thief extends Hero
      */
     private boolean myHiddenStatus = false;
 
-    /**
-     * Chance of being hidden when entering a room.
-     */
-    private double myHiddenChance = 0.4;
+
 
     /**
      * Thief constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
@@ -50,18 +52,22 @@ public class Thief extends Hero
     public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
     {
         double chance = Math.random();
-        if (chance < myHiddenChance) {
+        if (chance < MY_HIDDEN_CHANCE)
+        {
             myHiddenStatus = true;
         }
 
         int damage = 0;
-        if (myHiddenStatus) {
+        if (myHiddenStatus)
+        {
             chance = Math.random();
-            if (chance < 0.4) {
+            if (chance < 0.4)
+            {
                 damage = surpriseAttack(theOpponent);
             }
             myHiddenStatus = false;
-        } else {
+        } else
+        {
             damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
         }
         theOpponent.applyDamage(damage);
@@ -81,10 +87,7 @@ public class Thief extends Hero
         //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are, they get the chance to surprise attack
         // otherwise, they do a regular attack
 
-        int damage = attack(theOpponent, super.getWeapon().getBoundingBox());
-        damage += surpriseAttack(theOpponent);
-
-        return damage;
+        return super.attack(theOpponent, super.getWeapon().getBoundingBox()) + super.attack(theOpponent, super.getWeapon().getBoundingBox());
     }
 
     /**
