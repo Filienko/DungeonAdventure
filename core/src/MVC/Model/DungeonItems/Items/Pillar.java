@@ -1,14 +1,14 @@
 package MVC.Model.DungeonItems.Items;
 
-
-import MVC.Model.DungeonItems.Items.Item;
+import MVC.Model.Physics.Vec2;
 
 public class Pillar extends Item
 {
     private String myName;
 
-    public Pillar(final String theName)
+    public Pillar(final String theName, Vec2 theLocation)
     {
+        super("Pillar", theLocation);
         myName = theName;
     }
 
@@ -21,4 +21,6 @@ public class Pillar extends Item
     {
         this.myName = myName;
     }
+
 }
+
