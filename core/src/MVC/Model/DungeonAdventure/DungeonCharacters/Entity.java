@@ -12,6 +12,7 @@ public abstract class Entity
     private Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
+    private String myType;
 
     public Vec2 getMyPos()
     {
@@ -73,4 +74,7 @@ public abstract class Entity
     {
         myAnimation = theAnimation;
     }
+
+    public String getType() { return myType; }
+
 }

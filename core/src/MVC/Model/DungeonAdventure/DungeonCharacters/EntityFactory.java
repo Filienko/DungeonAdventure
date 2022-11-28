@@ -6,6 +6,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
+import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,18 @@ import java.util.List;
 public class EntityFactory
 {
     SuperSQLConnection DB;
+    ArrayList<Entity> myEntities;
+    ArrayList<Entity> myEntitiesToAdd;
+    ObjectMap<String, ArrayList<Entity>> myEntityMap;
+    long myTotalEntities;
 
+    public EntityFactory()
+    {
+        myEntities = new ArrayList<>();
+        myEntitiesToAdd = new ArrayList<>();
+        myEntityMap = new ObjectMap<>();
+        myTotalEntities = 0;
+    }
     public Monster generateMonster(String monsterType)
     {
         DB = new SQLConnection(monsterType);
@@ -22,7 +34,34 @@ public class EntityFactory
                 new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
     }
 
-    public void update() {}
+    public void update()
+    {
+        // add all entities that are pending
+        for (Entity e : myEntitiesToAdd)
+        {
+            myEntities.add(e);
+            myEntityMap.get(e.getType()).add(e);
+            myTotalEntities++;
+        }
+
+        myEntitiesToAdd.removeAll(myEntitiesToAdd);
+
+        // removeDeadEntities();
+
+        // update all entities
+        for (var kv : myEntityMap)
+        {
+            for (Entity e : kv.value)
+            {
+                if (kv.key.equals("Warrior"))
+                {
+                    Warrior warrior = (Warrior) e;
+                    warrior.update();
+                }
+            }
+        }
+
+    }
 
     public Monster generateOgre()
     {
@@ -92,7 +131,9 @@ public class EntityFactory
 
     public Hero generateWarrior()
     {
-        return new Warrior();
+        Warrior warrior = new Warrior();
+        myEntitiesToAdd.add(warrior);
+        return warrior;
     }
 
     public Hero generateThief()
@@ -173,13 +214,15 @@ public class EntityFactory
     }
     public List<AttackPotion> generateAttackPotions(int n1)
     {
-    var arr = new ArrayList<AttackPotion>();
+        var arr = new ArrayList<AttackPotion>();
 
-    for (int i = 0; i < n1; i++)
-    {
-        arr.add(new AttackPotion());
+        for (int i = 0; i < n1; i++)
+        {
+            arr.add(new AttackPotion());
+        }
+
+        return arr;
     }
 
-    return arr;
-}
+    public ArrayList<Entity> getEntities() { return myEntities; }
 }

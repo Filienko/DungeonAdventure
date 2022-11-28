@@ -3,8 +3,10 @@ package MVC.View;
 import MVC.View.Animation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.File;
@@ -86,7 +88,23 @@ public class Assets
 
     private void addFont(final String fontName, final String fileName)
     {
-        myFontMap.put(fontName, new BitmapFont(Gdx.files.internal(fileName)));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fileName));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 48;
+        parameter.color = Color.GOLDENROD;
+        myFontMap.put(fontName + "48", generator.generateFont(parameter));
+
+        parameter.size = 24;
+        parameter.color = Color.WHITE;
+        myFontMap.put(fontName + "24", generator.generateFont(parameter));
+
+        parameter.size = 40;
+        myFontMap.put(fontName + "40", generator.generateFont(parameter));
+
+        parameter.color = Color.GRAY;
+        myFontMap.put(fontName + "40Black", generator.generateFont(parameter));
+
+        generator.dispose();
         if (myFontMap.get(fontName) == null)
         {
             System.out.println("Could not load font: " + fileName);

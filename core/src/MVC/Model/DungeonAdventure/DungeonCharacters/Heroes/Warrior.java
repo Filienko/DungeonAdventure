@@ -44,4 +44,10 @@ public class Warrior extends Hero
     {
         myName = theName;
     }
+
+    public void update()
+    {
+        getMyAnimation().update();
+    }
+
 }
