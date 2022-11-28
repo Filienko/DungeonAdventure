@@ -12,6 +12,7 @@ public abstract class Entity
     private final Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
+    private String myType;
 
     private boolean myActiveStatus;
 
@@ -104,4 +105,7 @@ public abstract class Entity
     {
         myAnimation = theAnimation;
     }
+
+    public String getType() { return myType; }
+
 }

@@ -2,8 +2,7 @@ package Tests;
 
 import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
-import MVC.Model.Scenes.SceneGame;
-import MVC.Model.Scenes.SceneMenu;
+import MVC.View.Scenes.SceneMenu;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

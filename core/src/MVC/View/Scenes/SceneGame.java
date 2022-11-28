@@ -1,7 +1,8 @@
-package MVC.Model.Scenes;
+package MVC.View.Scenes;
 
 import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
@@ -12,7 +13,7 @@ public class SceneGame extends Scene
 {
     private Hero myHero;
 
-    public SceneGame(GameEngine game)
+    public SceneGame(GameEngine game, String hero)
     {
         myEntityFactory = new EntityFactory();
         initialize();
@@ -25,7 +26,7 @@ public class SceneGame extends Scene
         registerAction(Input.Buttons.LEFT, "ATTACK");
         registerAction(Input.Keys.SPACE, "ATTACK");
 
-        myHero = myEntityFactory.generateWarrior();
+        myHero = myEntityFactory.generateHero(hero);
     }
 
     private void initialize() {}
@@ -52,6 +53,14 @@ public class SceneGame extends Scene
         {
             myEntityFactory.update();
             myCurrentFrame++;
+        }
+    }
+
+    public void render()
+    {
+        for (Entity e : myEntityFactory.getEntities())
+        {
+            myRenderer.getSpriteBatch().draw(e.getMyAnimation().getSprite(), e.getMyPos().getMyX(), e.getMyPos().getMyY());
         }
     }
 }
