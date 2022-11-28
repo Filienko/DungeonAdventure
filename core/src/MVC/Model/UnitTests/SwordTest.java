@@ -4,17 +4,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SwordTest {
-
+class SwordTest
+{
     @Test
-    void update() {
+    void testSwordConstructor()
+    {
+
+    }
+    @Test
+    void update()
+    {
     }
 
     @Test
-    void getBoundingBox() {
+    void getBoundingBox()
+    {
     }
 
     @Test
-    void setBoundingBox() {
+    void setBoundingBox()
+    {
     }
 }

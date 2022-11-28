@@ -11,7 +11,7 @@ public class Exit extends Item
     public Exit(Vec2 theCoordinate)
     {
         super("Exit", theCoordinate);
-    }
+    } //should constructor be private if singleton??
 
     public static Exit getInstance(Vec2 theCoordinate) {
         if (myExit == null) {

@@ -81,14 +81,14 @@ public abstract class DungeonCharacter extends Entity
         //while (Physics.isInside(theDamageArea, theOpponent)) {
         //  -- attack the opponent
         //}
-        int damage = 1; //damage should be generated between min/max damage range ?
+        int damage = 1; //damage should be generated between min/max damage range ? may need to bring down min/max
 
 
         //apply invincibility for Heros for 30 frames after each hit from Monsters
 
 
         //get overlap between opponenets
-        //if overlap.x and overlap.y > 0, this means an overlap
+        //if overlap.x > 0 and overlap.y > 0, this means an overlap
 
         theOpponent.applyDamage(damage);
 

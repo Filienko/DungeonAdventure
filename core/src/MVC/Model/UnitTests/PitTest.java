@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PitTest {
-
+class PitTest
+{
     @Test
     void testPitConstructor()
     {
@@ -40,20 +40,36 @@ class PitTest {
     @Test
     void testGetMyLocation()
     {
+        Pit myPit = new Pit(new Vec2(5,5));
+
+        assertTrue(myPit.getMyLocation().equals(new Vec2(5,5)));
     }
 
     @Test
     void testSetMyLocation()
     {
+        Pit myPit = new Pit(new Vec2(5,5));
+
+        myPit.setMyLocation(new Vec2(6,6));
+
+        assertTrue(myPit.getMyLocation().equals(new Vec2(6,6)));
     }
 
     @Test
     void testSetDamageFall()
     {
+        Pit myPit = new Pit(new Vec2(20,20), 10);
+
+        myPit.setDamageFall(20);
+
+        assertEquals(myPit.getDamageFall(), 20);
     }
 
     @Test
     void testGetDamageFall()
     {
+        Pit myPit = new Pit(new Vec2(2,2), 10);
+
+        assertEquals(myPit.getDamageFall(), 10);
     }
 }

@@ -53,11 +53,12 @@ public abstract class Hero extends DungeonCharacter
      */
     private final int myHitPoints;
 
-    boolean myUp;
-    boolean myDown;
-    boolean myLeft;
-    boolean myRight;
-    boolean myAttack;
+    //wrote setters for these fields - ok?
+    boolean myUpStatus;
+    boolean myDownStatus;
+    boolean myLeftStatus;
+    boolean myRightStatus;
+    boolean myAttackStatus;
 
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -83,13 +84,17 @@ public abstract class Hero extends DungeonCharacter
         this.myPillars = new ArrayList<>();
         this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
 
-        this.myUp = false;
-        this.myDown = false;
-        this.myLeft = false;
-        this.myRight = false;
-        this.myAttack = false;
+        this.myUpStatus = false;
+        this.myDownStatus = false;
+        this.myLeftStatus = false;
+        this.myRightStatus = false;
+        this.myAttackStatus = false;
     }
 
+
+
+
+    //is this necessary?
     /**
      * This method moves the Hero to the specified coordinates.
      * @param theCoordinates Coordinates that determine the Hero's new location.
@@ -98,7 +103,9 @@ public abstract class Hero extends DungeonCharacter
     {
         super.setPos(theCoordinates);
     }
-    
+
+
+
 
     public Sword getWeapon()
     {
@@ -111,32 +118,81 @@ public abstract class Hero extends DungeonCharacter
     }
 
     @Override
+    public void update()
+    {
+        movement();
+
+        if(myAttackStatus) {   //is this how it should be formatted?
+            attack();
+       }
+
+        super.update();
+    }
+    @Override
     public void attack()
     {
+        this.myAttackStatus = true;
         if (myWeapon == null)
         {
             myWeapon = EntityFactory.generateSword();
-            super.attack();
+            //super.attack(); //necessary?
         }
+
+        this.myAttackStatus = false;
     }
 
     @Override
     public void movement()
     {
-        //set velocity based on booleans passed
+        //set velocity based on booleans passed (should they be passed to the method?)
+        //super.movement(); //is this right?
+
+        Vec2 newVelocity = new Vec2();
+
+        //should the Hero's maxSpeed be used?
+        if (this.myUpStatus && !this.myDownStatus)
+        {
+            newVelocity.setMyY(1 * this.getMaxSpeed());
+
+        } else if (!this.myUpStatus && this.myDownStatus)
+        {
+            newVelocity.setMyX(0);
+            newVelocity.setMyY(-1 * this.getMaxSpeed());
+
+        } else if (!this.myUpStatus && !this.myDownStatus)
+        {
+            newVelocity.setMyY(0);
+        }
+
+        if (this.myLeftStatus && !this.myRightStatus)
+        {
+            newVelocity.setMyX(-1 * this.getMaxSpeed());
+
+        } else if (!this.myLeftStatus && this.myRightStatus)
+        {
+            newVelocity.setMyX(1 * this.getMaxSpeed());
+
+        } else if (!this.myLeftStatus && !this.myRightStatus)
+        {
+            newVelocity.setMyX(0);
+        }
+
+        super.setVelocity(newVelocity);
+
     }
 
+    //changed visibility of the following potions/pillars methods to public (were protected)
     /**
      * This method sets the Potions in the Hero's inventory.
      * @param thePotions Potions to be put into inventory.
      */
-    protected void setPotions(final List<Item> thePotions) { this.myPotions = thePotions; }
+    public void setPotions(final List<Item> thePotions) { this.myPotions = thePotions; }
 
     /**
      * This method adds a Potion to the Hero's inventory.
      * @param thePotion Potion to be added into inventory.
      */
-    protected void addPotion(Item thePotion)
+    public void addPotion(Item thePotion)
     {
         this.myPotions.add(thePotion);
     }
@@ -145,7 +201,7 @@ public abstract class Hero extends DungeonCharacter
      * This method retrieves the Potions in the Hero's inventory.
      * @return Potions in inventory.
      */
-    protected List<Item> getPotions()
+    public List<Item> getPotions()
     {
         return this.myPotions;
     }
@@ -154,7 +210,7 @@ public abstract class Hero extends DungeonCharacter
      * This method sets the Pillars in the Hero's inventory.
      * @param thePillars Pillars to be put into inventory.
      */
-    protected void setPillars(final List<Pillar> thePillars)
+    public void setPillars(final List<Pillar> thePillars)
     {
         this.myPillars = thePillars;
     }
@@ -163,7 +219,7 @@ public abstract class Hero extends DungeonCharacter
      * This method adds a Pillar to the Hero's inventory.
      * @param thePillar Pillar to be added into inventory.
      */
-    protected void addPillar(Pillar thePillar)
+    public void addPillar(Pillar thePillar)
     {
         this.myPillars.add(thePillar);
     }
@@ -186,6 +242,14 @@ public abstract class Hero extends DungeonCharacter
     {
         return myName;
     }
+
+    public void setMyUpStatus(final boolean theUpStatus) { this.myUpStatus = theUpStatus; }
+
+    public void setMyDownStatus(final boolean theDownStatus) { this.myDownStatus = theDownStatus; }
+
+    public void setMyLeftStatus(final boolean theLeftStatus) { this.myLeftStatus = theLeftStatus; }
+
+    public void setMyRightStatus(final boolean theRightStatus) { this.myRightStatus = theRightStatus; }
 
     /**
      * Method that returns details about the Hero.

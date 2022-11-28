@@ -49,17 +49,16 @@ public class Warrior extends Hero
         if (chance < 0.4) {
             damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
         } else if (chance < 0.6) {
-            damage = crushingBlow(theOpponent);
+            damage = crushingBlow();
         }
         theOpponent.applyDamage(damage);
         return damage;
     }
     /**
      * The Warrior's special skill. damage amount between 75 and 175 is randomly generated.
-     * @param theOpponent The DungeonCharacter the Warrior is attacking.
      * @return The amount of damage done to theOpponent's hit points.
      */
-    public int crushingBlow(final DungeonCharacter theOpponent)
+    public int crushingBlow()
     {
         Random rand = new Random();
         return rand.nextInt(75, 175);

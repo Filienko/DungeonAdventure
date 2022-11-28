@@ -25,6 +25,11 @@ public abstract class Entity
         myPos = thePos;
         mySize = new Vec2();
         myBoundingBox = theBoundingBox;
+
+        myActiveStatus = true;
+        myVector = new Vec2();
+        myCurrentFrame = 0;
+
     }
 
     private Entity(final Vec2 theSize, final Vec2 theBoundingBox, final boolean theEntityAnimated, final Animation theAnimation)
@@ -35,9 +40,14 @@ public abstract class Entity
         myBoundingBox = theBoundingBox;
         myEntityAnimated = theEntityAnimated;
         myAnimation = theAnimation;
+
+        myActiveStatus = true;
+        myVector = new Vec2();
+        myCurrentFrame = 0;
     }
 
-    public void update() {
+    public void update()
+    {
         movement();
         attack();
         this.myCurrentFrame++;
@@ -49,10 +59,21 @@ public abstract class Entity
         myPos = myPos.add(myVector);
     }
 
-    public void attack() {};
+    public void attack() {}
 
-    public void destroy() {
-        this.myActiveStatus = false; //if an entity is killed, use this method
+    public void destroy()
+    {
+        this.myActiveStatus = false;
+        //if an entity is killed, use this method
+
+        //should everything be set to null or how should it be killed?
+//        myPos = null;
+//        myPreviousPos = null;
+//        mySize = null;
+//        myBoundingBox = null;
+//        myEntityAnimated = false;
+//        myAnimation = null;
+
     }
 
     public Vec2 getMyPos()

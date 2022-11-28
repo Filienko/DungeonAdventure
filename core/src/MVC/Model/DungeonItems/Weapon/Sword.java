@@ -5,30 +5,43 @@ import MVC.Model.Physics.Vec2;
 
 public class Sword extends Entity
 {
+    //ask if we need a getter/setter for this?
+    private final int myLifeSpan; //must initialize this --what should the value be??
+
     private Vec2 myBoundingBox;
-    private int myLifeSpan; //must initialize this
+
     private long myCurrentFrame;
 
     //must fix this constructor!!
     public Sword()
     {
         super(new Vec2(), new Vec2());
+        this.myLifeSpan = 10; //what should this value be?
+        this.myCurrentFrame = 0; //what should this value be?
+        this.myBoundingBox = new Vec2();
     }
 
-    //should attackable extend Entity to get super.movement/super.attack or should attackable implement its own methods
+    public Sword(Vec2 theBoundingBox)
+    {
+        super(new Vec2(), new Vec2());
+        this.myLifeSpan = 10; //what should this value be?
+        this.myCurrentFrame = 0; //what should this value be?
+        this.myBoundingBox = theBoundingBox;
+    }
+
     @Override
     public void update() {
-        if (myCurrentFrame >= myLifeSpan) {
-            //request that the entity factory delete it
-            //entity factory does not have a method that does that
-
-            //add a method to Entity
+        if (myCurrentFrame >= myLifeSpan)
+        {
+            this.destroy();
+        } else if (myCurrentFrame < myLifeSpan)
+        {
+            super.movement();
+            //super.attack(); //only DungeonCharacters should have attack() ?
+            this.myCurrentFrame++;
         }
-//        super.movement();
-//        super.attack();
-        this.myCurrentFrame++;
-    }
 
+    }
 
     public Vec2 getBoundingBox()
     {
@@ -39,4 +52,6 @@ public class Sword extends Entity
     {
         myBoundingBox = theBoundingBox;
     }
+
+    public int getMyLifeSpan() { return this.myLifeSpan; }
 }

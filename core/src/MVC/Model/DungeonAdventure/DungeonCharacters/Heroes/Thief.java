@@ -43,7 +43,10 @@ public class Thief extends Hero
     }
 
     /**
-     *
+     * Thief's attack behavior. The Thief's hidden status is set to true and then the Thief is given
+     * the chance to do a surprise attack (40% chance of success) where the Thief performs an attack and then is given the
+     * chance to do another attack. The Thief has a 20% chance that no attack is rendered, and an additional 40%
+     * chance of performing a simple attack.
      * @param theOpponent The DungeonCharacter the Thief is attacking.
      * @param theDamageArea --
      * @return The amount of damage done to theOpponent's hit point count.
@@ -51,6 +54,9 @@ public class Thief extends Hero
     @Override
     public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
     {
+        //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are hidden,
+        //they get the chance to surprise attack. otherwise, they do a regular attack.
+
         double chance = Math.random();
         if (chance < MY_HIDDEN_CHANCE)
         {
@@ -70,24 +76,24 @@ public class Thief extends Hero
         {
             damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
         }
+
+        //what abt 20% chance of no attack occurring ?
+
         theOpponent.applyDamage(damage);
         return damage;
     }
 
     /**
-     * This method is the Thief's special skill. The Thief's hidden status is set to true and then the Thief is given
-     * the chance to do a surprise attack (40% chance of success) where the Thief performs an attack and then is given the
-     * chance to do another surprise attack. The Thief has a 20% chance that no attack is rendered, and an additional 40%
-     * chance of just performing a simple attack.
+     * This method is the Thief's special skill.
      * @param theOpponent The DungeonCharacter the Thief is attacking.
      * @return The amount of damage done to theOpponent's hit point count.
      */
     public int surpriseAttack(final DungeonCharacter theOpponent)
     {
-        //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are, they get the chance to surprise attack
-        // otherwise, they do a regular attack
+        //Thief gets an attack (super.attack()) and an extra turn (attack())
 
-        return super.attack(theOpponent, super.getWeapon().getBoundingBox()) + super.attack(theOpponent, super.getWeapon().getBoundingBox());
+        return super.attack(theOpponent, super.getWeapon().getBoundingBox()) +
+                attack(theOpponent, super.getWeapon().getBoundingBox());
     }
 
     /**

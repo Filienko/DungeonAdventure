@@ -46,12 +46,23 @@ class ThiefTest
     }
 
     /**
+     * Test method for {@link Thief#attack(DungeonCharacter, Vec2)}
+     */
+    @Test
+    void testAttack()
+    {
+        //finish attack() method and then write these tests
+
+    }
+
+    /**
      * Test method for {@link Thief#surpriseAttack(DungeonCharacter)}
      */
     @Test
     void testSurpriseAttack()
     {
         //finish surpriseAttack() method and then write these tests
+
     }
 
     /**

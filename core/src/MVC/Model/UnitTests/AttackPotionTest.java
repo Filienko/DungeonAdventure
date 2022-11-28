@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AttackPotionTest {
-
+class AttackPotionTest
+{
     @Test
     void testAPConstructor()
     {

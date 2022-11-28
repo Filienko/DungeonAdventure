@@ -62,7 +62,7 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#crushingBlow(DungeonCharacter)}
+     * Test method for {@link Warrior#crushingBlow()}
      */
     @Test
     void testCrushingBlow()
@@ -73,7 +73,9 @@ class WarriorTest
         final Warrior myWarrior2 = new Warrior();
 
         int oldHealth = myWarrior1.getHitPoints();
-        int damage = myWarrior1.crushingBlow(myWarrior2);
+        int damage = myWarrior1.crushingBlow();
+
+        //crushingBlow does not apply damage to opponent - change these assertions
 
         assertTrue(myWarrior2.getHitPoints() < oldHealth);
         assertEquals(myWarrior2.getHitPoints(), oldHealth - damage);

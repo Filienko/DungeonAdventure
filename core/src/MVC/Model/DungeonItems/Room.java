@@ -473,10 +473,10 @@ public class Room extends Entity
                     room.append("Potion");
                     break;
                 case "Pillar":
-                    room.append("Potion");
+                    room.append("Potion"); //should this be Pillar
                     break;
                 case "Pit":
-                    room.append("Potion");
+                    room.append("Potion"); //should this be Pit
                     break;
             }
         }

@@ -15,9 +15,22 @@ public interface Healable {
     {
         Random rand = new Random();
         int healPoints = rand.nextInt(theHealMax) + 1;
-        //what if adding healPoints pushes the character past its hit points maximum?
+
+        int maxHeal = switch (theCharacter.getMyCharacterType())
+                {
+                    case "Priestess", "Thief" -> 75;
+                    case "Warrior" -> 125;
+                    default -> 0;
+                };
+
+        if (theCharacter.getHitPoints() + healPoints > maxHeal)
+        {
+            int overLimit = (theCharacter.getHitPoints() + healPoints) - maxHeal;
+            healPoints -= overLimit;
+        }
 
         theCharacter.setHitPoints(theCharacter.getHitPoints() + healPoints);
+
         return healPoints;
     }
 }

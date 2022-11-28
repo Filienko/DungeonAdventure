@@ -1,11 +1,8 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Healable;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
-
-import java.util.Random;
 
 public class Priestess extends Hero implements Healable
 {

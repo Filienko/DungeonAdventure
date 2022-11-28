@@ -59,6 +59,9 @@ class PriestessTest
 
         assertTrue(myPriestess2.getHitPoints() > oldHealth);
         assertEquals(myPriestess2.getHitPoints(), restoredHealth + oldHealth);
+
+        assertTrue(restoredHealth + oldHealth <= 75);
+        //this ensures that healHero does not heal over Priestess's maximum allowed hit points (75)
     }
 
     /**

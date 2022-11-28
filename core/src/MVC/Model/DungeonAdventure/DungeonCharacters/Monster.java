@@ -37,9 +37,7 @@ public class Monster extends DungeonCharacter
     {
         super(theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
         this.myCharacterType = theCharacterType;
-        //this.myHeroStatus = false;
         this.myHitPoints = theHitPoints; //necessary?
-        //is hero status necessary ?? should it just be a static final field?
     }
 
     protected void attack(Hero theHero){
