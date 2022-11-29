@@ -7,12 +7,12 @@ public class AttackPotion extends Potion
 {
     public AttackPotion()
     {
-        super(5);
+        super("Attack Potion",5);
     }
 
     public AttackPotion(final int theStrength)
     {
-        super(theStrength);
+        super("Attack Potion",theStrength);
     }
 
     @Override

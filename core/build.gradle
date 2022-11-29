@@ -3,6 +3,12 @@ dependencies {
     implementation 'junit:junit:4.13.1'
     implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
+task copyTestResources(type: Copy) {
+    from "core/src/MVC/Model/Saver"
+    into "${buildDir}/classes/test"
+}
+processTestResources.dependsOn copyTestResources
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]

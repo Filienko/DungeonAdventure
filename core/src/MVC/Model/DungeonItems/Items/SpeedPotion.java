@@ -7,12 +7,12 @@ public class SpeedPotion extends Potion
 {
     public SpeedPotion()
     {
-        super(5);
+        super("Speed Potion",5);
     }
 
     public SpeedPotion(final int theStrength)
     {
-        super(theStrength);
+        super("Speed Potion",theStrength);
     }
 
     @Override

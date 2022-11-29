@@ -15,9 +15,9 @@ public abstract class Potion extends Item
                 (new Random()).nextInt(0, 12)));
         myStrength = 15;
     }
-    protected Potion(final int theStrength)
+    protected Potion(String theType, final int theStrength)
     {
-        super("Potion", new Vec2((new Random()).nextInt(0, 21),
+        super(theType, new Vec2((new Random()).nextInt(0, 21),
                 (new Random()).nextInt(0, 13)));
         myStrength = theStrength;
     }

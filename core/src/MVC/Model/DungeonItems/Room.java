@@ -9,7 +9,7 @@ import MVC.Model.Physics.Vec2;
 import java.util.*;
 import java.util.Random;
 
-public class Room
+public class Room implements Cloneable
 {
     /**
      * The int indicating room's number.
@@ -47,39 +47,19 @@ public class Room
     private boolean myExit;
 
     /**
-     * List of the Doors that the Room has (North, South, East, West).
-     */
-    private List<Door> myDoors = new ArrayList<>();
-
-    /**
-     * Boolean that tells if the Room contains a special item (Potion, Pillar, Pit, etc).
-     */
-    private boolean myRoomHasItems;
-
-    /**
-     * Boolean that tells if the Room contains a Monster
-     */
-    private boolean myRoomHasMonsters;
-
-    /**
      * The Items that the Room contains.
      */
-    private List<Item> myItems =  new ArrayList<>();
+    private StringBuilder myItems = new StringBuilder();
 
     /**
      * The Monsters that the Room contains.
      */
-    private List<Monster> myMonsters =  new ArrayList<>();
+    private StringBuilder myMonsters = new StringBuilder();
 
     /**
      * The location of the Room in the Dungeon.
      */
     private Vec2 myLocation;
-
-    /**
-     * The Hero in the Room.
-     */
-    private boolean myHeroPresent;
 
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
@@ -88,9 +68,7 @@ public class Room
     {
         this.myEntrance = false;
         this.myExit = false;
-        this.myRoomHasItems = false;
         this.myLocation = new Vec2();
-        this.myHeroPresent = false;
     }
 
     /**
@@ -101,10 +79,7 @@ public class Room
         this.myNumber = theNumber;
         this.myEntrance = false;
         this.myExit = false;
-        this.myRoomHasItems = false;
         this.myLocation = theLocation;
-        this.myHeroPresent = false;
-        this.myRoomHasMonsters = true;
     }
 
     /**
@@ -116,19 +91,15 @@ public class Room
         {
             this.myEntrance = true;
             this.myExit = false;
-            this.myHeroPresent = true;
         }
         else
         {
             this.myEntrance = false;
             this.myExit = true;
-            this.myHeroPresent = false;
-            myItems.add(new Exit());
+            addItem(new Exit());
         }
 
         this.myNumber = theNumber;
-        this.myRoomHasItems = true;
-        this.myRoomHasMonsters = true;
         this.myLocation = theLocation;
     }
 
@@ -136,25 +107,21 @@ public class Room
      * Room constructor that sets all of its attributes based on its parameters.
      * @param theEntrance Boolean that tells if the Room is the Entrance to the Dungeon.
      * @param theExit Boolean that tells if the Room is the Exit to the Dungeon.
-     * @param theDoors List of the Doors to the Room.
      * @param theRoomHasItem Boolean that tells if the Room contains an Item.
      * @param theRoomHasMonsters Boolean whether monsters are present in room
      * @param theItems The Items that the Room contains.
      * @param theLocation The location of the Room in the Dungeon.
      */
-    public Room(final boolean theEntrance, final boolean theExit, final List<Door> theDoors, boolean theRoomHasItem,
-                final boolean theRoomHasMonsters, final List<Item> theItems, final Vec2 theLocation)
+    public Room(final boolean theEntrance, final boolean theExit, boolean theRoomHasItem,
+                final boolean theRoomHasMonsters, final StringBuilder theItems, final Vec2 theLocation)
     {
         //how to guard against both being entered as true ?
         this.myExit = theExit;
         this.myEntrance = theEntrance;
-        this.myDoors = theDoors;
-        this.myRoomHasItems = theRoomHasItem;
-        this.myRoomHasMonsters = theRoomHasMonsters;
         this.myItems = theItems;
         this.myLocation = theLocation;
-        this.myHeroPresent = false;
     }
+
     /**
      * Populates the rooms with random items.
      */
@@ -162,35 +129,28 @@ public class Room
     {
         Random random = new Random();
         populatePotions(random,1);
-        if(theTest){
+        if(theTest)
+        {
             populatePit(0.09);
-        } else
+            populatePotions(new Random(), 1);
+        }
+        else
         {
             populatePit(random.nextDouble());
         }
-        populateDoors();
         populateMonsters();
     }
 
     public void populateMonsters()
     {
-        myRoomHasMonsters = true;
-        myMonsters.addAll((new EntityFactory()).generateMonsters(1));
-    }
-
-    public void populateDoors()
-    {
-        if(myE){myDoors.add(new Door(false));}
-        if(myN){myDoors.add(new Door(false));}
-        if(myW){myDoors.add(new Door(false));}
-        if(myS){myDoors.add(new Door(false));}
+        setMonsters((new EntityFactory()).generateMonsters(1));
     }
 
     public void populatePit(double theChance)
     {
         if(theChance < 0.10)
         {
-            this.myItems.add(new Pit());
+            addItem(new Pit());
         }
     }
 
@@ -201,15 +161,15 @@ public class Room
             var randD = theRandom.nextDouble();
             if (randD < 0.333)
             {
-                this.myItems.add(new HealingPotion(theRandom.nextInt(15, 46)));
+                addItem(new HealingPotion(theRandom.nextInt(15, 46)));
             }
             else if (randD < 0.67)
             {
-                this.myItems.add(new AttackPotion(theRandom.nextInt(15, 46)));
+                addItem(new AttackPotion(theRandom.nextInt(15, 46)));
             }
             else
             {
-                this.myItems.add(new SpeedPotion());
+                addItem(new SpeedPotion());
             }
         }
     }
@@ -262,48 +222,55 @@ public class Room
      * This method retrieves the Item in the Room.
      * @return The Item the Room contains.
      */
-    public List<Item> getItems() { return this.myItems; }
+    public String getItems() { return this.myItems.toString(); }
 
     /**
      * This method sets the Items in the Room.
      * @param theItems The Items to be contained in the Room.
      */
-    public void setItems (List<Item> theItems) { this.myItems = theItems; this.myRoomHasItems = myItems.size() >= 1; }
+    public void setItems (List<Item> theItems)
+    {
+        myItems.delete(0, myItems.length());
+
+        for (var item:theItems)
+        {
+            this.myItems.append(item);
+        }
+
+    }
 
     /**
      * This method adds the Items in the Room.
      * @param theItems The Items to be contained in the Room.
      */
-    public void addItems (List<Item> theItems) { this.myItems.addAll(theItems); this.myRoomHasItems = true; }
+    public void addItems (List<Item> theItems)
+    {
+        for (var item:theItems)
+        {
+            this.myItems.append(item.getType() + ",");
+        }
+    }
 
     /**
      * This method sets the Item in the Room.
      * @param theItem The Item to be contained in the Room.
      */
-    public void addItem (Item theItem) { this.myItems.add(theItem); this.myRoomHasItems = true; }
+    public void addItem (Item theItem) { this.myItems.append(theItem.getType() + ","); }
 
     /**
      * This method removes all Items from the Room.
      */
-    public void clearRoom () { this.myItems.clear(); this.myRoomHasItems = false; }
+    public void clearRoom () { this.myItems.delete(0, myItems.length()); }
 
     /**
      * This method removes the Item from the Room.
      * @param theItem The Item to be removed from the Room.
      */
-    public void removeItem (Item theItem) { this.myItems.remove(theItem); this.myRoomHasItems = myItems.size() >= 1; }
-
-    /**
-     * This method returns a boolean that tells whether the Room contains an Item.
-     * @return True if the Room contains an Item, false if it does not.
-     */
-    public boolean getItemStatus() { return this.myRoomHasItems; }
-
-    /**
-     * This method sets a boolean that tells whether the Room contains an Item.
-     * @param theRoomHasItem True if the Room contains an Item, false if it does not.
-     */
-    public void setItemStatus(final boolean theRoomHasItem) { this.myRoomHasItems = theRoomHasItem; }
+    public void removeItem (Item theItem)
+    {
+        var item = theItem.getType();
+        this.myItems.delete(myItems.indexOf(item),myItems.indexOf(item)+item.length());
+    }
 
     /**
      * This method retrieves the location of the Room in the Dungeon.
@@ -316,12 +283,6 @@ public class Room
      * @param theLocation The new location of the Room.
      */
     public void setLocation(final Vec2 theLocation) { this.myLocation = theLocation; }
-
-    /**
-     * This method returns a list of the Doors to the Room (North, South, East, and West).
-     * @return A list of Doors.
-     */
-    public List<Door> getDoors() { return this.myDoors; }
 
     /**
      * @return whether Room is an entrance.
@@ -345,14 +306,6 @@ public class Room
     private void setExit(final boolean theExit)
     {
         myExit = theExit;
-    }
-
-    /**
-     * @return whether Rooms contains Items.
-     */
-    private boolean isRoomHasItems()
-    {
-        return myRoomHasItems;
     }
 
     /**
@@ -428,67 +381,61 @@ public class Room
         myS = theS;
     }
 
-    public boolean isRoomHasMonsters()
+    public String getMonsters()
     {
-        return myRoomHasMonsters;
-    }
-
-    public void setRoomHasMonsters(final boolean theRoomHasMonsters)
-    {
-        myRoomHasMonsters = theRoomHasMonsters;
-    }
-
-    public List<Monster> getMonsters()
-    {
-        return myMonsters;
+        return myMonsters.toString();
     }
 
     public void setMonsters(final List<Monster> theMonsters)
     {
-        myMonsters = theMonsters;
+        for (var monster:theMonsters)
+        {
+            this.myMonsters.append(monster.getCharacterType() + ",");
+        }
     }
 
     protected Room clone() throws CloneNotSupportedException
     {
-        return (Room) super.clone();
+        Room s = (Room) super.clone();
+        return s;
     }
 
-    /**
-     * This method returns String that serves as a 2D representation of the Room.
-     * Doors are represented by: -,
-     * Entrances are represented by: i,
-     * Exits are represented by: O,
-     * Potions are represented by: Potion,
-     * Pillars are represented by the first letter of the Pillar: A, P, I, or E,
-     * Pits are represented by: X.
-     * @return A 2D representation of the Room expressed as a String.
-     */
-    @Override
-    public String toString()
-    {
-        StringBuilder room = new StringBuilder();
-
-        room.append("*-* \n | ");
-
-        for (var Item:myItems)
-        {
-            switch (Item.getType())
-            {
-                case "Potion" -> room.append("Potion");
-                case "Pillar" -> room.append("Pillar");
-                case "Pit" -> room.append("Pit");
-            }
-        }
-
-        if (myEntrance)
-        {
-            room.append("i");
-        } else if (myExit)
-        {
-            room.append("O");
-        }
-        room.append("| \n *-*");
-
-        return room.substring(0, room.length());
-    }
+//    /**
+//     * This method returns String that serves as a 2D representation of the Room.
+//     * Doors are represented by: -,
+//     * Entrances are represented by: i,
+//     * Exits are represented by: O,
+//     * Potions are represented by: Potion,
+//     * Pillars are represented by the first letter of the Pillar: A, P, I, or E,
+//     * Pits are represented by: X.
+//     * @return A 2D representation of the Room expressed as a String.
+//     */
+//    @Override
+//    public String toString()
+//    {
+//        StringBuilder room = new StringBuilder();
+//
+//        room.append("*-* \n | ");
+//
+//        for (var Item:myItems)
+//        {
+//            switch (Item.getType())
+//            {
+//                case "Potion" -> room.append("Potion");
+//                case "Pillar" -> room.append("Pillar");
+//                case "Pit" -> room.append("Pit");
+//            }
+//        }
+//
+//        if (myEntrance)
+//        {
+//            room.append("i");
+//        } else if (myExit)
+//        {
+//            room.append("O");
+//        }
+//        room.append("| \n *-*");
+//
+//        return room.substring(0, room.length());
+//    }
 }

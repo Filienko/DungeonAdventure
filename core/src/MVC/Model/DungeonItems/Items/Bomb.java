@@ -17,7 +17,7 @@ public class Bomb extends Item
      * @param thePosition
      */
     protected Bomb(Vec2 thePosition) {
-        super("Potion", thePosition);
+        super("Bomb", thePosition);
     }
 
     /**

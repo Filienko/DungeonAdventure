@@ -9,12 +9,12 @@ public class HealingPotion extends Potion
 {
     public HealingPotion()
     {
-        super(15);
+        super("Healing Potion",15);
     }
 
     public HealingPotion(final int theStrength)
     {
-        super(theStrength);
+        super("Healing Potion",theStrength);
     }
 
     @Override

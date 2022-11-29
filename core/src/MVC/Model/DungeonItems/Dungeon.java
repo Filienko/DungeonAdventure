@@ -235,7 +235,8 @@ public class Dungeon implements Serializable
 
     public Memento saveToMemento() throws CloneNotSupportedException
     {
-        return new Memento(this.myDungeon, (new EntityFactory()).generateHero(this.myHero.getCharacterType()),
+        var factory = new EntityFactory();
+        return new Memento(this.myDungeon, (factory.generateHero(this.myHero.getCharacterType())),
                 copyRooms(this.myRooms), this.myDimension);
     }
 
