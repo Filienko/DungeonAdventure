@@ -79,10 +79,4 @@ public class Warrior extends Hero
     {
         this.myName = theName;
     }
-
-    public void update()
-    {
-        getMyAnimation().update();
-    }
-
 }

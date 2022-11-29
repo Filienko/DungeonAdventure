@@ -32,4 +32,15 @@ public class Sword extends Entity
     {
         super(thePos, theBoundingBox);
     }
+
+    public Vec2 getBoundingBox()
+    {
+        return myBoundingBox;
+    }
+
+    public void setBoundingBox(final Vec2 theBoundingBox)
+    {
+        myBoundingBox = theBoundingBox;
+    }
+
 }

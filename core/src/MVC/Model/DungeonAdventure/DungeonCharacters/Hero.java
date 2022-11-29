@@ -126,8 +126,6 @@ public abstract class Hero extends DungeonCharacter
      * @param thePotions Potions to be put into inventory.
      */
     protected void setPotions(final List<Item> thePotions)
-
-    public String getName()
     {
         this.myPotions = thePotions;
     }
@@ -232,18 +230,4 @@ public abstract class Hero extends DungeonCharacter
     {
         return this.myHitPoints;
     }
-
-    @Override
-    public String toString()
-    {
-        return "Name: " + myName +
-                " {" +
-                "myCharacterType + " + myCharacterType +
-                ", Hero status = " + isHero +
-                ", myHealingPotions = '" + myHealingPotions + '\'' +
-                ", myVisionPotions = '" + myVisionPotions + '\'' +
-                ", myPillars = " + myPillars.toString() +
-                '}';
-    }
-
 }
