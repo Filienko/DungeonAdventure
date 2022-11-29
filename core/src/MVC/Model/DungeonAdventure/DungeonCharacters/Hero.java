@@ -1,39 +1,100 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DungeonItems.Items.Item;
+import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class Hero extends DungeonCharacter
 {
-    private Sword myWeapon = new Sword();;
-    private final String myName;
-    private final String myCharacterType;
-    private final boolean isHero;
-    private int myHealingPotions = 0;
-    private int myVisionPotions = 0 ;
-    private List<String> myPillars;
-    private int myHitPoints;
+    /**
+     * Random number generator used to generate the Hero's hit point count.
+     */
+    private static final Random RANDOM_GENERATOR = new Random();
 
-    public Hero(String theName, String theCharacterType, int theHitPoints, final int theMinDamageRange,
-                final int theMaxDamageRange, final int theMaxSpeed, final double theHitChance,
-                final Vec2 thePos, final Vec2 theVelocity)
+    /**
+     * A hero status that is hardcoded to true.
+     */
+    private static final boolean MY_HERO_STATUS = true;
+
+    /**
+     * The Hero's name that is input by the user.
+     */
+
+    private final String myName;
+
+    /**
+     * The specific Hero type.
+     */
+    private final String myCharacterType;
+
+    /**
+     * The Hero's weapon.
+     */
+    private Sword myWeapon = new Sword();
+
+    /**
+     * A list of all the Potions in the Hero's inventory.
+     */
+    private List<Item> myPotions;
+
+    /**
+     * A list of all the Pillars in the Hero's inventory.
+     */
+    private List<Pillar> myPillars;
+
+    /**
+     * The Hero's hit points (health).
+     */
+    private final int myHitPoints;
+
+    boolean up;
+    boolean down;
+    boolean left;
+    boolean right;
+    boolean attack;
+
+    /**
+     * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
+     * minimum/maximum damage it can inflict, max speed, position, velocity, Potions in inventory, and Pillars in
+     * inventory.
+     *
+     * @param theName The Hero's name, determined by the user.
+     * @param theCharacterType The specific type of Hero it is.
+     * @param theHitPoints The Hero's hit points (health).
+     * @param theMinDamageRange The minimum amount of damage the Hero can inflict.
+     * @param theMaxDamageRange The maximum amount of damage the Hero can inflict.
+     * @param theMaxSpeed The Hero's maximum speed.
+     * @param thePos The Hero's location.
+     * @param theVelocity The Hero's velocity.
+     */
+    public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theMinDamageRange,
+                final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theCharacterType, true, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
-                thePos, theVelocity);
+        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
-        this.isHero = true;
-        this.myHitPoints = theHitPoints;
+        this.myPotions = new ArrayList<>();
         this.myPillars = new ArrayList<>();
+        this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+
+        //all booleans to false
     }
 
+    /**
+     * This method moves the Hero to the specified coordinates.
+     * @param theCoordinates Coordinates that determine the Hero's new location.
+     */
     public void moveHero(final Vec2 theCoordinates)
     {
         super.setPos(theCoordinates);
     }
+    
 
     public Sword getWeapon()
     {
@@ -42,58 +103,134 @@ public abstract class Hero extends DungeonCharacter
 
     public void setWeapon(final Sword theWeapon)
     {
-        myWeapon = theWeapon;
+        this.myWeapon = theWeapon;
     }
 
+    @Override
+    public void attack()
+    {
+        if (myWeapon == null)
+        {
+            myWeapon = EntityFactory.generateSword();
+        }
+    }
+
+    @Override
+    public void movement()
+    {
+        //set velocity based on booleans passed
+    }
+
+    /**
+     * This method sets the Potions in the Hero's inventory.
+     * @param thePotions Potions to be put into inventory.
+     */
+    protected void setPotions(final List<Item> thePotions)
+
+    public String getName()
+    {
+        this.myPotions = thePotions;
+    }
+
+    /**
+     * This method adds a Potion to the Hero's inventory.
+     * @param thePotion Potion to be added into inventory.
+     */
+    protected void addPotion(Item thePotion)
+    {
+        this.myPotions.add(thePotion);
+    }
+
+    /**
+     * This method retrieves the Potions in the Hero's inventory.
+     * @return Potions in inventory.
+     */
+    protected List<Item> getPotions()
+    {
+        return this.myPotions;
+    }
+
+    /**
+     * This method sets the Pillars in the Hero's inventory.
+     * @param thePillars Pillars to be put into inventory.
+     */
+    protected void setPillars(final List<Pillar> thePillars)
+    {
+        this.myPillars = thePillars;
+    }
+
+    /**
+     * This method adds a Pillar to the Hero's inventory.
+     * @param thePillar Pillar to be added into inventory.
+     */
+    protected void addPillar(Pillar thePillar)
+    {
+        this.myPillars.add(thePillar);
+    }
+
+    /**
+     * This method retrieves the Pillars in the Hero's inventory.
+     * @return Pillars in inventory.
+     */
+    protected List<Pillar> getPillars()
+    {
+        return this.myPillars;
+    }
+
+    /**
+     * This method retrieves the Hero's name, as determined by the user.
+     * @return The Hero's name in String form.
+     */
     public String getName()
     {
         return myName;
     }
 
-    public String getCharacterType()
+    /**
+     * Method that returns details about the Hero.
+     * @return A String that lists the Hero's name, what type of Hero it is,
+     * the Hero's hero status, and the Potions and Pillars in its inventory.
+     */
+    @Override
+    public String toString()
     {
-        return myCharacterType;
+        return "Name: " + myName +
+                " {" +
+                "myCharacterType + " + myCharacterType +
+                ", Hero status = " + MY_HERO_STATUS +
+                ", Potions = '" + myPotions.toString() + '\'' +
+                ", Pillars = " + myPillars.toString() +
+                '}';
     }
 
-    public boolean isHero()
+    /**
+     * This method returns a String describing the type of Hero it is.
+     * @return The specific type of Hero it is.
+     */
+    @Override
+    public String getMyCharacterType()
     {
-        return isHero;
+        return this.myCharacterType;
     }
 
-    public int getHealingPotions()
+    /**
+     * This method tells that the Hero is a Hero.
+     * @return The Hero's hero status, which is always true.
+     */
+    @Override
+    public boolean getHeroStatus()
     {
-        return myHealingPotions;
+        return this.MY_HERO_STATUS;
     }
 
-    public int getVisionPotions()
-    {
-        return myVisionPotions;
-    }
-
-    public List<String> getPillars()
-    {
-        return myPillars;
-    }
-
+    /**
+     * This method retrieves the Hero's hit points.
+     * @return The number of hit points a Hero has, represented by an int.
+     */
     @Override
     public int getHitPoints()
     {
-        return myHitPoints;
-    }
-
-    public void setHealingPotions(final int theHealingPotions)
-    {
-        myHealingPotions = theHealingPotions;
-    }
-
-    public void setVisionPotions(final int theVisionPotions)
-    {
-        myVisionPotions = theVisionPotions;
-    }
-
-    public void setPillars(final List<String> thePillars)
-    {
-        myPillars = thePillars;
+        return this.myHitPoints;
     }
 
     @Override
@@ -108,4 +245,5 @@ public abstract class Hero extends DungeonCharacter
                 ", myPillars = " + myPillars.toString() +
                 '}';
     }
+
 }

@@ -1,32 +1,22 @@
 package MVC.Controller;
 
-import MVC.Model.Scenes.Scene;
-import MVC.Model.Scenes.SceneMenu;
-import MVC.View.Assets;
+import MVC.View.Scenes.Scene;
+import MVC.View.Scenes.SceneMenu;
+import MVC.View.MyRenderer;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 
 public class GameEngine extends ApplicationAdapter {
 
 	// Member Fields
-	private OrthographicCamera 			myCamera;
-	private Assets 						myAssets;
 	private String 						myCurrentScene;
 	private ObjectMap<String, Scene> 	mySceneMap;
-	//private Renderer					myView;
+	private MyRenderer 					myView;
 	private boolean 					myRunning;
-	private SpriteBatch 				batch;
 	private MyInputProcessor 			myInputProcessor;
-
-//	Animation test1;
-//	Animation test2;
-//	Animation test3;
 
 	// Methods
 	public void setCurrentScene(final String name, final Scene scene, final boolean endCurrentScene)
@@ -55,34 +45,24 @@ public class GameEngine extends ApplicationAdapter {
 
 	public Scene getCurrentScene() { return mySceneMap.get(myCurrentScene); }
 
+	public String getCurrentSceneName() { return myCurrentScene; }
+
 	boolean sceneExists(final String sceneName) { return mySceneMap.get(sceneName) != null; }
 
-	public OrthographicCamera getMyCamera() { return myCamera; }
-
-	public Assets getMyAssets() { return myAssets; }
-
 	public boolean isRunning() { return myRunning; }
+
+	public OrthographicCamera getCamera() { return myView.getCamera(); }
+
+	public MyRenderer getView() { return myView; }
 
 	@Override
 	public void create ()
 	{
-
-		myAssets 	= new Assets();
 		mySceneMap 	= new ObjectMap<>();
 		myRunning 	= true;
-		myCamera 	= new OrthographicCamera();
-		myCamera.setToOrtho(false, 1280, 768);
-
-		batch = new SpriteBatch();
+		myView		= new MyRenderer(this);
 		myInputProcessor = new MyInputProcessor(this);
 		Gdx.input.setInputProcessor(myInputProcessor);
-
-		myAssets.loadAssets();
-
-//		test1 = myAssets.getAnimation("runDown");
-//		test2 = myAssets.getAnimation("tektite");
-//		test3 = myAssets.getAnimation("standDown");
-
 		setCurrentScene("Menu", new SceneMenu(this), false);
 	}
 
@@ -93,17 +73,7 @@ public class GameEngine extends ApplicationAdapter {
 		if (mySceneMap.isEmpty()) 	{ return; }
 
 		getCurrentScene().update();
-//		test1.update();
-//		test2.update();
-//		test3.update();
-		ScreenUtils.clear(0, 0, 0.2f, 1);
-		myCamera.update();
-		batch.setProjectionMatrix(myCamera.combined);
-		batch.begin();
-//		batch.draw(test1.getSprite(), 0, 0);
-//		batch.draw(test2.getSprite(), 100, 100);
-//		batch.draw(test3.getSprite(), 75, 444);
-		batch.end();
+		myView.render();
 	}
 	
 	@Override
@@ -112,6 +82,6 @@ public class GameEngine extends ApplicationAdapter {
 		// Dispose all Textures
 
 		// Dispose batches
-		batch.dispose();
+		myView.getSpriteBatch().dispose();
 	}
 }

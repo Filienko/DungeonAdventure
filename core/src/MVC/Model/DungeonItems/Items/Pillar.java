@@ -24,4 +24,6 @@ public class Pillar extends Item
     {
         this.myName = myName;
     }
+
 }
+

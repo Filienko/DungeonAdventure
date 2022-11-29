@@ -5,12 +5,11 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 import java.util.Random;
 
-public class Room implements Serializable, Cloneable
+public class Room
 {
     /**
      * The int indicating room's number.
@@ -470,6 +469,7 @@ public class Room implements Serializable, Cloneable
         StringBuilder room = new StringBuilder();
 
         room.append("*-* \n | ");
+
         for (var Item:myItems)
         {
             switch (Item.getType())
@@ -479,6 +479,7 @@ public class Room implements Serializable, Cloneable
                 case "Pit" -> room.append("Pit");
             }
         }
+
         if (myEntrance)
         {
             room.append("i");
