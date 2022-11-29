@@ -175,7 +175,7 @@ public class Room
     public void populateMonsters()
     {
         myRoomHasMonsters = true;
-        myMonsters.addAll(EntityFactory.generateMonsters(1));
+        myMonsters.addAll((new EntityFactory()).generateMonsters(1));
     }
 
     public void populateDoors()

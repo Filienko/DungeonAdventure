@@ -1,13 +1,12 @@
-package MVC.Model.UnitTests;
+package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WarriorTest
 {
@@ -22,10 +21,9 @@ class WarriorTest
         assertEquals("Warrior", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getMyCharacterType());
         assertTrue(myWarrior.getHeroStatus());
-        assertEquals(125, myWarrior.getHitPoints());
-        assertEquals(4, myWarrior.getMaxSpeed());
-        assertEquals(35, myWarrior.getMinDamageRange());
-        assertEquals(60, myWarrior.getMaxDamageRange());
+        assertEquals(10, myWarrior.getHitPoints());
+        assertEquals(5, myWarrior.getMaxSpeed());
+        assertEquals(1, myWarrior.getDamage());
     }
 
     /**
@@ -39,10 +37,9 @@ class WarriorTest
         assertEquals("W", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getMyCharacterType());
         assertTrue(myWarrior.getHeroStatus());
-        assertEquals(125, myWarrior.getHitPoints());
-        assertEquals(4, myWarrior.getMaxSpeed());
-        assertEquals(35, myWarrior.getMinDamageRange());
-        assertEquals(30, myWarrior.getMaxDamageRange());
+        assertEquals(10, myWarrior.getHitPoints());
+        assertEquals(5, myWarrior.getMaxSpeed());
+        assertEquals(1, myWarrior.getDamage());
     }
 
     /**

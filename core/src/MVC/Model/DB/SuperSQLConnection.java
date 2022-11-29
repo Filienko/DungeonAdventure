@@ -5,8 +5,7 @@ public abstract class SuperSQLConnection
     private boolean myHero;
     private int myHitPoints;
     private String myCharacterType;
-    private int myMinimumRange;
-    private int myMaxDamageRange;
+    private int myDamage;
     private int myMaxSpeed;
     private float myX;
     private float myY;
@@ -45,24 +44,14 @@ public abstract class SuperSQLConnection
         myCharacterType = theCharacterType;
     }
 
-    public int getMinimumRange()
+    public int getDamage()
     {
-        return myMinimumRange;
+        return myDamage;
     }
 
-    public void setMinimumRange(final int theMinimumRange)
+    public void setDamage(final int theDamage)
     {
-        myMinimumRange = theMinimumRange;
-    }
-
-    public int getMaxDamageRange()
-    {
-        return myMaxDamageRange;
-    }
-
-    public void setMaxDamageRange(final int theMaxDamageRange)
-    {
-        myMaxDamageRange = theMaxDamageRange;
+        myDamage = theDamage;
     }
 
     public int getMaxSpeed()

@@ -22,7 +22,7 @@ public class Priestess extends Hero implements Healable
      */
     public Priestess()
     {
-        super("Priestess", "Priestess", 75, 25, 45,  5,  new Vec2(), new Vec2());
+        super("Priestess", "Priestess", 10, 1,  5, new Vec2(), new Vec2());
     }
 
     /**
@@ -33,7 +33,7 @@ public class Priestess extends Hero implements Healable
      */
     public Priestess(final String theName, final Vec2 thePos)
     {
-        super(theName,"Priestess", 75, 25, 45,  5,  thePos, new Vec2());
+        super(theName,"Priestess", 10, 1, 5, thePos, new Vec2());
         this.myName = theName;
     }
 

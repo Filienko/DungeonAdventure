@@ -18,15 +18,10 @@ public abstract class DungeonCharacter extends Entity
     private final boolean myHeroStatus;
 
     /**
-     * The minimum amount of damage the character can inflict.
+     * The amount of damage the character can inflict.
      */
 
-    private int myMinDamageRange;
-
-    /**
-     * The maximum amount of damage the character can inflict.
-     */
-    private int myMaxDamageRange;
+    private int myDamage;
 
     /**
      * The character's hit points (health).
@@ -55,22 +50,19 @@ public abstract class DungeonCharacter extends Entity
      * @param theCharacterType The character's type.
      * @param theHeroStatus The character's hero status (true means Hero, false means Monster).
      * @param theHitPoints The character's hit points.
-     * @param theMinDamageRange The minimum amount of damage the character can administer.
-     * @param theMaxDamageRange The minimum amount of damage the character can administer.
+     * @param theDamage The amount of damage the character can administer.
      * @param theMaxSpeed The character's maximum speed
      * @param thePos The character's location.
      * @param theVelocity The character's velocity.
      */
-    DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints, final int theMinDamageRange, final int theMaxDamageRange,
+    DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints, final int theDamage,
                      final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
         super(new Vec2(), new Vec2());
         this.myCharacterType = theCharacterType;
         this.myHeroStatus = theHeroStatus;
-
-        this.myMinDamageRange = theMinDamageRange;
+        this.myDamage = theDamage;
         this.myHitPoints = theHitPoints;
-        this.myMaxDamageRange = theMaxDamageRange;
         this.myMaxSpeed = theMaxSpeed;
         this.myPos = thePos;
         this.myVelocity = theVelocity;
@@ -137,26 +129,22 @@ public abstract class DungeonCharacter extends Entity
     }
 
     /**
-     * This method retrieves the minimum amount of damage a character can inflict.
-     * @return The minimum number of hit points a character's attack can affect.
+     * This method retrieves the amount of damage a character can inflict.
+     * @return The number of hit points a character's attack can affect.
      */
-    public int getMinDamageRange()
+    public int getDamage()
     {
-        return this.myMinDamageRange;
+        return myDamage;
     }
 
     /**
-     * This method retrieves the maximum amount of damage a character can inflict.
-     * @return The maximum number of hit points a character's attack can affect.
+     * This method sets the character's damage.
+     * @param theDamage The number of damage points a character can inflict.
      */
-    public int getMaxDamageRange()
+    public void setDamage(final int theDamage)
     {
-        return this.myMaxDamageRange;
+        this.myDamage = theDamage;
     }
-
-
-    // add setters for damage range
-
 
     /**
      * This method retrieves the character's maximum speed.
@@ -167,6 +155,14 @@ public abstract class DungeonCharacter extends Entity
         return this.myMaxSpeed;
     }
 
+    /**
+     * This method sets the character's speed.
+     * @param theMaxSpeed The character's new speed.
+     */
+    public void setMaxSpeed(final int theMaxSpeed)
+    {
+        myMaxSpeed = theMaxSpeed;
+    }
     /**
      * This method retrieves the character's position.
      * @return The character's position.
@@ -202,6 +198,11 @@ public abstract class DungeonCharacter extends Entity
     public void setVelocity(final Vec2 theVelocity)
     {
         this.myVelocity = theVelocity;
+    }
+
+    public String getCharacterType()
+    {
+        return myCharacterType;
     }
 
 }

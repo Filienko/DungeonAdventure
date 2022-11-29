@@ -25,6 +25,10 @@ public class SQLConnection extends SuperSQLConnection
         {
             updateMonsterData(3);
         }
+        else if (monsterType.contentEquals("Rats"))
+        {
+            updateMonsterData(4);
+        }
     }
 
     public static SQLiteDataSource establishConnection()
@@ -45,15 +49,13 @@ public class SQLConnection extends SuperSQLConnection
                 "myHero INTEGER DEFAULT 0, " +
                 "myHitPoints INTEGER DEFAULT 0, " +
                 "myCharacterType TEXT NOT NULL, " +
-                "myMinimumRange INTEGER DEFAULT 0, " +
-                "myMaxDamageRange INTEGER DEFAULT 0, " +
+                "myDamage INTEGER DEFAULT 0, " +
                 "myMaxSpeed INTEGER DEFAULT 0, " +
                 "myX REAL DEFAULT 0.0, " +
                 "myY REAL DEFAULT 0.0, " +
                 "myVelocityX REAL DEFAULT 0.0, " +
                 "myVelocityY REAL DEFAULT 0.0," +
-                "UNIQUE(myHero,myCharacterType,myHitPoints,myMinimumRange,myMaxDamageRange,myMaxSpeed,myX,myY," +
-                "myVelocityX,myVelocityY))";
+                "UNIQUE(myHero,myCharacterType,myHitPoints,myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY))";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
@@ -67,15 +69,17 @@ public class SQLConnection extends SuperSQLConnection
 
         //next insert three rows of data
         String ogreQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
-                " myMinimumRange,myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,200,'Ogre',30,60,2,0,0,0,0)";
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
+                ") VALUES (0,5,'Ogre',2,2,0,0,0,0)";
         String gremlinQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
-                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,70,'Gremlin',15,30,5,0,0,0,0)";
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
+                ") VALUES (0,3,'Gremlin',1,3,0,0,0,0)";
         String elfQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
-                " myMinimumRange, myMaxDamageRange,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,100,'Elf',30,50,3,0,0,0,0)";
-
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
+                ") VALUES (0,3,'Elf',1,5,0,0,0,0)";
+        String ratsQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
+                ") VALUES (0,1,'Swarm of Rats',1,7,0,0,0,0)";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
@@ -85,6 +89,8 @@ public class SQLConnection extends SuperSQLConnection
             rv = stmt.executeUpdate(gremlinQuery);
 
             rv = stmt.executeUpdate(elfQuery);
+
+            rv = stmt.executeUpdate(ratsQuery);
 
         } catch (SQLException e)
         {
@@ -112,8 +118,7 @@ public class SQLConnection extends SuperSQLConnection
                 super.setHitPoints(Integer.parseInt(rs.getString( "myHitPoints" )));
                 super.setCharacterType(rs.getString( "myCharacterType" ));
                 super.setMaxSpeed( Integer.parseInt(rs.getString( "myMaxSpeed" )));
-                super.setMinimumRange( Integer.parseInt(rs.getString( "myMaxDamageRange" )));
-                super.setMaxDamageRange(Integer.parseInt(rs.getString( "myMinimumRange" )));
+                super.setDamage(Integer.parseInt(rs.getString( "myDamage" )));
                 super.setX(Float.parseFloat(rs.getString( "myX" )));
                 super.setY(Float.parseFloat(rs.getString( "myY" )));
                 super.setVelocityX(Float.parseFloat(rs.getString( "myVelocityX" )));

@@ -1,15 +1,17 @@
-package MVC.Model.UnitTests;
+package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonItems.Items.*;
+import MVC.Model.DungeonItems.Items.AttackPotion;
+import MVC.Model.DungeonItems.Items.HealingPotion;
+import MVC.Model.DungeonItems.Items.SpeedPotion;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RoomTests
 {
     @Test
@@ -89,7 +91,7 @@ public class RoomTests
         room.setN(true);
         room.populateDoors();
         room.setRoomHasMonsters(true);
-        room.setMonsters(EntityFactory.generateMonsters(2));
+        room.setMonsters((new EntityFactory()).generateMonsters(2));
         room.setLocation(new Vec2(1,2));
         room.addItem(new AttackPotion());
         room.clearRoom();

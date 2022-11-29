@@ -26,16 +26,15 @@ public class Monster extends DungeonCharacter
      * minimum/maximum damage it can inflict, max speed, position, chance of healing, and maximum/minimum hit points it can restore.
      * @param theHitPoints The Monster's hit points.
      * @param theCharacterType The Monster's type.
-     * @param theMinimumRange The minimum amount of damage the Monster can inflict.
-     * @param theMaxDamageRange The maximum amount of damage the Monster can inflict.
+     * @param theDamage The amount of damage Monster can inflict.
      * @param theMaxSpeed The Monster's maximum speed.
      * @param thePos The Monster's location.
      * @param theVelocity The Monster's velocity.
      */
-    public Monster(final String theCharacterType, final int theHitPoints, final int theMinimumRange,
-            final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
+    public Monster(final String theCharacterType, final int theHitPoints, final int theDamage, final int theMaxSpeed,
+                   final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
+        super(theCharacterType, false, theHitPoints, theDamage, theMaxSpeed, thePos, theVelocity);
         this.myCharacterType = theCharacterType;
         //this.myHeroStatus = false;
         this.myHitPoints = theHitPoints; //necessary?

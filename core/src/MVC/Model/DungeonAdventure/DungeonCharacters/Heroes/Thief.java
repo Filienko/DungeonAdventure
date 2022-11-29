@@ -27,7 +27,7 @@ public class Thief extends Hero
      */
     public Thief()
     {
-        super("Thief", "Thief", 75, 20, 40, 6,  new Vec2(), new Vec2());
+        super("Thief", "Thief",10, 1, 5, new Vec2(), new Vec2());
     }
 
     /**
@@ -36,7 +36,7 @@ public class Thief extends Hero
      */
     public Thief(final String theName, final Vec2 thePos)
     {
-        super(theName, "Thief",75, 20, 40, 6,  thePos, new Vec2());
+        super(theName, "Thief",10, 1,  5, thePos, new Vec2());
         this.myName = theName;
     }
 

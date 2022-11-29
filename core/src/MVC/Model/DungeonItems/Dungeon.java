@@ -3,12 +3,16 @@ package MVC.Model.DungeonItems;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
+import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.DungeonUtils.Graph;
 import MVC.Model.Physics.Vec2;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import static MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory.generatePillars;
 
 public class Dungeon implements Serializable
 {
@@ -28,7 +32,7 @@ public class Dungeon implements Serializable
     {
         myHero = new Warrior("Brave Warrior",new Vec2());
         myDimension = 4;
-        myRooms = EntityFactory.generateRooms(myDimension);
+        myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);
     }
 
@@ -44,7 +48,7 @@ public class Dungeon implements Serializable
             myDimension = theDimension;
         }
         myHero = theHero;
-        myRooms = EntityFactory.generateRooms(myDimension);
+        myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);
     }
 
@@ -53,7 +57,7 @@ public class Dungeon implements Serializable
         myDungeon = theDungeon;
         myHero = new Warrior("Brave Warrior",new Vec2());
         myDimension = myDungeon.length;
-        myRooms = EntityFactory.generateRooms(myDimension);
+        myRooms = generateRooms(myDimension);
     }
 
     public Dungeon(final Room[][] theDungeon, final Hero theHero, final Vec2 theHeroPosition)
@@ -61,7 +65,7 @@ public class Dungeon implements Serializable
         myDungeon = theDungeon;
         myHero = theHero;
         myDimension = myDungeon.length;
-        myRooms = EntityFactory.generateRooms(myDimension);
+        myRooms = generateRooms(myDimension);
     }
 
     private Dungeon(final Room[][] theDungeon, final Hero theHero, final List<Room> theRooms, final int theDimension)
@@ -163,6 +167,42 @@ public class Dungeon implements Serializable
         return answer;
     }
 
+    public static ArrayList<Room> generateRooms(int n1)
+    {
+        var arr = new ArrayList<Room>();
+        // Number of rooms + boundary rooms
+        int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2);
+
+        //Alternative approach to generate maze with the position of a hero at 0 and end at the last square
+//        arr.add(new Room(true, 1, new Vec2()));
+//        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
+
+        for (int i = 1; i < ((n1+2)*n1)-1; i++)
+        {
+            //Skip buffer rooms
+            if(i % Math.sqrt(allVertices) == Math.sqrt(allVertices)-1 || i % Math.sqrt(allVertices) == 0)
+            {
+                continue;
+            }
+
+            //Account for the buffer offset
+            int row = i / (n1 + 2);
+            int col = (i % (n1 + 2)) - 1;
+            arr.add(new Room(i, new Vec2(row,col)));
+        }
+
+        var pillars = generatePillars();
+        for (int i = 0; i < 4; i++)
+        {
+            arr.get(new Random().nextInt(1,arr.size())).addItem(pillars.get(i));
+        }
+
+        arr.get(0).setEntranceStatus(true);
+        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(new Exit());
+
+        return arr;
+    }
+
     public Room[][] getDungeon()
     {
         return myDungeon;
@@ -195,7 +235,8 @@ public class Dungeon implements Serializable
 
     public Memento saveToMemento() throws CloneNotSupportedException
     {
-        return new Memento(this.myDungeon, EntityFactory.generateHero(this.myHero.getCharacterType()), copyRooms(this.myRooms), this.myDimension);
+        return new Memento(this.myDungeon, (new EntityFactory()).generateHero(this.myHero.getCharacterType()),
+                copyRooms(this.myRooms), this.myDimension);
     }
 
     private List<Room> copyRooms(final List<Room> theRooms) throws CloneNotSupportedException

@@ -1,12 +1,10 @@
-package MVC.Model.UnitTests;
+package Tests;
 
 import MVC.Model.DB.SQLConnection;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLException;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class DBTest
 {
     @Test
@@ -18,6 +16,8 @@ void testIntegrationSQLConnection()
     assertEquals("Gremlin",db.getCharacterType());
     db = new SQLConnection("Elf");
     assertEquals("Elf",db.getCharacterType());
+    db = new SQLConnection("Rats");
+    assertEquals("Swarm of Rats",db.getCharacterType());
 }
 
     @Test

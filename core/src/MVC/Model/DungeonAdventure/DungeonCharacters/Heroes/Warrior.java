@@ -19,7 +19,7 @@ public class Warrior extends Hero
      */
     public Warrior()
     {
-        super("Warrior","Warrior",  125, 35, 60, 4, new Vec2(), new Vec2());
+        super("Warrior","Warrior",  10, 1, 5, new Vec2(), new Vec2());
     }
 
     /**
@@ -30,7 +30,7 @@ public class Warrior extends Hero
      */
     public Warrior(final String theName, final Vec2 thePos)
     {
-        super(theName,"Warrior",125, 35, 60, 4, thePos,  new Vec2());
+        super(theName,"Warrior",10, 1,  5, thePos, new Vec2());
         this.myName = theName;
     }
 
