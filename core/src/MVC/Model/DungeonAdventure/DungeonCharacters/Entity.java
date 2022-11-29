@@ -3,10 +3,8 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
 
-import java.io.Serializable;
 
-
-public abstract class Entity implements Serializable
+public abstract class Entity
 {
     private Vec2 myPos;
     private Vec2 myPreviousPos;
@@ -14,7 +12,14 @@ public abstract class Entity implements Serializable
     private final Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
-    private static final long serialVersionUID = 42L;
+    private String myType;
+
+    private boolean myActiveStatus;
+
+    private Vec2 myVector;
+    private long myCurrentFrame;
+    private long myAttackStart;
+    private long myAttackDuration;
 
     protected Entity(final Vec2 thePos, final Vec2 theBoundingBox)
     {
@@ -33,6 +38,24 @@ public abstract class Entity implements Serializable
         myAnimation = theAnimation;
     }
 
+    public void update() {
+        movement();
+        attack();
+        this.myCurrentFrame++;
+    }
+
+    public void movement()
+    {
+        myPreviousPos = myPos;
+        myPos = myPos.add(myVector);
+    }
+
+    public void attack() {};
+
+    public void destroy() {
+        this.myActiveStatus = false; //if an entity is killed, use this method
+    }
+
     public Vec2 getMyPos()
     {
         return myPos;
@@ -40,7 +63,6 @@ public abstract class Entity implements Serializable
 
     public void setMyPos(Vec2 myPos)
     {
-
         this.myPos = myPos;
     }
 
@@ -83,4 +105,7 @@ public abstract class Entity implements Serializable
     {
         myAnimation = theAnimation;
     }
+
+    public String getType() { return myType; }
+
 }

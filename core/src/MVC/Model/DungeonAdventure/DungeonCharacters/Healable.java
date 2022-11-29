@@ -2,31 +2,21 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import java.util.Random;
 
-public interface Healable
-{
-    default int healCharacter(DungeonCharacter theCharacter)
+public interface Healable {
+
+    /**
+     * This method allows a DungeonCharacter to heal another character. The number of hit points that the
+     * DungeonCharacter is allowed to restore is randomly determined between 1 and the specified maximum (theHealMax).
+     * @param theCharacter The DungeonCharacter whose hit points are being restored.
+     * @param theHealMax The maximum number of hit points that can be restored.
+     * @return The number of hit points that were restored.
+     */
+    default int heal(DungeonCharacter theCharacter, int theHealMax)
     {
-        int healPoints = 0;
-        if (theCharacter.getHeroStatus())
-        {
-            Random rand = new Random();
-            healPoints = rand.nextInt(25);
-        } else if (!theCharacter.getHeroStatus())
-        {
-            Random rand = new Random();
-            double chance = Math.random();
-            //double charHealChance = theCharacter.getHealChance();
-            if (chance < 0.1)
-            {
-                healPoints = rand.nextInt(30,60); //shouldnt use nums?? use .getMinHeal() ?
-            } else if (chance < 0.3)
-            {
-                healPoints = rand.nextInt(30,50);
-            } else if (chance < 0.4)
-            {
-                healPoints = rand.nextInt(20,40);
-            }
-        }
+        Random rand = new Random();
+        int healPoints = rand.nextInt(theHealMax) + 1;
+        //what if adding healPoints pushes the character past its hit points maximum?
+
         theCharacter.setHitPoints(theCharacter.getHitPoints() + healPoints);
         return healPoints;
     }

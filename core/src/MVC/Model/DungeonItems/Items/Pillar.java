@@ -10,8 +10,8 @@ public class Pillar extends Item
 
     public Pillar(final String theName)
     {
-        super("Pillar", new Vec2((new Random()).nextInt(0, 20),
-                (new Random()).nextInt(0, 12)));
+        super("Pillar", new Vec2((new Random()).nextInt(0, 21),
+                (new Random()).nextInt(0, 13)));
         myName = theName;
     }
 
@@ -24,4 +24,6 @@ public class Pillar extends Item
     {
         this.myName = myName;
     }
+
 }
+

@@ -12,8 +12,8 @@ public class Exit extends Item
 
     public Exit()
     {
-        super("Exit", new Vec2((new Random()).nextInt(0, 20),
-                (new Random()).nextInt(0, 12)));
+        super("Exit", new Vec2((new Random()).nextInt(0, 21),
+                (new Random()).nextInt(0, 13)));
     }
 
     public static Exit getInstance() {
@@ -27,10 +27,6 @@ public class Exit extends Item
 
     public boolean checkFinishGame(Hero theHero)
     {
-        if (theHero.getPillars().size()==4)
-        {
-            return true;
-        }
-        return false;
+        return theHero.getPillars().size() == 4;
     }
 }
