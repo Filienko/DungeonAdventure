@@ -38,7 +38,8 @@ public abstract class Entity
         myAnimation = theAnimation;
     }
 
-    public void update() {
+    public void update()
+    {
         movement();
         attack();
         this.myCurrentFrame++;

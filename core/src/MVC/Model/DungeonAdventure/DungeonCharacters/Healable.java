@@ -2,7 +2,8 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import java.util.Random;
 
-public interface Healable {
+public interface Healable
+{
 
     /**
      * This method allows a DungeonCharacter to heal another character. The number of hit points that the

@@ -1,20 +1,21 @@
-package MVC.Model.UnitTests;
+package Tests;
+
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
+import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.Saver.Saver;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SaverTest
 {
     @Test
     void testSerialization()
     {
-        var entityFactory = new EntityFactory();
-        var dungeon = entityFactory.generateDungeon();
+        var dungeon = new Dungeon();
         dungeon.setHero(new Thief());
         System.out.println(dungeon.getRooms().size());
         dungeon.getRooms().add(new Room());
@@ -35,8 +36,7 @@ public class SaverTest
     @Test
     void testMemento() throws CloneNotSupportedException
     {
-        var entityFactory = new EntityFactory();
-        var dungeon = entityFactory.generateDungeon();
+        var dungeon = new Dungeon();
         dungeon.getRooms().add(new Room());
         var caretaker = new Saver();
         caretaker.saveStateDungeon(dungeon);

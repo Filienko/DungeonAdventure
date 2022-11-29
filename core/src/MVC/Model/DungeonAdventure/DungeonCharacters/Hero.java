@@ -67,16 +67,15 @@ public abstract class Hero extends DungeonCharacter
      * @param theName The Hero's name, determined by the user.
      * @param theCharacterType The specific type of Hero it is.
      * @param theHitPoints The Hero's hit points (health).
-     * @param theMinDamageRange The minimum amount of damage the Hero can inflict.
-     * @param theMaxDamageRange The maximum amount of damage the Hero can inflict.
+     * @param theDamage The amount of damage the Hero can inflict.
      * @param theMaxSpeed The Hero's maximum speed.
      * @param thePos The Hero's location.
      * @param theVelocity The Hero's velocity.
      */
-    public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theMinDamageRange,
-                final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
+    public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theDamage,
+                final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
+        super(theCharacterType, MY_HERO_STATUS, theHitPoints,theDamage, theMaxSpeed, thePos, theVelocity);
         this.myName = theName;
         this.myCharacterType = theCharacterType;
         this.myPotions = new ArrayList<>();
@@ -170,7 +169,7 @@ public abstract class Hero extends DungeonCharacter
      * This method retrieves the Pillars in the Hero's inventory.
      * @return Pillars in inventory.
      */
-    protected List<Pillar> getPillars()
+    public List<Pillar> getPillars()
     {
         return this.myPillars;
     }

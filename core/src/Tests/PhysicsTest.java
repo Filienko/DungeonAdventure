@@ -1,4 +1,4 @@
-package MVC.Model.UnitTests;
+package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
@@ -14,8 +14,8 @@ public class PhysicsTest
     @Test
     void testPhysics()
     {
-        var hero = EntityFactory.generateThief();
-        Entity ogre = EntityFactory.generateOgre();
+        var hero = (new EntityFactory()).generateThief();
+        Entity ogre = (new EntityFactory()).generateOgre();
 
         hero.setMyPreviousPos(new Vec2(1,1));
         ogre.setMyPreviousPos(new Vec2(-1,2));

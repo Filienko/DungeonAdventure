@@ -20,7 +20,6 @@ class SceneMenuTest
         menu = new SceneMenu(game);
     }
 
-
     @Test
     void cycleUp()
     {

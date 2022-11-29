@@ -1,8 +1,6 @@
-package MVC.Model.UnitTests;
+package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -23,10 +21,9 @@ class ThiefTest
         assertEquals("Thief", myThief.getName());
         assertEquals("Thief", myThief.getMyCharacterType());
         assertTrue(myThief.getHeroStatus());
-        assertEquals(75, myThief.getHitPoints());
-        assertEquals(6, myThief.getMaxSpeed());
-        assertEquals(20, myThief.getMinDamageRange());
-        assertEquals(40, myThief.getMaxDamageRange());
+        assertEquals(10, myThief.getHitPoints());
+        assertEquals(5, myThief.getMaxSpeed());
+        assertEquals(1, myThief.getDamage());
         assertFalse(myThief.getHiddenStatus());
     }
 
@@ -41,10 +38,9 @@ class ThiefTest
         assertEquals("T", myThief.getName());
         assertEquals("Thief", myThief.getMyCharacterType());
         assertTrue(myThief.getHeroStatus());
-        assertEquals(75, myThief.getHitPoints());
-        assertEquals(6, myThief.getMaxSpeed());
-        assertEquals(20, myThief.getMinDamageRange());
-        assertEquals(40, myThief.getMaxDamageRange());
+        assertEquals(10, myThief.getHitPoints());
+        assertEquals(5, myThief.getMaxSpeed());
+        assertEquals(1, myThief.getDamage());
     }
 
     /**

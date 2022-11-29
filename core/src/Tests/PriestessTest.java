@@ -1,13 +1,12 @@
-package MVC.Model.UnitTests;
+package Tests;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PriestessTest
 {
@@ -23,11 +22,9 @@ class PriestessTest
         assertEquals("Priestess", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getMyCharacterType());
         assertTrue(myPriestess.getHeroStatus());
-        assertEquals(75, myPriestess.getHitPoints());
+        assertEquals(10, myPriestess.getHitPoints());
         assertEquals(5, myPriestess.getMaxSpeed());
-        assertEquals(25, myPriestess.getMinDamageRange());
-        assertEquals(45, myPriestess.getMaxDamageRange());
-
+        assertEquals(1, myPriestess.getDamage());
     }
 
     /**
@@ -41,10 +38,9 @@ class PriestessTest
         assertEquals("P", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getMyCharacterType());
         assertTrue(myPriestess.getHeroStatus());
-        assertEquals(75, myPriestess.getHitPoints());
+        assertEquals(10, myPriestess.getHitPoints());
         assertEquals(5, myPriestess.getMaxSpeed());
-        assertEquals(25, myPriestess.getMinDamageRange());
-        assertEquals(45, myPriestess.getMaxDamageRange());
+        assertEquals(1, myPriestess.getDamage());
     }
 
     /**
