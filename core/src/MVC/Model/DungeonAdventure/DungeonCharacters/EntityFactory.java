@@ -17,6 +17,7 @@ public class EntityFactory
 {
     //Updating, Deleting, and Collecting entities
     private SuperMonsterDB DB;
+
     private ArrayList<Entity> myEntities;
     private ArrayList<Entity> myEntitiesToAdd;
     private ObjectMap<String, ArrayList<Entity>> myEntityMap;
@@ -30,27 +31,49 @@ public class EntityFactory
         myTotalEntities = 0;
     }
     
-    public Monster generateMonster(String monsterType)
+    public Monster generateMonster(final String monsterType)
     {
         DB = new MonsterDB();
         return DB.createMonsterDB(monsterType);
     }
 
-    public void collect(final Dungeon theDungeon)
+    public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
     {
         for (var room: theDungeon.getRooms())
         {
             var roomNumber = room.getNumber();
             var doors = new ArrayList<Door>();
-            if(room.isE()){doors.add(new Door(roomNumber,3,new Vec2()));}
-            if(room.isN()){doors.add(new Door(roomNumber,3,new Vec2()));}
-            if(room.isS()){doors.add(new Door(roomNumber,3,new Vec2()));}
-            if(room.isW()){doors.add(new Door(roomNumber,3,new Vec2()));}
+            if(room.isE()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
+            if(room.isN()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
+            if(room.isS()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
+            if(room.isW()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
             myEntitiesToAdd.addAll(doors);
-
-            var items = room.getItems();
-            var monsters = room.getMonsters();
+            myEntitiesToAdd.add(new Wall(new Vec2(),new Vec2()));
+            generateRoomEntities(room);
         }
+        return myEntitiesToAdd;
+    }
+
+    public ArrayList<Entity> generateRoomEntities(final Room theRoom)
+    {
+        var items = theRoom.getItems();
+        var monsters = theRoom.getMonsters();
+
+        while(items.length()>0)
+        {
+            String item = items.substring(0, items.indexOf(",")+1);
+            items.delete(0, items.indexOf(",")+1);
+            addItem(item.substring(0,item.indexOf(",")));
+        }
+
+        while(monsters.length()>0)
+        {
+            String monster = monsters.substring(0, monsters.indexOf(",")+1);
+            monsters.delete(0, monsters.indexOf(",")+1);
+            monster = monster.substring(0,monster.indexOf(","));
+            myEntitiesToAdd.add(generateMonster(monster));
+        }
+        return myEntitiesToAdd;
     }
 
     public void update()
@@ -107,12 +130,11 @@ public class EntityFactory
         return generateMonster("Rats");
     }
 
-
-    public List<Monster> generateMonsters(int n1)
+    public List<Monster> generateMonsters(final int theN)
     {
         var arr = new ArrayList<Monster>();
 
-        for (int i = 0; i < n1; i++)
+        for (int i = 0; i < theN; i++)
         {
             arr.add(generateOgre());
             arr.add(generateGremlin());
@@ -122,28 +144,66 @@ public class EntityFactory
         return arr;
     }
 
+    public void addItem(final String theItem)
+    {
+        switch (theItem)
+        {
+            case "Healing Potion" -> {
+                myEntitiesToAdd.add(new HealingPotion());
+                break;
+            }
+            case "Attack Potion" -> {
+                myEntitiesToAdd.add(new AttackPotion());
+                break;
+            }
+            case "Speed Potion" -> {
+                myEntitiesToAdd.add(new SpeedPotion());
+                break;
+            }
+            case "Pit" -> {
+                myEntitiesToAdd.add(new Pit());
+                break;
+            }
+            case "Encapsulation","Inheritance","Polymorphism","Abstraction"-> {
+                myEntitiesToAdd.add(new Pillar(theItem));
+                break;
+            }
+            case "Exit" -> {
+                myEntitiesToAdd.add(new Exit());
+                break;
+            }
+            case "Bomb" -> {
+                myEntitiesToAdd.add(new Bomb());
+                break;
+            }
+            case "Sword" -> {
+                myEntitiesToAdd.add(new Sword());
+                break;
+            }
+            case "Wall" -> {
+                myEntitiesToAdd.add(new Wall(new Vec2(),new Vec2()));
+                break;
+            }
+        }
+    }
+
     public static Pit generatePit()
     {
         return new Pit();
     }
 
-    public static Pit generatePit(Vec2 theVec)
-    {
-        return new Pit(theVec);
-    }
+//    public static ArrayList<Pit> generatePit(final int theN)
+//    {
+//        var arr = new ArrayList<Pit>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new Pit());
+//        }
+//        return arr;
+//    }
 
-    public static ArrayList<Pit> generatePit(int n1)
-    {
-        var arr = new ArrayList<Pit>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new Pit());
-        }
-        return arr;
-    }
-
-    public Hero generateHero(String type1)
+    public Hero generateHero(final String type1)
     {
         if (type1.contentEquals("Warrior"))
         {
@@ -193,48 +253,55 @@ public class EntityFactory
         return arr;
     }
 
-    public static List<HealingPotion> generateHealingPotions(int n1)
-    {
-        var arr = new ArrayList<HealingPotion>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new HealingPotion());
-        }
-
-        return arr;
-    }
-
-    public static List<SpeedPotion> generateSpeedPotions(int n1)
-    {
-        var arr = new ArrayList<SpeedPotion>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new SpeedPotion());
-        }
-
-        return arr;
-    }
-
-    public static List<AttackPotion> generateAttackPotions(int n1)
-    {
-        var arr = new ArrayList<AttackPotion>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new AttackPotion());
-        }
-
-        return arr;
-    }
+//
+//    public static List<HealingPotion> generateHealingPotions(final int theN)
+//    {
+//        var arr = new ArrayList<HealingPotion>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new HealingPotion());
+//        }
+//
+//        return arr;
+//    }
+//
+//    public static List<SpeedPotion> generateSpeedPotions(final int theN)
+//    {
+//        var arr = new ArrayList<SpeedPotion>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new SpeedPotion());
+//        }
+//
+//        return arr;
+//    }
+//
+//    public static List<AttackPotion> generateAttackPotions(final int theN)
+//    {
+//        var arr = new ArrayList<AttackPotion>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new AttackPotion());
+//        }
+//
+//        return arr;
+//    }
 
     public ArrayList<Entity> getEntities() { return myEntities; }
 
     //added this method
-    public static Sword generateSword() 
+    public static Sword generateSword()
     {
         return new Sword();
     }
+
+    public ArrayList<Entity> getEntitiesToAdd()
+    {
+        return myEntitiesToAdd;
+    }
+
 
 }

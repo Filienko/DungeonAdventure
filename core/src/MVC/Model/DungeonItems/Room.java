@@ -47,12 +47,12 @@ public class Room implements Cloneable
     /**
      * The Items that the Room contains.
      */
-    private StringBuilder myItems = new StringBuilder();
+    private StringBuilder myItems;
 
     /**
      * The Monsters that the Room contains.
      */
-    private StringBuilder myMonsters = new StringBuilder();
+    private StringBuilder myMonsters;
 
     /**
      * The location of the Room in the Dungeon.
@@ -60,13 +60,21 @@ public class Room implements Cloneable
     private Vec2 myLocation;
 
     /**
+     * The number of monsters located at room.
+     */
+    private int myMonstersNumber;
+
+    /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
      */
     public Room()
     {
-        this.myEntrance = false;
-        this.myExit = false;
-        this.myLocation = new Vec2();
+        myNumber = 0;
+        myEntrance = false;
+        myExit = false;
+        myLocation = new Vec2();
+        myItems = new StringBuilder();
+        myMonsters = new StringBuilder();
     }
 
     /**
@@ -74,10 +82,12 @@ public class Room implements Cloneable
      */
     public Room(final int theNumber, Vec2 theLocation)
     {
-        this.myNumber = theNumber;
-        this.myEntrance = false;
-        this.myExit = false;
-        this.myLocation = theLocation;
+        myNumber = theNumber;
+        myEntrance = false;
+        myExit = false;
+        myLocation = theLocation;
+        myItems = new StringBuilder();
+        myMonsters = new StringBuilder();
     }
 
     /**
@@ -87,37 +97,38 @@ public class Room implements Cloneable
     {
         if(theEntrance)
         {
-            this.myEntrance = true;
-            this.myExit = false;
+            myEntrance = true;
+            myExit = false;
         }
         else
         {
-            this.myEntrance = false;
-            this.myExit = true;
+            myEntrance = false;
+            myExit = true;
             addItem(new Exit());
         }
 
-        this.myNumber = theNumber;
-        this.myLocation = theLocation;
+        myNumber = theNumber;
+        myLocation = theLocation;
+        myItems = new StringBuilder();
+        myMonsters = new StringBuilder();
     }
 
     /**
      * Room constructor that sets all of its attributes based on its parameters.
      * @param theEntrance Boolean that tells if the Room is the Entrance to the Dungeon.
      * @param theExit Boolean that tells if the Room is the Exit to the Dungeon.
-     * @param theRoomHasItem Boolean that tells if the Room contains an Item.
-     * @param theRoomHasMonsters Boolean whether monsters are present in room
      * @param theItems The Items that the Room contains.
      * @param theLocation The location of the Room in the Dungeon.
      */
-    public Room(final boolean theEntrance, final boolean theExit, boolean theRoomHasItem,
-                final boolean theRoomHasMonsters, final StringBuilder theItems, final Vec2 theLocation)
+    public Room(final boolean theEntrance, final boolean theExit,
+                final StringBuilder theMonsters, final StringBuilder theItems, final Vec2 theLocation)
     {
         //how to guard against both being entered as true ?
-        this.myExit = theExit;
-        this.myEntrance = theEntrance;
-        this.myItems = theItems;
-        this.myLocation = theLocation;
+        myExit = theExit;
+        myEntrance = theEntrance;
+        myLocation = theLocation;
+        myMonsters = theMonsters;
+        myItems = theItems;
     }
 
     /**
@@ -136,12 +147,13 @@ public class Room implements Cloneable
         {
             populatePit(random.nextDouble());
         }
-        populateMonsters();
+        populateMonsters(1);
     }
 
-    public void populateMonsters()
+    public void populateMonsters(final int theN)
     {
-        setMonsters((new EntityFactory()).generateMonsters(1));
+        setMonsters((new EntityFactory()).generateMonsters(theN));
+        myMonstersNumber = myMonstersNumber+3*theN;
     }
 
     public void populatePit(double theChance)
@@ -220,7 +232,7 @@ public class Room implements Cloneable
      * This method retrieves the Item in the Room.
      * @return The Item the Room contains.
      */
-    public String getItems() { return this.myItems.toString(); }
+    public StringBuilder getItems() { return this.myItems; }
 
     /**
      * This method sets the Items in the Room.
@@ -379,9 +391,9 @@ public class Room implements Cloneable
         myS = theS;
     }
 
-    public String getMonsters()
+    public StringBuilder getMonsters()
     {
-        return myMonsters.toString();
+        return myMonsters;
     }
 
     public void setMonsters(final List<Monster> theMonsters)
@@ -396,5 +408,10 @@ public class Room implements Cloneable
     {
         Room s = (Room) super.clone();
         return s;
+    }
+
+    public int getNumberOfMonsters()
+    {
+        return myMonstersNumber;
     }
 }

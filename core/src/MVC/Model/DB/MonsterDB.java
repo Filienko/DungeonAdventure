@@ -103,10 +103,10 @@ public class MonsterDB extends SuperMonsterDB
     }
 
     @Override
-    public Monster createMonster(final int n)
+    public Monster createMonster(final int theN)
     {
         //now query my database table for all its contents and display my results
-        String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + n + "";
+        String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + theN + "";
 
         boolean hero = false;
         int hp = 0;

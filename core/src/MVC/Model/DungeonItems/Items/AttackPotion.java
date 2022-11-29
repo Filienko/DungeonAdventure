@@ -21,5 +21,4 @@ public class AttackPotion extends Potion
         theCharacter.setDamage(theCharacter.getDamage() + super.getStrength());
         theCharacter.setDamage(theCharacter.getDamage() + super.getStrength());
     }
-
 }

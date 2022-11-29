@@ -12,8 +12,7 @@ public class Exit extends Item
 
     public Exit()
     {
-        super("Exit", new Vec2((new Random()).nextInt(0, 21),
-                (new Random()).nextInt(0, 13)));
+        super("Exit");
     }
 
     public static Exit getInstance() {

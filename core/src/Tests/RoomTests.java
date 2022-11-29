@@ -25,13 +25,13 @@ public class RoomTests
         room.setE(true);
 
         room.populateTheRoom(true);
-        assertTrue(room.getItems().contains("Pit"));
-        assertTrue(room.getItems().contains("Potion"));
-        assertTrue(room.getItems().contains("Encapsulation"));
-        assertTrue(room.getMonsters().contains("Elf"));
-        assertTrue(room.getMonsters().contains("Ogre"));
-        assertTrue(room.getMonsters().contains("Gremlin"));
-        assertTrue(room.getMonsters().contains("Swarm of Rats"));
+        assertTrue(room.getItems().toString().contains("Pit"));
+        assertTrue(room.getItems().toString().contains("Potion"));
+        assertTrue(room.getItems().toString().contains("Encapsulation"));
+        assertTrue(room.getMonsters().toString().contains("Elf"));
+        assertTrue(room.getMonsters().toString().contains("Ogre"));
+        assertTrue(room.getMonsters().toString().contains("Gremlin"));
+        assertTrue(room.getMonsters().toString().contains("Swarm of Rats"));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class RoomTests
         var room = new Room();
         var random = new Random();
         room.populatePotions(random,1);
-        assertTrue(room.getItems().contains("Potion"));
+        assertTrue(room.getItems().toString().contains("Potion"));
     }
 
     @Test
@@ -48,18 +48,18 @@ public class RoomTests
     {
         var room = new Room();
         room.populatePit(0.09);
-        assertTrue(room.getItems().contains("Pit"));
+        assertTrue(room.getItems().toString().contains("Pit"));
     }
 
     @Test
     void testRoomPopulateMonsters()
     {
         var room = new Room();
-        room.populateMonsters();
-        assertTrue(room.getMonsters().contains("Elf"));
-        assertTrue(room.getMonsters().contains("Ogre"));
-        assertTrue(room.getMonsters().contains("Gremlin"));
-        assertTrue(room.getMonsters().contains("Swarm of Rats"));
+        room.populateMonsters(1);
+        assertTrue(room.getMonsters().toString().contains("Elf"));
+        assertTrue(room.getMonsters().toString().contains("Ogre"));
+        assertTrue(room.getMonsters().toString().contains("Gremlin"));
+        assertTrue(room.getMonsters().toString().contains("Swarm of Rats"));
     }
 
     @Test
@@ -95,11 +95,11 @@ public class RoomTests
         room.setNumber(100);
 
         assertTrue(room.getNumber()==100);
-        assertTrue(room.getMonsters().contains("Elf"));
-        assertTrue(room.getMonsters().contains("Ogre"));
-        assertTrue(room.getMonsters().contains("Gremlin"));
-        assertTrue(room.getMonsters().contains("Swarm of Rats"));
-        assertTrue(room.getItems().contains("Potion"));
+        assertTrue(room.getMonsters().toString().contains("Elf"));
+        assertTrue(room.getMonsters().toString().contains("Ogre"));
+        assertTrue(room.getMonsters().toString().contains("Gremlin"));
+        assertTrue(room.getMonsters().toString().contains("Swarm of Rats"));
+        assertTrue(room.getItems().toString().contains("Potion"));
         assertTrue(room.isTheEntrance());
         assertFalse(room.isTheExit());
         assertFalse(room.isE());

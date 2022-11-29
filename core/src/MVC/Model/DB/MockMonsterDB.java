@@ -11,7 +11,7 @@ public class MockMonsterDB extends SuperMonsterDB
         return createMonster(1);
     }
 
-    public Monster createMonster(final int n)
+    public Monster createMonster(final int theN)
         {
             boolean hero = false;
             int hp = 0;
