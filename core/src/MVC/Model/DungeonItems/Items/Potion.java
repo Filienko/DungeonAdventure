@@ -11,14 +11,14 @@ public abstract class Potion extends Item
 
     protected Potion()
     {
-        super("Potion", new Vec2((new Random()).nextInt(0, 20),
+        super("Potion", new Vec2((new Random()).nextInt(0, 21),
                 (new Random()).nextInt(0, 12)));
         myStrength = 15;
     }
     protected Potion(final int theStrength)
     {
-        super("Potion", new Vec2((new Random()).nextInt(0, 20),
-                (new Random()).nextInt(0, 12)));
+        super("Potion", new Vec2((new Random()).nextInt(0, 21),
+                (new Random()).nextInt(0, 13)));
         myStrength = theStrength;
     }
 

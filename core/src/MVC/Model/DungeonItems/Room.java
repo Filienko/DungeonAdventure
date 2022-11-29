@@ -139,7 +139,7 @@ public class Room implements Serializable, Cloneable
      * @param theExit Boolean that tells if the Room is the Exit to the Dungeon.
      * @param theDoors List of the Doors to the Room.
      * @param theRoomHasItem Boolean that tells if the Room contains an Item.
-     * @param theRoomHasMonsters
+     * @param theRoomHasMonsters Boolean whether monsters are present in room
      * @param theItems The Items that the Room contains.
      * @param theLocation The location of the Room in the Dungeon.
      */
@@ -191,8 +191,7 @@ public class Room implements Serializable, Cloneable
     {
         if(theChance < 0.10)
         {
-            this.myItems.add(new Pit(new Vec2((new Random()).nextInt(0, 20),
-                    (new Random()).nextInt(0, 12))));
+            this.myItems.add(new Pit());
         }
     }
 
@@ -203,7 +202,6 @@ public class Room implements Serializable, Cloneable
             var randD = theRandom.nextDouble();
             if (randD < 0.333)
             {
-                //20 wide and 12 tall tiles per room
                 this.myItems.add(new HealingPotion(theRandom.nextInt(15, 46)));
             }
             else if (randD < 0.67)
@@ -271,7 +269,7 @@ public class Room implements Serializable, Cloneable
      * This method sets the Items in the Room.
      * @param theItems The Items to be contained in the Room.
      */
-    public void setItems (List<Item> theItems) { this.myItems = theItems; this.myRoomHasItems = myItems.size() < 1 ? false : true;; }
+    public void setItems (List<Item> theItems) { this.myItems = theItems; this.myRoomHasItems = myItems.size() >= 1; }
 
     /**
      * This method adds the Items in the Room.
@@ -283,7 +281,7 @@ public class Room implements Serializable, Cloneable
      * This method sets the Item in the Room.
      * @param theItem The Item to be contained in the Room.
      */
-    public void addItem (Item theItem) { this.myItems.add(theItem); this.myRoomHasItems = true; };
+    public void addItem (Item theItem) { this.myItems.add(theItem); this.myRoomHasItems = true; }
 
     /**
      * This method removes all Items from the Room.
@@ -294,7 +292,7 @@ public class Room implements Serializable, Cloneable
      * This method removes the Item from the Room.
      * @param theItem The Item to be removed from the Room.
      */
-    public void removeItem (Item theItem) { this.myItems.remove(theItem); this.myRoomHasItems = myItems.size() < 1 ? false : true; }
+    public void removeItem (Item theItem) { this.myItems.remove(theItem); this.myRoomHasItems = myItems.size() >= 1; }
 
     /**
      * This method returns a boolean that tells whether the Room contains an Item.
@@ -453,8 +451,7 @@ public class Room implements Serializable, Cloneable
 
     protected Room clone() throws CloneNotSupportedException
     {
-        Room s = (Room)super.clone();
-        return s;
+        return (Room) super.clone();
     }
 
     /**
@@ -475,16 +472,11 @@ public class Room implements Serializable, Cloneable
         room.append("*-* \n | ");
         for (var Item:myItems)
         {
-            switch (Item.getType()) {
-                case "Potion":
-                    room.append("Potion");
-                    break;
-                case "Pillar":
-                    room.append("Potion");
-                    break;
-                case "Pit":
-                    room.append("Potion");
-                    break;
+            switch (Item.getType())
+            {
+                case "Potion" -> room.append("Potion");
+                case "Pillar" -> room.append("Pillar");
+                case "Pit" -> room.append("Pit");
             }
         }
         if (myEntrance)
