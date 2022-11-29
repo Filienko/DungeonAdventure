@@ -1,9 +1,6 @@
 package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.Physics.Vec2;
-
-import java.util.Random;
 
 public class HealingPotion extends Potion
 {
@@ -20,7 +17,7 @@ public class HealingPotion extends Potion
     @Override
     public void increase(DungeonCharacter theCharacter)
     {
-        theCharacter.setHitPoints(theCharacter.getHitPoints() + super.getStrength());
+        theCharacter.setHitPoints(Math.min(10,theCharacter.getHitPoints() + super.getStrength()));
     }
 
 }

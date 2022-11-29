@@ -1,5 +1,7 @@
 package MVC.Model.DB;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
+import MVC.Model.Physics.Vec2;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.Connection;
@@ -7,33 +9,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLConnection extends SuperSQLConnection
+public class MonsterDB extends SuperMonsterDB
 {
     public SQLiteDataSource myDS = establishConnection();
 
-    public SQLConnection(final String monsterType)
+    public Monster createMonsterDB(final String monsterType)
     {
         if(monsterType.contentEquals("Ogre"))
         {
-            updateMonsterData(1);
+            return createMonster(1);
         }
         else if(monsterType.contentEquals("Gremlin"))
         {
-            updateMonsterData(2);
+            return createMonster(2);
         }
         else if (monsterType.contentEquals("Elf"))
         {
-            updateMonsterData(3);
+            return createMonster(3);
         }
         else if (monsterType.contentEquals("Rats"))
         {
-            updateMonsterData(4);
+            return createMonster(4);
         }
+        return null;
     }
 
     public static SQLiteDataSource establishConnection()
     {
-        //establish connection (creates db file if it does not exist :-)
         SQLiteDataSource ds = null;
         try
         {
@@ -101,10 +103,20 @@ public class SQLConnection extends SuperSQLConnection
     }
 
     @Override
-    public void updateMonsterData(int n)
+    public Monster createMonster(final int n)
     {
         //now query my database table for all its contents and display my results
         String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + n + "";
+
+        boolean hero = false;
+        int hp = 0;
+        String charType = null;
+        int speed = 0;
+        int damage = 0;
+        float myX = 0;
+        float myY = 0;
+        float velocityX = 0;
+        float velocityY = 0;
 
         try ( Connection conn = myDS.getConnection();
               Statement stmt = conn.createStatement(); ) {
@@ -112,32 +124,20 @@ public class SQLConnection extends SuperSQLConnection
             ResultSet rs = stmt.executeQuery(query);
 
             //walk through each 'row' of results, grab data by column/field name
-            // and print it
-            while ( rs.next() ) {
-                super.setHero(Boolean.parseBoolean(rs.getString( "myHero" )));
-                super.setHitPoints(Integer.parseInt(rs.getString( "myHitPoints" )));
-                super.setCharacterType(rs.getString( "myCharacterType" ));
-                super.setMaxSpeed( Integer.parseInt(rs.getString( "myMaxSpeed" )));
-                super.setDamage(Integer.parseInt(rs.getString( "myDamage" )));
-                super.setX(Float.parseFloat(rs.getString( "myX" )));
-                super.setY(Float.parseFloat(rs.getString( "myY" )));
-                super.setVelocityX(Float.parseFloat(rs.getString( "myVelocityX" )));
-                super.setVelocityY(Float.parseFloat(rs.getString( "myVelocityY" )));
-            }
+            //and print it
+            hero = (Boolean.parseBoolean(rs.getString( "myHero" )));
+            hp = (Integer.parseInt(rs.getString( "myHitPoints" )));
+            charType = (rs.getString( "myCharacterType" ));
+            speed = ( Integer.parseInt(rs.getString( "myMaxSpeed" )));
+            damage = (Integer.parseInt(rs.getString( "myDamage" )));
+            myX = (Float.parseFloat(rs.getString( "myX" )));
+            myY = (Float.parseFloat(rs.getString( "myY" )));
+            velocityX = (Float.parseFloat(rs.getString( "myVelocityX" )));
+            velocityY = (Float.parseFloat(rs.getString( "myVelocityY" )));
         } catch ( SQLException e ) {
             e.printStackTrace();
             System.exit( 0 );
         }
+        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY));
     }
-
-    public SQLiteDataSource getDS()
-    {
-        return myDS;
-    }
-
-    public void setDS(final SQLiteDataSource theDS)
-    {
-        myDS = theDS;
-    }
-
 }

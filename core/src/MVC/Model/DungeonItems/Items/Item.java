@@ -11,12 +11,10 @@ public abstract class Item extends Entity
 
     protected Item(final String theType, Vec2 theLocation)
     {
-        super(theLocation,new Vec2());
+        super(theLocation,theType,new Vec2());
         myType = theType;
         myLocation = theLocation;
     }
-
-
 
     protected Vec2 getMyLocation()
     {

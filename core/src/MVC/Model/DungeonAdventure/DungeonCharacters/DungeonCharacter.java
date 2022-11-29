@@ -55,17 +55,17 @@ public abstract class DungeonCharacter extends Entity
      * @param thePos The character's location.
      * @param theVelocity The character's velocity.
      */
-    DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints, final int theDamage,
-                     final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
+    DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints,
+                     final int theDamage, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
-        super(new Vec2(), new Vec2());
-        this.myCharacterType = theCharacterType;
-        this.myHeroStatus = theHeroStatus;
-        this.myDamage = theDamage;
-        this.myHitPoints = theHitPoints;
-        this.myMaxSpeed = theMaxSpeed;
-        this.myPos = thePos;
-        this.myVelocity = theVelocity;
+        super(new Vec2(),theCharacterType, new Vec2());
+        myCharacterType = theCharacterType;
+        myHeroStatus = theHeroStatus;
+        myDamage = theDamage;
+        myHitPoints = theHitPoints;
+        myMaxSpeed = theMaxSpeed;
+        myPos = thePos;
+        myVelocity = theVelocity;
     }
 
     protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
@@ -91,7 +91,8 @@ public abstract class DungeonCharacter extends Entity
      * This method subtracts hit points from a character's total hit point count.
      * @param theDamage The number of hit points to be subtracted.
      */
-    public void applyDamage(final int theDamage) {
+    public void applyDamage(final int theDamage)
+    {
         this.setHitPoints(this.getHitPoints() - theDamage);
     }
 

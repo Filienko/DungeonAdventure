@@ -4,8 +4,6 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
-
-
 import java.util.*;
 import java.util.Random;
 
@@ -399,43 +397,4 @@ public class Room implements Cloneable
         Room s = (Room) super.clone();
         return s;
     }
-
-//    /**
-//     * This method returns String that serves as a 2D representation of the Room.
-//     * Doors are represented by: -,
-//     * Entrances are represented by: i,
-//     * Exits are represented by: O,
-//     * Potions are represented by: Potion,
-//     * Pillars are represented by the first letter of the Pillar: A, P, I, or E,
-//     * Pits are represented by: X.
-//     * @return A 2D representation of the Room expressed as a String.
-//     */
-//    @Override
-//    public String toString()
-//    {
-//        StringBuilder room = new StringBuilder();
-//
-//        room.append("*-* \n | ");
-//
-//        for (var Item:myItems)
-//        {
-//            switch (Item.getType())
-//            {
-//                case "Potion" -> room.append("Potion");
-//                case "Pillar" -> room.append("Pillar");
-//                case "Pit" -> room.append("Pit");
-//            }
-//        }
-//
-//        if (myEntrance)
-//        {
-//            room.append("i");
-//        } else if (myExit)
-//        {
-//            room.append("O");
-//        }
-//        room.append("| \n *-*");
-//
-//        return room.substring(0, room.length());
-//    }
 }

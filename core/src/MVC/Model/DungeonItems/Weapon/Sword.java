@@ -9,7 +9,6 @@ public class Sword extends Entity
     private int myLifeSpan; //must initialize this
     private long myCurrentFrame;
 
-    //should attackable extend Entity to get super.movement/super.attack or should attackable implement its own methods
     @Override
     public void update() {
         if (myCurrentFrame >= myLifeSpan) {
@@ -25,12 +24,12 @@ public class Sword extends Entity
 
     public Sword()
     {
-        super(new Vec2(),new Vec2());
+        super(new Vec2(), "Sword", new Vec2());
     }
 
     public Sword(final Vec2 thePos, final Vec2 theBoundingBox)
     {
-        super(thePos, theBoundingBox);
+        super(thePos, "Sword", theBoundingBox);
     }
 
     public Vec2 getBoundingBox()

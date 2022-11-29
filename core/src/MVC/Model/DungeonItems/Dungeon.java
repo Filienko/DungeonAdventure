@@ -173,10 +173,6 @@ public class Dungeon implements Serializable
         // Number of rooms + boundary rooms
         int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2);
 
-        //Alternative approach to generate maze with the position of a hero at 0 and end at the last square
-//        arr.add(new Room(true, 1, new Vec2()));
-//        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
-
         for (int i = 1; i < ((n1+2)*n1)-1; i++)
         {
             //Skip buffer rooms

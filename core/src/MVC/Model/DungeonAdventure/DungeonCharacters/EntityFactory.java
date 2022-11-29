@@ -1,7 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
-import MVC.Model.DB.SQLConnection;
-import MVC.Model.DB.SuperSQLConnection;
+import MVC.Model.DB.MonsterDB;
+import MVC.Model.DB.SuperMonsterDB;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
@@ -12,12 +12,11 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class EntityFactory
 {
     //Updating, Deleting, and Collecting entities
-    private SuperSQLConnection DB;
+    private SuperMonsterDB DB;
     private ArrayList<Entity> myEntities;
     private ArrayList<Entity> myEntitiesToAdd;
     private ObjectMap<String, ArrayList<Entity>> myEntityMap;
@@ -33,11 +32,26 @@ public class EntityFactory
     
     public Monster generateMonster(String monsterType)
     {
-        DB = new SQLConnection(monsterType);
-        return new Monster(DB.getCharacterType(), DB.getHitPoints(), DB.getDamage(), DB.getMaxSpeed(),
-                new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
+        DB = new MonsterDB();
+        return DB.createMonsterDB(monsterType);
     }
 
+    public void collect(final Dungeon theDungeon)
+    {
+        for (var room: theDungeon.getRooms())
+        {
+            var roomNumber = room.getNumber();
+            var doors = new ArrayList<Door>();
+            if(room.isE()){doors.add(new Door(roomNumber,3,new Vec2()));}
+            if(room.isN()){doors.add(new Door(roomNumber,3,new Vec2()));}
+            if(room.isS()){doors.add(new Door(roomNumber,3,new Vec2()));}
+            if(room.isW()){doors.add(new Door(roomNumber,3,new Vec2()));}
+            myEntitiesToAdd.addAll(doors);
+
+            var items = room.getItems();
+            var monsters = room.getMonsters();
+        }
+    }
 
     public void update()
     {
@@ -45,7 +59,17 @@ public class EntityFactory
         for (Entity e : myEntitiesToAdd)
         {
             myEntities.add(e);
-            myEntityMap.get(e.getType()).add(e);
+            var type = myEntityMap.get(e.getType());
+            if(type==null)
+            {
+                var list = new ArrayList<Entity>();
+                list.add(e);
+                myEntityMap.put(e.getType(),list);
+            }
+            else
+            {
+                myEntityMap.get(e.getType()).add(e);
+            }
             myTotalEntities++;
         }
 
@@ -58,14 +82,9 @@ public class EntityFactory
         {
             for (Entity e : kv.value)
             {
-                if (kv.key.equals("Warrior"))
-                {
-                    Warrior warrior = (Warrior) e;
-                    warrior.update();
-                }
+                e.update();
             }
         }
-
     }
 
     public Monster generateOgre()
@@ -91,7 +110,6 @@ public class EntityFactory
 
     public List<Monster> generateMonsters(int n1)
     {
-
         var arr = new ArrayList<Monster>();
 
         for (int i = 0; i < n1; i++)

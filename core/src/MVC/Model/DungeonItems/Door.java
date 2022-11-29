@@ -5,21 +5,42 @@ import MVC.Model.Physics.Vec2;
 
 public class Door extends Entity
 {
+    private int myRoomNumber;
+
     private Vec2 myLocation;
-    private boolean myDoorOpen;
+
+    private int myMonsterCounter;
 
     public Door()
     {
-        super(new Vec2(),new Vec2());
+        super(new Vec2(),"Door",new Vec2());
         this.myLocation = new Vec2();
-        this.myDoorOpen = false;
+        myMonsterCounter = 3;
     }
 
-    public Door(final boolean myDoorOpen)
+    public Door(final int theMonsterCounter, final Vec2 theLocation)
     {
-        super(new Vec2(),new Vec2());
-        this.myLocation = new Vec2();
-        this.myDoorOpen = myDoorOpen;
+        //TODO:assign correct bounding boxes to all of the Entities inheriting from Entity
+        super(theLocation,"Door",theLocation.add(new Vec2(-1,-1)));
+        this.myLocation = theLocation;
+        myMonsterCounter = 3;
+    }
+
+    public Door(final int theRoomNumber,final int theMonsterCounter,final Vec2 theLocation)
+    {
+        super(theLocation,"Door",theLocation.add(new Vec2(-1,-1)));
+        this.myLocation = theLocation;
+        myMonsterCounter = 3;
+    }
+
+    @Override
+    public void update()
+    {
+        if(myMonsterCounter == 0)
+        {
+            destroy();
+        }
+        incrementCurrentFrame();
     }
 
     public Vec2 getMyLocation()
@@ -32,13 +53,24 @@ public class Door extends Entity
         this.myLocation = myLocation;
     }
 
-    public boolean isMyDoorOpen()
+    public int getMonsterCounter()
     {
-        return myDoorOpen;
+        return myMonsterCounter;
     }
 
-    public void setMyDoorOpen(final boolean myDoorOpen)
+    public void setMonsterCounter(final int theMonsterCounter)
     {
-        this.myDoorOpen = myDoorOpen;
+        myMonsterCounter = theMonsterCounter;
     }
+
+    private int getRoomNumber()
+    {
+        return myRoomNumber;
+    }
+
+    private void setRoomNumber(final int theRoomNumber)
+    {
+        myRoomNumber = theRoomNumber;
+    }
+
 }
