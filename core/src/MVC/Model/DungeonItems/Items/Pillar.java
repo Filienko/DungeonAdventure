@@ -1,29 +1,18 @@
 package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.Physics.Vec2;
-
-import java.util.Random;
-
 public class Pillar extends Item
 {
-    private String myName;
+    final public String myName;
 
     public Pillar(final String theName)
     {
-        super("Pillar", new Vec2((new Random()).nextInt(0, 21),
-                (new Random()).nextInt(0, 13)));
+        super("Pillar");
         myName = theName;
     }
 
-    public String getMyName()
+    public String getName()
     {
         return myName;
     }
-
-    public void setMyName(final String myName)
-    {
-        this.myName = myName;
-    }
-
 }
 

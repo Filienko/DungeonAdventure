@@ -2,8 +2,6 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.Physics.Vec2;
 
-import java.util.Random;
-
 public class Pit extends Item
 {
     private Vec2 myLocation;
@@ -11,23 +9,15 @@ public class Pit extends Item
 
     public Pit()
     {
-        super("Pit", new Vec2((new Random()).nextInt(0, 21),
-                (new Random()).nextInt(0, 13)));
+        super("Pit");
         this.damageFall = 15;
     }
 
-    public Pit(final Vec2 myLocation)
+    public Pit(final Vec2 theLocation)
     {
-        super("Pit", new Vec2());
-        this.myLocation = myLocation;
+        super("Pit");
+        this.myLocation = theLocation;
         this.damageFall = 15;
-    }
-
-    public Pit(final Vec2 myLocation, final int damageFall)
-    {
-        super("Pit", new Vec2());
-        this.myLocation = myLocation;
-        this.damageFall = damageFall;
     }
 
     public Vec2 getMyLocation()

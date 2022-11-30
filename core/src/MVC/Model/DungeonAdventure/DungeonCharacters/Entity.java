@@ -17,15 +17,17 @@ public abstract class Entity
     private boolean myActiveStatus;
 
     private Vec2 myVector;
+
     private long myCurrentFrame;
     private long myAttackStart;
     private long myAttackDuration;
 
-    protected Entity(final Vec2 thePos, final Vec2 theBoundingBox)
+    protected Entity(final Vec2 thePos, final String theType, final Vec2 theBoundingBox)
     {
         myPos = thePos;
         mySize = new Vec2();
         myBoundingBox = theBoundingBox;
+        myType = theType;
     }
 
     private Entity(final Vec2 theSize, final Vec2 theBoundingBox, final boolean theEntityAnimated, final Animation theAnimation)
@@ -109,4 +111,8 @@ public abstract class Entity
 
     public String getType() { return myType; }
 
+    protected void incrementCurrentFrame()
+    {
+        myCurrentFrame++;
+    }
 }

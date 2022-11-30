@@ -5,8 +5,8 @@ import MVC.Model.Physics.Vec2;
 
 public class Wall extends Entity
 {
-    protected Wall(final Vec2 thePos, final Vec2 theBoundingBox)
+    public Wall(final Vec2 thePos, final Vec2 theBoundingBox)
     {
-        super(thePos, theBoundingBox);
+        super(thePos, "Wall",theBoundingBox);
     }
 }

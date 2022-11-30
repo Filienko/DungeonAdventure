@@ -173,10 +173,6 @@ public class Dungeon implements Serializable
         // Number of rooms + boundary rooms
         int allVertices = (int) Math.pow((Math.sqrt(n1*n1)+2),2);
 
-        //Alternative approach to generate maze with the position of a hero at 0 and end at the last square
-//        arr.add(new Room(true, 1, new Vec2()));
-//        arr.add(new Room(false, (n1+2)*n1-1, new Vec2(n1-1, n1-1)));
-
         for (int i = 1; i < ((n1+2)*n1)-1; i++)
         {
             //Skip buffer rooms
@@ -194,7 +190,9 @@ public class Dungeon implements Serializable
         var pillars = generatePillars();
         for (int i = 0; i < 4; i++)
         {
-            arr.get(new Random().nextInt(1,arr.size())).addItem(pillars.get(i));
+            System.out.println(pillars.get(i).getType());
+            var room = arr.get(new Random().nextInt(1,arr.size()));
+            room.addItem(pillars.get(i));
         }
 
         arr.get(0).setEntranceStatus(true);
@@ -235,7 +233,8 @@ public class Dungeon implements Serializable
 
     public Memento saveToMemento() throws CloneNotSupportedException
     {
-        return new Memento(this.myDungeon, (new EntityFactory()).generateHero(this.myHero.getCharacterType()),
+        var factory = new EntityFactory();
+        return new Memento(this.myDungeon, (factory.generateHero(this.myHero.getCharacterType())),
                 copyRooms(this.myRooms), this.myDimension);
     }
 
@@ -252,10 +251,10 @@ public class Dungeon implements Serializable
     public void restoreFromMemento(Memento memento)
     {
         var dungeon = memento.getSavedState();
-        this.myDungeon = dungeon.getDungeon();
-        this.myHero = dungeon.getHero();
-        this.myRooms = dungeon.getRooms();
-        this.myDimension = dungeon.getDimension();
+        myDungeon = dungeon.getDungeon();
+        myHero = dungeon.getHero();
+        myRooms = dungeon.getRooms();
+        myDimension = dungeon.getDimension();
     }
 
     public static class Memento
@@ -270,10 +269,10 @@ public class Dungeon implements Serializable
 
         public Memento(final Room[][] theDungeon, final Hero theHero, final List<Room> theRooms, final int theDimension)
         {
-            this.myDimension =theDimension;
-            this.myDungeon = theDungeon;
-            this.myHero = theHero;
-            this.myRooms = theRooms;
+           myDimension =theDimension;
+            myDungeon = theDungeon;
+            myHero = theHero;
+            myRooms = theRooms;
         }
 
         private Memento getSavedState()

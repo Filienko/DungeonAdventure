@@ -1,18 +1,23 @@
 package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 
 public class AttackPotion extends Potion
 {
+    private StringBuilder myType;
+
     public AttackPotion()
     {
-        super(5);
+        super("Attack Potion",5);
+        myType = new StringBuilder("Attack Potion");
     }
 
     public AttackPotion(final int theStrength)
     {
-        super(theStrength);
+        super("Attack Potion",theStrength);
+        myType = new StringBuilder("Attack Potion");
     }
 
     @Override
@@ -22,4 +27,9 @@ public class AttackPotion extends Potion
         theCharacter.setDamage(theCharacter.getDamage() + super.getStrength());
     }
 
+    @Override
+    public String getType()
+    {
+        return myType.toString();
+    }
 }

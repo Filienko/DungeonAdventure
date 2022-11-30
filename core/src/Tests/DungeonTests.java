@@ -42,9 +42,9 @@ public class DungeonTests
     @Test
     void mazeGenerationWorkTest() throws IOException
     {
-        for (int i = 2; i < 10; i++)
+        for (int i = 3; i < 10; i++)
         {
-            var dungeon = new Dungeon(new Warrior(),i);
+            new Dungeon(new Warrior(),i);
             assertEquals(i*i-1, Integer.valueOf(out.toString().strip()));
             out.reset();
         }

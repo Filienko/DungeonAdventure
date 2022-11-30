@@ -12,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SaverTest
 {
-    @Test
-    void testSerialization()
+    void prepareFile()
     {
         var dungeon = new Dungeon();
         dungeon.setHero(new Thief());

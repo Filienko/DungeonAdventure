@@ -1,6 +1,6 @@
 package Tests;
 
-import MVC.Model.DB.SQLConnection;
+import MVC.Model.DB.MonsterDB;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,37 +8,29 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class DBTest
 {
     @Test
-void testIntegrationSQLConnection()
-{
-    SQLConnection db = new SQLConnection("Ogre");
-    assertEquals("Ogre",db.getCharacterType());
-    db = new SQLConnection("Gremlin");
-    assertEquals("Gremlin",db.getCharacterType());
-    db = new SQLConnection("Elf");
-    assertEquals("Elf",db.getCharacterType());
-    db = new SQLConnection("Rats");
-    assertEquals("Swarm of Rats",db.getCharacterType());
-}
+    void testIntegrationSQLConnection()
+    {
+        MonsterDB db = new MonsterDB();
+        assertEquals("Ogre",db.createMonsterDB("Ogre").getCharacterType());
+        assertEquals("Gremlin",db.createMonsterDB("Gremlin").getCharacterType());
+        assertEquals("Elf",db.createMonsterDB("Elf").getCharacterType());
+        assertEquals("Swarm of Rats",db.createMonsterDB("Rats").getCharacterType());
+    }
 
     @Test
     void testEstablishConnection()
     {
-        assertNotEquals(null, (new SQLConnection("Ogre")).establishConnection());
-        assertNotEquals(null, (new SQLConnection("Gremlin")).establishConnection());
-        assertNotEquals(null, (new SQLConnection("Elf")).establishConnection());
+        MonsterDB db = new MonsterDB();
+        assertNotEquals(null, (new MonsterDB()).establishConnection());
     }
 
     @Test
     void testUpdateMonsterData()
     {
-        SQLConnection db = new SQLConnection("Ogre");
-        db.updateMonsterData(2);
-        assertEquals("Gremlin",db.getCharacterType());
-        db = new SQLConnection("Ogre");
-        db.updateMonsterData(3);
-        assertEquals("Elf",db.getCharacterType());
-        db = new SQLConnection("Ogre");
-        db.updateMonsterData(1);
-        assertEquals("Ogre",db.getCharacterType());
+        MonsterDB db = new MonsterDB();
+        assertEquals("Ogre",db.createMonster(1).getCharacterType());
+        assertEquals("Gremlin",db.createMonster(2).getCharacterType());
+        assertEquals("Elf",db.createMonster(3).getCharacterType());
+        assertEquals("Swarm of Rats",db.createMonster(4).getCharacterType());
     }
 }

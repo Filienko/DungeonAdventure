@@ -3,13 +3,15 @@ package MVC.Model.DungeonItems.Items;
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.Physics.Vec2;
 
+import java.util.Random;
+
 public class Bomb extends Item
 {
     /**
      * Bomb constructor that calls its parent constructor to initialize its type and location.
      */
-    protected Bomb() {
-        super("Bomb", new Vec2());
+    public Bomb() {
+        super("Bomb");
     }
 
     /**
@@ -17,7 +19,7 @@ public class Bomb extends Item
      * @param thePosition
      */
     protected Bomb(Vec2 thePosition) {
-        super("Potion", thePosition);
+        super("Bomb");
     }
 
     /**

@@ -1,7 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
-import MVC.Model.DB.SQLConnection;
-import MVC.Model.DB.SuperSQLConnection;
+import MVC.Model.DB.MonsterDB;
+import MVC.Model.DB.SuperMonsterDB;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
@@ -12,12 +12,13 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Locale;
 
 public class EntityFactory
 {
     //Updating, Deleting, and Collecting entities
-    private SuperSQLConnection DB;
+    private SuperMonsterDB DB;
+
     private ArrayList<Entity> myEntities;
     private ArrayList<Entity> myEntitiesToAdd;
     private ObjectMap<String, ArrayList<Entity>> myEntityMap;
@@ -31,13 +32,50 @@ public class EntityFactory
         myTotalEntities = 0;
     }
     
-    public Monster generateMonster(String monsterType)
+    public Monster generateMonster(final String monsterType)
     {
-        DB = new SQLConnection(monsterType);
-        return new Monster(DB.getCharacterType(), DB.getHitPoints(), DB.getDamage(), DB.getMaxSpeed(),
-                new Vec2(DB.getX(),DB.getY()),new Vec2(DB.getVelocityX(),DB.getVelocityY()));
+        DB = new MonsterDB();
+        return DB.createMonsterDB(monsterType);
     }
 
+    public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
+    {
+        for (var room: theDungeon.getRooms())
+        {
+            var roomNumber = room.getNumber();
+            var doors = new ArrayList<Door>();
+            if(room.isE()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
+            if(room.isN()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
+            if(room.isS()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
+            if(room.isW()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
+            myEntitiesToAdd.addAll(doors);
+            myEntitiesToAdd.add(new Wall(new Vec2(),new Vec2()));
+            generateRoomEntities(room);
+        }
+        return myEntitiesToAdd;
+    }
+
+    public ArrayList<Entity> generateRoomEntities(final Room theRoom)
+    {
+        var items = theRoom.getItems();
+        var monsters = theRoom.getMonsters();
+
+        while(items.length()>1)
+        {
+            String item = items.substring(0, items.indexOf(",")+1);
+            items.delete(0, items.indexOf(",")+1);
+            myEntitiesToAdd.add(generateItem(item.substring(0,item.indexOf(","))));
+        }
+
+        while(monsters.length()>0)
+        {
+            String monster = monsters.substring(0, monsters.indexOf(",")+1);
+            monsters.delete(0, monsters.indexOf(",")+1);
+            monster = monster.substring(0,monster.indexOf(","));
+            myEntitiesToAdd.add(generateMonster(monster));
+        }
+        return myEntitiesToAdd;
+    }
 
     public void update()
     {
@@ -45,7 +83,17 @@ public class EntityFactory
         for (Entity e : myEntitiesToAdd)
         {
             myEntities.add(e);
-            myEntityMap.get(e.getType()).add(e);
+            var type = myEntityMap.get(e.getType());
+            if(type==null)
+            {
+                var list = new ArrayList<Entity>();
+                list.add(e);
+                myEntityMap.put(e.getType(),list);
+            }
+            else
+            {
+                myEntityMap.get(e.getType()).add(e);
+            }
             myTotalEntities++;
         }
 
@@ -58,14 +106,9 @@ public class EntityFactory
         {
             for (Entity e : kv.value)
             {
-                if (kv.key.equals("Warrior"))
-                {
-                    Warrior warrior = (Warrior) e;
-                    warrior.update();
-                }
+                e.update();
             }
         }
-
     }
 
     public Monster generateOgre()
@@ -88,13 +131,11 @@ public class EntityFactory
         return generateMonster("Rats");
     }
 
-
-    public List<Monster> generateMonsters(int n1)
+    public List<Monster> generateMonsters(final int theN)
     {
-
         var arr = new ArrayList<Monster>();
 
-        for (int i = 0; i < n1; i++)
+        for (int i = 0; i < theN; i++)
         {
             arr.add(generateOgre());
             arr.add(generateGremlin());
@@ -104,28 +145,52 @@ public class EntityFactory
         return arr;
     }
 
+    public Item generateItem(final String theItem)
+    {
+        switch (theItem.toLowerCase(Locale.ROOT))
+        {
+            case "healing potion" -> {
+                return new HealingPotion();
+            }
+            case "attack potion" -> {
+                return new AttackPotion();
+            }
+            case "speed potion" -> {
+                return new SpeedPotion();
+            }
+            case "pit" -> {
+                return new Pit();
+            }
+            case "encapsulation","inheritance","polymorphism","abstraction"-> {
+                return new Pillar(theItem);
+            }
+            case "exit" -> {
+                return new Exit();
+            }
+            case "bomb" -> {
+                return new Bomb();
+            }
+        }
+        return new HealingPotion();
+    }
+
     public static Pit generatePit()
     {
         return new Pit();
     }
 
-    public static Pit generatePit(Vec2 theVec)
-    {
-        return new Pit(theVec);
-    }
+//    public static ArrayList<Pit> generatePit(final int theN)
+//    {
+//        var arr = new ArrayList<Pit>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new Pit());
+//        }
+//        return arr;
+//    }
 
-    public static ArrayList<Pit> generatePit(int n1)
-    {
-        var arr = new ArrayList<Pit>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new Pit());
-        }
-        return arr;
-    }
-
-    public Hero generateHero(String type1)
+    public Hero generateHero(final String type1)
     {
         if (type1.contentEquals("Warrior"))
         {
@@ -175,46 +240,47 @@ public class EntityFactory
         return arr;
     }
 
-    public static List<HealingPotion> generateHealingPotions(int n1)
-    {
-        var arr = new ArrayList<HealingPotion>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new HealingPotion());
-        }
-
-        return arr;
-    }
-
-    public static List<SpeedPotion> generateSpeedPotions(int n1)
-    {
-        var arr = new ArrayList<SpeedPotion>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new SpeedPotion());
-        }
-
-        return arr;
-    }
-
-    public static List<AttackPotion> generateAttackPotions(int n1)
-    {
-        var arr = new ArrayList<AttackPotion>();
-
-        for (int i = 0; i < n1; i++)
-        {
-            arr.add(new AttackPotion());
-        }
-
-        return arr;
-    }
+//
+//    public static List<HealingPotion> generateHealingPotions(final int theN)
+//    {
+//        var arr = new ArrayList<HealingPotion>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new HealingPotion());
+//        }
+//
+//        return arr;
+//    }
+//
+//    public static List<SpeedPotion> generateSpeedPotions(final int theN)
+//    {
+//        var arr = new ArrayList<SpeedPotion>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new SpeedPotion());
+//        }
+//
+//        return arr;
+//    }
+//
+//    public static List<AttackPotion> generateAttackPotions(final int theN)
+//    {
+//        var arr = new ArrayList<AttackPotion>();
+//
+//        for (int i = 0; i < theN; i++)
+//        {
+//            arr.add(new AttackPotion());
+//        }
+//
+//        return arr;
+//    }
 
     public ArrayList<Entity> getEntities() { return myEntities; }
 
     //added this method
-    public static Sword generateSword() 
+    public static Sword generateSword()
     {
         return new Sword();
     }

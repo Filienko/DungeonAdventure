@@ -3,20 +3,22 @@ package MVC.Model.DungeonItems.Items;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.Physics.Vec2;
 
+import java.util.Random;
+
 public abstract class Item extends Entity
 {
     private Vec2 myLocation;
 
     private static String myType;
 
-    protected Item(final String theType, Vec2 theLocation)
+    protected Item(final String theType)
     {
-        super(theLocation,new Vec2());
+        super(new Vec2((new Random()).nextInt(1, 20),
+                (new Random()).nextInt(1, 12)),theType,new Vec2());
         myType = theType;
-        myLocation = theLocation;
+        myLocation = new Vec2((new Random()).nextInt(1, 20),
+                (new Random()).nextInt(1, 12));
     }
-
-
 
     protected Vec2 getMyLocation()
     {

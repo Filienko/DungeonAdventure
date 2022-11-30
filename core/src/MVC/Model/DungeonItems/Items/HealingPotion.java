@@ -1,26 +1,33 @@
 package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.Physics.Vec2;
-
-import java.util.Random;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 
 public class HealingPotion extends Potion
 {
+    private StringBuilder myType;
+
     public HealingPotion()
     {
-        super(15);
+        super("Healing Potion",15);
+        myType = new StringBuilder("Healing Potion");
     }
 
     public HealingPotion(final int theStrength)
     {
-        super(theStrength);
+        super("Healing Potion",theStrength);
+        myType = new StringBuilder("Healing Potion");
     }
 
     @Override
     public void increase(DungeonCharacter theCharacter)
     {
-        theCharacter.setHitPoints(theCharacter.getHitPoints() + super.getStrength());
+        theCharacter.setHitPoints(Math.min(10,theCharacter.getHitPoints() + super.getStrength()));
     }
 
+    @Override
+    public String getType()
+    {
+        return myType.toString();
+    }
 }
