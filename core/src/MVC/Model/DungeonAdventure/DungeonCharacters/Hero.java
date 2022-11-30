@@ -91,7 +91,7 @@ public abstract class Hero extends DungeonCharacter
      */
     public void moveHero(final Vec2 theCoordinates)
     {
-        super.setPos(theCoordinates);
+        setMyPos(theCoordinates);
     }
     
 
@@ -113,6 +113,8 @@ public abstract class Hero extends DungeonCharacter
             myWeapon = EntityFactory.generateSword();
         }
     }
+
+    public abstract void special();
 
     @Override
     public void movement()
@@ -229,4 +231,9 @@ public abstract class Hero extends DungeonCharacter
     {
         return this.myHitPoints;
     }
+
+    public void setUp(boolean bool) { up = bool; }
+    public void setDown(boolean bool) { down = bool; }
+    public void setLeft(boolean bool) { left = bool; }
+    public void setRight(boolean bool) { right = bool; }
 }

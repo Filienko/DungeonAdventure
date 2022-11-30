@@ -20,7 +20,7 @@ public class MyRenderer
         myGame      = game;
         myAssets 	= new Assets();
         myCamera 	= new OrthographicCamera();
-        myCamera.setToOrtho(false, 1280, 768);
+        myCamera.setToOrtho(false, 1216, 704);
         myBatch = new SpriteBatch();
         myAssets.loadAssets();
 
@@ -34,8 +34,7 @@ public class MyRenderer
 
     public void render()
     {
-        SceneMenu menu = (SceneMenu) myGame.getCurrentScene();
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(.729f, .659f, .435f, 1);
         myCamera.update();
         myBatch.setProjectionMatrix(myCamera.combined);
         myBatch.begin();

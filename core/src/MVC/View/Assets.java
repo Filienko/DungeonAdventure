@@ -91,7 +91,7 @@ public class Assets
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fileName));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
-        parameter.color = Color.GOLDENROD;
+        parameter.color = Color.CHARTREUSE;
         myFontMap.put(fontName + "48", generator.generateFont(parameter));
 
         parameter.size = 24;

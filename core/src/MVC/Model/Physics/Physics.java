@@ -88,4 +88,16 @@ public class Physics {
 
         return false;
     };
+
+    public static Vec2 getPosition(final int rx, final int ry, final int tx, final int ty)
+    {
+        // This function takes in the room (rx, ry) coordinate
+        // as well as the tile (tx, ty) coordinate, and returns the Vec2 game world
+        // position of the center of the entity
+
+        int pixelX = rx * 1216 + tx * 64; // room * 19 tiles * 64 pixels per tile + room tile * 64 pixels per tile
+        int pixelY = ry * 704 + ty * 64; // 11 tiles in y component
+
+        return new Vec2(pixelX, pixelY);
+    }
 }
