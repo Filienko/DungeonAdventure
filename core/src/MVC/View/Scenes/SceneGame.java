@@ -2,11 +2,14 @@ package MVC.View.Scenes;
 
 import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
 public class SceneGame extends Scene
@@ -15,7 +18,8 @@ public class SceneGame extends Scene
 
     public SceneGame(GameEngine game, String hero)
     {
-        myEntityFactory = new EntityFactory();
+        super(game);
+        myEntityFactory = new EntityFactory(myRenderer.getAssets());
         initialize();
 
         registerAction(Input.Keys.ESCAPE, "PAUSE");
@@ -29,38 +33,62 @@ public class SceneGame extends Scene
         myHero = myEntityFactory.generateHero(hero);
     }
 
-    private void initialize() {}
+    private void initialize()
+    {
+        Room testRoom = new Room(0, new Vec2(0, 0));
+        testRoom.setN(true);
+        testRoom.setE(true);
+        testRoom.setS(true);
+        testRoom.setW(true);
+        myEntityFactory.generateRoomEntities(testRoom);
+    }
 
     protected void onEnd() {}
 
-    private Vec2 getPosition(final int rx, final int ry, final int tx, final int ty)
+    public  void doAction(final Action action)
     {
-        // This function takes in the room (rx, ry) coordinate
-        // as well as the tile (tx, ty) coordinate, and returns the Vec2 game world
-        // position of the center of the entity
-
-        int pixelX = rx * 1280 + tx * 64; // room * 20 tiles * 64 pixels per tile + room tile * 64 pixels per tile
-        int pixelY = ry * 768 + ty * 64; // 12 tiles in y component
-
-        return new Vec2(pixelX, pixelY);
+        if (action.getType().equals("START"))
+        {
+                 if (action.getName().equals("PAUSE"))              { setPaused(); }
+            else if (action.getName().equals("QUIT"))               { onEnd(); }
+            else if (action.getName().equals("UP"))                 { myHero.setUp(true); }
+            else if (action.getName().equals("DOWN"))               { myHero.setDown(true); }
+            else if (action.getName().equals("LEFT"))               { myHero.setLeft(true); }
+            else if (action.getName().equals("RIGHT"))              { myHero.setRight(true); }
+            else if (action.getName().equals("ATTACK"))             { myHero.attack(); }
+            else if (action.getName().equals("SPECIAL"))            { myHero.special(); }
+        }
+        else if (action.getType().equals("END"))
+        {
+                 if (action.getName().equals("UP"))     { myHero.setUp(false); }
+            else if (action.getName().equals("DOWN"))   { myHero.setDown(false); }
+            else if (action.getName().equals("LEFT"))   { myHero.setLeft(false); }
+            else if (action.getName().equals("RIGHT"))  { myHero.setRight(false); }
+        }
     }
-
-    public  void doAction(final Action action) {}
 
     public void update()
     {
         if (!myPaused)
         {
-            //myEntityFactory.update();
+            myEntityFactory.update();
             myCurrentFrame++;
         }
     }
 
     public void render()
     {
+        Sprite sprite;
+
         for (Entity e : myEntityFactory.getEntities())
         {
-            myRenderer.getSpriteBatch().draw(e.getMyAnimation().getSprite(), e.getMyPos().getMyX(), e.getMyPos().getMyY());
+            e.getMyAnimation().update();
+            sprite = e.getMyAnimation().getSprite();
+            sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+            sprite.setRotation(e.getRotation());
+            sprite.draw(myRenderer.getSpriteBatch());
         }
+
+
     }
 }

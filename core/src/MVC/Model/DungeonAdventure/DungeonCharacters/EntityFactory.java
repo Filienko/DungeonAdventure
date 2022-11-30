@@ -7,7 +7,9 @@ import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.DungeonItems.Weapon.Sword;
 
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
+import MVC.View.Assets;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class EntityFactory
     private ArrayList<Entity> myEntitiesToAdd;
     private ObjectMap<String, ArrayList<Entity>> myEntityMap;
     private long myTotalEntities;
+    private Assets myAssets;
 
     public EntityFactory()
     {
@@ -30,6 +33,11 @@ public class EntityFactory
         myEntitiesToAdd = new ArrayList<>();
         myEntityMap = new ObjectMap<>();
         myTotalEntities = 0;
+    }
+    public EntityFactory(Assets assets)
+    {
+        this();
+        myAssets = assets;
     }
     
     public Monster generateMonster(final String monsterType)
@@ -43,13 +51,6 @@ public class EntityFactory
         for (var room: theDungeon.getRooms())
         {
             var roomNumber = room.getNumber();
-            var doors = new ArrayList<Door>();
-            if(room.isE()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
-            if(room.isN()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
-            if(room.isS()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
-            if(room.isW()){doors.add(new Door(roomNumber,room.getNumberOfMonsters(),new Vec2()));}
-            myEntitiesToAdd.addAll(doors);
-            myEntitiesToAdd.add(new Wall(new Vec2(),new Vec2()));
             generateRoomEntities(room);
         }
         return myEntitiesToAdd;
@@ -59,6 +60,113 @@ public class EntityFactory
     {
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
+        Vec2 location = theRoom.getLocation();
+
+        Vec2 pixelPos;
+        Wall wall;
+        // Generate walls along the north and south
+        for (int i = 0; i <= 18; i++)
+        {
+            if (!(i == 9 && theRoom.isN()))
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), i, 10);
+                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                if (i == 0 || i == 18)
+                {
+                    wall.setMyAnimation(myAssets.getAnimation("corner"));
+                }
+                else
+                {
+                    wall.setMyAnimation(myAssets.getAnimation("wall"));
+                }
+                if (i == 18)
+                {
+                    wall.setRotation(270);
+                }
+                myEntitiesToAdd.add(wall);
+            }
+
+            if (!(i == 9 && theRoom.isS()))
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), i, 0);
+                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                if (i == 0 || i == 18)
+                {
+                    wall.setMyAnimation(myAssets.getAnimation("corner"));
+                }
+                else
+                {
+                    wall.setMyAnimation(myAssets.getAnimation("wall"));
+                }
+                if (i == 0)
+                {
+                    wall.setRotation(90);
+                }
+                else
+                {
+                    wall.setRotation(180);
+                }
+                myEntitiesToAdd.add(wall);
+            }
+        }
+        // Generate walls along the east and west
+        for (int i = 1; i < 10; i++)
+        {
+            if (!(i == 5 && theRoom.isW()))
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, i);
+                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                wall.setMyAnimation(myAssets.getAnimation("wall"));
+                wall.setRotation(90);
+                myEntitiesToAdd.add(wall);
+            }
+
+            if (!(i == 5 && theRoom.isE()))
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, i);
+                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                wall.setMyAnimation(myAssets.getAnimation("wall"));
+                wall.setRotation(270);
+                myEntitiesToAdd.add(wall);
+            }
+        }
+
+
+        if (theRoom.isN())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
+            Door door = new Door();
+            door.setMyLocation(pixelPos);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            myEntitiesToAdd.add(door);
+        }
+        if (theRoom.isS())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
+            Door door = new Door();
+            door.setMyLocation(pixelPos);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            door.setRotation(180);
+            myEntitiesToAdd.add(door);
+        }
+        if (theRoom.isW())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
+            Door door = new Door();
+            door.setMyLocation(pixelPos);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            door.setRotation(90);
+            myEntitiesToAdd.add(door);
+        }
+        if (theRoom.isE())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
+            Door door = new Door();
+            door.setMyLocation(pixelPos);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            door.setRotation(270);
+            myEntitiesToAdd.add(door);
+        }
 
         while(items.length()>1)
         {
@@ -102,12 +210,9 @@ public class EntityFactory
         // removeDeadEntities();
 
         // update all entities
-        for (var kv : myEntityMap)
+        for (Entity e : myEntities)
         {
-            for (Entity e : kv.value)
-            {
-                e.update();
-            }
+            e.update();
         }
     }
 
@@ -209,21 +314,24 @@ public class EntityFactory
 
     public Hero generateWarrior()
     {
-        Warrior warrior = new Warrior();
+        Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5));
+        warrior.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(warrior);
         return warrior;
     }
 
     public Hero generateThief()
     {
-        Thief thief = new Thief();
+        Thief thief = new Thief("Thief", Physics.getPosition(0,0,9,5));
+        thief.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(thief);
         return thief;
     }
 
     public Hero generatePriestess()
     {
-        Priestess priestess = new Priestess();
+        Priestess priestess = new Priestess("Priestess", Physics.getPosition(0,0,9,5));
+        priestess.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(priestess);
         return priestess;
     }

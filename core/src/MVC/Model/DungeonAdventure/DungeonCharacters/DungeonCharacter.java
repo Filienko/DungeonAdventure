@@ -34,11 +34,6 @@ public abstract class DungeonCharacter extends Entity
     private int myMaxSpeed;
 
     /**
-     * The character's position.
-     */
-    private Vec2 myPos;
-
-    /**
      * The character's velocity.
      */
     private Vec2 myVelocity;
@@ -64,7 +59,7 @@ public abstract class DungeonCharacter extends Entity
         myDamage = theDamage;
         myHitPoints = theHitPoints;
         myMaxSpeed = theMaxSpeed;
-        myPos = thePos;
+        setMyPos(thePos);
         myVelocity = theVelocity;
     }
 
@@ -163,23 +158,6 @@ public abstract class DungeonCharacter extends Entity
     public void setMaxSpeed(final int theMaxSpeed)
     {
         myMaxSpeed = theMaxSpeed;
-    }
-    /**
-     * This method retrieves the character's position.
-     * @return The character's position.
-     */
-    public Vec2 getPos()
-    {
-        return this.myPos;
-    }
-
-    /**
-     * This method sets the character's position.
-     * @param thePos The character's new position.
-     */
-    public void setPos(final Vec2 thePos)
-    {
-        this.myPos = thePos;
     }
 
     /**
