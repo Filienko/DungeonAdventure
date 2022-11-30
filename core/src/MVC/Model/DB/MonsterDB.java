@@ -27,7 +27,7 @@ public class MonsterDB extends SuperMonsterDB
         {
             return createMonster(3);
         }
-        else if (monsterType.contentEquals("Rats"))
+        else if (monsterType.contains("Rats"))
         {
             return createMonster(4);
         }

@@ -190,7 +190,9 @@ public class Dungeon implements Serializable
         var pillars = generatePillars();
         for (int i = 0; i < 4; i++)
         {
-            arr.get(new Random().nextInt(1,arr.size())).addItem(pillars.get(i));
+            System.out.println(pillars.get(i).getType());
+            var room = arr.get(new Random().nextInt(1,arr.size()));
+            room.addItem(pillars.get(i));
         }
 
         arr.get(0).setEntranceStatus(true);
@@ -249,10 +251,10 @@ public class Dungeon implements Serializable
     public void restoreFromMemento(Memento memento)
     {
         var dungeon = memento.getSavedState();
-        this.myDungeon = dungeon.getDungeon();
-        this.myHero = dungeon.getHero();
-        this.myRooms = dungeon.getRooms();
-        this.myDimension = dungeon.getDimension();
+        myDungeon = dungeon.getDungeon();
+        myHero = dungeon.getHero();
+        myRooms = dungeon.getRooms();
+        myDimension = dungeon.getDimension();
     }
 
     public static class Memento
@@ -267,10 +269,10 @@ public class Dungeon implements Serializable
 
         public Memento(final Room[][] theDungeon, final Hero theHero, final List<Room> theRooms, final int theDimension)
         {
-            this.myDimension =theDimension;
-            this.myDungeon = theDungeon;
-            this.myHero = theHero;
-            this.myRooms = theRooms;
+           myDimension =theDimension;
+            myDungeon = theDungeon;
+            myHero = theHero;
+            myRooms = theRooms;
         }
 
         private Memento getSavedState()

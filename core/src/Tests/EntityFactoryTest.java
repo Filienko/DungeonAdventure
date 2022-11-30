@@ -20,17 +20,21 @@ public class EntityFactoryTest
 {
     EntityFactory entityFactory = new EntityFactory();
 
-
     @Test
     void testUpdate()
     {
-
+        var room = new Room();
+        room.populateTheRoom(true);
+        entityFactory.generateRoomEntities(room);
+        var priorLength = entityFactory.getEntities().size();
+        entityFactory.update();
+        assertNotEquals(priorLength, entityFactory.getEntities().size());
     }
 
     @Test
     void testGenerateGameEntities()
     {
-        assertTrue(128<entityFactory.generateGameEntities(new Dungeon()).size());
+        assertTrue(128>entityFactory.generateGameEntities(new Dungeon()).size());
     }
 
     @Test
@@ -48,7 +52,16 @@ public class EntityFactoryTest
 
         var room = new Room();
         room.populateTheRoom(true);
-        assertEquals(expectedList.size(), entityFactory.generateRoomEntities(room).size());
+        var roomEntities = entityFactory.generateRoomEntities(room);
+        assertEquals(expectedList.size(), roomEntities.size());
+
+        assertTrue(roomEntities.get(0).getType().contains("Potion"));
+        assertTrue(roomEntities.get(1).getType().contains("Potion"));
+        assertTrue(roomEntities.get(2).getType().contains("Potion"));
+        assertTrue(roomEntities.get(3).getType().contentEquals("Ogre"));
+        assertTrue(roomEntities.get(4).getType().contentEquals("Gremlin"));
+        assertTrue(roomEntities.get(5).getType().contentEquals("Elf"));
+        assertTrue(roomEntities.get(6).getType().contentEquals("Swarm of Rats"));
     }
 
     @Test
@@ -84,8 +97,7 @@ public class EntityFactoryTest
     @Test
     void testAddItem()
     {
-        entityFactory.addItem("Pit");
-        assertEquals("Pit",entityFactory.getEntitiesToAdd().get(0).getType());
+        assertEquals("Pit",entityFactory.generateItem("Pit").getType());
     }
 
     @Test

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class EntityFactory
 {
@@ -59,11 +60,11 @@ public class EntityFactory
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
 
-        while(items.length()>0)
+        while(items.length()>1)
         {
             String item = items.substring(0, items.indexOf(",")+1);
             items.delete(0, items.indexOf(",")+1);
-            addItem(item.substring(0,item.indexOf(",")));
+            myEntitiesToAdd.add(generateItem(item.substring(0,item.indexOf(","))));
         }
 
         while(monsters.length()>0)
@@ -144,47 +145,33 @@ public class EntityFactory
         return arr;
     }
 
-    public void addItem(final String theItem)
+    public Item generateItem(final String theItem)
     {
-        switch (theItem)
+        switch (theItem.toLowerCase(Locale.ROOT))
         {
-            case "Healing Potion" -> {
-                myEntitiesToAdd.add(new HealingPotion());
-                break;
+            case "healing potion" -> {
+                return new HealingPotion();
             }
-            case "Attack Potion" -> {
-                myEntitiesToAdd.add(new AttackPotion());
-                break;
+            case "attack potion" -> {
+                return new AttackPotion();
             }
-            case "Speed Potion" -> {
-                myEntitiesToAdd.add(new SpeedPotion());
-                break;
+            case "speed potion" -> {
+                return new SpeedPotion();
             }
-            case "Pit" -> {
-                myEntitiesToAdd.add(new Pit());
-                break;
+            case "pit" -> {
+                return new Pit();
             }
-            case "Encapsulation","Inheritance","Polymorphism","Abstraction"-> {
-                myEntitiesToAdd.add(new Pillar(theItem));
-                break;
+            case "encapsulation","inheritance","polymorphism","abstraction"-> {
+                return new Pillar(theItem);
             }
-            case "Exit" -> {
-                myEntitiesToAdd.add(new Exit());
-                break;
+            case "exit" -> {
+                return new Exit();
             }
-            case "Bomb" -> {
-                myEntitiesToAdd.add(new Bomb());
-                break;
-            }
-            case "Sword" -> {
-                myEntitiesToAdd.add(new Sword());
-                break;
-            }
-            case "Wall" -> {
-                myEntitiesToAdd.add(new Wall(new Vec2(),new Vec2()));
-                break;
+            case "bomb" -> {
+                return new Bomb();
             }
         }
+        return new HealingPotion();
     }
 
     public static Pit generatePit()
@@ -297,11 +284,5 @@ public class EntityFactory
     {
         return new Sword();
     }
-
-    public ArrayList<Entity> getEntitiesToAdd()
-    {
-        return myEntitiesToAdd;
-    }
-
 
 }

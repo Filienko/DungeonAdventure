@@ -153,7 +153,7 @@ public class Room implements Cloneable
     public void populateMonsters(final int theN)
     {
         setMonsters((new EntityFactory()).generateMonsters(theN));
-        myMonstersNumber = myMonstersNumber+3*theN;
+        myMonstersNumber = myMonstersNumber+4*theN;
     }
 
     public void populatePit(double theChance)
@@ -175,11 +175,11 @@ public class Room implements Cloneable
             }
             else if (randD < 0.67)
             {
-                addItem(new AttackPotion(theRandom.nextInt(15, 46)));
+                addItem(new AttackPotion(theRandom.nextInt(1, 4)));
             }
             else
             {
-                addItem(new SpeedPotion());
+                addItem(new SpeedPotion(theRandom.nextInt(1, 3)));
             }
         }
     }
@@ -265,7 +265,17 @@ public class Room implements Cloneable
      * This method sets the Item in the Room.
      * @param theItem The Item to be contained in the Room.
      */
-    public void addItem (Item theItem) { this.myItems.append(theItem.getType() + ","); }
+    public void addItem (Item theItem)
+    {
+        if(theItem.getType().contentEquals("Pillar"))
+        {
+            this.myItems.append(((Pillar)theItem).getName() + ",");
+        }
+        else
+        {
+            this.myItems.append(theItem.getType() + ",");
+        }
+    }
 
     /**
      * This method removes all Items from the Room.
