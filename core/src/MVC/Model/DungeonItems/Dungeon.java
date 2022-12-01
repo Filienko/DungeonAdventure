@@ -6,6 +6,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.DungeonUtils.Graph;
 import MVC.Model.Physics.Vec2;
+import MVC.View.Assets;
 
 import java.io.Serializable;
 import java.util.ArrayList;

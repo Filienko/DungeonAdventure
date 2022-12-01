@@ -12,6 +12,7 @@ public abstract class Entity
     private final Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
+    private int myRotation;
     private String myType;
 
     private boolean myActiveStatus;
@@ -28,6 +29,10 @@ public abstract class Entity
         mySize = new Vec2();
         myBoundingBox = theBoundingBox;
         myType = theType;
+        myRotation = 0;
+        myActiveStatus= true;
+        myVector = new Vec2(0, 0);
+        myCurrentFrame = 0;
     }
 
     private Entity(final Vec2 theSize, final Vec2 theBoundingBox, final boolean theEntityAnimated, final Animation theAnimation)
@@ -115,4 +120,8 @@ public abstract class Entity
     {
         myCurrentFrame++;
     }
+
+    public int getRotation() { return myRotation; }
+
+    public void setRotation(int scale) { myRotation = scale; }
 }

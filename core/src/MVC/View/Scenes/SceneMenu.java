@@ -62,7 +62,12 @@ public class SceneMenu extends Scene
                     myMenuIndex = (myMenuIndex + 1) % myTextElements.size();
                     break;
                 case "SELECT":
-                    if (myTextElements.get(myMenuIndex).equals("NEW GAME"))
+                    if (myHeroSelection)
+                    {
+                        myGame.setCurrentScene("Dungeon",
+                            new SceneGame(myGame, myHeroSelections.get(myMenuIndex)), false);
+                    }
+                    else if (myTextElements.get(myMenuIndex).equals("NEW GAME"))
                     {
                        myHeroSelection = true;
                        System.out.println("Selected: 'New Game'");
@@ -74,11 +79,6 @@ public class SceneMenu extends Scene
                     {
                         System.out.println("Selected: 'Quit'");
                         onEnd();
-                    }
-                    else if (myHeroSelection)
-                    {
-                        myGame.setCurrentScene("Dungeon",
-                                new SceneGame(myGame, myHeroSelections.get(myMenuIndex)), false);
                     }
                     break;
                 case "BACK":
@@ -107,9 +107,9 @@ public class SceneMenu extends Scene
             header = myTitle;
         }
 
-        font.draw(batch, header, 5, 750);
+        font.draw(batch, header, 5, 686);
 
-        int yPosition = 750;
+        int yPosition = 686;
         for (int i = 0; i < text.size(); i++)
         {
             yPosition-= 80;
