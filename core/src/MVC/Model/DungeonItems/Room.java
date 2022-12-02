@@ -104,7 +104,7 @@ public class Room implements Cloneable
         {
             myEntrance = false;
             myExit = true;
-            addItem(new Exit());
+            addItem(Exit.getInstance());
         }
 
         myNumber = theNumber;

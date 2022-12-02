@@ -11,21 +11,21 @@ public class Pit extends Item
     public Pit()
     {
         super("Pit");
-        this.damageFall = 15;
+        damageFall = 15;
     }
 
     public Pit(final Vec2 theLocation)
     {
         super("Pit");
-        this.myLocation = theLocation;
-        this.damageFall = 15;
+        myLocation = theLocation;
+        damageFall = 15;
     }
 
     @Override
     public void activate(final Hero theHero)
     {
         theHero.setHitPoints(theHero.getHitPoints() - damageFall);
-
+        destroy();
     }
 
     public Vec2 getMyLocation()

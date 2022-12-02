@@ -1,6 +1,5 @@
 package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class Pillar extends Item
@@ -13,12 +12,21 @@ public class Pillar extends Item
         myName = theName;
     }
 
+    public Pillar(final String theName, final boolean theActive)
+    {
+        super("Pillar");
+        myName = theName;
+        destroy();
+
+    }
+
     @Override
     public void activate(final Hero theHero)
     {
         var pillars = theHero.getPillars();
-        pillars.add(this);
+        pillars.add(new Pillar(myName,false));
         theHero.setPillars(pillars);
+        this.destroy();
     }
 
     public String getName()

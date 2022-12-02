@@ -1,9 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
-import com.badlogic.gdx.math.collision.BoundingBox;
-
-import java.util.Random;
 
 public abstract class DungeonCharacter extends Entity
 {
@@ -164,7 +161,6 @@ public abstract class DungeonCharacter extends Entity
      * This method retrieves the character's velocity.
      * @return The character's velocity.
      */
-
     public Vec2 getVelocity()
     {
         return this.myVelocity;

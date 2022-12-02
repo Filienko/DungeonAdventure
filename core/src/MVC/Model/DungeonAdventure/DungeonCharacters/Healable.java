@@ -4,7 +4,6 @@ import java.util.Random;
 
 public interface Healable
 {
-
     /**
      * This method allows a DungeonCharacter to heal another character. The number of hit points that the
      * DungeonCharacter is allowed to restore is randomly determined between 1 and the specified maximum (theHealMax).

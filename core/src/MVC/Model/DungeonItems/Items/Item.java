@@ -1,6 +1,5 @@
 package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;

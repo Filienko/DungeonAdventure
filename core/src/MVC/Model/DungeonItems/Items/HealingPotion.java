@@ -1,7 +1,6 @@
 package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class HealingPotion extends Potion
 {
@@ -20,9 +19,9 @@ public class HealingPotion extends Potion
     }
 
     @Override
-    public void increase(DungeonCharacter theCharacter)
+    public void activate(final Hero theHero)
     {
-        theCharacter.setHitPoints(Math.min(10,theCharacter.getHitPoints() + super.getStrength()));
+        theHero.setHitPoints(Math.min(10,theHero.getHitPoints() + super.getStrength()));
     }
 
     @Override

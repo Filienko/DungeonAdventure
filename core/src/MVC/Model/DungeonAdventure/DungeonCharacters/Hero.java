@@ -4,7 +4,6 @@ import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
-import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public abstract class Hero extends DungeonCharacter
      * The Hero's name that is input by the user.
      */
 
-    private final String myName;
+    private String myName;
 
     /**
      * The specific Hero type.
@@ -36,7 +35,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The Hero's weapon.
      */
-    private Sword myWeapon = new Sword();
+    private Sword myWeapon = new Sword(this);
 
     /**
      * A list of all the Potions in the Hero's inventory.
@@ -76,11 +75,11 @@ public abstract class Hero extends DungeonCharacter
                 final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
     {
         super(theCharacterType, MY_HERO_STATUS, theHitPoints,theDamage, theMaxSpeed, thePos, theVelocity);
-        this.myName = theName;
-        this.myCharacterType = theCharacterType;
-        this.myPotions = new ArrayList<>();
-        this.myPillars = new ArrayList<>();
-        this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+        myName = theName;
+        myCharacterType = theCharacterType;
+        myPotions = new ArrayList<>();
+        myPillars = new ArrayList<>();
+        myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
 
         //all booleans to false
     }
@@ -102,7 +101,7 @@ public abstract class Hero extends DungeonCharacter
 
     public void setWeapon(final Sword theWeapon)
     {
-        this.myWeapon = theWeapon;
+        myWeapon = theWeapon;
     }
 
     @Override
@@ -110,7 +109,7 @@ public abstract class Hero extends DungeonCharacter
     {
         if (myWeapon == null)
         {
-            myWeapon = EntityFactory.generateSword();
+            myWeapon = EntityFactory.generateSword(this);
         }
     }
 
@@ -128,7 +127,7 @@ public abstract class Hero extends DungeonCharacter
      */
     protected void setPotions(final List<Item> thePotions)
     {
-        this.myPotions = thePotions;
+        myPotions = thePotions;
     }
 
     /**
@@ -137,7 +136,7 @@ public abstract class Hero extends DungeonCharacter
      */
     protected void addPotion(Item thePotion)
     {
-        this.myPotions.add(thePotion);
+        myPotions.add(thePotion);
     }
 
     /**
@@ -146,7 +145,7 @@ public abstract class Hero extends DungeonCharacter
      */
     protected List<Item> getPotions()
     {
-        return this.myPotions;
+        return myPotions;
     }
 
     /**
@@ -155,7 +154,7 @@ public abstract class Hero extends DungeonCharacter
      */
     public void setPillars(final List<Pillar> thePillars)
     {
-        this.myPillars = thePillars;
+        myPillars = thePillars;
     }
 
     /**
@@ -164,7 +163,7 @@ public abstract class Hero extends DungeonCharacter
      */
     protected void addPillar(Pillar thePillar)
     {
-        this.myPillars.add(thePillar);
+        myPillars.add(thePillar);
     }
 
     /**
@@ -173,7 +172,7 @@ public abstract class Hero extends DungeonCharacter
      */
     public List<Pillar> getPillars()
     {
-        return this.myPillars;
+        return myPillars;
     }
 
     /**
@@ -183,6 +182,15 @@ public abstract class Hero extends DungeonCharacter
     public String getName()
     {
         return myName;
+    }
+
+    /**
+     * This method sets the Hero's name.
+     * @param theName The Hero's new name.
+     */
+    private void setName(final String theName)
+    {
+        myName = theName;
     }
 
     /**
@@ -209,7 +217,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public String getMyCharacterType()
     {
-        return this.myCharacterType;
+        return myCharacterType;
     }
 
     /**
@@ -219,7 +227,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public boolean getHeroStatus()
     {
-        return this.MY_HERO_STATUS;
+        return MY_HERO_STATUS;
     }
 
     /**
@@ -229,7 +237,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public int getHitPoints()
     {
-        return this.myHitPoints;
+        return myHitPoints;
     }
 
     public void setUp(boolean bool) { up = bool; }

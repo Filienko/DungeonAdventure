@@ -1,6 +1,6 @@
 package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class SpeedPotion extends Potion
 {
@@ -19,9 +19,9 @@ public class SpeedPotion extends Potion
     }
 
     @Override
-    public void increase(DungeonCharacter theCharacter)
+    public void activate(final Hero theHero)
     {
-        theCharacter.setMaxSpeed(theCharacter.getMaxSpeed() + super.getStrength());
+        theHero.setMaxSpeed(theHero.getMaxSpeed() + super.getStrength());
     }
 
     @Override

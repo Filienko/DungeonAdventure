@@ -270,7 +270,7 @@ public class EntityFactory
                 return new Pillar(theItem);
             }
             case "exit" -> {
-                return new Exit();
+                return Exit.getInstance();
             }
             case "bomb" -> {
                 return new Bomb();
@@ -388,9 +388,9 @@ public class EntityFactory
     public ArrayList<Entity> getEntities() { return myEntities; }
 
     //added this method
-    public static Sword generateSword()
+    public static Sword generateSword(final Hero theHero)
     {
-        return new Sword();
+        return new Sword(theHero);
     }
 
 }

@@ -9,12 +9,7 @@ public class Priestess extends Hero implements Healable
     /**
      * Maximum number of hit points the Priestess can heal.
      */
-    private static final int MY_MAX_HEAL = 25;
-
-    /**
-     * The Priestess's name.
-     */
-    private String myName;
+    private static final int MY_MAX_HEAL = 2;
 
     /**
      * Priestess constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
@@ -34,7 +29,6 @@ public class Priestess extends Hero implements Healable
     public Priestess(final String theName, final Vec2 thePos)
     {
         super(theName,"Priestess", 10, 1, 5, thePos, new Vec2());
-        this.myName = theName;
     }
 
     /**
@@ -49,19 +43,12 @@ public class Priestess extends Hero implements Healable
         return heal(theHero, MY_MAX_HEAL);
     }
 
-
-//    @Override
-//    public String getName()
-//    {
-//        return this.myName;
-//    }
-
     /**
-     * This method sets the Priestess's name.
-     * @param theName The Priestess's new name.
+     * This method calls the Healing on the Priestess.
      */
-    private void setName(final String theName)
+    @Override
+    public void special()
     {
-        this.myName = theName;
+       healHero(this);
     }
 }

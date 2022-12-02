@@ -14,14 +14,9 @@ public abstract class Entity
     private Animation myAnimation;
     private int myRotation;
     private String myType;
-
     private boolean myActiveStatus;
-
     private Vec2 myVector;
-
     private long myCurrentFrame;
-    private long myAttackStart;
-    private long myAttackDuration;
 
     protected Entity(final Vec2 thePos, final String theType, final Vec2 theBoundingBox)
     {
@@ -61,7 +56,7 @@ public abstract class Entity
     public void attack() {};
 
     public void destroy() {
-        this.myActiveStatus = false; //if an entity is killed, use this method
+        myActiveStatus = false; //if an entity is killed, use this method
     }
 
     public Vec2 getMyPos()

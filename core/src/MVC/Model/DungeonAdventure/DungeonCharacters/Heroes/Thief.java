@@ -7,11 +7,6 @@ import MVC.Model.Physics.Vec2;
 public class Thief extends Hero
 {
     /**
-     * The Thief's name
-     */
-    private String myName;
-
-    /**
      * The Thief's hidden status.
      */
     private boolean myHiddenStatus = false;
@@ -37,7 +32,6 @@ public class Thief extends Hero
     public Thief(final String theName, final Vec2 thePos)
     {
         super(theName, "Thief",10, 1,  5, thePos, new Vec2());
-        this.myName = theName;
     }
 
     /**
@@ -105,19 +99,12 @@ public class Thief extends Hero
         this.myHiddenStatus = theStatus;
     }
 
-//    @Override
-//    public String getName()
-//    {
-//        return myName;
-//    }
-
     /**
-     * This method sets the Thief's name.
-     * @param theName The Thief's new name.
-     */
-    private void setName(final String theName)
+     * Calls Thief's special skill.
+     * */
+    @Override
+    public void special()
     {
-        this.myName = theName;
-    }
 
+    }
 }
