@@ -9,7 +9,7 @@ public abstract class Entity
     private Vec2 myPos;
     private Vec2 myPreviousPos;
     private final Vec2 mySize;
-    private final Vec2 myBoundingBox;
+    private Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
     private int myRotation;
@@ -42,8 +42,6 @@ public abstract class Entity
 
     public void update()
     {
-        movement();
-        attack();
         this.myCurrentFrame++;
     }
 
@@ -53,7 +51,7 @@ public abstract class Entity
         myPos = myPos.add(myVector);
     }
 
-    public void attack() {};
+    public void attack() {}
 
     public void destroy() {
         myActiveStatus = false; //if an entity is killed, use this method
@@ -87,6 +85,11 @@ public abstract class Entity
     public Vec2 getMyBoundingBox()
     {
         return myBoundingBox;
+    }
+
+    public void setBoundingBox(final Vec2 theBoundingBox)
+    {
+        myBoundingBox = theBoundingBox;
     }
 
     public boolean isMyEntityAnimated()

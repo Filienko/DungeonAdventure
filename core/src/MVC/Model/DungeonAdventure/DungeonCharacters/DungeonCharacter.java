@@ -1,6 +1,8 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.Physics.Vec2;
+import MVC.View.Animation;
+import com.badlogic.gdx.graphics.Texture;
 
 public abstract class DungeonCharacter extends Entity
 {
@@ -77,6 +79,12 @@ public abstract class DungeonCharacter extends Entity
         theOpponent.applyDamage(damage);
 
         return damage;
+    }
+
+    public void die()
+    {
+        setBoundingBox(new Vec2());
+        setMyAnimation(new Animation("deathAnimation",new Texture("path?"),15,4));
     }
 
     /**

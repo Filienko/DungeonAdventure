@@ -4,7 +4,6 @@ import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,9 +42,9 @@ public abstract class Hero extends DungeonCharacter
     private List<Item> myPotions;
 
     /**
-     * A list of all the Pillars in the Hero's inventory.
+     * Amount of Pillars in the Hero's inventory.
      */
-    private List<Pillar> myPillars;
+    private int myPillars;
 
     /**
      * The Hero's hit points (health).
@@ -78,7 +77,7 @@ public abstract class Hero extends DungeonCharacter
         myName = theName;
         myCharacterType = theCharacterType;
         myPotions = new ArrayList<>();
-        myPillars = new ArrayList<>();
+        myPillars = 0;
         myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
 
         //all booleans to false
@@ -150,11 +149,10 @@ public abstract class Hero extends DungeonCharacter
 
     /**
      * This method sets the Pillars in the Hero's inventory.
-     * @param thePillars Pillars to be put into inventory.
      */
-    public void setPillars(final List<Pillar> thePillars)
+    public void incrementPillars()
     {
-        myPillars = thePillars;
+        myPillars++;
     }
 
     /**
@@ -163,14 +161,14 @@ public abstract class Hero extends DungeonCharacter
      */
     protected void addPillar(Pillar thePillar)
     {
-        myPillars.add(thePillar);
+        myPillars++;
     }
 
     /**
      * This method retrieves the Pillars in the Hero's inventory.
      * @return Pillars in inventory.
      */
-    public List<Pillar> getPillars()
+    public int getPillars()
     {
         return myPillars;
     }
@@ -206,7 +204,7 @@ public abstract class Hero extends DungeonCharacter
                 "myCharacterType + " + myCharacterType +
                 ", Hero status = " + MY_HERO_STATUS +
                 ", Potions = '" + myPotions.toString() + '\'' +
-                ", Pillars = " + myPillars.toString() +
+                ", Pillars = " + myPillars +
                 '}';
     }
 
