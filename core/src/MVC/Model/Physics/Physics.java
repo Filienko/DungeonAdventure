@@ -7,7 +7,7 @@ public class Physics {
     public static Vec2 getOverlap(Entity theEntity1, Entity theEntity2)
     {
         return getOverlapVector(theEntity1, theEntity2, theEntity1.getMyPos(), theEntity2.getMyPos());
-    };
+    }
 
     public static Vec2 getPreviousOverlap(Entity theEntity1, Entity theEntity2)
     {
@@ -47,7 +47,7 @@ public class Physics {
         }
 
         return inside;
-    };
+    }
 
     public static Intersect lineIntersect(final Vec2 theVec1, final Vec2 theVec2, final Vec2 theVec3, final Vec2 theVec4)
     {
@@ -67,14 +67,16 @@ public class Physics {
         }
 
         return result;
-    };
+    }
 
     public static boolean entityIntersect(final Vec2 theVec1, final Vec2 theVec2, final Entity theEntity)
     {
         float halfSizeX= theEntity.getMySize().divide(2).getMyX();
         float halfSizeY= theEntity.getMySize().divide(2).getMyY();
-        Vec2 p1= theEntity.getMyPos();
-        Vec2 p2 = p1, p3 = p1, p4 = p1;
+        Vec2 p1 = new Vec2(theEntity.getMyPos());
+        Vec2 p2 = new Vec2(theEntity.getMyPos());
+        Vec2 p3 = new Vec2(theEntity.getMyPos());
+        Vec2 p4 = new Vec2(theEntity.getMyPos());
 
         p1.add(halfSizeX, halfSizeY);
         p2.add(halfSizeX, -halfSizeY);
@@ -87,7 +89,7 @@ public class Physics {
         if (lineIntersect(theVec1, theVec2, p1, p4).isMyIntersectionOccurs()) { return true; }
 
         return false;
-    };
+    }
 
     public static Vec2 getPosition(final int rx, final int ry, final int tx, final int ty)
     {

@@ -1,7 +1,5 @@
 package MVC.Model.Physics;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-
 import java.io.Serializable;
 
 public class Vec2 implements Serializable
@@ -9,7 +7,13 @@ public class Vec2 implements Serializable
 private float myX;
 private float myY;
 
-     public static boolean equals(final Vec2 vec1,final Vec2 vec2)
+    public Vec2(final Vec2 thePos)
+    {
+        myX = thePos.getMyX();
+        myY = thePos.getMyY();
+    }
+
+    public static boolean equals(final Vec2 vec1,final Vec2 vec2)
     {
         return vec1.getMyX()==vec2.getMyX() && vec1.getMyY()==vec2.getMyY();
     };

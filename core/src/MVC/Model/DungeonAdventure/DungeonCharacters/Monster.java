@@ -7,7 +7,13 @@ public class Monster extends DungeonCharacter
     /**
      * Hero status that tells that this DungeonCharacter is a Monster.
      */
-    private final static boolean MY_HERO_STATUS = false; // should just be static ?
+    private final static boolean MY_HERO_STATUS = false;
+
+    /**
+     * Hero status that tells that this DungeonCharacter is a Monster.
+     */
+    //TODO:Add variability to the monster's aggression
+    private final static int MY_AGGRESSION_DISTANCE = 10;
 
     /**
      * The specific Monster type.
@@ -39,6 +45,18 @@ public class Monster extends DungeonCharacter
 
     protected void attack(Hero theHero){
         super.attack(theHero,super.getMyBoundingBox());
+    }
+
+    @Override
+    public void update()
+    {
+        //Replace new Vec2 with hero's position
+        if((getMyBoundingBox().computeDistance(new Vec2())<MY_AGGRESSION_DISTANCE))
+        {
+            //Interact with the Hero's velocity
+            setVelocity(new Vec2());
+        }
+        super.update();
     }
 
     @Override

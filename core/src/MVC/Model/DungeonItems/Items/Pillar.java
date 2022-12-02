@@ -23,9 +23,7 @@ public class Pillar extends Item
     @Override
     public void activate(final Hero theHero)
     {
-        var pillars = theHero.getPillars();
-        pillars.add(new Pillar(myName,false));
-        theHero.setPillars(pillars);
+        theHero.incrementPillars();
         this.destroy();
     }
 
