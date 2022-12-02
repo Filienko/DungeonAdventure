@@ -124,4 +124,9 @@ public abstract class Entity
     public int getRotation() { return myRotation; }
 
     public void setRotation(int scale) { myRotation = scale; }
+
+    public void setActiveStatus(final boolean theActiveStatus)
+    {
+        myActiveStatus = theActiveStatus;
+    }
 }

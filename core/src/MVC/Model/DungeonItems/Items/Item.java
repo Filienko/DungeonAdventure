@@ -1,6 +1,8 @@
 package MVC.Model.DungeonItems.Items;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
 import java.util.Random;
@@ -19,6 +21,8 @@ public abstract class Item extends Entity
         myLocation = new Vec2((new Random()).nextInt(1, 20),
                 (new Random()).nextInt(1, 12));
     }
+
+    public abstract void activate(Hero theHero);
 
     protected Vec2 getMyLocation()
     {

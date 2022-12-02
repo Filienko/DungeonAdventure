@@ -1,5 +1,6 @@
 package MVC.Model.DungeonItems.Items;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
@@ -27,5 +28,12 @@ public class Exit extends Item
     public boolean checkFinishGame(Hero theHero)
     {
         return theHero.getPillars().size() == 4;
+    }
+
+    @Override
+    public void activate(final Hero theHero)
+    {
+        if(theHero.getPillars().size()==4)
+            theHero.setActiveStatus(false);
     }
 }

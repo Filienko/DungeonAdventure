@@ -153,7 +153,7 @@ public abstract class Hero extends DungeonCharacter
      * This method sets the Pillars in the Hero's inventory.
      * @param thePillars Pillars to be put into inventory.
      */
-    protected void setPillars(final List<Pillar> thePillars)
+    public void setPillars(final List<Pillar> thePillars)
     {
         this.myPillars = thePillars;
     }

@@ -1,5 +1,6 @@
 package MVC.Model.DungeonItems.Items;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
 public class Pit extends Item
@@ -18,6 +19,13 @@ public class Pit extends Item
         super("Pit");
         this.myLocation = theLocation;
         this.damageFall = 15;
+    }
+
+    @Override
+    public void activate(final Hero theHero)
+    {
+        theHero.setHitPoints(theHero.getHitPoints() - damageFall);
+
     }
 
     public Vec2 getMyLocation()
