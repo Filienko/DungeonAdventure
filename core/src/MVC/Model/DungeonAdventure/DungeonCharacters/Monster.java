@@ -19,8 +19,6 @@ public class Monster extends DungeonCharacter
      */
     private final int myHitPoints;
 
-    //^^ should this be deleted or should maxSpeed, min/max damage range be fields
-
     /**
      * Monster constructor that calls its parent constructor to initialize the Monster's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, chance of healing, and maximum/minimum hit points it can restore.

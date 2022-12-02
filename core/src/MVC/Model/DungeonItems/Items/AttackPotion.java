@@ -1,8 +1,6 @@
 package MVC.Model.DungeonItems.Items;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
-import MVC.Model.Physics.Vec2;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class AttackPotion extends Potion
 {
@@ -21,10 +19,10 @@ public class AttackPotion extends Potion
     }
 
     @Override
-    public void increase(DungeonCharacter theCharacter)
+    public void activate(final Hero theHero)
     {
-        theCharacter.setDamage(theCharacter.getDamage() + super.getStrength());
-        theCharacter.setDamage(theCharacter.getDamage() + super.getStrength());
+        theHero.setDamage(theHero.getDamage() + super.getStrength());
+        theHero.setDamage(theHero.getDamage() + super.getStrength());
     }
 
     @Override

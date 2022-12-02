@@ -9,11 +9,6 @@ import java.util.Random;
 public class Warrior extends Hero
 {
     /**
-     * The Warrior's name.
-     */
-    private String myName;
-
-    /**
      * Warrior constructor that calls its parent constructor to initialize the Warrior's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity.
      */
@@ -31,7 +26,6 @@ public class Warrior extends Hero
     public Warrior(final String theName, final Vec2 thePos)
     {
         super(theName,"Warrior",10, 1,  5, thePos, new Vec2());
-        this.myName = theName;
     }
 
     /**
@@ -54,6 +48,7 @@ public class Warrior extends Hero
         theOpponent.applyDamage(damage);
         return damage;
     }
+
     /**
      * The Warrior's special skill. damage amount between 75 and 175 is randomly generated.
      * @param theOpponent The DungeonCharacter the Warrior is attacking.
@@ -65,18 +60,12 @@ public class Warrior extends Hero
         return rand.nextInt(75, 175);
     }
 
-//    @Override
-//    public String getName()
-//    {
-//        return myName;
-//    }
-
     /**
-     * This method sets the Warrior's name.
-     * @param theName The Warrior's new name.
-     */
-    private void setName(final String theName)
+     * Calls Warrior's special skill.
+     * */
+    @Override
+    public void special()
     {
-        this.myName = theName;
+
     }
 }

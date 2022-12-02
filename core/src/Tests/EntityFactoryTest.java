@@ -2,6 +2,7 @@ package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Items.AttackPotion;
@@ -142,7 +143,7 @@ public class EntityFactoryTest
     @Test
     void testGenerateSword()
     {
-        assertEquals("Sword",entityFactory.generateSword().getType());
+        assertEquals("Sword",entityFactory.generateSword(new Thief()).getType());
     }
 
 }
