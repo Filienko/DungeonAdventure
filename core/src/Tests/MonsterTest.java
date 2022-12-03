@@ -1,5 +1,8 @@
 package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ class MonsterTest
     @Test
     void testMonsterConstructorOgre()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 60, 2, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Ogre", 200, 60, 2, new Vec2(), new Vec2(), new Warrior());
 
         assertEquals("Ogre", myMonster.getMyCharacterType());
         assertFalse(myMonster.getHeroStatus());
@@ -31,7 +34,7 @@ class MonsterTest
     @Test
     void testMonsterConstructorGremlin()
     {
-        final Monster myMonster = new Monster("Gremlin", 70, 15, 5, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Gremlin", 70, 15, 5, new Vec2(), new Vec2(), new Warrior());
 
         assertEquals("Gremlin", myMonster.getMyCharacterType());
         assertFalse(myMonster.getHeroStatus());
@@ -46,7 +49,7 @@ class MonsterTest
     @Test
     void testMonsterConstructorSkeleton()
     {
-        final Monster myMonster = new Monster("Skeleton", 100, 30, 3, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Skeleton", 100, 30, 3, new Vec2(), new Vec2(), new Warrior());
 
         assertEquals("Skeleton", myMonster.getMyCharacterType());
         assertFalse(myMonster.getHeroStatus());
@@ -70,7 +73,7 @@ class MonsterTest
     @Test
     void testToString()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 30, 2, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Ogre", 200, 30, 2, new Vec2(), new Vec2(), new Warrior());
 
         assertEquals("Monster {myCharacterType = Ogre, \n Hero status = false, \n myHitPoints = 200 }", myMonster.toString());
     }

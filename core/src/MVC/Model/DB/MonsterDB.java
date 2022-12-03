@@ -1,5 +1,7 @@
 package MVC.Model.DB;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 import org.sqlite.SQLiteDataSource;
@@ -13,23 +15,23 @@ public class MonsterDB extends SuperMonsterDB
 {
     public SQLiteDataSource myDS = establishConnection();
 
-    public Monster createMonsterDB(final String monsterType)
+    public Monster createMonsterDB(final String monsterType, final Hero theHero)
     {
         if(monsterType.contentEquals("Ogre"))
         {
-            return createMonster(1);
+            return createMonster(1,theHero);
         }
         else if(monsterType.contentEquals("Gremlin"))
         {
-            return createMonster(2);
+            return createMonster(2,theHero);
         }
         else if (monsterType.contentEquals("Elf"))
         {
-            return createMonster(3);
+            return createMonster(3,theHero);
         }
         else if (monsterType.contains("Rats"))
         {
-            return createMonster(4);
+            return createMonster(4,theHero);
         }
         return null;
     }
@@ -103,7 +105,7 @@ public class MonsterDB extends SuperMonsterDB
     }
 
     @Override
-    public Monster createMonster(final int theN)
+    public Monster createMonster(final int theN, final Hero theHero)
     {
         //now query my database table for all its contents and display my results
         String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + theN + "";
@@ -138,6 +140,6 @@ public class MonsterDB extends SuperMonsterDB
             e.printStackTrace();
             System.exit( 0 );
         }
-        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY));
+        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY), theHero);
     }
 }

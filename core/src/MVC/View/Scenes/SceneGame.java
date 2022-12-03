@@ -19,7 +19,7 @@ public class SceneGame extends Scene
     public SceneGame(GameEngine game, String hero)
     {
         super(game);
-        myEntityFactory = new EntityFactory(myRenderer.getAssets());
+        myEntityFactory = new EntityFactory(myRenderer.getAssets(), hero);
         initialize();
 
         registerAction(Input.Keys.ESCAPE, "PAUSE");
@@ -30,7 +30,7 @@ public class SceneGame extends Scene
         registerAction(Input.Buttons.LEFT, "ATTACK");
         registerAction(Input.Keys.SPACE, "ATTACK");
 
-        myHero = myEntityFactory.generateHero(hero);
+        myHero = myEntityFactory.getHero();
     }
 
     private void initialize()

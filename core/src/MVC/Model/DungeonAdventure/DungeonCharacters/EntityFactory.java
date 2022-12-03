@@ -18,14 +18,12 @@ import java.util.Locale;
 
 public class EntityFactory
 {
-    //Updating, Deleting, and Collecting entities
-    private SuperMonsterDB DB;
-
     private ArrayList<Entity> myEntities;
     private ArrayList<Entity> myEntitiesToAdd;
     private ObjectMap<String, ArrayList<Entity>> myEntityMap;
     private long myTotalEntities;
     private Assets myAssets;
+    private Hero myHero;
 
     public EntityFactory()
     {
@@ -34,16 +32,18 @@ public class EntityFactory
         myEntityMap = new ObjectMap<>();
         myTotalEntities = 0;
     }
-    public EntityFactory(Assets assets)
+    public EntityFactory(Assets assets, final String theHero)
     {
         this();
         myAssets = assets;
+        myHero = generateHero(theHero);
     }
     
     public Monster generateMonster(final String monsterType)
     {
-        DB = new MonsterDB();
-        return DB.createMonsterDB(monsterType);
+        //Updating, Deleting, and Collecting entities
+        SuperMonsterDB DB = new MonsterDB();
+        return DB.createMonsterDB(monsterType, myHero);
     }
 
     public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
@@ -385,12 +385,16 @@ public class EntityFactory
 //        return arr;
 //    }
 
-    public ArrayList<Entity> getEntities() { return myEntities; }
-
     //added this method
     public static Sword generateSword(final Hero theHero)
-    {
-        return new Sword(theHero);
-    }
+{
+    return new Sword(theHero);
+}
 
+    public ArrayList<Entity> getEntities() { return myEntities; }
+
+    public Hero getHero()
+    {
+        return myHero;
+    }
 }
