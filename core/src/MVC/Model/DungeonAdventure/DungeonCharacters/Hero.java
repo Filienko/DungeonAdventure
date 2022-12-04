@@ -5,6 +5,8 @@ import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Random;
 
 public abstract class Hero extends DungeonCharacter
 {
+    private final EntityFactory myEntityFactory;
+
     /**
      * Random number generator used to generate the Hero's hit point count.
      */
@@ -36,7 +40,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The Hero's weapon.
      */
-    private Sword myWeapon = new Sword();
+    private Sword myWeapon;
 
     /**
      * A list of all the Potions in the Hero's inventory.
@@ -53,12 +57,17 @@ public abstract class Hero extends DungeonCharacter
      */
     private final int myHitPoints;
 
-    //wrote setters for these fields - ok?
+    private boolean myInvincibilityStatus;
+
+    //wrote setters for these fields - are they necessary?
     boolean myUpStatus;
     boolean myDownStatus;
     boolean myLeftStatus;
     boolean myRightStatus;
     boolean myAttackStatus;
+
+    private long myCurrentFrame;
+    private long initiatedFrame;
 
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -75,37 +84,36 @@ public abstract class Hero extends DungeonCharacter
      * @param theVelocity The Hero's velocity.
      */
     public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theMinDamageRange,
-                final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
+                final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity,
+                final EntityFactory theEntityFactory)
     {
-        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
-        this.myName = theName;
-        this.myCharacterType = theCharacterType;
-        this.myPotions = new ArrayList<>();
-        this.myPillars = new ArrayList<>();
-        this.myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theMinDamageRange, theMaxDamageRange, theMaxSpeed,
+                thePos, theVelocity, theEntityFactory);
+        myName = theName;
+        myCharacterType = theCharacterType;
+        myPotions = new ArrayList<>();
+        myPillars = new ArrayList<>();
+        myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+        myEntityFactory = theEntityFactory;
 
-        this.myUpStatus = false;
-        this.myDownStatus = false;
-        this.myLeftStatus = false;
-        this.myRightStatus = false;
-        this.myAttackStatus = false;
+        myUpStatus = false;
+        myDownStatus = false;
+        myLeftStatus = false;
+        myRightStatus = false;
+        myAttackStatus = false;
+
+        myCurrentFrame = 0;
+        initiatedFrame = 0;
     }
 
-
-
-
-    //is this necessary?
     /**
      * This method moves the Hero to the specified coordinates.
      * @param theCoordinates Coordinates that determine the Hero's new location.
      */
     public void moveHero(final Vec2 theCoordinates)
     {
-        super.setPos(theCoordinates);
+        setMyPos(theCoordinates);
     }
-
-
-
 
     public Sword getWeapon()
     {
@@ -114,65 +122,81 @@ public abstract class Hero extends DungeonCharacter
 
     public void setWeapon(final Sword theWeapon)
     {
-        this.myWeapon = theWeapon;
+        myWeapon = theWeapon;
     }
+
+    public abstract int special(final DungeonCharacter theOpponent);
 
     @Override
     public void update()
     {
         movement();
 
-        if(myAttackStatus) {   //is this how it should be formatted?
-            attack();
-       }
+//        if(myAttackStatus) {   //is this how it should be formatted?
+//            attack();
+//        }
+        myCurrentFrame++;
 
-        super.update();
     }
     @Override
-    public void attack()
+    public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
     {
-        this.myAttackStatus = true;
+        myAttackStatus = true;
+
+        int damage = 0;
+
+        //change this up so that weapon applies damage
+
         if (myWeapon == null)
         {
             myWeapon = EntityFactory.generateSword();
-            //super.attack(); //necessary?
+            damage = super.attack(theOpponent, getWeapon().getBoundingBox());
         }
 
-        this.myAttackStatus = false;
+        long delay = 15;
+        if (myCurrentFrame <= initiatedFrame + delay)
+        {
+            initiatedFrame++;
+        } else
+        {
+            myAttackStatus = false; //delay setting to false for 15 frames
+        }
+
+        return damage;
     }
 
     @Override
     public void movement()
     {
-        //set velocity based on booleans passed (should they be passed to the method?)
-        //super.movement(); //is this right?
+        //set velocity based on booleans passed
+
+        //super.movement();
 
         Vec2 newVelocity = new Vec2();
 
-        //should the Hero's maxSpeed be used?
-        if (this.myUpStatus && !this.myDownStatus)
+        if (myUpStatus && !myDownStatus)
         {
-            newVelocity.setMyY(1 * this.getMaxSpeed());
+            newVelocity.setMyY(1 * getMaxSpeed());
 
-        } else if (!this.myUpStatus && this.myDownStatus)
+        } else if (!myUpStatus && myDownStatus)
         {
             newVelocity.setMyX(0);
-            newVelocity.setMyY(-1 * this.getMaxSpeed());
+            newVelocity.setMyY(-1 * getMaxSpeed());
 
-        } else if (!this.myUpStatus && !this.myDownStatus)
+        } else if (!myUpStatus && !myDownStatus)
         {
             newVelocity.setMyY(0);
         }
 
-        if (this.myLeftStatus && !this.myRightStatus)
+        if (myLeftStatus && !myRightStatus)
         {
-            newVelocity.setMyX(-1 * this.getMaxSpeed());
+            newVelocity.setMyX(-1 * getMaxSpeed());
 
-        } else if (!this.myLeftStatus && this.myRightStatus)
+        } else if (!myLeftStatus && myRightStatus)
         {
-            newVelocity.setMyX(1 * this.getMaxSpeed());
+            newVelocity.setMyX(1 * getMaxSpeed());
 
-        } else if (!this.myLeftStatus && !this.myRightStatus)
+        } else if (!myLeftStatus && !myRightStatus)
         {
             newVelocity.setMyX(0);
         }
@@ -186,15 +210,15 @@ public abstract class Hero extends DungeonCharacter
      * This method sets the Potions in the Hero's inventory.
      * @param thePotions Potions to be put into inventory.
      */
-    public void setPotions(final List<Item> thePotions) { this.myPotions = thePotions; }
+    public void setPotions(final List<Item> thePotions) { myPotions = thePotions; }
 
     /**
      * This method adds a Potion to the Hero's inventory.
      * @param thePotion Potion to be added into inventory.
      */
-    public void addPotion(Item thePotion)
+    public void addPotion(final Item thePotion)
     {
-        this.myPotions.add(thePotion);
+        myPotions.add(thePotion);
     }
 
     /**
@@ -203,7 +227,7 @@ public abstract class Hero extends DungeonCharacter
      */
     public List<Item> getPotions()
     {
-        return this.myPotions;
+        return myPotions;
     }
 
     /**
@@ -212,16 +236,16 @@ public abstract class Hero extends DungeonCharacter
      */
     public void setPillars(final List<Pillar> thePillars)
     {
-        this.myPillars = thePillars;
+        myPillars = thePillars;
     }
 
     /**
      * This method adds a Pillar to the Hero's inventory.
      * @param thePillar Pillar to be added into inventory.
      */
-    public void addPillar(Pillar thePillar)
+    public void addPillar(final Pillar thePillar)
     {
-        this.myPillars.add(thePillar);
+        myPillars.add(thePillar);
     }
 
     //changed visibility for testing!!! reevaluate if this should be protected (was originally) or public
@@ -231,7 +255,7 @@ public abstract class Hero extends DungeonCharacter
      */
     public List<Pillar> getPillars()
     {
-        return this.myPillars;
+        return myPillars;
     }
 
     /**
@@ -243,13 +267,13 @@ public abstract class Hero extends DungeonCharacter
         return myName;
     }
 
-    public void setMyUpStatus(final boolean theUpStatus) { this.myUpStatus = theUpStatus; }
+    public void setMyUpStatus(final boolean theUpStatus) { myUpStatus = theUpStatus; }
 
-    public void setMyDownStatus(final boolean theDownStatus) { this.myDownStatus = theDownStatus; }
+    public void setMyDownStatus(final boolean theDownStatus) { myDownStatus = theDownStatus; }
 
-    public void setMyLeftStatus(final boolean theLeftStatus) { this.myLeftStatus = theLeftStatus; }
+    public void setMyLeftStatus(final boolean theLeftStatus) { myLeftStatus = theLeftStatus; }
 
-    public void setMyRightStatus(final boolean theRightStatus) { this.myRightStatus = theRightStatus; }
+    public void setMyRightStatus(final boolean theRightStatus) { myRightStatus = theRightStatus; }
 
     /**
      * Method that returns details about the Hero.
@@ -275,7 +299,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public String getMyCharacterType()
     {
-        return this.myCharacterType;
+        return myCharacterType;
     }
 
     /**
@@ -295,7 +319,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public int getHitPoints()
     {
-        return this.myHitPoints;
+        return myHitPoints;
     }
 
 

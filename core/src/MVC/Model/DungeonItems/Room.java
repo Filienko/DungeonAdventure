@@ -83,26 +83,32 @@ public class Room extends Entity
      */
     private boolean myHeroPresent;
 
+    private long myCurrentFrame;
+
+    private final EntityFactory myEntityFactory;
+
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
      */
-    public Room()
+    public Room(final EntityFactory theEntityFactory)
     {
-        super(new Vec2(),new Vec2());
+        super(new Vec2(),new Vec2(), theEntityFactory);
         this.myEntrance = false;
         this.myExit = false;
         this.myRoomHasItems = false;
         this.myLocation = new Vec2();
         this.myHeroPresent = false;
+        this.myCurrentFrame = 0;
+        this.myEntityFactory = theEntityFactory;
         populateTheRoom();
     }
 
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items and assigns location;
      */
-    public Room(final int theNumber, Vec2 theLocation)
+    public Room(final int theNumber, Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        super(theLocation,new Vec2());
+        super(theLocation,new Vec2(), theEntityFactory);
         this.myNumber = theNumber;
         this.myEntrance = false;
         this.myExit = false;
@@ -110,15 +116,17 @@ public class Room extends Entity
         this.myLocation = theLocation;
         this.myHeroPresent = false;
         this.myRoomHasMonsters = true;
+        this.myCurrentFrame = 0;
+        this.myEntityFactory = theEntityFactory;
         populateTheRoom();
     }
 
     /**
      * Room constructor that creates a Room that is the Entrance or Exit and that has no Items, at the given location.
      */
-    public Room(boolean theEntrance, int theNumber, Vec2 theLocation)
+    public Room(boolean theEntrance, int theNumber, Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        super(theLocation,new Vec2());
+        super(theLocation,new Vec2(), theEntityFactory);
         if(theEntrance)
         {
             this.myEntrance = true;
@@ -137,6 +145,8 @@ public class Room extends Entity
         this.myRoomHasItems = true;
         this.myRoomHasMonsters = true;
         this.myLocation = theLocation;
+        this.myCurrentFrame = 0;
+        this.myEntityFactory = theEntityFactory;
         populateTheRoom();
     }
 
@@ -151,9 +161,9 @@ public class Room extends Entity
      * @param theLocation The location of the Room in the Dungeon.
      */
     public Room(final boolean theEntrance, final boolean theExit, final List<Door> theDoors, boolean theRoomHasItem,
-                final boolean theRoomHasMonsters, final List<Item> theItems, final Vec2 theLocation)
+                final boolean theRoomHasMonsters, final List<Item> theItems, final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        super(theLocation,new Vec2());
+        super(theLocation,new Vec2(), theEntityFactory);
         //how to guard against both being entered as true ?
         this.myExit = theExit;
         this.myEntrance = theEntrance;
@@ -163,8 +173,16 @@ public class Room extends Entity
         this.myItems = theItems;
         this.myLocation = theLocation;
         this.myHeroPresent = false;
+        this.myCurrentFrame = 0;
+        this.myEntityFactory = theEntityFactory;
         populateTheRoom();
     }
+
+    @Override
+    public void update() {
+        //ask daniil
+    }
+
     /**
      * Populates the rooms with random items.
      */
@@ -185,10 +203,10 @@ public class Room extends Entity
 
     private void populateDoors(final Random theRandom)
     {
-        if(myE){myDoors.add(new Door(false));}
-        if(myN){myDoors.add(new Door(false));}
-        if(myW){myDoors.add(new Door(false));}
-        if(myS){myDoors.add(new Door(false));}
+        if(myE){myDoors.add(new Door(false, myEntityFactory));}
+        if(myN){myDoors.add(new Door(false, myEntityFactory));}
+        if(myW){myDoors.add(new Door(false, myEntityFactory));}
+        if(myS){myDoors.add(new Door(false, myEntityFactory));}
     }
 
     private void populatePit(final Random theRandom)
@@ -196,7 +214,7 @@ public class Room extends Entity
         if(theRandom.nextDouble() < 0.10)
         {
             this.myItems.add(new Pit(new Vec2(theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyX()),
-                theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyY()))));
+                theRandom.nextInt(0, (int) super.getMyBoundingBox().getMyY())), myEntityFactory));
         }
     }
 
@@ -206,18 +224,18 @@ public class Room extends Entity
         {
             this.myItems.add(new HealingPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
                     (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()))));
+                    (int) super.getMyBoundingBox().getMyY())), myEntityFactory));
         }
         else if(theRandom.nextDouble() < 0.67)
         {
             this.myItems.add(new AttackPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
                     (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()))));
+                    (int) super.getMyBoundingBox().getMyY())), myEntityFactory));
         } else
         {
             this.myItems.add(new SpeedPotion(theRandom.nextInt(15,46),new Vec2(theRandom.nextInt(0,
                     (int) super.getMyBoundingBox().getMyX()), theRandom.nextInt(0,
-                    (int) super.getMyBoundingBox().getMyY()))));
+                    (int) super.getMyBoundingBox().getMyY())),  myEntityFactory));
         }
     }
 

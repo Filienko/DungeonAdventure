@@ -1,6 +1,8 @@
-package MVC.Model.UnitTests;
+package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ class WarriorTest
     @Test
     void testWarriorConstructor()
     {
-        final Warrior myWarrior = new Warrior();
+        final Warrior myWarrior = new Warrior(new EntityFactory());
 
         assertEquals("Warrior", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getMyCharacterType());
@@ -32,7 +34,7 @@ class WarriorTest
     @Test
     void testWarriorOLConstructor()
     {
-        final Warrior myWarrior = new Warrior("W", new Vec2());
+        final Warrior myWarrior = new Warrior("W", new Vec2(), new EntityFactory());
 
         assertEquals("W", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getMyCharacterType());
@@ -44,15 +46,15 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#attack(DungeonCharacter, Vec2)}
+     * Test method for {@link
      */
     @Test
     void testAttack()
     {
         //do we need to test if crushing blow happens 40% of the time?
 
-        final Warrior myWarrior1 = new Warrior();
-        final Warrior myWarrior2 = new Warrior();
+        final Warrior myWarrior1 = new Warrior(new EntityFactory());
+        final Warrior myWarrior2 = new Warrior(new EntityFactory());
 
         int oldHealth = myWarrior1.getHitPoints();
         int damage = myWarrior1.attack(myWarrior2, new Vec2());
@@ -62,22 +64,18 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#crushingBlow()}
+     * Test method for {@link
      */
     @Test
     void testCrushingBlow()
     {
-        //how to test if crushing blow happens 40% of the time??
+        final Warrior myWarrior = new Warrior(new EntityFactory());
 
-        final Warrior myWarrior1 = new Warrior();
-        final Warrior myWarrior2 = new Warrior();
+        final Thief myThief = new Thief(new EntityFactory());
 
-        int oldHealth = myWarrior1.getHitPoints();
-        int damage = myWarrior1.crushingBlow();
+        int damage = myWarrior.special(myThief); //may need to change this
 
-        //crushingBlow does not apply damage to opponent - change these assertions
+        assertTrue(damage < 175 && damage > 75);
 
-        assertTrue(myWarrior2.getHitPoints() < oldHealth);
-        assertEquals(myWarrior2.getHitPoints(), oldHealth - damage);
     }
 }

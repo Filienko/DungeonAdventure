@@ -200,10 +200,9 @@ public class EntityFactory
 
     }
 
-    //added this method
-    public static Sword generateSword() 
+    public static Sword generateSword()
     {
-        return new Sword();
+        return Sword.getInstance(new Vec2(), new EntityFactory());
     }
 
 }

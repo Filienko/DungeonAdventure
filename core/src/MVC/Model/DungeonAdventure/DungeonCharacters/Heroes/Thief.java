@@ -1,6 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
@@ -10,6 +11,8 @@ public class Thief extends Hero
      * Chance of being hidden when entering a room.
      */
     private static final double MY_HIDDEN_CHANCE = 0.4;
+
+    private final EntityFactory myEntityFactory;
 
     /**
      * The Thief's name
@@ -21,32 +24,32 @@ public class Thief extends Hero
      */
     private boolean myHiddenStatus = false;
 
-
-
     /**
      * Thief constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
      */
-    public Thief()
+    public Thief(final EntityFactory theEntityFactory)
     {
-        super("Thief", "Thief", 75, 20, 40, 6,  new Vec2(), new Vec2());
+        super("Thief", "Thief", 75, 20, 40, 6,  new Vec2(), new Vec2(), theEntityFactory);
+        myEntityFactory = theEntityFactory;
     }
 
     /**
      * Thief overloaded constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
      */
-    public Thief(final String theName, final Vec2 thePos)
+    public Thief(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
-        super(theName, "Thief",75, 20, 40, 6,  thePos, new Vec2());
-        this.myName = theName;
+        super(theName, "Thief",75, 20, 40, 6,  thePos, new Vec2(), theEntityFactory);
+        myName = theName;
+        myEntityFactory = theEntityFactory;
     }
 
     /**
      * Thief's attack behavior. The Thief's hidden status is set to true and then the Thief is given
      * the chance to do a surprise attack (40% chance of success) where the Thief performs an attack and then is given the
-     * chance to do another attack. The Thief has a 20% chance that no attack is rendered, and an additional 40%
-     * chance of performing a simple attack.
+     * chance to do another attack. The Thief has additional 40% chance of performing a simple attack.
+     *
      * @param theOpponent The DungeonCharacter the Thief is attacking.
      * @param theDamageArea --
      * @return The amount of damage done to theOpponent's hit point count.
@@ -69,7 +72,7 @@ public class Thief extends Hero
             chance = Math.random();
             if (chance < 0.4)
             {
-                damage = surpriseAttack(theOpponent);
+                damage = special(theOpponent);
             }
             myHiddenStatus = false;
         } else
@@ -77,7 +80,6 @@ public class Thief extends Hero
             damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
         }
 
-        //what abt 20% chance of no attack occurring ?
 
         theOpponent.applyDamage(damage);
         return damage;
@@ -88,7 +90,7 @@ public class Thief extends Hero
      * @param theOpponent The DungeonCharacter the Thief is attacking.
      * @return The amount of damage done to theOpponent's hit point count.
      */
-    public int surpriseAttack(final DungeonCharacter theOpponent)
+    public int special(final DungeonCharacter theOpponent)
     {
         //Thief gets an attack (super.attack()) and an extra turn (attack())
 
@@ -102,7 +104,7 @@ public class Thief extends Hero
      */
     public boolean getHiddenStatus()
     {
-        return this.myHiddenStatus;
+        return myHiddenStatus;
     }
 
     /**
@@ -111,14 +113,14 @@ public class Thief extends Hero
      */
     public void setHiddenStatus(final boolean theStatus)
     {
-        this.myHiddenStatus = theStatus;
+        myHiddenStatus = theStatus;
     }
 
-//    @Override
-//    public String getName()
-//    {
-//        return myName;
-//    }
+    @Override
+    public String getName()
+    {
+        return myName;
+    }
 
     /**
      * This method sets the Thief's name.
@@ -126,7 +128,7 @@ public class Thief extends Hero
      */
     private void setName(final String theName)
     {
-        this.myName = theName;
-    }
+        myName = theName;
+    } //why is this private?
 
 }

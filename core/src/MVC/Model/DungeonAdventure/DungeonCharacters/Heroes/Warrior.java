@@ -1,6 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
@@ -8,6 +9,8 @@ import java.util.Random;
 
 public class Warrior extends Hero
 {
+    private final EntityFactory myEntityFactory;
+
     /**
      * The Warrior's name.
      */
@@ -17,9 +20,10 @@ public class Warrior extends Hero
      * Warrior constructor that calls its parent constructor to initialize the Warrior's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity.
      */
-    public Warrior()
+    public Warrior(final EntityFactory theEntityFactory)
     {
-        super("Warrior","Warrior",  125, 35, 60, 4, new Vec2(), new Vec2());
+        super("Warrior","Warrior",  125, 35, 60, 4, new Vec2(), new Vec2(), theEntityFactory);
+        myEntityFactory = theEntityFactory;
     }
 
     /**
@@ -28,10 +32,11 @@ public class Warrior extends Hero
      * @param theName The Warrior's name.
      * @param thePos The Warrior's location.
      */
-    public Warrior(final String theName, final Vec2 thePos)
+    public Warrior(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
-        super(theName,"Warrior",125, 35, 60, 4, thePos,  new Vec2());
-        this.myName = theName;
+        super(theName,"Warrior",125, 35, 60, 4, thePos,  new Vec2(), theEntityFactory);
+        myName = theName;
+        myEntityFactory = theEntityFactory;
     }
 
     /**
@@ -49,26 +54,26 @@ public class Warrior extends Hero
         if (chance < 0.4) {
             damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
         } else if (chance < 0.6) {
-            damage = crushingBlow();
+            damage = special(theOpponent);
         }
         theOpponent.applyDamage(damage);
         return damage;
     }
     /**
-     * The Warrior's special skill. damage amount between 75 and 175 is randomly generated.
+     * This is the Warrior's special skill. damage amount between 75 and 175 is randomly generated.
      * @return The amount of damage done to theOpponent's hit points.
      */
-    public int crushingBlow()
+    public int special(final DungeonCharacter theOpponent) //theOpponent is never used, change ?
     {
         Random rand = new Random();
         return rand.nextInt(75, 175);
     }
 
-//    @Override
-//    public String getName()
-//    {
-//        return myName;
-//    }
+    @Override
+    public String getName()
+    {
+        return myName;
+    }
 
     /**
      * This method sets the Warrior's name.
@@ -76,6 +81,6 @@ public class Warrior extends Hero
      */
     private void setName(final String theName)
     {
-        this.myName = theName;
+        myName = theName;
     }
 }

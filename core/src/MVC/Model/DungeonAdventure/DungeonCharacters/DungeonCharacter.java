@@ -1,5 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
@@ -7,6 +8,8 @@ import java.util.Random;
 
 public abstract class DungeonCharacter extends Entity
 {
+    private EntityFactory myEntityFactory;
+
     /**
      * The specific character type.
      */
@@ -38,15 +41,14 @@ public abstract class DungeonCharacter extends Entity
      */
     private int myMaxSpeed;
 
-    /**
-     * The character's position.
-     */
-    private Vec2 myPos;
 
     /**
      * The character's velocity.
      */
     private Vec2 myVelocity;
+
+    private long myCurrentFrame;
+    private long initiatedFrame;
 
     /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
@@ -62,37 +64,61 @@ public abstract class DungeonCharacter extends Entity
      * @param theVelocity The character's velocity.
      */
     DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints, final int theMinDamageRange, final int theMaxDamageRange,
-                     final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
+                     final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super(new Vec2(), new Vec2());
-        this.myCharacterType = theCharacterType;
-        this.myHeroStatus = theHeroStatus;
+        super(new Vec2(), new Vec2(), theEntityFactory);
+        myCharacterType = theCharacterType;
+        myHeroStatus = theHeroStatus;
 
-        this.myMinDamageRange = theMinDamageRange;
-        this.myHitPoints = theHitPoints;
-        this.myMaxDamageRange = theMaxDamageRange;
-        this.myMaxSpeed = theMaxSpeed;
-        this.myPos = thePos;
-        this.myVelocity = theVelocity;
+        myMinDamageRange = theMinDamageRange;
+        myHitPoints = theHitPoints;
+        myMaxDamageRange = theMaxDamageRange;
+        myMaxSpeed = theMaxSpeed;
+        setMyPos(thePos);
+        myVelocity = theVelocity;
+        myCurrentFrame = 0;
+        initiatedFrame = 0;
     }
 
-    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+
+    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea) //is the damage area needed? never used
     {
-        //while (Physics.isInside(theDamageArea, theOpponent)) {
-        //  -- attack the opponent
-        //}
-        int damage = 1; //damage should be generated between min/max damage range ? may need to bring down min/max
+        Vec2 overlap = Physics.getOverlap(this, theOpponent);
 
+        int damage = 0;
 
-        //apply invincibility for Heros for 30 frames after each hit from Monsters
+        if (overlap.getMyX() > 0 && overlap.getMyY() > 0) {
+            Random rand = new Random();
+            damage += rand.nextInt(myMaxDamageRange) + myMinDamageRange;
 
+            long delay = 30;
+            if(theOpponent.getHeroStatus())
+            {
+                if (myCurrentFrame <= initiatedFrame + delay)
+                {
+                    initiatedFrame++;
+                }
+            }
+            //apply invincibility for Heros for 30 frames after each hit from Monsters
 
-        //get overlap between opponenets
-        //if overlap.x > 0 and overlap.y > 0, this means an overlap
+        }
 
         theOpponent.applyDamage(damage);
 
+        if (theOpponent.getHitPoints() == 0) {
+            theOpponent.destroy();
+        }
+
         return damage;
+    }
+
+
+    @Override
+    public void update()
+    {
+        movement();
+        //attack();
+        myCurrentFrame++;
     }
 
     /**
@@ -100,7 +126,13 @@ public abstract class DungeonCharacter extends Entity
      * @param theDamage The number of hit points to be subtracted.
      */
     public void applyDamage(final int theDamage) {
-        this.setHitPoints(this.getHitPoints() - theDamage);
+        int damageOutcome = getHitPoints() - theDamage;
+        if (damageOutcome <= 0) {
+            setHitPoints(0);
+        } else if (damageOutcome > 0) {
+            setHitPoints(damageOutcome);
+        }
+
     }
 
     /**
@@ -191,24 +223,6 @@ public abstract class DungeonCharacter extends Entity
     }
 
     /**
-     * This method retrieves the character's position.
-     * @return The character's position.
-     */
-    public Vec2 getPos()
-    {
-        return this.myPos;
-    }
-
-    /**
-     * This method sets the character's position.
-     * @param thePos The character's new position.
-     */
-    public void setPos(final Vec2 thePos)
-    {
-        this.myPos = thePos;
-    }
-
-    /**
      * This method retrieves the character's velocity.
      * @return The character's velocity.
      */
@@ -225,6 +239,17 @@ public abstract class DungeonCharacter extends Entity
     public void setVelocity(final Vec2 theVelocity)
     {
         this.myVelocity = theVelocity;
+    }
+
+
+    public EntityFactory getMyEntityFactory()
+    {
+        return myEntityFactory;
+    }
+
+    public void setMyEntityFactory(final EntityFactory theEntityFactory)
+    {
+        myEntityFactory = theEntityFactory;
     }
 
 }

@@ -1,30 +1,47 @@
 package MVC.Model.DungeonItems.Items;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.Physics.Vec2;
 
 public class Pit extends Item
 {
     private Vec2 myLocation;
-    private int damageFall;
+    private int myDamageFall;
 
-    public Pit()
+    private long myCurrentFrame;
+
+    private final EntityFactory myEntityFactory;
+
+    public Pit(final EntityFactory theEntityFactory)
     {
-        super("Pit", new Vec2());
-        this.damageFall = 15;
+        super("Pit", new Vec2(), theEntityFactory);
+        myDamageFall = 15;
+        myCurrentFrame = 0;
+        myEntityFactory = theEntityFactory;
     }
 
-    public Pit(final Vec2 myLocation)
+    public Pit(final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        super("Pit", new Vec2());
-        this.myLocation = myLocation;
-        this.damageFall = 15;
+        super("Pit", new Vec2(), theEntityFactory);
+        myLocation = theLocation;
+        myDamageFall = 15;
+        myCurrentFrame = 0;
+        myEntityFactory = theEntityFactory;
     }
 
-    public Pit(final Vec2 myLocation, final int damageFall)
+    public Pit(final Vec2 theLocation, final int theDamageFall, final EntityFactory theEntityFactory)
     {
-        super("Pit", new Vec2());
-        this.myLocation = myLocation;
-        this.damageFall = damageFall;
+        super("Pit", new Vec2(), theEntityFactory);
+        myLocation = theLocation;
+        myDamageFall = theDamageFall;
+        myCurrentFrame = 0;
+        myEntityFactory = theEntityFactory;
+    }
+
+    public void itemBehavior(final DungeonCharacter theCharacter)
+    {
+        theCharacter.setHitPoints(theCharacter.getHitPoints() - myDamageFall);
     }
 
     public Vec2 getMyLocation()
@@ -32,18 +49,21 @@ public class Pit extends Item
         return myLocation;
     }
 
-    public void setMyLocation(final Vec2 myLocation)
+    public void setMyLocation(final Vec2 theLocation)
     {
-        this.myLocation = myLocation;
+        myLocation = theLocation;
     }
 
     public int getDamageFall()
     {
-        return damageFall;
+        return myDamageFall;
     }
 
-    public void setDamageFall(final int damageFall)
+    public void setDamageFall(final int theDamageFall) { myDamageFall = theDamageFall; }
+    @Override
+    public void update()
     {
-        this.damageFall = damageFall;
+        //itemBehavior();
+        myCurrentFrame++;
     }
 }

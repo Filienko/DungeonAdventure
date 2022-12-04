@@ -1,5 +1,6 @@
-package MVC.Model.UnitTests;
+package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.Physics.Vec2;
@@ -12,7 +13,7 @@ class AttackPotionTest
     @Test
     void testAPConstructor()
     {
-        AttackPotion myAP = new AttackPotion();
+        AttackPotion myAP = new AttackPotion(new EntityFactory());
 
         assertEquals(myAP.getStrength(), 5);
     }
@@ -20,26 +21,32 @@ class AttackPotionTest
     @Test
     void testAPOverloadedConstructor()
     {
-        AttackPotion myAP = new AttackPotion(25, new Vec2());
+        AttackPotion myAP = new AttackPotion(25, new Vec2(), new EntityFactory());
 
         assertEquals(myAP.getStrength(), 25);
     }
 
     @Test
-    void testIncrease()
+    void testItemBehavior()
     {
-        AttackPotion myAP = new AttackPotion(10, new Vec2());
+        AttackPotion myAP = new AttackPotion(10, new Vec2(), new EntityFactory());
 
-        Warrior myWarrior = new Warrior();
+        Warrior myWarrior = new Warrior(new EntityFactory());
 
         int minDamage = myWarrior.getMinDamageRange();
 
         int maxDamage = myWarrior.getMaxDamageRange();
 
-        myAP.increase(myWarrior);
+        myAP.itemBehavior(myWarrior);
 
         assertEquals(myWarrior.getMinDamageRange(), minDamage + 10);
         assertEquals(myWarrior.getMaxDamageRange(), maxDamage + 10);
 
+    }
+
+    @Test
+    void testUpdate()
+    {
+        //write tests for update
     }
 }

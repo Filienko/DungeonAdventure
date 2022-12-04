@@ -7,7 +7,7 @@ public class Monster extends DungeonCharacter
     /**
      * Hero status that tells that this DungeonCharacter is a Monster.
      */
-    private final static boolean MY_HERO_STATUS = false; // should just be static ?
+    private final static boolean MY_HERO_STATUS = false;
 
     /**
      * The specific Monster type.
@@ -19,7 +19,9 @@ public class Monster extends DungeonCharacter
      */
     private final int myHitPoints;
 
-    //^^ should this be deleted or should maxSpeed, min/max damage range be fields
+    private final EntityFactory myEntityFactory;
+
+    private long myCurrentFrame;
 
     /**
      * Monster constructor that calls its parent constructor to initialize the Monster's name, character type, hero status, hit points,
@@ -33,15 +35,28 @@ public class Monster extends DungeonCharacter
      * @param theVelocity The Monster's velocity.
      */
     public Monster(final String theCharacterType, final int theHitPoints, final int theMinimumRange,
-            final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
+            final int theMaxDamageRange, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity,
+                   final EntityFactory theEntityFactory)
     {
-        super(theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed, thePos, theVelocity);
-        this.myCharacterType = theCharacterType;
-        this.myHitPoints = theHitPoints; //necessary?
+        super(theCharacterType, false, theHitPoints, theMinimumRange, theMaxDamageRange, theMaxSpeed,
+                thePos, theVelocity, theEntityFactory);
+        myCharacterType = theCharacterType;
+        myEntityFactory = theEntityFactory;
+        myHitPoints = theHitPoints; //necessary?
+        myCurrentFrame = 0;
     }
 
-    protected void attack(Hero theHero){
-        super.attack(theHero,super.getMyBoundingBox());
+    @Override
+    public void update()
+    {
+        movement();
+        //attack()
+        myCurrentFrame++;
+
+    }
+
+    protected void attack(final Hero theHero) {
+        super.attack(theHero, super.getMyBoundingBox());
     }
 
     @Override

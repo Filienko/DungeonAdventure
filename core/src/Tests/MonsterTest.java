@@ -1,5 +1,6 @@
-package MVC.Model.UnitTests;
+package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,8 @@ class MonsterTest
     @Test
     void testMonsterConstructorOgre()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 30, 60, 2, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Ogre", 200, 30,
+                60, 2, new Vec2(), new Vec2(), new EntityFactory());
 
         assertEquals("Ogre", myMonster.getMyCharacterType());
         assertFalse(myMonster.getHeroStatus());
@@ -31,7 +33,8 @@ class MonsterTest
     @Test
     void testMonsterConstructorGremlin()
     {
-        final Monster myMonster = new Monster("Gremlin", 70, 15, 30, 5, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Gremlin", 70, 15,
+                30, 5, new Vec2(), new Vec2(), new EntityFactory());
 
         assertEquals("Gremlin", myMonster.getMyCharacterType());
         assertFalse(myMonster.getHeroStatus());
@@ -47,7 +50,8 @@ class MonsterTest
     @Test
     void testMonsterConstructorSkeleton()
     {
-        final Monster myMonster = new Monster("Skeleton", 100, 30, 50, 3, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Skeleton", 100, 30, 50, 3, new Vec2(), new Vec2(),
+                new EntityFactory());
 
         assertEquals("Skeleton", myMonster.getMyCharacterType());
         assertFalse(myMonster.getHeroStatus());
@@ -58,12 +62,18 @@ class MonsterTest
     }
 
     /**
-     * Test method for {@link Monster#attack()}
+     * Test method for {@link
      */
     @Test
     void testAttack()
     {
-        //finish attack() method and then write these tests
+
+    }
+
+    @Test
+    void testUpdate()
+    {
+        //write tests for update
     }
 
     /**
@@ -72,8 +82,10 @@ class MonsterTest
     @Test
     void testToString()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 30, 60, 2, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Ogre", 200, 30,
+                60, 2, new Vec2(), new Vec2(), new EntityFactory());
 
-        assertEquals("Monster {myCharacterType = Ogre, \n Hero status = false, \n myHitPoints = 200 }", myMonster.toString());
+        assertEquals("Monster {myCharacterType = Ogre, \n Hero status = false, \n myHitPoints = 200 }",
+                myMonster.toString());
     }
 }

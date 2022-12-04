@@ -1,5 +1,6 @@
-package MVC.Model.UnitTests;
+package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import MVC.Model.Physics.Vec2;
@@ -16,7 +17,7 @@ class PriestessTest
     @Test
     void testPriestessConstructor()
     {
-        final Priestess myPriestess = new Priestess();
+        final Priestess myPriestess = new Priestess(new EntityFactory());
 
         assertEquals("Priestess", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getMyCharacterType());
@@ -34,7 +35,7 @@ class PriestessTest
     @Test
     void testPriestessOLConstructor()
     {
-        final Priestess myPriestess = new Priestess("P", new Vec2());
+        final Priestess myPriestess = new Priestess("P", new Vec2(), new EntityFactory());
 
         assertEquals("P", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getMyCharacterType());
@@ -46,16 +47,16 @@ class PriestessTest
     }
 
     /**
-     * Test method for {@link Priestess#healHero(Hero)}.
+     * Test method for {@link
      */
     @Test
     void testHealHero()
     {
-        final Priestess myPriestess1 = new Priestess();
-        final Priestess myPriestess2 = new Priestess();
+        final Priestess myPriestess1 = new Priestess(new EntityFactory());
+        final Priestess myPriestess2 = new Priestess(new EntityFactory());
 
         int oldHealth = myPriestess1.getHitPoints();
-        int restoredHealth = myPriestess1.healHero(myPriestess2);
+        int restoredHealth = myPriestess1.special(myPriestess2);
 
         assertTrue(myPriestess2.getHitPoints() > oldHealth);
         assertEquals(myPriestess2.getHitPoints(), restoredHealth + oldHealth);
@@ -70,8 +71,9 @@ class PriestessTest
     @Test
     void testToString()
     {
-        final Priestess myPriestess = new Priestess("P", new Vec2());
+        final Priestess myPriestess = new Priestess("P", new Vec2(), new EntityFactory());
 
-        assertEquals("Name: P {myCharacterType = Priestess, \n Hero status = true, \n Potions = [], \n Pillars = []}", myPriestess.toString());
+        assertEquals("Name: P {myCharacterType = Priestess, \n Hero status = true, \n Potions = [], " +
+                "\n Pillars = []}", myPriestess.toString());
     }
 }

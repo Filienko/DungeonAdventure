@@ -1,6 +1,7 @@
-package MVC.Model.UnitTests;
+package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ class ThiefTest
     @Test
     void testThiefConstructor()
     {
-        final Thief myThief = new Thief();
+        final Thief myThief = new Thief(new EntityFactory());
 
         assertEquals("Thief", myThief.getName());
         assertEquals("Thief", myThief.getMyCharacterType());
@@ -34,7 +35,7 @@ class ThiefTest
     @Test
     void testThiefOLConstructor()
     {
-        final Thief myThief = new Thief("T", new Vec2());
+        final Thief myThief = new Thief("T", new Vec2(), new EntityFactory());
 
         assertEquals("T", myThief.getName());
         assertEquals("Thief", myThief.getMyCharacterType());
@@ -46,7 +47,7 @@ class ThiefTest
     }
 
     /**
-     * Test method for {@link Thief#attack(DungeonCharacter, Vec2)}
+     * Test method for
      */
     @Test
     void testAttack()
@@ -56,10 +57,10 @@ class ThiefTest
     }
 
     /**
-     * Test method for {@link Thief#surpriseAttack(DungeonCharacter)}
+     * Test method for
      */
     @Test
-    void testSurpriseAttack()
+    void testSpecial()
     {
         //finish surpriseAttack() method and then write these tests
 
@@ -71,7 +72,7 @@ class ThiefTest
     @Test
     void testGetHiddenStatus()
     {
-        final Thief myThief = new Thief();
+        final Thief myThief = new Thief(new EntityFactory());
 
         assertFalse(myThief.getHiddenStatus());
     }
@@ -82,7 +83,7 @@ class ThiefTest
     @Test
     void testSetMyHiddenStatus()
     {
-        final Thief myThief = new Thief();
+        final Thief myThief = new Thief(new EntityFactory());
 
         assertFalse(myThief.getHiddenStatus());
 
@@ -91,4 +92,12 @@ class ThiefTest
         assertTrue(myThief.getHiddenStatus());
 
     }
+    @Test
+    void testGetName()
+    { }
+
+    @Test
+    void testSetName()
+    { }
+
 }

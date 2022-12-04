@@ -26,7 +26,7 @@ public class Dungeon
 
     public Dungeon()
     {
-        myHero = new Warrior("Brave Warrior",new Vec2());
+        myHero = new Warrior("Brave Warrior",new Vec2(), new EntityFactory()); //added new EntityFactory
         myDimension = 3;
         myRooms = EntityFactory.generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myDimension);
@@ -35,7 +35,7 @@ public class Dungeon
     public Dungeon(final Room[][] theDungeon)
     {
         myDungeon = theDungeon;
-        myHero = new Warrior("Brave Warrior",new Vec2());
+        myHero = new Warrior("Brave Warrior",new Vec2(), new EntityFactory()); //added new EntityFactory
         myDimension = myDungeon.length;
         myRooms = EntityFactory.generateRooms(myDimension);
     }

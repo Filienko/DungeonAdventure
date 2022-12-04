@@ -1,5 +1,6 @@
-package MVC.Model.UnitTests;
+package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonItems.Items.Bomb;
 import MVC.Model.Physics.Vec2;
@@ -12,7 +13,7 @@ class BombTest
     @Test
     void testBombConstructor()
     {
-        Bomb myBomb = new Bomb();
+        Bomb myBomb = new Bomb(new EntityFactory());
 
         assertTrue(myBomb.getType().equals("Bomb"));
         assertEquals(myBomb.getMyPos(), new Vec2(0,0));
@@ -21,24 +22,30 @@ class BombTest
     @Test
     void testBombOLConstructor()
     {
-        Bomb myBomb = new Bomb(new Vec2(5,10));
+        Bomb myBomb = new Bomb(new Vec2(5,10), new EntityFactory());
 
         assertTrue(myBomb.getType().equals("Bomb"));
         assertTrue(myBomb.getMyPos().equals(new Vec2(5,10)));
     }
 
     @Test
-    void testBlast()
+    void testItemBehavior()
     {
-        Bomb myBomb = new Bomb();
+        Bomb myBomb = new Bomb(new EntityFactory());
 
-        Thief myThief = new Thief();
+        Thief myThief = new Thief(new EntityFactory());
 
         int HP = myThief.getHitPoints();
 
-        myBomb.blast(myThief);
+        myBomb.itemBehavior(myThief);
 
         assertEquals(myThief.getHitPoints(), HP / 2);
 
+    }
+
+    @Test
+    void testUpdate()
+    {
+        //write tests for update
     }
 }

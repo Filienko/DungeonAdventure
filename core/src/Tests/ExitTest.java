@@ -1,5 +1,6 @@
-package MVC.Model.UnitTests;
+package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.DungeonItems.Items.Pillar;
@@ -25,7 +26,7 @@ class ExitTest
     @Test
     void testGetInstance()
     {
-        Exit myExit = Exit.getInstance(new Vec2(10,10));
+        Exit myExit = Exit.getInstance(new Vec2(10,10), new EntityFactory());
 
         //assertInstanceOf(Exit, myExit);
         assertNotNull(myExit);
@@ -34,12 +35,13 @@ class ExitTest
     @Test
     void testCheckFinishGameTrue()
     {
-        Exit myExit = Exit.getInstance(new Vec2(10,10));
-        Warrior myWarrior = new Warrior();
+        Exit myExit = Exit.getInstance(new Vec2(10,10), new EntityFactory());
+        Warrior myWarrior = new Warrior(new EntityFactory());
 
-        myWarrior.setPillars(Arrays.asList(new Pillar("Abstraction", new Vec2()),
-                new Pillar("Encapsulation", new Vec2()), new Pillar("Inheritance", new Vec2()),
-                new Pillar("Polymorphism", new Vec2())));
+        myWarrior.setPillars(Arrays.asList(new Pillar("Abstraction", new Vec2(), new EntityFactory()),
+                new Pillar("Encapsulation", new Vec2(), new EntityFactory()),
+                new Pillar("Inheritance", new Vec2(), new EntityFactory()),
+                new Pillar("Polymorphism", new Vec2(), new EntityFactory())));
 
         assertTrue(myExit.checkFinishGame(myWarrior));
     }
@@ -47,8 +49,8 @@ class ExitTest
     @Test
     void testCheckFinishGameFalse()
     {
-        Exit myExit = Exit.getInstance(new Vec2(10,10));
-        Warrior myWarrior = new Warrior(); //initialized with 0 Pillars.
+        Exit myExit = Exit.getInstance(new Vec2(10,10), new EntityFactory());
+        Warrior myWarrior = new Warrior(new EntityFactory()); //initialized with 0 Pillars.
 
         assertFalse(myExit.checkFinishGame(myWarrior));
     }
