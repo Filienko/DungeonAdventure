@@ -1,6 +1,7 @@
 package MVC.Model.DungeonItems;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
@@ -47,12 +48,12 @@ public class Room implements Cloneable
     /**
      * The Items that the Room contains.
      */
-    private StringBuilder myItems;
+    private final StringBuilder myItems;
 
     /**
      * The Monsters that the Room contains.
      */
-    private StringBuilder myMonsters;
+    private final StringBuilder myMonsters;
 
     /**
      * The location of the Room in the Dungeon.
@@ -154,7 +155,7 @@ public class Room implements Cloneable
 
     public void populateMonsters(final int theN)
     {
-        setMonsters((new EntityFactory()).generateMonsters(theN));
+        setMonsters((new EntityFactory(null,"Warrior")).generateMonsters(theN));
         myMonstersNumber = myMonstersNumber+4*theN;
     }
 
@@ -192,7 +193,7 @@ public class Room implements Cloneable
      */
     public boolean isTheEntrance()
     {
-        return this.myEntrance;
+        return myEntrance;
     }
 
     /**
@@ -203,7 +204,7 @@ public class Room implements Cloneable
     {
         if (!myExit)
         {
-            this.myEntrance = theEntrance;
+            myEntrance = theEntrance;
         }
         return this;
     }
@@ -214,7 +215,7 @@ public class Room implements Cloneable
      */
     public boolean isTheExit()
     {
-        return this.myExit;
+        return myExit;
     }
 
     /**
@@ -225,7 +226,7 @@ public class Room implements Cloneable
     {
         if (!myEntrance)
         {
-            this.myExit = theExit;
+            myExit = theExit;
         }
         return this;
     }
@@ -234,7 +235,7 @@ public class Room implements Cloneable
      * This method retrieves the Item in the Room.
      * @return The Item the Room contains.
      */
-    public StringBuilder getItems() { return this.myItems; }
+    public StringBuilder getItems() { return myItems; }
 
     /**
      * This method sets the Items in the Room.
@@ -246,7 +247,7 @@ public class Room implements Cloneable
 
         for (var item:theItems)
         {
-            this.myItems.append(item);
+            myItems.append(item);
         }
 
     }
@@ -259,7 +260,7 @@ public class Room implements Cloneable
     {
         for (var item:theItems)
         {
-            this.myItems.append(item.getType() + ",");
+            myItems.append(item.getType()).append(",");
         }
     }
 
@@ -271,18 +272,18 @@ public class Room implements Cloneable
     {
         if(theItem.getType().contentEquals("Pillar"))
         {
-            this.myItems.append(((Pillar)theItem).getName() + ",");
+            myItems.append(((Pillar) theItem).getName()).append(",");
         }
         else
         {
-            this.myItems.append(theItem.getType() + ",");
+            myItems.append(theItem.getType()).append(",");
         }
     }
 
     /**
      * This method removes all Items from the Room.
      */
-    public void clearRoom () { this.myItems.delete(0, myItems.length()); }
+    public void clearRoom () { myItems.delete(0, myItems.length()); }
 
     /**
      * This method removes the Item from the Room.
@@ -291,20 +292,20 @@ public class Room implements Cloneable
     public void removeItem (Item theItem)
     {
         var item = theItem.getType();
-        this.myItems.delete(myItems.indexOf(item),myItems.indexOf(item)+item.length());
+        myItems.delete(myItems.indexOf(item),myItems.indexOf(item)+item.length());
     }
 
     /**
      * This method retrieves the location of the Room in the Dungeon.
      * @return The location of the Room.
      */
-    public Vec2 getLocation() { return this.myLocation; }
+    public Vec2 getLocation() { return myLocation; }
 
     /**
      * This method sets the location of the Room in the Dungeon.
      * @param theLocation The new location of the Room.
      */
-    public void setLocation(final Vec2 theLocation) { this.myLocation = theLocation; }
+    public void setLocation(final Vec2 theLocation) { myLocation = theLocation; }
 
     /**
      * @return whether Room is an entrance.
@@ -412,7 +413,7 @@ public class Room implements Cloneable
     {
         for (var monster:theMonsters)
         {
-            this.myMonsters.append(monster.getCharacterType() + ",");
+            myMonsters.append(monster.getCharacterType()).append(",");
         }
     }
 

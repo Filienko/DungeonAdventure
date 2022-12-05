@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class EntityFactoryTest
 {
-    EntityFactory entityFactory = new EntityFactory();
+    EntityFactory entityFactory = new EntityFactory(null, "Warrior");
 
     @Test
     void testUpdate()

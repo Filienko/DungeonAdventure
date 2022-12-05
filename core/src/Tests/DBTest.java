@@ -1,20 +1,24 @@
 package Tests;
 
 import MVC.Model.DB.MonsterDB;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class DBTest
 {
+    Hero hero = new Warrior();
+
     @Test
     void testIntegrationSQLConnection()
     {
         MonsterDB db = new MonsterDB();
-        assertEquals("Ogre",db.createMonsterDB("Ogre").getCharacterType());
-        assertEquals("Gremlin",db.createMonsterDB("Gremlin").getCharacterType());
-        assertEquals("Elf",db.createMonsterDB("Elf").getCharacterType());
-        assertEquals("Swarm of Rats",db.createMonsterDB("Rats").getCharacterType());
+        assertEquals("Ogre",db.createMonsterDB("Ogre",hero).getCharacterType());
+        assertEquals("Gremlin",db.createMonsterDB("Gremlin",hero).getCharacterType());
+        assertEquals("Elf",db.createMonsterDB("Elf",hero).getCharacterType());
+        assertEquals("Swarm of Rats",db.createMonsterDB("Rats",hero).getCharacterType());
     }
 
     @Test
@@ -28,9 +32,9 @@ public class DBTest
     void testUpdateMonsterData()
     {
         MonsterDB db = new MonsterDB();
-        assertEquals("Ogre",db.createMonster(1).getCharacterType());
-        assertEquals("Gremlin",db.createMonster(2).getCharacterType());
-        assertEquals("Elf",db.createMonster(3).getCharacterType());
-        assertEquals("Swarm of Rats",db.createMonster(4).getCharacterType());
+        assertEquals("Ogre",db.createMonster(1,hero).getCharacterType());
+        assertEquals("Gremlin",db.createMonster(2,hero).getCharacterType());
+        assertEquals("Elf",db.createMonster(3,hero).getCharacterType());
+        assertEquals("Swarm of Rats",db.createMonster(4,hero).getCharacterType());
     }
 }
