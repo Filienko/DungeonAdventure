@@ -1,6 +1,8 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,10 @@ class WarriorTest
     @Test
     void testWarriorConstructor()
     {
-        final Warrior myWarrior = new Warrior();
+        final Warrior myWarrior = new Warrior(new EntityFactory());
 
         assertEquals("Warrior", myWarrior.getName());
-        assertEquals("Warrior", myWarrior.getMyCharacterType());
+        assertEquals("Warrior", myWarrior.getCharacterType());
         assertTrue(myWarrior.getHeroStatus());
         assertEquals(10, myWarrior.getHitPoints());
         assertEquals(5, myWarrior.getMaxSpeed());
@@ -32,10 +34,10 @@ class WarriorTest
     @Test
     void testWarriorOLConstructor()
     {
-        final Warrior myWarrior = new Warrior("W", new Vec2());
+        final Warrior myWarrior = new Warrior("W", new Vec2(), new EntityFactory());
 
         assertEquals("W", myWarrior.getName());
-        assertEquals("Warrior", myWarrior.getMyCharacterType());
+        assertEquals("Warrior", myWarrior.getCharacterType());
         assertTrue(myWarrior.getHeroStatus());
         assertEquals(10, myWarrior.getHitPoints());
         assertEquals(5, myWarrior.getMaxSpeed());
@@ -43,15 +45,13 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#attack(DungeonCharacter, Vec2)}
+     * Test method for {@link Warrior#attack(DungeonCharacter, Vec2)} //why isnt link working?
      */
     @Test
     void testAttack()
     {
-        //do we need to test if crushing blow happens 40% of the time?
-
-        final Warrior myWarrior1 = new Warrior();
-        final Warrior myWarrior2 = new Warrior();
+        final Warrior myWarrior1 = new Warrior(new EntityFactory());
+        final Warrior myWarrior2 = new Warrior(new EntityFactory());
 
         int oldHealth = myWarrior1.getHitPoints();
         int damage = myWarrior1.attack(myWarrior2, new Vec2());
@@ -61,20 +61,17 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#crushingBlow(DungeonCharacter)}
+     * Test method for {@link Warrior#special(DungeonCharacter)}
      */
     @Test
-    void testCrushingBlow()
+    void testSpecial()
     {
-        //how to test if crushing blow happens 40% of the time??
+        final Warrior myWarrior = new Warrior(new EntityFactory());
 
-        final Warrior myWarrior1 = new Warrior();
-        final Warrior myWarrior2 = new Warrior();
+        final Thief myThief = new Thief(new EntityFactory());
 
-        int oldHealth = myWarrior1.getHitPoints();
-        int damage = myWarrior1.crushingBlow(myWarrior2);
+        int damage = myWarrior.special(myThief); //may need to change this
 
-        assertTrue(myWarrior2.getHitPoints() < oldHealth);
-        assertEquals(myWarrior2.getHitPoints(), oldHealth - damage);
+        assertTrue(damage < 175 && damage > 75);
     }
 }

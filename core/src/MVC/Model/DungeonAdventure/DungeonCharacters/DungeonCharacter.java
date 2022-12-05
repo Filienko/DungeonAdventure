@@ -1,11 +1,14 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
 import com.badlogic.gdx.graphics.Texture;
 
 public abstract class DungeonCharacter extends Entity
 {
+    private EntityFactory myEntityFactory;
+
     /**
      * The specific character type.
      */
@@ -37,6 +40,9 @@ public abstract class DungeonCharacter extends Entity
      */
     private Vec2 myVelocity;
 
+    private long myCurrentFrame;
+    private long initiatedFrame;
+
     /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
      * minimum and maximum damage amounts, maximum speed, and position.
@@ -50,9 +56,9 @@ public abstract class DungeonCharacter extends Entity
      * @param theVelocity The character's velocity.
      */
     DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints,
-                     final int theDamage, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity)
+                     final int theDamage, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super(new Vec2(),theCharacterType, new Vec2());
+        super(new Vec2(),theCharacterType, new Vec2(), theEntityFactory);
         myCharacterType = theCharacterType;
         myHeroStatus = theHeroStatus;
         myDamage = theDamage;
@@ -60,25 +66,48 @@ public abstract class DungeonCharacter extends Entity
         myMaxSpeed = theMaxSpeed;
         setMyPos(thePos);
         myVelocity = theVelocity;
+        myCurrentFrame = 0;
+        initiatedFrame = 0;
     }
 
-    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+
+    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea) //is the damage area needed? never used
     {
-        //while (Physics.isInside(theDamageArea, theOpponent)) {
-        //  -- attack the opponent
-        //}
-        int damage = 1; //damage should be generated between min/max damage range ?
+        Vec2 overlap = Physics.getOverlap(this, theOpponent);
 
+        int damage = 0;
 
-        //apply invincibility for Heros for 30 frames after each hit from Monsters
+        if (overlap.getMyX() > 0 && overlap.getMyY() > 0) {
+            damage += myDamage;
 
+            long delay = 30;
+            if(theOpponent.getHeroStatus())
+            {
+                if (myCurrentFrame <= initiatedFrame + delay)
+                {
+                    initiatedFrame++;
+                }
+            }
+            //apply invincibility for Heros for 30 frames after each hit from Monsters
 
-        //get overlap between opponenets
-        //if overlap.x and overlap.y > 0, this means an overlap
+        }
 
         theOpponent.applyDamage(damage);
 
+        if (theOpponent.getHitPoints() == 0) {
+            theOpponent.destroy();
+        }
+
         return damage;
+    }
+
+
+    @Override
+    public void update()
+    {
+        movement();
+        //attack();
+        myCurrentFrame++;
     }
 
     public void die()
@@ -93,14 +122,20 @@ public abstract class DungeonCharacter extends Entity
      */
     public void applyDamage(final int theDamage)
     {
-        this.setHitPoints(this.getHitPoints() - theDamage);
+        int damageOutcome = getHitPoints() - theDamage;
+        if (damageOutcome <= 0) {
+            setHitPoints(0);
+        } else if (damageOutcome > 0) {
+            setHitPoints(damageOutcome);
+        }
+
     }
 
     /**
      * This method returns a String describing what character it is.
      * @return The specific type of character it is.
      */
-    public String getMyCharacterType() { return this.myCharacterType; }
+    public String getCharacterType() { return myCharacterType; }
 
     /**
      * This method tells whether the character is a Hero.
@@ -153,7 +188,7 @@ public abstract class DungeonCharacter extends Entity
      */
     public int getMaxSpeed()
     {
-        return this.myMaxSpeed;
+        return myMaxSpeed;
     }
 
     /**
@@ -169,9 +204,10 @@ public abstract class DungeonCharacter extends Entity
      * This method retrieves the character's velocity.
      * @return The character's velocity.
      */
+
     public Vec2 getVelocity()
     {
-        return this.myVelocity;
+        return myVelocity;
     }
 
     /**
@@ -180,12 +216,17 @@ public abstract class DungeonCharacter extends Entity
      */
     public void setVelocity(final Vec2 theVelocity)
     {
-        this.myVelocity = theVelocity;
+        myVelocity = theVelocity;
     }
 
-    public String getCharacterType()
+    public EntityFactory getMyEntityFactory()
     {
-        return myCharacterType;
+        return myEntityFactory;
+    }
+
+    public void setMyEntityFactory(final EntityFactory theEntityFactory)
+    {
+        myEntityFactory = theEntityFactory;
     }
 
 }

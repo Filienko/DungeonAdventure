@@ -1,40 +1,48 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
 public class Thief extends Hero
 {
     /**
+     * Chance of being hidden when entering a room.
+     */
+    private static final double MY_HIDDEN_CHANCE = 0.4;
+
+    private final EntityFactory myEntityFactory;
+
+    /**
      * The Thief's hidden status.
      */
     private boolean myHiddenStatus = false;
 
     /**
-     * Chance of being hidden when entering a room.
-     */
-    private double myHiddenChance = 0.4;
-
-    /**
      * Thief constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
      */
-    public Thief()
+    public Thief(final EntityFactory theEntityFactory)
     {
-        super("Thief", "Thief",10, 1, 5, new Vec2(), new Vec2());
+        super("Thief", "Thief",10, 1, 5, new Vec2(), new Vec2(), theEntityFactory);
+        myEntityFactory = theEntityFactory;
     }
 
     /**
      * Thief overloaded constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
      */
-    public Thief(final String theName, final Vec2 thePos)
+    public Thief(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
-        super(theName, "Thief",10, 1,  5, thePos, new Vec2());
+        super(theName, "Thief",10, 1,  5, thePos, new Vec2(), theEntityFactory);
+        myEntityFactory = theEntityFactory;
     }
 
     /**
+     * Thief's attack behavior. The Thief's hidden status is set to true and then the Thief is given
+     * the chance to do a surprise attack (40% chance of success) where the Thief performs an attack and then is given the
+     * chance to do another attack. The Thief has additional 40% chance of performing a simple attack.
      *
      * @param theOpponent The DungeonCharacter the Thief is attacking.
      * @param theDamageArea --
@@ -43,42 +51,44 @@ public class Thief extends Hero
     @Override
     public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
     {
+        //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are hidden,
+        //they get the chance to surprise attack. otherwise, they do a regular attack.
+
         double chance = Math.random();
-        if (chance < myHiddenChance) {
+        if (chance < MY_HIDDEN_CHANCE)
+        {
             myHiddenStatus = true;
         }
 
         int damage = 0;
-        if (myHiddenStatus) {
+        if (myHiddenStatus)
+        {
             chance = Math.random();
-            if (chance < 0.4) {
-                damage = surpriseAttack(theOpponent);
+            if (chance < 0.4)
+            {
+                damage = special(theOpponent);
             }
             myHiddenStatus = false;
-        } else {
+        } else
+        {
             damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
         }
+
         theOpponent.applyDamage(damage);
         return damage;
     }
 
     /**
-     * This method is the Thief's special skill. The Thief's hidden status is set to true and then the Thief is given
-     * the chance to do a surprise attack (40% chance of success) where the Thief performs an attack and then is given the
-     * chance to do another surprise attack. The Thief has a 20% chance that no attack is rendered, and an additional 40%
-     * chance of just performing a simple attack.
+     * This method is the Thief's special skill.
      * @param theOpponent The DungeonCharacter the Thief is attacking.
      * @return The amount of damage done to theOpponent's hit point count.
      */
-    public int surpriseAttack(final DungeonCharacter theOpponent)
+    public int special(final DungeonCharacter theOpponent)
     {
-        //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are, they get the chance to surprise attack
-        // otherwise, they do a regular attack
+        //Thief gets an attack (super.attack()) and an extra turn (attack())
 
-        int damage = attack(theOpponent, super.getWeapon().getBoundingBox());
-        damage += surpriseAttack(theOpponent);
-
-        return damage;
+        return super.attack(theOpponent, super.getWeapon().getBoundingBox()) +
+                attack(theOpponent, super.getWeapon().getBoundingBox());
     }
 
     /**
@@ -87,7 +97,7 @@ public class Thief extends Hero
      */
     public boolean getHiddenStatus()
     {
-        return this.myHiddenStatus;
+        return myHiddenStatus;
     }
 
     /**
@@ -96,15 +106,6 @@ public class Thief extends Hero
      */
     public void setHiddenStatus(final boolean theStatus)
     {
-        this.myHiddenStatus = theStatus;
-    }
-
-    /**
-     * Calls Thief's special skill.
-     * */
-    @Override
-    public void special()
-    {
-
+        myHiddenStatus = theStatus;
     }
 }

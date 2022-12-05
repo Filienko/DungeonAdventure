@@ -42,9 +42,9 @@ public class EntityFactoryTest
     void testGenerateRoomEntities()
     {
         var expectedList = new ArrayList<Entity>();
-        expectedList.add(new Pit());
-        expectedList.add(new HealingPotion());
-        expectedList.add(new AttackPotion());
+        expectedList.add(new Pit(new EntityFactory())); //added new EntityFactory()
+        expectedList.add(new HealingPotion(new EntityFactory()));
+        expectedList.add(new AttackPotion(new EntityFactory()));
 
         expectedList.add(entityFactory.generateOgre());
         expectedList.add(entityFactory.generateRats());
@@ -143,7 +143,8 @@ public class EntityFactoryTest
     @Test
     void testGenerateSword()
     {
-        assertEquals("Sword",entityFactory.generateSword(new Thief()).getType());
+        //assertEquals("Sword",entityFactory.generateSword(new Thief()).getType());
+        assertEquals("Sword",entityFactory.generateSword());
     }
 
 }

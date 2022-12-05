@@ -21,7 +21,7 @@ public class RoomTests
     {
         var room = new Room();
         room.populateTheRoom(true);
-        room.addItem(new Pillar("Encapsulation"));
+        room.addItem(new Pillar("Encapsulation", new EntityFactory()));
         room.setE(true);
 
         room.populateTheRoom(true);
@@ -86,12 +86,12 @@ public class RoomTests
         room.setN(true);
         room.setMonsters((new EntityFactory()).generateMonsters(1));
         room.setLocation(new Vec2(1,2));
-        room.addItem(new AttackPotion());
+        room.addItem(new AttackPotion(new EntityFactory()));
         room.clearRoom();
-        room.addItem(new SpeedPotion());
-        room.addItem(new HealingPotion());
-        room.addItem(new AttackPotion());
-        room.removeItem(new AttackPotion());
+        room.addItem(new SpeedPotion(new EntityFactory()));
+        room.addItem(new HealingPotion(new EntityFactory()));
+        room.addItem(new AttackPotion(new EntityFactory()));
+        room.removeItem(new AttackPotion(new EntityFactory()));
         room.setNumber(100);
 
         assertTrue(room.getNumber()==100);

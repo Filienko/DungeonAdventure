@@ -6,9 +6,10 @@ import MVC.View.Animation;
 
 public abstract class Entity
 {
+    private final Vec2 mySize;
+    private EntityFactory myEntityFactory;
     private Vec2 myPos;
     private Vec2 myPreviousPos;
-    private final Vec2 mySize;
     private Vec2 myBoundingBox;
     private boolean myEntityAnimated;
     private Animation myAnimation;
@@ -18,32 +19,36 @@ public abstract class Entity
     private Vec2 myVector;
     private long myCurrentFrame;
 
-    protected Entity(final Vec2 thePos, final String theType, final Vec2 theBoundingBox)
+    protected Entity(final Vec2 thePos, final String theType,  final Vec2 theBoundingBox, final EntityFactory theEntityFactory)
     {
+        myEntityFactory = theEntityFactory; //things that inherit Entity should also keep track of what Entity Factory spawns it
         myPos = thePos;
         mySize = new Vec2();
         myBoundingBox = theBoundingBox;
         myType = theType;
         myRotation = 0;
-        myActiveStatus= true;
+        myActiveStatus = true;
         myVector = new Vec2(0, 0);
         myCurrentFrame = 0;
     }
 
-    private Entity(final Vec2 theSize, final Vec2 theBoundingBox, final boolean theEntityAnimated, final Animation theAnimation)
+    private Entity(final Vec2 theSize, final Vec2 theBoundingBox, final boolean theEntityAnimated,
+                   final Animation theAnimation, final EntityFactory theEntityFactory)
     {
+        myEntityFactory = theEntityFactory;
         myPos = new Vec2();
         myPreviousPos = new Vec2();
         mySize = theSize;
         myBoundingBox = theBoundingBox;
         myEntityAnimated = theEntityAnimated;
         myAnimation = theAnimation;
+
+        myActiveStatus = true;
+        myVector = new Vec2();
+        myCurrentFrame = 0;
     }
 
-    public void update()
-    {
-        this.myCurrentFrame++;
-    }
+    public abstract void update();
 
     public void movement()
     {
@@ -51,9 +56,8 @@ public abstract class Entity
         myPos = myPos.add(myVector);
     }
 
-    public void attack() {}
-
-    public void destroy() {
+    public void destroy()
+    {
         myActiveStatus = false; //if an entity is killed, use this method
     }
 
@@ -114,7 +118,7 @@ public abstract class Entity
 
     public String getType() { return myType; }
 
-    protected void incrementCurrentFrame()
+    protected void incrementCurrentFrame() //?
     {
         myCurrentFrame++;
     }
