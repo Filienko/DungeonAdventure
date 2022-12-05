@@ -105,7 +105,7 @@ public class Room implements Cloneable
         {
             myEntrance = false;
             myExit = true;
-            addItem(Exit.getInstance()); //Exit has different params
+            addItem(Exit.getInstance(new EntityFactory())); //added new EntityFactory param
         }
 
         myNumber = theNumber;

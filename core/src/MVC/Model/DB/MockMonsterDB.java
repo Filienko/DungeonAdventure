@@ -23,5 +23,6 @@ public class MockMonsterDB extends SuperMonsterDB
             float velocityX = 0;
             float velocityY = 0;
             return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY));
+            //^^requires an EntityFactory param
         }
 }

@@ -131,4 +131,9 @@ public abstract class Entity
     {
         myActiveStatus = theActiveStatus;
     }
+
+    public boolean getActiveStatus()
+    {
+        return myActiveStatus;
+    }
 }

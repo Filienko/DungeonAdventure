@@ -15,7 +15,8 @@ class HealingPotionTest
     {
         HealingPotion myHP = new HealingPotion(new EntityFactory());
 
-        assertEquals(myHP.getStrength(), 5);
+        assertEquals(myHP.getType(), "Healing Potion");
+        assertEquals(myHP.getStrength(), 15);
     }
 
     @Test
@@ -23,11 +24,12 @@ class HealingPotionTest
     {
         HealingPotion myHP = new HealingPotion(30, new EntityFactory());
 
+        assertEquals(myHP.getType(), "Healing Potion");
         assertEquals(myHP.getStrength(), 30);
     }
 
     @Test
-    void testItemBehavior()
+    void testActivate()
     {
         HealingPotion myHP = new HealingPotion(10, new EntityFactory());
 

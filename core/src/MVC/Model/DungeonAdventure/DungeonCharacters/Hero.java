@@ -55,7 +55,7 @@ public abstract class Hero extends DungeonCharacter
      */
     private final int myHitPoints;
 
-    private boolean myInvincibilityStatus;
+    private boolean myInvincibility;
 
     boolean myUpStatus;
     boolean myDownStatus;
@@ -95,6 +95,7 @@ public abstract class Hero extends DungeonCharacter
         myLeftStatus = false;
         myRightStatus = false;
         myAttackStatus = false;
+        myInvincibility = false;
 
         myCurrentFrame = 0;
         initiatedFrame = 0;
@@ -122,6 +123,16 @@ public abstract class Hero extends DungeonCharacter
 
     public abstract int special(final DungeonCharacter theOpponent);
 
+    public boolean getInvincibility()
+    {
+        return myInvincibility;
+    }
+
+    public void setInvincibility(final boolean theInvincibility)
+    {
+        myInvincibility = theInvincibility;
+    }
+
     @Override
     public void update()
     {
@@ -146,7 +157,7 @@ public abstract class Hero extends DungeonCharacter
         if (myWeapon == null)
         {
             myWeapon = EntityFactory.generateSword();
-            damage = super.attack(theOpponent, getWeapon().getMyBoundingBox()); //was getBoundingBox()?
+            damage = super.attack(theOpponent, getWeapon().getMyBoundingBox()); //weapon applies damage?
         }
 
         long delay = 15;
@@ -155,7 +166,7 @@ public abstract class Hero extends DungeonCharacter
             initiatedFrame++;
         } else
         {
-            myAttackStatus = false; //delay setting to false for 15 frames
+            myAttackStatus = false; //delays setting to false for 15 frames
         }
 
         return damage;
@@ -272,13 +283,13 @@ public abstract class Hero extends DungeonCharacter
         myName = theName;
     }
 
-    public void setUpStatus(final boolean theUpStatus) { myUpStatus = theUpStatus; }
+    public void setUp(final boolean theUpStatus) { myUpStatus = theUpStatus; }
 
-    public void setDownStatus(final boolean theDownStatus) { myDownStatus = theDownStatus; }
+    public void setDown(final boolean theDownStatus) { myDownStatus = theDownStatus; }
 
-    public void setLeftStatus(final boolean theLeftStatus) { myLeftStatus = theLeftStatus; }
+    public void setLeft(final boolean theLeftStatus) { myLeftStatus = theLeftStatus; }
 
-    public void setRightStatus(final boolean theRightStatus) { myRightStatus = theRightStatus; }
+    public void setRight(final boolean theRightStatus) { myRightStatus = theRightStatus; }
 
     /**
      * Method that returns details about the Hero.

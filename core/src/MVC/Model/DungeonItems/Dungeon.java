@@ -199,7 +199,7 @@ public class Dungeon implements Serializable
         }
 
         arr.get(0).setEntranceStatus(true);
-        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(Exit.getInstance());
+        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(Exit.getInstance(new EntityFactory())); //added new EntityFactory param
 
         return arr;
     }

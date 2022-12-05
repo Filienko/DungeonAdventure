@@ -270,7 +270,7 @@ public class EntityFactory
                 return new Pillar(theItem, this);
             }
             case "exit" -> {
-                return Exit.getInstance();
+                return Exit.getInstance(new EntityFactory()); //added new EntityFactory param
             }
             case "bomb" -> {
                 return new Bomb(this);
@@ -281,7 +281,7 @@ public class EntityFactory
 
     public static Pit generatePit()
     {
-        return new Pit();
+        return new Pit(new EntityFactory()); //added new EntityFactory param
     }
 
 //    public static ArrayList<Pit> generatePit(final int theN)
@@ -340,10 +340,10 @@ public class EntityFactory
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation"));
-        arr.add(new Pillar("Inheritance"));
-        arr.add(new Pillar("Abstraction"));
-        arr.add(new Pillar("Polymorphism"));
+        arr.add(new Pillar("Encapsulation", new EntityFactory())); //added new EntityFactory params here
+        arr.add(new Pillar("Inheritance", new EntityFactory()));
+        arr.add(new Pillar("Abstraction", new EntityFactory()));
+        arr.add(new Pillar("Polymorphism", new EntityFactory()));
 
         return arr;
     }

@@ -27,7 +27,7 @@ class AttackPotionTest
     }
 
     @Test
-    void testItemBehavior()
+    void testActivate()
     {
         AttackPotion myAP = new AttackPotion(10, new EntityFactory());
 
@@ -40,6 +40,15 @@ class AttackPotionTest
         assertEquals(myWarrior.getDamage(), damage + 10);
 
     }
+
+    @Test
+    void testGetType()
+    {
+        AttackPotion myAP = new AttackPotion(new EntityFactory());
+
+        assertEquals(myAP.getType(), "Attack Potion");
+    }
+
 
     @Test
     void testUpdate()

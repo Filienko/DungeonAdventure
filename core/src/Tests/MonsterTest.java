@@ -41,20 +41,6 @@ class MonsterTest
         assertEquals(15, myMonster.getDamage());
     }
 
-    /**
-     * Test method for Monster's constructor (uses Skeleton statistics).
-     */
-    @Test
-    void testMonsterConstructorSkeleton()
-    {
-        final Monster myMonster = new Monster("Skeleton", 100, 30, 3, new Vec2(), new Vec2(), new EntityFactory());
-
-        assertEquals("Skeleton", myMonster.getCharacterType());
-        assertFalse(myMonster.getHeroStatus());
-        assertEquals(100, myMonster.getHitPoints());
-        assertEquals(3, myMonster.getMaxSpeed());
-        assertEquals(30, myMonster.getDamage());
-    }
 
     /**
      * Test method for {@link Monster#attack(Hero)}  //why wont link work?

@@ -14,22 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExitTest
 {
-//    @Test
-//    void testExitConstructor()
-//    {
-//        Exit myExit = new Exit(new Vec2(10,10));
-//
-//        assertTrue(myExit.getType().equals("Exit"));
-//        assertTrue(myExit.getMyPos().equals(new Vec2(10,10)));
-//    }
 
     @Test
     void testGetInstance()
     {
         Exit myExit = Exit.getInstance(new EntityFactory());
 
-        //assertInstanceOf(Exit, myExit);
-        assertNotNull(myExit);
+        assertNotNull(myExit); //is this necessary?
+        assertEquals(myExit.getType(), "Exit");
     }
 
     @Test
@@ -54,4 +46,40 @@ class ExitTest
 
         assertFalse(myExit.checkFinishGame(myWarrior));
     }
+
+    @Test
+    void testActivateSetsFalse()
+    {
+        Exit myExit = Exit.getInstance(new EntityFactory());
+
+        Warrior myWarrior = new Warrior(new EntityFactory());
+
+        for (int i = 0; i < 4; i++)
+        {
+            myWarrior.incrementPillars();
+        }
+
+        myExit.activate(myWarrior);
+
+        assertFalse(myWarrior.getActiveStatus());
+    }
+
+    @Test
+    void testActivateFails()
+    {
+        Exit myExit = Exit.getInstance(new EntityFactory());
+
+        Warrior myWarrior = new Warrior(new EntityFactory());
+
+        myExit.activate(myWarrior);
+
+        assertTrue(myWarrior.getActiveStatus());
+    }
+
+    @Test
+    void testUpdate()
+    {
+        //how to test update?
+    }
+
 }

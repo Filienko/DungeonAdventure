@@ -70,31 +70,41 @@ public abstract class DungeonCharacter extends Entity
         initiatedFrame = 0;
     }
 
-
-    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea) //is the damage area needed? never used
+    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea) //should this be changed to a weapon? Vec2 theDamageArea is never used
     {
         Vec2 overlap = Physics.getOverlap(this, theOpponent);
 
         int damage = 0;
 
-        if (overlap.getMyX() > 0 && overlap.getMyY() > 0) {
-            damage += myDamage;
-
-            long delay = 30;
-            if(theOpponent.getHeroStatus())
+        if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+        {
+            if (theOpponent.getHeroStatus() && !((Hero)theOpponent).getInvincibility())
             {
-                if (myCurrentFrame <= initiatedFrame + delay)
-                {
-                    initiatedFrame++;
-                }
+                damage += myDamage;
+                ((Hero)theOpponent).setInvincibility(true);
+            } else if (!theOpponent.getHeroStatus())
+            {
+                damage += myDamage;
             }
-            //apply invincibility for Heros for 30 frames after each hit from Monsters
+        }
 
+        //apply invincibility for Heroes for 30 frames after each hit from Monsters
+        long delay = 30;
+        if(theOpponent.getHeroStatus() && ((Hero)theOpponent).getInvincibility())
+        {
+            if (myCurrentFrame <= initiatedFrame + delay)
+            {
+                initiatedFrame++;
+            } else
+            {
+                ((Hero)theOpponent).setInvincibility(false);
+            }
         }
 
         theOpponent.applyDamage(damage);
 
-        if (theOpponent.getHitPoints() == 0) {
+        if (theOpponent.getHitPoints() == 0)
+        {
             theOpponent.destroy();
         }
 
