@@ -44,7 +44,7 @@ public class DungeonTests
     {
         for (int i = 3; i < 10; i++)
         {
-            new Dungeon(new Warrior(),i);
+            new Dungeon(new Warrior(new EntityFactory()),i); //added new EntityFactory
             assertEquals(i*i-1, Integer.valueOf(out.toString().strip()));
             out.reset();
         }
@@ -60,7 +60,7 @@ public class DungeonTests
 
     void testRoomGenerationNormalValue(int theDimension)
     {
-        final Dungeon myDungeon = new Dungeon(new Thief(), theDimension);
+        final Dungeon myDungeon = new Dungeon(new Thief(new EntityFactory()), theDimension); //added new EntityFactory
         ArrayList<Room> rooms = generateRooms(theDimension);
         var dungeonMadeOfRooms = (new Dungeon()).generateDungeonFromRooms(rooms,theDimension);
         testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
@@ -69,7 +69,7 @@ public class DungeonTests
     void testRoomGenerationUnderValue(int theDimension)
     {
         //Testing the edge case
-        final Dungeon myDungeon = new Dungeon(new Thief(), theDimension);
+        final Dungeon myDungeon = new Dungeon(new Thief(new EntityFactory()), theDimension); //added new EntityFactory
         ArrayList<Room> rooms = generateRooms(Math.max(theDimension,4));
         var dungeonMadeOfRooms = (new Dungeon()).generateDungeonFromRooms(rooms,Math.max(theDimension,4));
         testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
@@ -98,7 +98,7 @@ public class DungeonTests
     {
         var dungeon = new Dungeon();
         assertTrue(dungeon.getHero() instanceof Warrior);
-        dungeon.setHero(new Thief());
+        dungeon.setHero(new Thief(new EntityFactory())); //added new EntityFactory
         assertTrue(dungeon.getHero() instanceof Thief);
 
         dungeon = new Dungeon();

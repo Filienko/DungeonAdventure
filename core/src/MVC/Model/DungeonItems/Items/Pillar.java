@@ -1,35 +1,53 @@
 package MVC.Model.DungeonItems.Items;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class Pillar extends Item
 {
-    final public String myName;
+    private final String myName;
 
-    public Pillar(final String theName)
+    private final EntityFactory myEntityFactory;
+
+    private long myCurrentFrame;
+
+    public Pillar(final String theName, final EntityFactory theEntityFactory)
     {
-        super("Pillar");
+        super("Pillar", theEntityFactory);
         myName = theName;
+        myEntityFactory = theEntityFactory;
+        myCurrentFrame = 0;
     }
 
-    public Pillar(final String theName, final boolean theActive)
+    public Pillar(final String theName, final boolean theActive, final EntityFactory theEntityFactory) //what is theActive field for?
     {
-        super("Pillar");
+        super("Pillar", theEntityFactory);
         myName = theName;
-        destroy();
-
-    }
-
-    @Override
-    public void activate(final Hero theHero)
-    {
-        theHero.incrementPillars();
-        this.destroy();
+        myEntityFactory = theEntityFactory;
+        myCurrentFrame = 0;
+        destroy(); //why is destroy() here?
     }
 
     public String getName()
     {
         return myName;
     }
+
+    @Override
+    public void activate(final Hero theHero)
+    {
+        theHero.incrementPillars();
+        destroy();
+    }
+
+    @Override
+    public void update()
+    {
+        //activate();
+        myCurrentFrame++;
+    }
+
+
+
 }
 

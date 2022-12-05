@@ -1,5 +1,6 @@
 package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -16,9 +17,9 @@ class MonsterTest
     @Test
     void testMonsterConstructorOgre()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 60, 2, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Ogre", 200, 60, 2, new Vec2(), new Vec2(), new EntityFactory());
 
-        assertEquals("Ogre", myMonster.getMyCharacterType());
+        assertEquals("Ogre", myMonster.getCharacterType());
         assertFalse(myMonster.getHeroStatus());
         assertEquals(200, myMonster.getHitPoints());
         assertEquals(2, myMonster.getMaxSpeed());
@@ -31,37 +32,29 @@ class MonsterTest
     @Test
     void testMonsterConstructorGremlin()
     {
-        final Monster myMonster = new Monster("Gremlin", 70, 15, 5, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Gremlin", 70, 15, 5, new Vec2(), new Vec2(), new EntityFactory());
 
-        assertEquals("Gremlin", myMonster.getMyCharacterType());
+        assertEquals("Gremlin", myMonster.getCharacterType());
         assertFalse(myMonster.getHeroStatus());
         assertEquals(70, myMonster.getHitPoints());
         assertEquals(5, myMonster.getMaxSpeed());
         assertEquals(15, myMonster.getDamage());
     }
 
-    /**
-     * Test method for Monster's constructor (uses Skeleton statistics).
-     */
-    @Test
-    void testMonsterConstructorSkeleton()
-    {
-        final Monster myMonster = new Monster("Skeleton", 100, 30, 3, new Vec2(), new Vec2());
-
-        assertEquals("Skeleton", myMonster.getMyCharacterType());
-        assertFalse(myMonster.getHeroStatus());
-        assertEquals(100, myMonster.getHitPoints());
-        assertEquals(3, myMonster.getMaxSpeed());
-        assertEquals(30, myMonster.getDamage());
-    }
 
     /**
-     * Test method for {@link Monster#attack()}
+     * Test method for {@link Monster#attack(Hero)}  //why wont link work?
      */
     @Test
     void testAttack()
     {
-        //finish attack() method and then write these tests
+
+    }
+
+    @Test
+    void testUpdate()
+    {
+        //write tests for update
     }
 
     /**
@@ -70,7 +63,7 @@ class MonsterTest
     @Test
     void testToString()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 30, 2, new Vec2(), new Vec2());
+        final Monster myMonster = new Monster("Ogre", 200, 30, 2, new Vec2(), new Vec2(), new EntityFactory());
 
         assertEquals("Monster {myCharacterType = Ogre, \n Hero status = false, \n myHitPoints = 200 }", myMonster.toString());
     }
