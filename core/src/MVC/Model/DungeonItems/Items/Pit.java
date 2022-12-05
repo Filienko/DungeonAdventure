@@ -1,30 +1,40 @@
 package MVC.Model.DungeonItems.Items;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
 
 public class Pit extends Item
 {
     private Vec2 myLocation;
-    private int damageFall;
+    private int myDamageFall;
 
-    public Pit()
+    private long myCurrentFrame;
+
+    private final EntityFactory myEntityFactory;
+
+    public Pit(final EntityFactory theEntityFactory)
     {
-        super("Pit");
-        damageFall = 15;
+        super("Pit", theEntityFactory);
+        myDamageFall = 15;
+        myCurrentFrame = 0;
+        myEntityFactory = theEntityFactory;
     }
 
-    public Pit(final Vec2 theLocation)
+    public Pit(final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        super("Pit");
+        super("Pit", theEntityFactory);
         myLocation = theLocation;
-        damageFall = 15;
+        myDamageFall = 15;
+        myCurrentFrame = 0;
+        myEntityFactory = theEntityFactory;
     }
 
     @Override
     public void activate(final Hero theHero)
     {
-        theHero.setHitPoints(theHero.getHitPoints() - damageFall);
+        theHero.setHitPoints(theHero.getHitPoints() - myDamageFall);
         destroy();
     }
 
@@ -33,18 +43,22 @@ public class Pit extends Item
         return myLocation;
     }
 
-    public void setMyLocation(final Vec2 myLocation)
+    public void setMyLocation(final Vec2 theLocation)
     {
-        this.myLocation = myLocation;
+        myLocation = theLocation;
     }
 
     public int getDamageFall()
     {
-        return damageFall;
+        return myDamageFall;
     }
 
-    public void setDamageFall(final int damageFall)
+    public void setDamageFall(final int theDamageFall) { myDamageFall = theDamageFall; }
+
+    @Override
+    public void update()
     {
-        this.damageFall = damageFall;
+        //activate();
+        myCurrentFrame++;
     }
 }

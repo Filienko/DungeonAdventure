@@ -2,6 +2,7 @@ package MVC.Model.DungeonItems.Weapon;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
@@ -10,34 +11,36 @@ import MVC.Model.Physics.Vec2;
 
 public class Sword extends Entity
 {
+    private static Sword mySword;
+
+    private final EntityFactory myEntityFactory;
+
+    private final int myLifeSpan;
+
     private Vec2 myBoundingBox;
-    private int myLifeSpan; //must initialize this
+
     private long myCurrentFrame;
+
     private Hero myHero;
 
-    @Override
-    public void update() {
-        if (myCurrentFrame >= myLifeSpan)
+    private int damage; //how much damage it does?
+
+    private Sword(final Vec2 theBoundingBox, final EntityFactory theEntityFactory)
+    {
+        super(new Vec2(), "Sword", new Vec2(), theEntityFactory);
+        this.myEntityFactory = theEntityFactory;
+        this.myLifeSpan = 15;
+        this.myCurrentFrame = 0;
+        this.myBoundingBox = theBoundingBox;
+    }
+
+    public static Sword getInstance(final Vec2 theBoundingBox, final EntityFactory theEntityFactory)
+    {
+        if (mySword == null)
         {
-            //request that the entity factory delete it
-            //entity factory does not have a method that does that
-
-            //add a method to Entity
+            mySword = new Sword(theBoundingBox, theEntityFactory);
         }
-//        super.movement();
-//        super.attack();
-        this.myCurrentFrame++;
-    }
-
-    public Sword(final Hero theHero)
-    {
-        super(new Vec2(), "Sword", new Vec2());
-        myHero = theHero;
-    }
-
-    public Sword(final Vec2 thePos, final Vec2 theBoundingBox)
-    {
-        super(thePos, "Sword", theBoundingBox);
+        return mySword;
     }
 
     public Vec2 getBoundingBox()
@@ -49,6 +52,8 @@ public class Sword extends Entity
     {
         myBoundingBox = theBoundingBox;
     }
+
+    public int getMyLifeSpan() { return myLifeSpan; }
 
     public void attack(final DungeonCharacter theOpponent)
     {
@@ -76,5 +81,18 @@ public class Sword extends Entity
 
     private void attackThief(final DungeonCharacter theOpponent)
     {
+    }
+
+    @Override
+    public void update() {
+        if (myCurrentFrame >= myLifeSpan)
+        {
+            destroy();
+        } else if (myCurrentFrame < myLifeSpan)
+        {
+            super.movement();
+            myCurrentFrame++;
+        }
+
     }
 }

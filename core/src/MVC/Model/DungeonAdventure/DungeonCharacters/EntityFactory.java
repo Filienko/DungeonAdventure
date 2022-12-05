@@ -135,7 +135,7 @@ public class EntityFactory
         if (theRoom.isN())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
-            Door door = new Door();
+            Door door = new Door(this);
             door.setMyLocation(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             myEntitiesToAdd.add(door);
@@ -143,7 +143,7 @@ public class EntityFactory
         if (theRoom.isS())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
-            Door door = new Door();
+            Door door = new Door(this);
             door.setMyLocation(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(180);
@@ -152,7 +152,7 @@ public class EntityFactory
         if (theRoom.isW())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
-            Door door = new Door();
+            Door door = new Door(this);
             door.setMyLocation(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(90);
@@ -161,7 +161,7 @@ public class EntityFactory
         if (theRoom.isE())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
-            Door door = new Door();
+            Door door = new Door(this);
             door.setMyLocation(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(270);
@@ -255,33 +255,33 @@ public class EntityFactory
         switch (theItem.toLowerCase(Locale.ROOT))
         {
             case "healing potion" -> {
-                return new HealingPotion();
+                return new HealingPotion(this);
             }
             case "attack potion" -> {
-                return new AttackPotion();
+                return new AttackPotion(this);
             }
             case "speed potion" -> {
-                return new SpeedPotion();
+                return new SpeedPotion(this);
             }
             case "pit" -> {
-                return new Pit();
+                return new Pit(this);
             }
             case "encapsulation","inheritance","polymorphism","abstraction"-> {
-                return new Pillar(theItem);
+                return new Pillar(theItem, this);
             }
             case "exit" -> {
-                return Exit.getInstance();
+                return Exit.getInstance(new EntityFactory()); //added new EntityFactory param
             }
             case "bomb" -> {
-                return new Bomb();
+                return new Bomb(this);
             }
         }
-        return new HealingPotion();
+        return new HealingPotion(this);
     }
 
     public static Pit generatePit()
     {
-        return new Pit();
+        return new Pit(new EntityFactory()); //added new EntityFactory param
     }
 
 //    public static ArrayList<Pit> generatePit(final int theN)
@@ -314,7 +314,7 @@ public class EntityFactory
 
     public Hero generateWarrior()
     {
-        Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5));
+        Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
         warrior.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(warrior);
         return warrior;
@@ -322,7 +322,7 @@ public class EntityFactory
 
     public Hero generateThief()
     {
-        Thief thief = new Thief("Thief", Physics.getPosition(0,0,9,5));
+        Thief thief = new Thief("Thief", Physics.getPosition(0,0,9,5), this);
         thief.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(thief);
         return thief;
@@ -330,7 +330,7 @@ public class EntityFactory
 
     public Hero generatePriestess()
     {
-        Priestess priestess = new Priestess("Priestess", Physics.getPosition(0,0,9,5));
+        Priestess priestess = new Priestess("Priestess", Physics.getPosition(0,0,9,5), this);
         priestess.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(priestess);
         return priestess;
@@ -340,10 +340,10 @@ public class EntityFactory
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation"));
-        arr.add(new Pillar("Inheritance"));
-        arr.add(new Pillar("Abstraction"));
-        arr.add(new Pillar("Polymorphism"));
+        arr.add(new Pillar("Encapsulation", new EntityFactory())); //added new EntityFactory params here
+        arr.add(new Pillar("Inheritance", new EntityFactory()));
+        arr.add(new Pillar("Abstraction", new EntityFactory()));
+        arr.add(new Pillar("Polymorphism", new EntityFactory()));
 
         return arr;
     }
@@ -386,9 +386,9 @@ public class EntityFactory
 //    }
 
     //added this method
-    public static Sword generateSword(final Hero theHero)
+    public static Sword generateSword()
 {
-    return new Sword(theHero);
+        return Sword.getInstance(new Vec2(), new EntityFactory(), myHero);
 }
 
     public ArrayList<Entity> getEntities() { return myEntities; }

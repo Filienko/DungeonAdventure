@@ -65,6 +65,7 @@ public class Room implements Cloneable
      */
     private int myMonstersNumber;
 
+
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
      */
@@ -105,7 +106,7 @@ public class Room implements Cloneable
         {
             myEntrance = false;
             myExit = true;
-            addItem(Exit.getInstance());
+            addItem(Exit.getInstance(new EntityFactory())); //added new EntityFactory param
         }
 
         myNumber = theNumber;
@@ -131,6 +132,7 @@ public class Room implements Cloneable
         myMonsters = theMonsters;
         myItems = theItems;
     }
+
 
     /**
      * Populates the rooms with random items.
@@ -161,7 +163,7 @@ public class Room implements Cloneable
     {
         if(theChance < 0.10)
         {
-            addItem(new Pit());
+            addItem(new Pit(new EntityFactory()));
         }
     }
 
@@ -172,15 +174,15 @@ public class Room implements Cloneable
             var randD = theRandom.nextDouble();
             if (randD < 0.333)
             {
-                addItem(new HealingPotion(theRandom.nextInt(15, 46)));
+                addItem(new HealingPotion(theRandom.nextInt(15, 46), new EntityFactory())); //new EntityFactory or create an entity factory field??
             }
             else if (randD < 0.67)
             {
-                addItem(new AttackPotion(theRandom.nextInt(1, 4)));
+                addItem(new AttackPotion(theRandom.nextInt(1, 4), new EntityFactory()));
             }
             else
             {
-                addItem(new SpeedPotion(theRandom.nextInt(1, 3)));
+                addItem(new SpeedPotion(theRandom.nextInt(1, 3), new EntityFactory()));
             }
         }
     }

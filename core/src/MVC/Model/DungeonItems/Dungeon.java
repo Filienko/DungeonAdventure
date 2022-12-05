@@ -29,9 +29,11 @@ public class Dungeon implements Serializable
 
     private int myDimension;
 
+    //resolve errors here
+
     public Dungeon()
     {
-        myHero = new Warrior("Brave Warrior",new Vec2());
+        myHero = new Warrior("Brave Warrior",new Vec2(), new EntityFactory()); //added EntityFactory
         myDimension = 4;
         myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);
@@ -56,7 +58,7 @@ public class Dungeon implements Serializable
     public Dungeon(final Room[][] theDungeon)
     {
         myDungeon = theDungeon;
-        myHero = new Warrior("Brave Warrior",new Vec2());
+        myHero = new Warrior("Brave Warrior",new Vec2(), new EntityFactory()); //added EntityFactory
         myDimension = myDungeon.length;
         myRooms = generateRooms(myDimension);
     }
@@ -197,7 +199,7 @@ public class Dungeon implements Serializable
         }
 
         arr.get(0).setEntranceStatus(true);
-        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(Exit.getInstance());
+        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(Exit.getInstance(new EntityFactory())); //added new EntityFactory param
 
         return arr;
     }
