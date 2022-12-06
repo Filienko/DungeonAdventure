@@ -48,5 +48,4 @@ public class Priestess extends Hero implements Healable
     {
         return heal(theHero, MY_MAX_HEAL);
     }
-
 }

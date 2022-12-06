@@ -1,5 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
+import MVC.Model.DungeonItems.Wall;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
@@ -42,6 +44,7 @@ public abstract class DungeonCharacter extends Entity
 
     private long myCurrentFrame;
     private long initiatedFrame;
+    private boolean myInvincibility;
 
     /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
@@ -70,15 +73,17 @@ public abstract class DungeonCharacter extends Entity
         initiatedFrame = 0;
     }
 
-    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea) //should this be changed to a weapon? Vec2 theDamageArea is never used
+    protected int attack() //should this be changed to a weapon? Vec2 theDamageArea is never used
     {
+
+        var theOpponent = new Warrior(new EntityFactory());
         Vec2 overlap = Physics.getOverlap(this, theOpponent);
 
         int damage = 0;
 
         if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
         {
-            if (theOpponent.getHeroStatus() && !((Hero)theOpponent).getInvincibility())
+            if (theOpponent.getHeroStatus() && !((theOpponent).isInvincibility()))
             {
                 damage += myDamage;
                 ((Hero)theOpponent).setInvincibility(true);
@@ -90,7 +95,7 @@ public abstract class DungeonCharacter extends Entity
 
         //apply invincibility for Heroes for 30 frames after each hit from Monsters
         long delay = 30;
-        if(theOpponent.getHeroStatus() && ((Hero)theOpponent).getInvincibility())
+        if(theOpponent.getHeroStatus() && ((Hero)theOpponent).isInvincibility())
         {
             if (myCurrentFrame <= initiatedFrame + delay)
             {
@@ -237,6 +242,16 @@ public abstract class DungeonCharacter extends Entity
     public void setMyEntityFactory(final EntityFactory theEntityFactory)
     {
         myEntityFactory = theEntityFactory;
+    }
+
+    public boolean isInvincibility()
+    {
+        return myInvincibility;
+    }
+
+    public void setInvincibility(final boolean theInvincibility)
+    {
+        myInvincibility = theInvincibility;
     }
 
 }

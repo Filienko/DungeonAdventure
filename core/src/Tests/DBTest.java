@@ -1,6 +1,7 @@
 package Tests;
 
 import MVC.Model.DB.MonsterDB;
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import org.junit.jupiter.api.Test;
@@ -9,16 +10,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class DBTest
 {
-    Hero hero = new Warrior();
+    Hero hero = new Warrior(new EntityFactory());
 
     @Test
     void testIntegrationSQLConnection()
     {
         MonsterDB db = new MonsterDB();
-        assertEquals("Ogre",db.createMonsterDB("Ogre",hero).getCharacterType());
-        assertEquals("Gremlin",db.createMonsterDB("Gremlin",hero).getCharacterType());
-        assertEquals("Elf",db.createMonsterDB("Elf",hero).getCharacterType());
-        assertEquals("Swarm of Rats",db.createMonsterDB("Rats",hero).getCharacterType());
+        assertEquals("Ogre",db.createMonsterDB("Ogre",hero,hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Gremlin",db.createMonsterDB("Gremlin",hero,hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Elf",db.createMonsterDB("Elf",hero,hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Swarm of Rats",db.createMonsterDB("Rats",hero,hero.getMyEntityFactory()).getCharacterType());
     }
 
     @Test

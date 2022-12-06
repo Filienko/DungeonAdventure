@@ -11,6 +11,12 @@ public class Wall extends Entity
         super(thePos, "Wall",theBoundingBox, new EntityFactory()); //added new EntityFactory param
     }
 
+    @Override
+    public void update()
+    {
+
+    }
+
 //    @Override
 //    public void update()
 //    {

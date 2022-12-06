@@ -1,17 +1,18 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
-import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.DungeonItems.Weapon.Sword;
+import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Vec2;
-import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Hero extends DungeonCharacter
+public abstract class Hero extends DungeonCharacter implements ICollidable
 {
+    /**
+     * Factory that generated Hero.
+     */
     private final EntityFactory myEntityFactory;
 
     /**
@@ -55,13 +56,11 @@ public abstract class Hero extends DungeonCharacter
      */
     private final int myHitPoints;
 
-    private boolean myInvincibility;
-
-    boolean myUpStatus;
-    boolean myDownStatus;
-    boolean myLeftStatus;
-    boolean myRightStatus;
-    boolean myAttackStatus;
+    private boolean myUpStatus;
+    private boolean myDownStatus;
+    private boolean myLeftStatus;
+    private boolean myRightStatus;
+    private boolean myAttackStatus;
 
     private long myCurrentFrame;
     private long initiatedFrame;
@@ -95,7 +94,6 @@ public abstract class Hero extends DungeonCharacter
         myLeftStatus = false;
         myRightStatus = false;
         myAttackStatus = false;
-        myInvincibility = false;
 
         myCurrentFrame = 0;
         initiatedFrame = 0;
@@ -123,16 +121,6 @@ public abstract class Hero extends DungeonCharacter
 
     public abstract int special(final DungeonCharacter theOpponent);
 
-    public boolean getInvincibility()
-    {
-        return myInvincibility;
-    }
-
-    public void setInvincibility(final boolean theInvincibility)
-    {
-        myInvincibility = theInvincibility;
-    }
-
     @Override
     public void update()
     {
@@ -146,18 +134,17 @@ public abstract class Hero extends DungeonCharacter
     }
 
     @Override
-    public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+    public int attack()
     {
         myAttackStatus = true;
-
         int damage = 0;
 
         //change this up so that weapon applies damage
 
         if (myWeapon == null)
         {
-            myWeapon = EntityFactory.generateSword();
-            damage = super.attack(theOpponent, getWeapon().getMyBoundingBox()); //weapon applies damage?
+            myWeapon = new EntityFactory().generateSword();
+            damage = super.attack(); //weapon applies damage?
         }
 
         long delay = 15;
@@ -336,5 +323,14 @@ public abstract class Hero extends DungeonCharacter
     public int getHitPoints()
     {
         return myHitPoints;
+    }
+
+    /**
+     * Analyzes whether the collision occurred between two objects and performs certain associated logic
+     */
+    @Override
+    public void collide()
+    {
+
     }
 }

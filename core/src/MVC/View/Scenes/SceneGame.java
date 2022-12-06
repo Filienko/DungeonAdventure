@@ -56,7 +56,6 @@ public class SceneGame extends Scene
             else if (action.getName().equals("LEFT"))               { myHero.setLeft(true); }
             else if (action.getName().equals("RIGHT"))              { myHero.setRight(true); }
             else if (action.getName().equals("ATTACK"))             { myHero.attack(); }
-            else if (action.getName().equals("SPECIAL"))            { myHero.special(); }
         }
         else if (action.getType().equals("END"))
         {

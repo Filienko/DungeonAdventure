@@ -1,9 +1,19 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.Interfaces.ICollidable;
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
-public class Monster extends DungeonCharacter
+import java.util.Random;
+
+public class Monster extends DungeonCharacter implements ICollidable
 {
+    /**
+     * Monster's default position.
+     */
+    private final Vec2 myHomePosition = new Vec2((new Random()).nextInt(1, 20),
+            (new Random()).nextInt(1, 12));
+
     /**
      * Hero status that tells that this DungeonCharacter is a Monster.
      */
@@ -55,7 +65,7 @@ public class Monster extends DungeonCharacter
     }
 
     protected void attack(final Hero theHero) {
-        super.attack(theHero, super.getMyBoundingBox());
+        super.attack();
     }
 
     @Override
@@ -75,108 +85,88 @@ public class Monster extends DungeonCharacter
 
     private void approachHero(final Hero theHero)
     {
-         /**	player_room.x= floor(player_position.x / 1280);
-          player_room.y= floor(player_position.y / 768);
-          for (auto &npc : m_entity_manager.get_entities(e_Tag::Enemy))
-          {
-          c_Vec2 npc_position= npc->get_component<c_Transform>().position;
-          c_Vec2 direction;
-          c_Vec2 velocity= c_Vec2(0, 0);
+        var heroPosition = theHero.getMyPos();
+        float roomX = (float) Math.floor(heroPosition.getMyX() / 1216);
+        float roomY = (float) Math.floor(heroPosition.getMyY() / 704);
+        var heroRoom = new Vec2(roomX, roomY);
+        for (var npc:myEntityFactory.getMonsters())
+        {
+            Vec2 npcPosition = npc.getMyPos();
+            Vec2 npcRoom = new Vec2((float) Math.floor(npcPosition.getMyX() / 1216),
+                    (float) Math.floor(npcPosition.getMyX() / 704));
+            Vec2 direction;
+            Vec2 velocity = new Vec2();
+            boolean hasSight = false;
+            if(heroRoom.equals(npcRoom))
+            {
+                hasSight = true;
+                for (var e: myEntityFactory.getEntities())
+                {
+                    var notMonster = !e.getType().contains("Ogre") && !e.getType().contains("Rat")
+                            && !e.getType().contains("Elf") && !e.getType().contains("Gremlin");
+                    var notHero = !e.getType().contains("Priestess") && !e.getType().contains("Warrior")
+                            && !e.getType().contains("Thief");
+                    var notPotion = !e.getType().contains("Potion");
+                    var notPit = !e.getType().contains("Pit");
+                    if(notMonster && notHero && notPit)
+                    {
+                        Vec2 ePosition = e.getMyPos();
+                        Vec2 eRoom = new Vec2((float) Math.floor(ePosition.getMyX()/1216),
+                                (float) Math.floor(ePosition.getMyX()/704));
+                        if(eRoom.equals(npcRoom))
+                        {
+                            // If there's an intersection then the npc does not have sight on the player
+                            if (Physics.entityIntersect(heroPosition, npcPosition, e))
+                            {
+                                hasSight = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
-          if (npc->get_component<c_Follow_player>().has)
-          {
-          c_Vec2 npc_room= c_Vec2(floor(npc_position.x / 1280), floor(npc_position.y / 768));
-          bool has_sight= false;
+            if (hasSight)
+            {
+                direction= myHero.getMyPos().minus(npcPosition);
+                velocity= direction.multiply(direction.quickInverseMagnitude() * npc.getMaxSpeed());
+            }
+            else if (myHomePosition.getDistanceSquared(npcPosition) > 25)
+            {
+                direction= myHomePosition.minus(npcPosition);
+                velocity= direction.multiply(direction.quickInverseMagnitude() * npc.getMaxSpeed());
+            }
+            npc.setVelocity(velocity);
+        }
+    }
 
-          // If player and npc are in the same room
-          if (player_room == npc_room)
-          {
-          has_sight= true;
-          // Check sight line against all entities
-          for (auto &e : m_entity_manager.get_entities())
-          {
-          // If the entity has a bounding box and blocks vision
-          if (e != npc && e != m_player && e->get_component<c_Bounding_box>().has && e->get_component<c_Bounding_box>().block_vision)
-          {
-          c_Vec2 e_position= e->get_component<c_Transform>().position;
-          // If the npc and entity are in the same room
-          c_Vec2 e_room= c_Vec2(floor(e_position.x / 1280), floor(e_position.y / 768));
-          if (npc_room == e_room)
-          {
-          // If there's an intersection then the npc does not have sight on the player
-          if (Physics::entity_intersect(player_position, npc_position, e))
-          {
-          has_sight= false;
-          break;
-          }
-          }
-          }
-          }
-          }
-
-          if (has_sight)
-          {
-          direction= m_player->get_component<c_Transform>().position - npc_position;
-          velocity= direction * direction.quick_inverse_magnitude() * npc->get_component<c_Follow_player>().speed;
-          npc->get_component<c_Transform>().velocity= velocity;
-          }
-          else if (npc->get_component<c_Follow_player>().home.get_distance_squared(npc_position) > 25)
-          {
-          direction= npc->get_component<c_Follow_player>().home - npc_position;
-          velocity= direction * direction.quick_inverse_magnitude() * npc->get_component<c_Follow_player>().speed;
-          npc->get_component<c_Transform>().velocity= velocity;
-          }
-          else
-          {
-          npc->get_component<c_Transform>().velocity= velocity;
-          }
-**/
-
-          }
-
-
-    //Collision detection
-    /**		for (auto &t : m_entity_manager.get_entities(e_Tag::Tile))
-     {
-     overlap= Physics::get_overlap(e, t);
-
-     // If the bounding boxes overlap
-     if (overlap.x > 0 && overlap.y > 0)
-     {
-     // If the tile blocks movement
-     if (t->get_component<c_Bounding_box>().block_move)
-     {
-     previous_overlap= Physics::get_previous_overlap(e, t);
-
-     // If the overlap is horizontal
-     if (previous_overlap.y > 0)
-     {
-     // If the player came from the left, push them out to the left
-     if (e->get_component<c_Transform>().position.x < t->get_component<c_Transform>().position.x)
-     {
-     e->get_component<c_Transform>().position.x-= overlap.x;
-     }
-     // If the player came from the right push them out to the right
-     else
-     {
-     e->get_component<c_Transform>().position.x+= overlap.x;
-     }
-     }
-     // If the overlap is vertical
-     if (previous_overlap.x > 0)
-     {
-     if (e->get_component<c_Transform>().position.y < t->get_component<c_Transform>().position.y)
-     {
-     e->get_component<c_Transform>().position.y-= overlap.y;
-     }
-     // If the player came from the right push them out to the right
-     else
-     {
-     e->get_component<c_Transform>().position.y+= overlap.y;
-     }
-     }
-     }
-     **/
+        /**
+         // If player and npc are in the same room
+         if (player_room == npc_room)
+         {
+         has_sight= true;
+         // Check sight line against all entities
+         for (auto &e : m_entity_manager.get_entities())
+         {
+         // If the entity has a bounding box and blocks vision
+         if (e != npc && e != m_player && e->get_component<c_Bounding_box>().has && e->get_component<c_Bounding_box>().block_vision)
+         {
+         c_Vec2 e_position= e->get_component<c_Transform>().position;
+         // If the npc and entity are in the same room
+         c_Vec2 e_room= c_Vec2(floor(e_position.x / 1280), floor(e_position.y / 768));
+         if (npc_room == e_room)
+         {
+         // If there's an intersection then the npc does not have sight on the player
+         if (Physics::entity_intersect(player_position, npc_position, e))
+         {
+         has_sight= false;
+         break;
+         }
+         }
+         }
+         }
+         }
+         **/
 
     @Override
     public String toString()
@@ -186,5 +176,14 @@ public class Monster extends DungeonCharacter
                 ", Hero status = " + MY_HERO_STATUS +
                 ", myHitPoints = " + myHitPoints +
                 '}';
+    }
+
+    /**
+     * Analyzes whether the collision occurred between two objects and performs certain associated logic
+     */
+    @Override
+    public void collide()
+    {
+
     }
 }

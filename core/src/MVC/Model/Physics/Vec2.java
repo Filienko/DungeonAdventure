@@ -83,8 +83,9 @@ private float myY;
     };
 
     //TODO:Research the efficiency, algorithm from StackOverflow
-    public float quickInverseMagnitude(float x)
+    public float quickInverseMagnitude()
     {
+        var x = getMagnitudeSquared();
         float xhalf = 0.5f * x;
         int i = Float.floatToIntBits(x);
         i = 0x5f3759df - (i >> 1);
