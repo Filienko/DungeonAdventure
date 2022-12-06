@@ -1,6 +1,7 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ class SwordTest
     @Test
     void testGetInstance()
     {
-        Sword mySword = Sword.getInstance(new Vec2(), new EntityFactory());
+        Sword mySword = Sword.getInstance(new Vec2(), new EntityFactory(), new Warrior(new EntityFactory()));
 
         assertTrue(mySword.getBoundingBox().equals(new Vec2()));
         assertEquals(0, mySword.getMyLifeSpan());
@@ -27,7 +28,7 @@ class SwordTest
     @Test
     void getBoundingBox()
     {
-        Sword mySword = Sword.getInstance(new Vec2(5,5), new EntityFactory());
+        Sword mySword = Sword.getInstance(new Vec2(5,5), new EntityFactory(),new Warrior(new EntityFactory()));
 
         assertTrue(mySword.getBoundingBox().equals(new Vec2(5,5)));
     }
@@ -35,7 +36,7 @@ class SwordTest
     @Test
     void setBoundingBox()
     {
-        Sword mySword = Sword.getInstance(new Vec2(), new EntityFactory());
+        Sword mySword = Sword.getInstance(new Vec2(), new EntityFactory(),new Warrior(new EntityFactory()));
 
         assertTrue(mySword.getBoundingBox().equals(new Vec2()));
 

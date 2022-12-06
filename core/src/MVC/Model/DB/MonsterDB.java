@@ -1,5 +1,6 @@
 package MVC.Model.DB;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
@@ -13,10 +14,15 @@ import java.sql.Statement;
 
 public class MonsterDB extends SuperMonsterDB
 {
-    public SQLiteDataSource myDS = establishConnection();
+    private SQLiteDataSource myDS = establishConnection();
+    private EntityFactory myEntityFactory;
+    private Hero myHero;
 
-    public Monster createMonsterDB(final String monsterType, final Hero theHero)
+    public Monster createMonsterDB(final String monsterType, final Hero theHero, final EntityFactory theEntityFactory)
     {
+        myEntityFactory = theEntityFactory;
+        myHero = theHero;
+
         if(monsterType.contentEquals("Ogre"))
         {
             return createMonster(1,theHero);
@@ -140,7 +146,6 @@ public class MonsterDB extends SuperMonsterDB
             e.printStackTrace();
             System.exit( 0 );
         }
-        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY));
-        //^^requires an EntityFactory param    
+        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY), myHero, myEntityFactory);
         }
 }

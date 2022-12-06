@@ -25,7 +25,6 @@ public class Pillar extends Item
         myName = theName;
         myEntityFactory = theEntityFactory;
         myCurrentFrame = 0;
-        destroy(); //why is destroy() here?
     }
 
     public String getName()

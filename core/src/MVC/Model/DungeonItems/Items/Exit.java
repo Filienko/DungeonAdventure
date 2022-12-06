@@ -7,9 +7,6 @@ import MVC.Model.Physics.Vec2;
 public class Exit extends Item
 {
     private static Exit myExit;
-
-    //private static final Exit myExit = new Exit();
-
     private static EntityFactory myEntityFactory;
     private static long myCurrentFrame;
 

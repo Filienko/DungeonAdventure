@@ -67,6 +67,11 @@ public class Door extends Entity
         myLocation = theLocation;
     }
 
+    public int getMonsterCounter()
+    {
+        return myMonsterCounter;
+    }
+
     public void decrementMonsterCounter()
     {
         myMonsterCounter--;

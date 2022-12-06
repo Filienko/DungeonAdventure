@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory.generatePillars;
-
 public class Dungeon implements Serializable
 {
     //DUNGEON KEEPS TRACK OF THE LOCATION OF THE HERO
@@ -190,7 +188,7 @@ public class Dungeon implements Serializable
             arr.add(new Room(i, new Vec2(row,col)));
         }
 
-        var pillars = generatePillars();
+        var pillars = (new EntityFactory()).generatePillars();
         for (int i = 0; i < 4; i++)
         {
             System.out.println(pillars.get(i).getType());

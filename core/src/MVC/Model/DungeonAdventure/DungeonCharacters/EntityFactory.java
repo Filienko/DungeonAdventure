@@ -23,7 +23,7 @@ public class EntityFactory
     private ObjectMap<String, ArrayList<Entity>> myEntityMap;
     private long myTotalEntities;
     private Assets myAssets;
-    private Hero myHero;
+    private static Hero myHero;
 
     public EntityFactory()
     {
@@ -43,7 +43,7 @@ public class EntityFactory
     {
         //Updating, Deleting, and Collecting entities
         SuperMonsterDB DB = new MonsterDB();
-        return DB.createMonsterDB(monsterType, myHero);
+        return DB.createMonsterDB(monsterType, myHero,this);
     }
 
     public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
@@ -270,7 +270,7 @@ public class EntityFactory
                 return new Pillar(theItem, this);
             }
             case "exit" -> {
-                return Exit.getInstance(new EntityFactory()); //added new EntityFactory param
+                return Exit.getInstance(this);
             }
             case "bomb" -> {
                 return new Bomb(this);
@@ -279,9 +279,9 @@ public class EntityFactory
         return new HealingPotion(this);
     }
 
-    public static Pit generatePit()
+    public Pit generatePit()
     {
-        return new Pit(new EntityFactory()); //added new EntityFactory param
+        return new Pit(this); //added new EntityFactory param
     }
 
 //    public static ArrayList<Pit> generatePit(final int theN)
@@ -336,14 +336,14 @@ public class EntityFactory
         return priestess;
     }
 
-    public static ArrayList<Pillar> generatePillars()
+    public ArrayList<Pillar> generatePillars()
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation", new EntityFactory())); //added new EntityFactory params here
-        arr.add(new Pillar("Inheritance", new EntityFactory()));
-        arr.add(new Pillar("Abstraction", new EntityFactory()));
-        arr.add(new Pillar("Polymorphism", new EntityFactory()));
+        arr.add(new Pillar("Encapsulation", this)); //added new EntityFactory params here
+        arr.add(new Pillar("Inheritance", this));
+        arr.add(new Pillar("Abstraction", this));
+        arr.add(new Pillar("Polymorphism", this));
 
         return arr;
     }
@@ -386,9 +386,9 @@ public class EntityFactory
 //    }
 
     //added this method
-    public static Sword generateSword()
+    public Sword generateSword()
 {
-        return Sword.getInstance(new Vec2(), new EntityFactory(), myHero);
+        return Sword.getInstance(new Vec2(), this, myHero);
 }
 
     public ArrayList<Entity> getEntities() { return myEntities; }
@@ -396,5 +396,19 @@ public class EntityFactory
     public Hero getHero()
     {
         return myHero;
+    }
+
+    public ArrayList<Monster> getMonsters()
+    {
+        var monsters = new ArrayList<Monster>();
+        for (var e: myEntities)
+        {
+            if(e instanceof Monster)
+            {
+                monsters.add((Monster) e);
+            }
+        }
+
+        return monsters;
     }
 }

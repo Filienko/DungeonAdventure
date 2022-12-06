@@ -136,4 +136,15 @@ public abstract class Entity
     {
         return myActiveStatus;
     }
+
+    public long getCurrentFrame()
+    {
+        return myCurrentFrame;
+    }
+
+    public void setCurrentFrame(final long theCurrentFrame)
+    {
+        myCurrentFrame = theCurrentFrame;
+    }
+
 }

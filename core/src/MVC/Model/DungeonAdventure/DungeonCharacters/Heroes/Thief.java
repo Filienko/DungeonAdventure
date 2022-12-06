@@ -55,12 +55,13 @@ public class Thief extends Hero
         //they get the chance to surprise attack. otherwise, they do a regular attack.
 
         double chance = Math.random();
+
         if (chance < MY_HIDDEN_CHANCE)
         {
             myHiddenStatus = true;
         }
 
-        int damage = 0;
+        int damage = 1;
         if (myHiddenStatus)
         {
             chance = Math.random();
@@ -69,7 +70,8 @@ public class Thief extends Hero
                 damage = special(theOpponent);
             }
             myHiddenStatus = false;
-        } else
+        }
+        else
         {
             damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
         }

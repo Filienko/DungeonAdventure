@@ -7,9 +7,13 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
+import MVC.Model.Interfaces.ICollidable;
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
+import MVC.View.Animation;
+import com.badlogic.gdx.graphics.Texture;
 
-public class Sword extends Entity
+public class Sword extends Entity implements ICollidable
 {
     private static Sword mySword;
 
@@ -19,26 +23,25 @@ public class Sword extends Entity
 
     private Vec2 myBoundingBox;
 
-    private long myCurrentFrame;
-
     private Hero myHero;
 
     private int damage; //how much damage it does?
 
-    private Sword(final Vec2 theBoundingBox, final EntityFactory theEntityFactory)
+    private Sword(final Vec2 theBoundingBox, final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(), "Sword", new Vec2(), theEntityFactory);
-        this.myEntityFactory = theEntityFactory;
-        this.myLifeSpan = 15;
-        this.myCurrentFrame = 0;
-        this.myBoundingBox = theBoundingBox;
+        myEntityFactory = theEntityFactory;
+        myLifeSpan = 15;
+        setCurrentFrame(0);
+        myHero = theHero;
+        myBoundingBox = theBoundingBox;
     }
 
-    public static Sword getInstance(final Vec2 theBoundingBox, final EntityFactory theEntityFactory)
+    public static Sword getInstance(final Vec2 theBoundingBox, final EntityFactory theEntityFactory, final Hero theHero)
     {
         if (mySword == null)
         {
-            mySword = new Sword(theBoundingBox, theEntityFactory);
+            mySword = new Sword(theBoundingBox, theEntityFactory, theHero);
         }
         return mySword;
     }
@@ -57,15 +60,15 @@ public class Sword extends Entity
 
     public void attack(final DungeonCharacter theOpponent)
     {
-        if(myHero instanceof Thief)
+        if(theOpponent instanceof Thief)
         {
             attackThief(theOpponent);
         }
-        else if(myHero instanceof Warrior)
+        else if(theOpponent instanceof Warrior)
         {
             attackWarrior(theOpponent);
         }
-        else if(myHero instanceof Priestess)
+        else if(theOpponent instanceof Priestess)
         {
             attackPriestess(theOpponent);
         }
@@ -85,14 +88,46 @@ public class Sword extends Entity
 
     @Override
     public void update() {
-        if (myCurrentFrame >= myLifeSpan)
+        if (getCurrentFrame() >= myLifeSpan)
         {
             destroy();
-        } else if (myCurrentFrame < myLifeSpan)
+        }
+        else if (getCurrentFrame() < myLifeSpan)
         {
             super.movement();
-            myCurrentFrame++;
+            incrementCurrentFrame();
         }
+    }
 
+    /**
+     * Analyzes whether the collision occurred between two objects and performs certain associated logic
+     */
+    @Override
+    public void collide()
+    {
+        for (var e: myEntityFactory.getMonsters())
+        {
+            if (e.getActiveStatus()==true)
+            {
+                Vec2 overlap = Physics.getOverlap(this, e);
+                if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+                {
+                    attack(e);
+                    if(e.getHitPoints()<=0)
+                    {
+                        //Potentially add sound
+                        //TODO:Add appropriate animation logic
+                        e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
+                        e.destroy();
+                    }
+                    else
+                    {
+                        //Potentially add sound
+                        var lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
+                        //e.setInvincibility(true, lifespanLeft);
+                    }
+                }
+            }
+        }
     }
 }
