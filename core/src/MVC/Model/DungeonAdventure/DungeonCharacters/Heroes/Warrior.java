@@ -36,17 +36,17 @@ public class Warrior extends Hero
     /**
      * This method allows the Warrior to attack another DungeonCharacter. There is a 40% chance that a simple attack is
      * performed. The Warrior also has a special skill called Crushing Blow, which also has a 40% chance of success.
-     * @param theOpponent The DungeonCharacter the Warrior is attacking.
-     * @param theDamageArea --
+     *
      * @return The amount of damage done to theOpponent's hit points.
      */
     @Override
-    public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+    public int attack()
     {
+        var theOpponent = new EntityFactory().generateMonster("Ogre");
         double chance = Math.random();
         int damage = 0;
         if (chance < 0.4) {
-            damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
+            damage = super.attack();
         } else if (chance < 0.6) {
             damage = special(theOpponent);
         }

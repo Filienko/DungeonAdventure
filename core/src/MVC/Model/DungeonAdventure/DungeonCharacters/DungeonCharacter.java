@@ -1,5 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
+import MVC.Model.DungeonItems.Wall;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
@@ -71,9 +73,10 @@ public abstract class DungeonCharacter extends Entity
         initiatedFrame = 0;
     }
 
-    protected int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea) //should this be changed to a weapon? Vec2 theDamageArea is never used
+    protected int attack() //should this be changed to a weapon? Vec2 theDamageArea is never used
     {
 
+        var theOpponent = new Warrior(new EntityFactory());
         Vec2 overlap = Physics.getOverlap(this, theOpponent);
 
         int damage = 0;

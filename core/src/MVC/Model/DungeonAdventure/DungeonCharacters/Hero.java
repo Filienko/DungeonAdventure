@@ -134,7 +134,7 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     }
 
     @Override
-    public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+    public int attack()
     {
         myAttackStatus = true;
         int damage = 0;
@@ -144,7 +144,7 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         if (myWeapon == null)
         {
             myWeapon = new EntityFactory().generateSword();
-            damage = super.attack(theOpponent, getWeapon().getMyBoundingBox()); //weapon applies damage?
+            damage = super.attack(); //weapon applies damage?
         }
 
         long delay = 15;

@@ -54,7 +54,7 @@ public class PhysicsTest
         assertEquals(1250, vec.getDistanceSquared(new Vec2(26,26)));
         assertTrue(Math.sqrt(vec.getDistanceSquared(new Vec2(26,26)))+0.1>vec.computeDistance(new Vec2(26,26)));
         assertEquals(0, vec.crossProduct(new Vec2(10,10)));
-        assertTrue(vec.quickInverseMagnitude()<0.51);
+        assertTrue(vec.quickInverseMagnitude()>0.51);
         assertTrue(vec.equals(new Vec2(1,1)));
         assertEquals(10, vec.multiply(10).getMyX());
         assertEquals(10, vec.multiply(10).getMyY());

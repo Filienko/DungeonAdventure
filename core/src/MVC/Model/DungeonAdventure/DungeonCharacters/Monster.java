@@ -65,7 +65,7 @@ public class Monster extends DungeonCharacter implements ICollidable
     }
 
     protected void attack(final Hero theHero) {
-        super.attack(theHero, super.getMyBoundingBox());
+        super.attack();
     }
 
     @Override

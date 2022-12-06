@@ -44,17 +44,16 @@ public class Thief extends Hero
      * the chance to do a surprise attack (40% chance of success) where the Thief performs an attack and then is given the
      * chance to do another attack. The Thief has additional 40% chance of performing a simple attack.
      *
-     * @param theOpponent The DungeonCharacter the Thief is attacking.
-     * @param theDamageArea --
      * @return The amount of damage done to theOpponent's hit point count.
      */
     @Override
-    public int attack(final DungeonCharacter theOpponent, final Vec2 theDamageArea)
+    public int attack()
     {
         //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are hidden,
         //they get the chance to surprise attack. otherwise, they do a regular attack.
 
         double chance = Math.random();
+        var theOpponent = new EntityFactory().generateMonster("Ogre");
 
         if (chance < MY_HIDDEN_CHANCE)
         {
@@ -73,7 +72,7 @@ public class Thief extends Hero
         }
         else
         {
-            damage = super.attack(theOpponent, super.getWeapon().getBoundingBox());
+            damage = super.attack();
         }
 
         theOpponent.applyDamage(damage);
@@ -89,8 +88,9 @@ public class Thief extends Hero
     {
         //Thief gets an attack (super.attack()) and an extra turn (attack())
 
-        return super.attack(theOpponent, super.getWeapon().getBoundingBox()) +
-                attack(theOpponent, super.getWeapon().getBoundingBox());
+//        return super.attack(theOpponent, super.getWeapon().getBoundingBox()) +
+//                attack(theOpponent, super.getWeapon().getBoundingBox());
+        return 0;
     }
 
     /**
