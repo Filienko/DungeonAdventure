@@ -48,7 +48,7 @@ public class EntityFactoryTest
 
         expectedList.add(entityFactory.generateOgre());
         expectedList.add(entityFactory.generateRats());
-        expectedList.add(entityFactory.generateElf());
+        expectedList.add(entityFactory.generateKnight());
         expectedList.add(entityFactory.generateGremlin());
 
         var room = new Room();
@@ -61,7 +61,7 @@ public class EntityFactoryTest
         assertTrue(roomEntities.get(2).getType().contains("Potion"));
         assertTrue(roomEntities.get(3).getType().contentEquals("Ogre"));
         assertTrue(roomEntities.get(4).getType().contentEquals("Gremlin"));
-        assertTrue(roomEntities.get(5).getType().contentEquals("Elf"));
+        assertTrue(roomEntities.get(5).getType().contentEquals("Knight"));
         assertTrue(roomEntities.get(6).getType().contentEquals("Swarm of Rats"));
     }
 
@@ -76,9 +76,9 @@ public class EntityFactoryTest
         assertEquals("Gremlin",entityFactory.generateGremlin());
     }
     @Test
-    void testGenerateElf()
+    void testGenerateKnight()
     {
-        assertEquals("Elf",entityFactory.generateElf());
+        assertEquals("Knight",entityFactory.generateKnight());
     }
     @Test
     void testGenerateRats()
@@ -91,7 +91,7 @@ public class EntityFactoryTest
         var monsters = entityFactory.generateMonsters(1);
         assertEquals("Ogre",monsters.get(0).getType());
         assertEquals("Gremlin",monsters.get(1).getType());
-        assertEquals("Elf",monsters.get(2).getType());
+        assertEquals("Knight",monsters.get(2).getType());
         assertEquals("Swarm of Rats",monsters.get(3).getType());
     }
 

@@ -226,9 +226,9 @@ public class EntityFactory
         return generateMonster("Gremlin");
     }
 
-    public Monster generateElf()
+    public Monster generateKnight()
     {
-        return generateMonster("Elf");
+        return generateMonster("Knight");
     }
 
     public Monster generateRats()
@@ -244,7 +244,7 @@ public class EntityFactory
         {
             arr.add(generateOgre());
             arr.add(generateGremlin());
-            arr.add(generateElf());
+            arr.add(generateKnight());
             arr.add(generateRats());
         }
         return arr;
