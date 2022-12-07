@@ -255,4 +255,6 @@ public abstract class DungeonCharacter extends Entity
         myInvincibility = theInvincibility;
     }
 
+    private void movement() {}
+
 }

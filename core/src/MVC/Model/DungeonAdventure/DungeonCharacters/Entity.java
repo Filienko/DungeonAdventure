@@ -15,7 +15,6 @@ public abstract class Entity
     private int myRotation;
     private String myType;
     private boolean myActiveStatus;
-    private Vec2 myVector;
     private long myCurrentFrame;
 
     protected Entity(final Vec2 theSize, final Vec2 thePos, final String theType, final EntityFactory theEntityFactory)
@@ -26,7 +25,6 @@ public abstract class Entity
         myType = theType;
         myRotation = 0;
         myActiveStatus = true;
-        myVector = new Vec2(0, 0);
         myCurrentFrame = 0;
     }
 
@@ -41,17 +39,10 @@ public abstract class Entity
         myAnimation = theAnimation;
 
         myActiveStatus = true;
-        myVector = new Vec2();
         myCurrentFrame = 0;
     }
 
     public abstract void update();
-
-    public void movement()
-    {
-        myPreviousPos = myPos;
-        myPos = myPos.add(myVector);
-    }
 
     public void destroy()
     {

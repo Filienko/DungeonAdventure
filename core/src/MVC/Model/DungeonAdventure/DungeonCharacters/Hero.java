@@ -60,6 +60,8 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     private long myCurrentFrame;
     private long initiatedFrame;
 
+    private Vec2 myFacing;
+
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, velocity, Potions in inventory, and Pillars in
@@ -94,6 +96,8 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
 
         myCurrentFrame = 0;
         initiatedFrame = 0;
+
+        myFacing = new Vec2(0, 1);
     }
 
     /**
@@ -156,7 +160,6 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         return damage;
     }
 
-    @Override
     public void movement()
     {
         Vec2 newVelocity = new Vec2();
@@ -320,4 +323,8 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     {
 
     }
+
+    public Vec2 getFacing() { return myFacing; }
+
+    public boolean getAttackStatus() { return myAttackStatus; }
 }
