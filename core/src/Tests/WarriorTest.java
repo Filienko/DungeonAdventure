@@ -61,7 +61,7 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#special(DungeonCharacter)}
+     * Test method for {@link Warrior#(DungeonCharacter)}
      */
     @Test
     void testSpecial()
@@ -70,7 +70,7 @@ class WarriorTest
 
         final Thief myThief = new Thief(new EntityFactory());
 
-        int damage = myWarrior.special(myThief); //may need to change this
+        int damage = myWarrior.special();
 
         assertTrue(damage < 175 && damage > 75);
     }
