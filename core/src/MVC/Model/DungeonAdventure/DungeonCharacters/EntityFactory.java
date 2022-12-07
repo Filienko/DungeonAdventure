@@ -136,7 +136,7 @@ public class EntityFactory
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
             Door door = new Door(this);
-            door.setMyLocation(pixelPos);
+            door.setMyPos(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             myEntitiesToAdd.add(door);
         }
@@ -144,7 +144,7 @@ public class EntityFactory
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
             Door door = new Door(this);
-            door.setMyLocation(pixelPos);
+            door.setMyPos(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(180);
             myEntitiesToAdd.add(door);
@@ -153,7 +153,7 @@ public class EntityFactory
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
             Door door = new Door(this);
-            door.setMyLocation(pixelPos);
+            door.setMyPos(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(90);
             myEntitiesToAdd.add(door);
@@ -162,7 +162,7 @@ public class EntityFactory
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
             Door door = new Door(this);
-            door.setMyLocation(pixelPos);
+            door.setMyPos(pixelPos);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(270);
             myEntitiesToAdd.add(door);
@@ -411,4 +411,6 @@ public class EntityFactory
 
         return monsters;
     }
+
+    public Assets getAssets() { return myAssets; }
 }
