@@ -46,7 +46,7 @@ public abstract class Entity
 
     public void destroy()
     {
-        myActiveStatus = false; //if an entity is killed, use this method
+        myActiveStatus = false;
     }
 
     public Vec2 getMyPos()

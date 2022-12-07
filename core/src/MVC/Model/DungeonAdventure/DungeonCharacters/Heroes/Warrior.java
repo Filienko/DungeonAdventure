@@ -42,15 +42,14 @@ public class Warrior extends Hero
     @Override
     public int attack()
     {
-        var theOpponent = new EntityFactory().generateMonster("Ogre");
         double chance = Math.random();
-        int damage = 0;
-        if (chance < 0.4) {
-            damage = super.attack();
-        } else if (chance < 0.6) {
-            damage = special(theOpponent);
+        int damage = super.attack();
+
+        if (chance < 0.4)
+        {
+            damage = special();
         }
-        theOpponent.applyDamage(damage);
+
         return damage;
     }
 
@@ -58,9 +57,9 @@ public class Warrior extends Hero
      * This is the Warrior's special skill. damage amount between 75 and 175 is randomly generated.
      * @return The amount of damage done to theOpponent's hit points.
      */
-    public int special(final DungeonCharacter theOpponent) //theOpponent is never used, change ?
+    public int special() //theOpponent is never used, change ?
     {
         Random rand = new Random();
-        return rand.nextInt(75, 175);
+        return rand.nextInt(2, 3);
     }
 }

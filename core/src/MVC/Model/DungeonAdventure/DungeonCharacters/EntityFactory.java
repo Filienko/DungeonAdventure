@@ -6,12 +6,10 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.*;
 import MVC.Model.DungeonItems.*;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.DungeonItems.Weapon.Sword;
-
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Assets;
 import com.badlogic.gdx.utils.ObjectMap;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -411,6 +409,5 @@ public class EntityFactory
 
         return monsters;
     }
-
     public Assets getAssets() { return myAssets; }
 }
