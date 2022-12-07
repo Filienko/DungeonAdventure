@@ -51,11 +51,6 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
      */
     private int myPillars;
 
-    /**
-     * The Hero's hit points (health).
-     */
-    private final int myHitPoints;
-
     private boolean myUpStatus;
     private boolean myDownStatus;
     private boolean myLeftStatus;
@@ -81,12 +76,14 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theDamage,
                 final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed, thePos, theVelocity, theEntityFactory);
+        super("Hero", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
+                new Vec2(48, 48), thePos, theVelocity, theEntityFactory);
+
         myName = theName;
         myCharacterType = theCharacterType;
         myPotions = new ArrayList<>();
         myPillars = 0;
-        myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+        setHitPoints(5);
         myEntityFactory = theEntityFactory;
 
         myUpStatus = false;
@@ -313,16 +310,6 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     public boolean getHeroStatus()
     {
         return MY_HERO_STATUS;
-    }
-
-    /**
-     * This method retrieves the Hero's hit points.
-     * @return The number of hit points a Hero has, represented by an int.
-     */
-    @Override
-    public int getHitPoints()
-    {
-        return myHitPoints;
     }
 
     /**

@@ -56,7 +56,9 @@ public class Monster extends DungeonCharacter implements ICollidable
     public Monster(final String theCharacterType, final int theHitPoints, final int theDamage, final int theMaxSpeed,
                   final Vec2 thePos, final Vec2 theVelocity, final Hero theHero, final EntityFactory theEntityFactory)
     {
-        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed, thePos, theVelocity, theEntityFactory);
+        super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
+                new Vec2(64, 64), thePos, theVelocity, theEntityFactory);
+
         myCharacterType = theCharacterType;
         myEntityFactory = theEntityFactory;
         myHero = theHero;
