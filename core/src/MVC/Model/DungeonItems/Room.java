@@ -412,7 +412,7 @@ public class Room implements Cloneable
     {
         for (var monster:theMonsters)
         {
-            myMonsters.append(monster.getCharacterType()).append(",");
+            myMonsters.append(monster.getMonsterType()).append(",");
         }
     }
 

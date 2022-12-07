@@ -16,8 +16,6 @@ class BombTest
         Bomb myBomb = new Bomb(new EntityFactory());
 
         assertTrue(myBomb.getType().equals("Bomb"));
-
-        //test getters/setters for location?
     }
 
     @Test

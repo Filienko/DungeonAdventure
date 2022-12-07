@@ -84,9 +84,8 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             setInvincibility(false);
         }
-        collide();
         movement();
-        incrementCurrentFrame();
+        collide();
     }
 
     public void die()

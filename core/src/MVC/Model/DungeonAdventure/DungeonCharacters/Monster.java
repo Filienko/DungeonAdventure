@@ -44,13 +44,21 @@ public class Monster extends DungeonCharacter
      * @param theHero the Hero associated with the Monsters
      */
     public Monster(final String theMonsterType, final int theHitPoints, final int theDamage, final int theMaxSpeed,
-                  final Vec2 thePos, final Vec2 theVelocity, final Hero theHero, final EntityFactory theEntityFactory)
+                  final Vec2 thePos, final Vec2 theVelocity, final Hero theHero, final Vec2 theDimensions,
+                   final EntityFactory theEntityFactory)
     {
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
-                new Vec2(64, 64), thePos, theVelocity, theEntityFactory);
+                theDimensions, thePos, theVelocity, theEntityFactory);
 
-        myMonsterType = myMonsterType;
+        myMonsterType = theMonsterType;
         myHero = theHero;
+    }
+
+    @Override
+    public void update()
+    {
+        super.update();
+        incrementCurrentFrame();
     }
 
     @Override
@@ -66,58 +74,58 @@ public class Monster extends DungeonCharacter
         float roomX = (float) Math.floor(heroPosition.getMyX() / 1216);
         float roomY = (float) Math.floor(heroPosition.getMyY() / 704);
         var heroRoom = new Vec2(roomX, roomY);
-        for (var npc:getMyEntityFactory().getMonsters())
-        {
-            Vec2 npcPosition = npc.getMyPos();
-            Vec2 npcRoom = new Vec2((float) Math.floor(npcPosition.getMyX() / 1216),
-                    (float) Math.floor(npcPosition.getMyX() / 704));
-            Vec2 direction;
-            Vec2 velocity = new Vec2();
-            boolean hasSight = false;
-            if(heroRoom.equals(npcRoom))
-            {
-                hasSight = true;
-                for (var e: getMyEntityFactory().getEntities())
-                {
-                    var notMonster = !e.getType().contains("Ogre") && !e.getType().contains("Rat")
-                            && !e.getType().contains("Knight") && !e.getType().contains("Gremlin");
-                    var notHero = !e.getType().contains("Priestess") && !e.getType().contains("Warrior")
-                            && !e.getType().contains("Thief");
-                    var notPotion = !e.getType().contains("Potion");
-                    var notPit = !e.getType().contains("Pit");
-                    var isWall = e.getType().contains("Door");
-                    var isDoor = e.getType().contains("Wall");
 
-                    if(notMonster && notHero)
+        Vec2 npcPosition = this.getMyPos();
+        Vec2 npcRoom = new Vec2((float) Math.floor(npcPosition.getMyX() / 1216),
+                (float) Math.floor(npcPosition.getMyX() / 704));
+        Vec2 direction;
+        Vec2 velocity = new Vec2();
+        boolean hasSight = false;
+        if(heroRoom.equals(npcRoom))
+        {
+            hasSight = true;
+            for (var e: getMyEntityFactory().getEntities())
+            {
+                var notMonster = !e.getType().contains("Ogre") && !e.getType().contains("Rat")
+                        && !e.getType().contains("Knight") && !e.getType().contains("Gremlin");
+                var notHero = !e.getType().contains("Priestess") && !e.getType().contains("Warrior")
+                        && !e.getType().contains("Thief");
+                var notPotion = !e.getType().contains("Potion");
+                var notPit = !e.getType().contains("Pit");
+                var isWall = e.getType().contains("Door");
+                var isDoor = e.getType().contains("Wall");
+
+                if(notMonster && notHero)
+                {
+                    Vec2 ePosition = e.getMyPos();
+                    Vec2 eRoom = new Vec2((float) Math.floor(ePosition.getMyX()/1216),
+                            (float) Math.floor(ePosition.getMyX()/704));
+                    if(eRoom.equals(npcRoom))
                     {
-                        Vec2 ePosition = e.getMyPos();
-                        Vec2 eRoom = new Vec2((float) Math.floor(ePosition.getMyX()/1216),
-                                (float) Math.floor(ePosition.getMyX()/704));
-                        if(eRoom.equals(npcRoom))
+                        // If there's an intersection then the npc does not have sight on the player
+                        if (Physics.entityIntersect(heroPosition, npcPosition, e))
                         {
-                            // If there's an intersection then the npc does not have sight on the player
-                            if (Physics.entityIntersect(heroPosition, npcPosition, e))
-                            {
-                                hasSight = false;
-                                break;
-                            }
+                            hasSight = false;
+                            break;
                         }
                     }
                 }
             }
-
-            if (hasSight)
-            {
-                direction = myHero.getMyPos().minus(npcPosition);
-                velocity = direction.multiply(direction.quickInverseMagnitude() * npc.getMaxSpeed());
-            }
-            else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
-            {
-                direction= myHomePosition.minus(npcPosition);
-                velocity= direction.multiply(direction.quickInverseMagnitude() * npc.getMaxSpeed());
-            }
-            npc.setVelocity(velocity);
         }
+
+        if (hasSight)
+        {
+            direction = myHero.getMyPos().minus(npcPosition);
+            velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
+        }
+        else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
+        {
+            direction= myHomePosition.minus(npcPosition);
+            velocity= direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
+        }
+        setVelocity(velocity);
+        setMyPreviousPos(getMyPos());
+        updateMyPos(getVelocity());
     }
 
     /**
@@ -142,6 +150,11 @@ public class Monster extends DungeonCharacter
             myHero.setInvincibility(true,15);
         }
 
+    }
+
+    public String getMonsterType()
+    {
+        return myMonsterType;
     }
 
     @Override
