@@ -87,14 +87,15 @@ public class Sword extends Entity implements ICollidable
     }
 
     @Override
-    public void update() {
+    public void update()
+    {
         if (getCurrentFrame() >= myLifeSpan)
         {
             destroy();
         }
         else if (getCurrentFrame() < myLifeSpan)
         {
-            super.movement();
+            collide();
             incrementCurrentFrame();
         }
     }
@@ -107,12 +108,12 @@ public class Sword extends Entity implements ICollidable
     {
         for (var e: myEntityFactory.getMonsters())
         {
-            if (e.getActiveStatus()==true)
+            if (e.getActiveStatus()==true && !e.isInvincibility())
             {
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    attack(e);
+                    e.applyDamage(myHero.attack());
                     if(e.getHitPoints()<=0)
                     {
                         //Potentially add sound
@@ -123,8 +124,8 @@ public class Sword extends Entity implements ICollidable
                     else
                     {
                         //Potentially add sound
-                        var lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
-                        //e.setInvincibility(true, lifespanLeft);
+                        long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
+                        e.setInvincibility(true, lifespanLeft);
                     }
                 }
             }

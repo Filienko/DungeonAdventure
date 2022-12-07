@@ -44,7 +44,7 @@ class PriestessTest
     }
 
     /**
-     * Test method for {@link Priestess#healHero(Hero)}. //why is the link not working?
+     * Test method for {@link Priestess#(Hero)}. //why is the link not working?
      */
     @Test
     void testHealHero()
@@ -53,7 +53,7 @@ class PriestessTest
         final Priestess myPriestess2 = new Priestess(new EntityFactory());
 
         int oldHealth = myPriestess1.getHitPoints();
-        int restoredHealth = myPriestess1.special(myPriestess2);
+        int restoredHealth = myPriestess1.special();
 
         assertTrue(myPriestess2.getHitPoints() > oldHealth);
         assertEquals(myPriestess2.getHitPoints(), restoredHealth + oldHealth);

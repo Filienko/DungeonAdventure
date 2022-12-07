@@ -16,12 +16,7 @@ public interface Healable
         Random rand = new Random();
         int healPoints = rand.nextInt(theHealMax) + 1;
 
-        int maxHeal = switch (theCharacter.getCharacterType())
-                {
-                    case "Priestess", "Thief" -> 75;
-                    case "Warrior" -> 125;
-                    default -> 0;
-                };
+        int maxHeal = 10;
 
         if (theCharacter.getHitPoints() + healPoints > maxHeal)
         {

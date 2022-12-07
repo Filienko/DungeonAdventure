@@ -12,8 +12,6 @@ public class Thief extends Hero
      */
     private static final double MY_HIDDEN_CHANCE = 0.4;
 
-    private final EntityFactory myEntityFactory;
-
     /**
      * The Thief's hidden status.
      */
@@ -26,7 +24,6 @@ public class Thief extends Hero
     public Thief(final EntityFactory theEntityFactory)
     {
         super("Thief", "Thief",10, 1, 5, new Vec2(), new Vec2(), theEntityFactory);
-        myEntityFactory = theEntityFactory;
     }
 
     /**
@@ -36,7 +33,6 @@ public class Thief extends Hero
     public Thief(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
         super(theName, "Thief",10, 1,  5, thePos, new Vec2(), theEntityFactory);
-        myEntityFactory = theEntityFactory;
     }
 
     /**
@@ -52,45 +48,44 @@ public class Thief extends Hero
         //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are hidden,
         //they get the chance to surprise attack. otherwise, they do a regular attack.
 
-        double chance = Math.random();
-        var theOpponent = new EntityFactory().generateMonster("Ogre");
-
-        if (chance < MY_HIDDEN_CHANCE)
-        {
-            myHiddenStatus = true;
-        }
-
         int damage = 1;
-        if (myHiddenStatus)
+        var chance = Math.random();
+        if (chance < 0.25)
         {
-            chance = Math.random();
-            if (chance < 0.4)
-            {
-                damage = special(theOpponent);
-            }
-            myHiddenStatus = false;
-        }
-        else
-        {
-            damage = super.attack();
+            damage = special();
         }
 
-        theOpponent.applyDamage(damage);
         return damage;
     }
 
     /**
      * This method is the Thief's special skill.
-     * @param theOpponent The DungeonCharacter the Thief is attacking.
      * @return The amount of damage done to theOpponent's hit point count.
      */
-    public int special(final DungeonCharacter theOpponent)
+    public int special()
     {
-        //Thief gets an attack (super.attack()) and an extra turn (attack())
-
-//        return super.attack(theOpponent, super.getWeapon().getBoundingBox()) +
-//                attack(theOpponent, super.getWeapon().getBoundingBox());
-        return 0;
+//        double chance = Math.random();
+//
+//        if (chance < MY_HIDDEN_CHANCE)
+//        {
+//            myHiddenStatus = true;
+//        }
+//
+//        int damage = 1;
+//        if (myHiddenStatus)
+//        {
+//            chance = Math.random();
+//            if (chance < 0.8)
+//            {
+//                damage = 3;
+//            }
+//            myHiddenStatus = false;
+//        }
+//        else
+//        {
+//            damage = super.attack();
+//        }
+        return 5;
     }
 
     /**

@@ -2,24 +2,12 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.DungeonItems.Weapon.Sword;
-import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Vec2;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public abstract class Hero extends DungeonCharacter implements ICollidable
+public abstract class Hero extends DungeonCharacter
 {
-    /**
-     * Factory that generated Hero.
-     */
-    private final EntityFactory myEntityFactory;
-
-    /**
-     * Random number generator used to generate the Hero's hit point count.
-     */
-    private static final Random RANDOM_GENERATOR = new Random();
-
     /**
      * A hero status that is hardcoded to true.
      */
@@ -51,18 +39,10 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
      */
     private int myPillars;
 
-    /**
-     * The Hero's hit points (health).
-     */
-    private final int myHitPoints;
-
     private boolean myUpStatus;
     private boolean myDownStatus;
     private boolean myLeftStatus;
     private boolean myRightStatus;
-    private boolean myAttackStatus;
-
-    private long myCurrentFrame;
     private long initiatedFrame;
 
     /**
@@ -86,16 +66,10 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         myCharacterType = theCharacterType;
         myPotions = new ArrayList<>();
         myPillars = 0;
-        myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
-        myEntityFactory = theEntityFactory;
-
         myUpStatus = false;
         myDownStatus = false;
         myLeftStatus = false;
         myRightStatus = false;
-        myAttackStatus = false;
-
-        myCurrentFrame = 0;
         initiatedFrame = 0;
     }
 
@@ -107,7 +81,6 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     {
         setMyPos(theCoordinates);
     }
-    
 
     public Sword getWeapon()
     {
@@ -119,44 +92,12 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         myWeapon = theWeapon;
     }
 
-    public abstract int special(final DungeonCharacter theOpponent);
-
-    @Override
-    public void update()
-    {
-        movement();
-
-//        if(myAttackStatus) {   //is this how it should be formatted?
-//            attack();
-//        }
-        myCurrentFrame++;
-
-    }
+    public abstract int special();
 
     @Override
     public int attack()
     {
-        myAttackStatus = true;
-        int damage = 0;
-
-        //change this up so that weapon applies damage
-
-        if (myWeapon == null)
-        {
-            myWeapon = new EntityFactory().generateSword();
-            damage = super.attack(); //weapon applies damage?
-        }
-
-        long delay = 15;
-        if (myCurrentFrame <= initiatedFrame + delay)
-        {
-            initiatedFrame++;
-        } else
-        {
-            myAttackStatus = false; //delays setting to false for 15 frames
-        }
-
-        return damage;
+        return 1;
     }
 
     @Override
@@ -168,33 +109,26 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         {
             newVelocity.setMyY(1 * getMaxSpeed());
 
-        } else if (!myUpStatus && myDownStatus)
+        }
+        else if (!myUpStatus && myDownStatus)
         {
             newVelocity.setMyX(0);
             newVelocity.setMyY(-1 * getMaxSpeed());
 
-        } else if (!myUpStatus && !myDownStatus)
-        {
-            newVelocity.setMyY(0);
         }
 
         if (myLeftStatus && !myRightStatus)
         {
             newVelocity.setMyX(-1 * getMaxSpeed());
 
-        } else if (!myLeftStatus && myRightStatus)
+        }
+        else if (!myLeftStatus && myRightStatus)
         {
             newVelocity.setMyX(1 * getMaxSpeed());
 
-        } else if (!myLeftStatus && !myRightStatus)
-        {
-            newVelocity.setMyX(0);
         }
 
-        super.setVelocity(newVelocity);
-
-        //super.movement();
-
+        setVelocity(newVelocity);
     }
 
     //changed visibility of the following potions/pillars methods to public (were protected)
@@ -313,24 +247,5 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     public boolean getHeroStatus()
     {
         return MY_HERO_STATUS;
-    }
-
-    /**
-     * This method retrieves the Hero's hit points.
-     * @return The number of hit points a Hero has, represented by an int.
-     */
-    @Override
-    public int getHitPoints()
-    {
-        return myHitPoints;
-    }
-
-    /**
-     * Analyzes whether the collision occurred between two objects and performs certain associated logic
-     */
-    @Override
-    public void collide()
-    {
-
     }
 }
