@@ -18,7 +18,7 @@ public class DBTest
         MonsterDB db = new MonsterDB();
         assertEquals("Ogre",db.createMonsterDB("Ogre",hero,hero.getMyEntityFactory()).getCharacterType());
         assertEquals("Gremlin",db.createMonsterDB("Gremlin",hero,hero.getMyEntityFactory()).getCharacterType());
-        assertEquals("Elf",db.createMonsterDB("Elf",hero,hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Knight",db.createMonsterDB("Knight",hero,hero.getMyEntityFactory()).getCharacterType());
         assertEquals("Swarm of Rats",db.createMonsterDB("Rats",hero,hero.getMyEntityFactory()).getCharacterType());
     }
 
@@ -35,7 +35,7 @@ public class DBTest
         MonsterDB db = new MonsterDB();
         assertEquals("Ogre",db.createMonster(1,hero).getCharacterType());
         assertEquals("Gremlin",db.createMonster(2,hero).getCharacterType());
-        assertEquals("Elf",db.createMonster(3,hero).getCharacterType());
+        assertEquals("Knight",db.createMonster(3,hero).getCharacterType());
         assertEquals("Swarm of Rats",db.createMonster(4,hero).getCharacterType());
     }
 }

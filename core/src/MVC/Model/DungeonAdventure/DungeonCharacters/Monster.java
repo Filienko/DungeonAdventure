@@ -103,7 +103,7 @@ public class Monster extends DungeonCharacter implements ICollidable
                 for (var e: myEntityFactory.getEntities())
                 {
                     var notMonster = !e.getType().contains("Ogre") && !e.getType().contains("Rat")
-                            && !e.getType().contains("Elf") && !e.getType().contains("Gremlin");
+                            && !e.getType().contains("Knight") && !e.getType().contains("Gremlin");
                     var notHero = !e.getType().contains("Priestess") && !e.getType().contains("Warrior")
                             && !e.getType().contains("Thief");
                     var notPotion = !e.getType().contains("Potion");

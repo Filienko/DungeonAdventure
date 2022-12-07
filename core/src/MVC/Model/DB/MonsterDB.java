@@ -31,7 +31,7 @@ public class MonsterDB extends SuperMonsterDB
         {
             return createMonster(2,theHero);
         }
-        else if (monsterType.contentEquals("Elf"))
+        else if (monsterType.contentEquals("Knight"))
         {
             return createMonster(3,theHero);
         }
@@ -84,9 +84,9 @@ public class MonsterDB extends SuperMonsterDB
         String gremlinQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
                 ") VALUES (0,3,'Gremlin',1,3,0,0,0,0)";
-        String elfQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
+        String knightQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,3,'Elf',1,5,0,0,0,0)";
+                ") VALUES (0,3,'Knight',1,5,0,0,0,0)";
         String ratsQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
                 ") VALUES (0,1,'Swarm of Rats',1,7,0,0,0,0)";
@@ -98,7 +98,7 @@ public class MonsterDB extends SuperMonsterDB
 
             rv = stmt.executeUpdate(gremlinQuery);
 
-            rv = stmt.executeUpdate(elfQuery);
+            rv = stmt.executeUpdate(knightQuery);
 
             rv = stmt.executeUpdate(ratsQuery);
 
