@@ -43,7 +43,9 @@ public abstract class Hero extends DungeonCharacter
     private boolean myDownStatus;
     private boolean myLeftStatus;
     private boolean myRightStatus;
-    private long initiatedFrame;
+    private boolean myAttackStatus;
+    private long myInitiatedFrame;
+    private long myAttackFrameEnd;
 
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -72,7 +74,8 @@ public abstract class Hero extends DungeonCharacter
         myDownStatus = false;
         myLeftStatus = false;
         myRightStatus = false;
-        initiatedFrame = 0;
+        myInitiatedFrame = 0;
+        myAttackFrameEnd = 0;
     }
 
     /**
@@ -97,8 +100,22 @@ public abstract class Hero extends DungeonCharacter
     public abstract int special();
 
     @Override
+    public void update()
+    {
+        super.update();
+        if(getCurrentFrame()==myAttackFrameEnd)
+        {
+            myAttackStatus = false;
+        }
+
+        incrementCurrentFrame();
+    }
+
+    @Override
     public int attack()
     {
+
+        myAttackStatus = true;
         return 1;
     }
 
@@ -131,6 +148,8 @@ public abstract class Hero extends DungeonCharacter
         }
 
         setVelocity(newVelocity);
+        setMyPreviousPos(getMyPos());
+        updateMyPos(getVelocity());
     }
 
     //changed visibility of the following potions/pillars methods to public (were protected)
@@ -206,6 +225,16 @@ public abstract class Hero extends DungeonCharacter
         myName = theName;
     }
 
+    public boolean isAttackStatus()
+    {
+        return myAttackStatus;
+    }
+
+    public void setAttackStatus(final boolean theAttackStatus)
+    {
+        myAttackStatus = theAttackStatus;
+    }
+
     public void setUp(final boolean theUpStatus) { myUpStatus = theUpStatus; }
 
     public void setDown(final boolean theDownStatus) { myDownStatus = theDownStatus; }
@@ -213,23 +242,6 @@ public abstract class Hero extends DungeonCharacter
     public void setLeft(final boolean theLeftStatus) { myLeftStatus = theLeftStatus; }
 
     public void setRight(final boolean theRightStatus) { myRightStatus = theRightStatus; }
-
-    /**
-     * Method that returns details about the Hero.
-     * @return A String that lists the Hero's name, what type of Hero it is,
-     * the Hero's hero status, and the Potions and Pillars in its inventory.
-     */
-    @Override
-    public String toString()
-    {
-        return "Name: " + myName +
-                " {" +
-                "myCharacterType + " + myCharacterType +
-                ", Hero status = " + MY_HERO_STATUS +
-                ", Potions = '" + myPotions.toString() + '\'' +
-                ", Pillars = " + myPillars +
-                '}';
-    }
 
     /**
      * This method returns a String describing the type of Hero it is.
@@ -249,5 +261,22 @@ public abstract class Hero extends DungeonCharacter
     public boolean getHeroStatus()
     {
         return MY_HERO_STATUS;
+    }
+
+    /**
+     * Method that returns details about the Hero.
+     * @return A String that lists the Hero's name, what type of Hero it is,
+     * the Hero's hero status, and the Potions and Pillars in its inventory.
+     */
+    @Override
+    public String toString()
+    {
+        return "Name: " + myName +
+                " {" +
+                "myCharacterType + " + myCharacterType +
+                ", Hero status = " + MY_HERO_STATUS +
+                ", Potions = '" + myPotions.toString() + '\'' +
+                ", Pillars = " + myPillars +
+                '}';
     }
 }

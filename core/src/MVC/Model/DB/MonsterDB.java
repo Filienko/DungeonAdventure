@@ -65,7 +65,10 @@ public class MonsterDB extends SuperMonsterDB
                 "myY REAL DEFAULT 0.0, " +
                 "myVelocityX REAL DEFAULT 0.0, " +
                 "myVelocityY REAL DEFAULT 0.0," +
-                "UNIQUE(myHero,myCharacterType,myHitPoints,myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY))";
+                "myDimensionX REAL DEFAULT 1.0, " +
+                "myDimensionY REAL DEFAULT 1.0," +
+                "UNIQUE(myHero,myCharacterType,myHitPoints,myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY," +
+                "myDimensionX,myDimensionY))";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
@@ -79,17 +82,17 @@ public class MonsterDB extends SuperMonsterDB
 
         //next insert three rows of data
         String ogreQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
-                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,5,'Ogre',2,2,0,0,0,0)";
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
+                ") VALUES (0,5,'Ogre',2,2,0,0,0,0,96,96)";
         String gremlinQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
-                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,3,'Gremlin',1,3,0,0,0,0)";
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
+                ") VALUES (0,3,'Gremlin',1,3,0,0,0,0,64,64)";
         String knightQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
-                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,3,'Knight',1,5,0,0,0,0)";
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
+                ") VALUES (0,3,'Knight',1,5,0,0,0,0,64,64)";
         String ratsQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
-                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY" +
-                ") VALUES (0,1,'Swarm of Rats',1,7,0,0,0,0)";
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
+                ") VALUES (0,1,'Swarm of Rats',1,7,0,0,0,0,16,16)";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
@@ -125,6 +128,8 @@ public class MonsterDB extends SuperMonsterDB
         float myY = 0;
         float velocityX = 0;
         float velocityY = 0;
+        float dimensionX = 0;
+        float dimensionY = 0;
 
         try ( Connection conn = myDS.getConnection();
               Statement stmt = conn.createStatement(); ) {
@@ -142,10 +147,14 @@ public class MonsterDB extends SuperMonsterDB
             myY = (Float.parseFloat(rs.getString( "myY" )));
             velocityX = (Float.parseFloat(rs.getString( "myVelocityX" )));
             velocityY = (Float.parseFloat(rs.getString( "myVelocityY" )));
+            dimensionX = (Float.parseFloat(rs.getString( "myDimensionX" )));
+            dimensionY = (Float.parseFloat(rs.getString( "myDimensionY" )));
+
         } catch ( SQLException e ) {
             e.printStackTrace();
             System.exit( 0 );
         }
-        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY), myHero, myEntityFactory);
+        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY), myHero,
+                new Vec2(dimensionX,dimensionY), myEntityFactory);
         }
 }

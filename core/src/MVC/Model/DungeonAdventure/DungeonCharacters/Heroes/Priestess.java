@@ -1,6 +1,5 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Healable;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
@@ -13,7 +12,7 @@ public class Priestess extends Hero implements Healable
     /**
      * Maximum number of hit points the Priestess can heal.
      */
-    private static final int MY_MAX_HEAL = 2;
+    private static final int MY_MAX_HEAL = 3;
 
     /**
      * Priestess constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,

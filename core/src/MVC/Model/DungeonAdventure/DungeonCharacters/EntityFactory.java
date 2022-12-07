@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class EntityFactory
 {
@@ -236,15 +237,32 @@ public class EntityFactory
 
     public List<Monster> generateMonsters(final int theN)
     {
+        var ran = new Random().nextDouble();
         var arr = new ArrayList<Monster>();
 
-        for (int i = 0; i < theN; i++)
+        if(ran <= 0.25)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                arr.add(generateRats());
+            }
+        }
+        else if(ran <= 0.50)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                arr.add(generateGremlin());
+            }
+        }
+        else if(ran <= 0.75)
+        {
+            arr.add(generateKnight());
+        }
+        else
         {
             arr.add(generateOgre());
-            arr.add(generateGremlin());
-            arr.add(generateKnight());
-            arr.add(generateRats());
         }
+
         return arr;
     }
 
