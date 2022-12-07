@@ -47,6 +47,8 @@ public abstract class Hero extends DungeonCharacter
     private long myInitiatedFrame;
     private long myAttackFrameEnd;
 
+    private Vec2 myFacing;
+
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, velocity, Potions in inventory, and Pillars in
@@ -76,6 +78,7 @@ public abstract class Hero extends DungeonCharacter
         myRightStatus = false;
         myInitiatedFrame = 0;
         myAttackFrameEnd = 0;
+        myFacing = new Vec2(0, 1);
     }
 
     /**
@@ -119,7 +122,6 @@ public abstract class Hero extends DungeonCharacter
         return 1;
     }
 
-    @Override
     public void movement()
     {
         Vec2 newVelocity = new Vec2();
@@ -279,4 +281,9 @@ public abstract class Hero extends DungeonCharacter
                 ", Pillars = " + myPillars +
                 '}';
     }
+    
+    public Vec2 getFacing() { return myFacing; }
+
+    public boolean getAttackStatus() { return myAttackStatus; }
+
 }

@@ -80,6 +80,10 @@ public class SceneGame extends Scene
         if (!myPaused)
         {
             myEntityFactory.update();
+            if (myHero.getHitPoints() > 0)
+            {
+                animation();
+            }
             camera();
             myCurrentFrame++;
         }
@@ -93,6 +97,63 @@ public class SceneGame extends Scene
 
         myRenderer.getCamera().position.x = playerRoom.getMyX() * 1216 + 608;
         myRenderer.getCamera().position.y = playerRoom.getMyY() * 704 + 352;
+    }
+
+    private void animation()
+    {
+        // Build the animation name for the player based on direction and action
+        String animationName = buildAnimationName();
+
+        // Set the horizontal scale of the animation
+        if (myHero.getFacing().getMyX() != 0)
+        {
+            myHero.getMyAnimation().getSprite().setScale(myHero.getFacing().getMyX(), 1);
+        }
+        else
+        {
+            myHero.getMyAnimation().getSprite().setScale(1, 1);
+        }
+
+        // if the build animation is different from the current then replace the current
+        if (!myHero.getMyAnimation().getName().equals(animationName))
+        {
+            myHero.setMyAnimation(myRenderer.getAssets().getAnimation(animationName));
+        }
+    }
+
+    private String buildAnimationName()
+    {
+        StringBuilder animationName = new StringBuilder("");
+        if (myHero.getAttackStatus())
+        {
+            animationName.append("attack");
+        }
+        else if (myHero.getVelocity().getMyX() != 0 || myHero.getVelocity().getMyY() != 0)
+        {
+            animationName.append("run");
+        }
+        else
+        {
+            animationName.append("stand");
+        }
+
+        if (myHero.getFacing().getMyX() != 0)
+        {
+            animationName.append("Right");
+        }
+        else
+        {
+            if (myHero.getFacing().getMyY() == 1)
+            {
+                animationName.append("Down");
+            }
+            else
+            {
+                animationName.append("Up");
+            }
+        }
+
+        return animationName.toString();
     }
 
     public void render()

@@ -94,6 +94,8 @@ public class Sword extends Entity implements ICollidable
         }
         else if (getCurrentFrame() < myLifeSpan)
         {
+
+            movement();
             collide();
             incrementCurrentFrame();
         }
@@ -130,4 +132,6 @@ public class Sword extends Entity implements ICollidable
             }
         }
     }
+
+    private void movement() {}
 }
