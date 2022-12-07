@@ -19,8 +19,8 @@ public abstract class Item extends Entity
 
     protected Item(final String theType, final EntityFactory theEntityFactory)
     {
-        super(new Vec2((new Random()).nextInt(1, 20),
-                (new Random()).nextInt(1, 12)),theType,new Vec2(), theEntityFactory);
+        super(new Vec2(64, 64), new Vec2((new Random()).nextInt(1, 20),
+                (new Random()).nextInt(1, 12)), theType,  theEntityFactory);
         myType = theType;
         myLocation = new Vec2((new Random()).nextInt(1, 20),
                 (new Random()).nextInt(1, 12));

@@ -61,7 +61,9 @@ public abstract class Hero extends DungeonCharacter
     public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theDamage,
                 final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed, thePos, theVelocity, theEntityFactory);
+        super("Hero", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
+                new Vec2(48, 48), thePos, theVelocity, theEntityFactory);
+
         myName = theName;
         myCharacterType = theCharacterType;
         myPotions = new ArrayList<>();

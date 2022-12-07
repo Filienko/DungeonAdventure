@@ -18,7 +18,7 @@ public class Door extends Entity
 
     public Door(final EntityFactory theEntityFactory)
     {
-        super(new Vec2(),"Door", new Vec2(), theEntityFactory);
+        super(new Vec2(64, 64), new Vec2(),"Door", theEntityFactory);
         myLocation = new Vec2();
         myMonsterCounter = 4;
         myEntityFactory = theEntityFactory;
@@ -28,7 +28,7 @@ public class Door extends Entity
     public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         //TODO:assign correct bounding boxes to all of the Entities inheriting from Entity
-        super(theLocation,"Door",theLocation.add(new Vec2(-1,-1)), theEntityFactory);
+        super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
         myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;
         myEntityFactory = theEntityFactory;
@@ -37,7 +37,7 @@ public class Door extends Entity
 
     public Door(final int theRoomNumber,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        super(theLocation,"Door",theLocation.add(new Vec2(-1,-1)), theEntityFactory);
+        super(new Vec2(64, 64),theLocation,"Door", theEntityFactory);
         myRoomNumber = theRoomNumber;
         myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;

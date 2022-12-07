@@ -46,8 +46,10 @@ public class Monster extends DungeonCharacter
     public Monster(final String theMonsterType, final int theHitPoints, final int theDamage, final int theMaxSpeed,
                   final Vec2 thePos, final Vec2 theVelocity, final Hero theHero, final EntityFactory theEntityFactory)
     {
-        super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed, thePos, theVelocity, theEntityFactory);
-        myMonsterType = theMonsterType;
+        super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
+                new Vec2(64, 64), thePos, theVelocity, theEntityFactory);
+
+        myMonsterType = myMonsterType;
         myHero = theHero;
     }
 

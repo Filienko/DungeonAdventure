@@ -60,9 +60,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      * @param theVelocity The character's velocity.
      */
     DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints,
-                     final int theDamage, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
+                     final int theDamage, final int theMaxSpeed, final Vec2 theSize, final Vec2 thePos,
+                     final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super(new Vec2(),theCharacterType, new Vec2(), theEntityFactory);
+        super(theSize, thePos,theCharacterType, theEntityFactory);
         myCharacterType = theCharacterType;
         myHeroStatus = theHeroStatus;
         myDamage = theDamage;
@@ -90,8 +91,8 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
 
     public void die()
     {
-        setBoundingBox(new Vec2());
-        setMyAnimation(new Animation("deathAnimation",new Texture("path?"),15,4));
+        setMySize(new Vec2(0, 0));
+        setMyAnimation(myEntityFactory.getAssets().getAnimation("enemyDeath"));
     }
 
     /**

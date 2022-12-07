@@ -27,21 +27,20 @@ public class Sword extends Entity implements ICollidable
 
     private int damage; //how much damage it does?
 
-    private Sword(final Vec2 theBoundingBox, final EntityFactory theEntityFactory, final Hero theHero)
+    private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
-        super(new Vec2(), "Sword", new Vec2(), theEntityFactory);
+        super(new Vec2(48, 48), new Vec2(), "Sword", theEntityFactory);
         myEntityFactory = theEntityFactory;
         myLifeSpan = 15;
         setCurrentFrame(0);
         myHero = theHero;
-        myBoundingBox = theBoundingBox;
     }
 
     public static Sword getInstance(final Vec2 theBoundingBox, final EntityFactory theEntityFactory, final Hero theHero)
     {
         if (mySword == null)
         {
-            mySword = new Sword(theBoundingBox, theEntityFactory, theHero);
+            mySword = new Sword(theEntityFactory, theHero);
         }
         return mySword;
     }
