@@ -55,34 +55,6 @@ public class Sword extends Entity implements ICollidable
 
     public int getMyLifeSpan() { return myLifeSpan; }
 
-    public void attack(final DungeonCharacter theOpponent)
-    {
-        if(theOpponent instanceof Thief)
-        {
-            attackThief(theOpponent);
-        }
-        else if(theOpponent instanceof Warrior)
-        {
-            attackWarrior(theOpponent);
-        }
-        else if(theOpponent instanceof Priestess)
-        {
-            attackPriestess(theOpponent);
-        }
-    }
-
-    private void attackPriestess(final DungeonCharacter theOpponent)
-    {
-    }
-
-    private void attackWarrior(final DungeonCharacter theOpponent)
-    {
-    }
-
-    private void attackThief(final DungeonCharacter theOpponent)
-    {
-    }
-
     @Override
     public void update()
     {
@@ -123,10 +95,17 @@ public class Sword extends Entity implements ICollidable
                     {
                         //Potentially add sound
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
+                        var v = e.getMyPos().minus(this.getMyPos());
+                        var normalizedV = v.multiply(v.quickInverseMagnitude());
+                        e.setVelocity(normalizedV.multiply((float) -1.5),10);
                         e.setInvincibility(true, lifespanLeft);
                     }
                 }
             }
+            //so i think it can take place in the same spot as invincibility logic,
+            // we just need to set the vector of the enemy to a vector away from the sword,
+            // so like take the vector between the enemy and the sword and set it to the reverse of that,
+            // then while the enemy is knockback we dont update its vector
         }
     }
 
