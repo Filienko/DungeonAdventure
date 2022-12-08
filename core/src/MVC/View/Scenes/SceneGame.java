@@ -145,11 +145,11 @@ public class SceneGame extends Scene
         {
             if (myHero.getFacing().getMyY() == 1)
             {
-                animationName.append("Down");
+                animationName.append("Up");
             }
             else
             {
-                animationName.append("Up");
+                animationName.append("Down");
             }
         }
 
