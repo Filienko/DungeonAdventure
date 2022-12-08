@@ -400,7 +400,10 @@ public class EntityFactory
     //added this method
     public Sword generateSword()
 {
-        return Sword.getInstance(new Vec2(), this, myHero);
+        var sword = Sword.getInstance(this, myHero);
+        myEntities.add(sword);
+        myEntities.add(generateGremlin());
+        return sword;
 }
 
     public ArrayList<Entity> getEntities() { return myEntities; }

@@ -45,7 +45,6 @@ public abstract class Hero extends DungeonCharacter
     private boolean myRightStatus;
     private boolean myAttackStatus;
     private long myInitiatedFrame;
-    private long myAttackFrameEnd;
     private Vec2 myFacing;
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -75,7 +74,6 @@ public abstract class Hero extends DungeonCharacter
         myLeftStatus = false;
         myRightStatus = false;
         myInitiatedFrame = 0;
-        myAttackFrameEnd = 0;
         myFacing = new Vec2(0, 1);
     }
 
@@ -104,18 +102,13 @@ public abstract class Hero extends DungeonCharacter
     public void update()
     {
         super.update();
-        if(getCurrentFrame()==myAttackFrameEnd)
-        {
-            myAttackStatus = false;
-        }
         incrementCurrentFrame();
     }
 
     @Override
     public int attack()
     {
-
-        myAttackStatus = true;
+        myWeapon = getMyEntityFactory().generateSword();
         return 1;
     }
 
@@ -180,7 +173,6 @@ public abstract class Hero extends DungeonCharacter
             myFacing.setMyX(0);
         }
     }
-
 
     /**
      * This method sets the Potions in the Hero's inventory.
