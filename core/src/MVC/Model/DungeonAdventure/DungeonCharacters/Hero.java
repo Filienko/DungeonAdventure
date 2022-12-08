@@ -46,9 +46,7 @@ public abstract class Hero extends DungeonCharacter
     private boolean myAttackStatus;
     private long myInitiatedFrame;
     private long myAttackFrameEnd;
-
     private Vec2 myFacing;
-
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, velocity, Potions in inventory, and Pillars in
@@ -125,30 +123,33 @@ public abstract class Hero extends DungeonCharacter
     public void movement()
     {
         Vec2 newVelocity = new Vec2();
+        int y = 0;
+        int x = 0;
 
         if (myUpStatus && !myDownStatus)
         {
+            y=1;
             newVelocity.setMyY(1 * getMaxSpeed());
-
         }
         else if (!myUpStatus && myDownStatus)
         {
+            y=-1;
             newVelocity.setMyX(0);
             newVelocity.setMyY(-1 * getMaxSpeed());
-
         }
 
         if (myLeftStatus && !myRightStatus)
         {
+            x=-1;
             newVelocity.setMyX(-1 * getMaxSpeed());
-
         }
         else if (!myLeftStatus && myRightStatus)
         {
+            x = 1;
             newVelocity.setMyX(1 * getMaxSpeed());
-
         }
 
+        setFacing(new Vec2(x,y));
         setVelocity(newVelocity);
         setMyPreviousPos(getMyPos());
         updateMyPos(getVelocity());
@@ -283,6 +284,11 @@ public abstract class Hero extends DungeonCharacter
     }
     
     public Vec2 getFacing() { return myFacing; }
+
+    public void setFacing(final Vec2 theFacing)
+    {
+        myFacing = theFacing;
+    }
 
     public boolean getAttackStatus() { return myAttackStatus; }
 

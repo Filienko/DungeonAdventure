@@ -202,16 +202,6 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         myVelocity = theVelocity;
     }
 
-    public EntityFactory getMyEntityFactory()
-    {
-        return myEntityFactory;
-    }
-
-    public void setMyEntityFactory(final EntityFactory theEntityFactory)
-    {
-        myEntityFactory = theEntityFactory;
-    }
-
     public boolean isInvincibility()
     {
         return myInvincibility;

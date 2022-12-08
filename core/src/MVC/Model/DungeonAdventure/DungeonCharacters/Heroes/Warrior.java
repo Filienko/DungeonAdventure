@@ -9,7 +9,6 @@ import java.util.Random;
 
 public class Warrior extends Hero
 {
-    private final EntityFactory myEntityFactory;
 
     /**
      * Warrior constructor that calls its parent constructor to initialize the Warrior's name, character type, hero status, hit points,
@@ -18,7 +17,6 @@ public class Warrior extends Hero
     public Warrior(final EntityFactory theEntityFactory)
     {
         super("Warrior","Warrior",  10, 1, 5, new Vec2(), new Vec2(), theEntityFactory);
-        myEntityFactory = theEntityFactory;
     }
 
     /**
@@ -30,7 +28,6 @@ public class Warrior extends Hero
     public Warrior(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
         super(theName,"Warrior",10, 1,  5, thePos, new Vec2(), theEntityFactory);
-        myEntityFactory = theEntityFactory;
     }
 
     /**

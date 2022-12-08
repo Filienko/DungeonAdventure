@@ -68,10 +68,8 @@ class WarriorTest
     {
         final Warrior myWarrior = new Warrior(new EntityFactory());
 
-        final Thief myThief = new Thief(new EntityFactory());
-
         int damage = myWarrior.special();
 
-        assertTrue(damage < 175 && damage > 75);
+        assertTrue(damage < 4 && damage > 1);
     }
 }

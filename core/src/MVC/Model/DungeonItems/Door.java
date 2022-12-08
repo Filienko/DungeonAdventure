@@ -8,10 +8,6 @@ public class Door extends Entity
 {
     private int myRoomNumber;
 
-    private final EntityFactory myEntityFactory;
-
-    private long myCurrentFrame;
-
     private Vec2 myLocation;
 
     private int myMonsterCounter;
@@ -21,8 +17,6 @@ public class Door extends Entity
         super(new Vec2(64, 64), new Vec2(),"Door", theEntityFactory);
         myLocation = new Vec2();
         myMonsterCounter = 4;
-        myEntityFactory = theEntityFactory;
-        myCurrentFrame = 0;
     }
 
     public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
@@ -31,8 +25,7 @@ public class Door extends Entity
         super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
         myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;
-        myEntityFactory = theEntityFactory;
-        myCurrentFrame = 0;
+
     }
 
     public Door(final int theRoomNumber,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
@@ -41,8 +34,6 @@ public class Door extends Entity
         myRoomNumber = theRoomNumber;
         myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;
-        myEntityFactory = theEntityFactory;
-        myCurrentFrame = 0;
     }
 
     @Override
@@ -52,9 +43,6 @@ public class Door extends Entity
         {
             destroy();
         }
-        myCurrentFrame++;
-
-        //incrementCurrentFrame();
     }
 
     public Vec2 getMyLocation()
