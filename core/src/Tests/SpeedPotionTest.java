@@ -15,7 +15,7 @@ class SpeedPotionTest
     {
         SpeedPotion mySP = new SpeedPotion(new EntityFactory());
 
-        assertEquals(mySP.getStrength(), 5);
+        assertEquals(mySP.getStrength(), 3);
     }
 
     @Test

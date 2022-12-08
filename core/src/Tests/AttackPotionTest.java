@@ -35,7 +35,11 @@ class AttackPotionTest
 
         int damage = myWarrior.getDamage();
 
+        System.out.println(damage);
+
         myAP.activate(myWarrior);
+
+        System.out.println(myWarrior.getDamage());
 
         assertEquals(myWarrior.getDamage(), damage + 10);
 

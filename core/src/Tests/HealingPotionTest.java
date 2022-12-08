@@ -39,7 +39,7 @@ class HealingPotionTest
 
         myHP.activate(myPriestess);
 
-        assertEquals(myPriestess.getHitPoints(), HP + 10);
+        assertEquals(myPriestess.getHitPoints(), Math.min(10,(myPriestess.getHitPoints() +  10)));
     }
 
     @Test

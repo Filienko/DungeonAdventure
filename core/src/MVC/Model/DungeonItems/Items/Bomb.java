@@ -37,7 +37,7 @@ public class Bomb extends Item
      */
     public void activate(final Hero theHero)
     {
-        theHero.setHitPoints(theHero.getHitPoints() / 2);
+        theHero.setHitPoints(Math.max(0, theHero.getHitPoints() / 2));
     }
 
     @Override

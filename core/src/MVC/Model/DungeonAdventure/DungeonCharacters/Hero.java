@@ -86,7 +86,8 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         myCharacterType = theCharacterType;
         myPotions = new ArrayList<>();
         myPillars = 0;
-        myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+        //myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
+        myHitPoints = theHitPoints;
         myEntityFactory = theEntityFactory;
 
         myUpStatus = false;
@@ -288,7 +289,7 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     {
         return "Name: " + myName +
                 " {" +
-                "myCharacterType + " + myCharacterType +
+                "myCharacterType = " + myCharacterType +
                 ", Hero status = " + MY_HERO_STATUS +
                 ", Potions = '" + myPotions.toString() + '\'' +
                 ", Pillars = " + myPillars +
@@ -315,15 +316,15 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         return MY_HERO_STATUS;
     }
 
-    /**
-     * This method retrieves the Hero's hit points.
-     * @return The number of hit points a Hero has, represented by an int.
-     */
-    @Override
-    public int getHitPoints()
-    {
-        return myHitPoints;
-    }
+//    /**
+//     * This method retrieves the Hero's hit points.
+//     * @return The number of hit points a Hero has, represented by an int.
+//     */
+//    @Override
+//    public int getHitPoints()
+//    {
+//        return myHitPoints;
+//    }
 
     /**
      * Analyzes whether the collision occurred between two objects and performs certain associated logic

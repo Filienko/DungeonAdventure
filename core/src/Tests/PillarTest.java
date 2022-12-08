@@ -14,11 +14,11 @@ class PillarTest
     {
         Pillar myPillar = new Pillar("Inheritance", new EntityFactory());
 
-        assertTrue(myPillar.getType().equals("Inheritance"));
+        assertTrue(myPillar.getName().equals("Inheritance"));
     }
 
     @Test
-    void testGetMyName()
+    void testGetName()
     {
         Pillar myPillar = new Pillar("Abstraction", new EntityFactory());
 

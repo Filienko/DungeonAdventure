@@ -27,11 +27,15 @@ class BombTest
 
         Thief myThief = new Thief(new EntityFactory());
 
-        int HP = myThief.getHitPoints();
+        int hpExpected = myThief.getHitPoints() / 2;
+
+        //System.out.println(hpExpected);
 
         myBomb.activate(myThief);
 
-        assertEquals(myThief.getHitPoints(), HP / 2);
+        //System.out.println(myThief.getHitPoints());
+
+        assertEquals(myThief.getHitPoints(), hpExpected);
 
     }
 

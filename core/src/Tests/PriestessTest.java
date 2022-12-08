@@ -70,7 +70,6 @@ class PriestessTest
     {
         final Priestess myPriestess = new Priestess("P", new Vec2(), new EntityFactory());
 
-        assertEquals("Name: P {myCharacterType = Priestess, \n Hero status = true, \n Potions = [], " +
-                "\n Pillars = []}", myPriestess.toString());
+        assertEquals("Name: P {myCharacterType = Priestess, Hero status = true, Potions = '[]', Pillars = 0}", myPriestess.toString());
     }
 }
