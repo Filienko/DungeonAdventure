@@ -5,23 +5,31 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class Pillar extends Item
 {
-    private final String myName;
+    private String myName; //should this be changed back to final?
 
     public Pillar(final String theName, final EntityFactory theEntityFactory)
     {
         super("Pillar", theEntityFactory);
-        myName = theName;
+        setName(theName);
     }
 
     public Pillar(final String theName, final boolean theActive, final EntityFactory theEntityFactory) //what is theActive field for?
     {
         super("Pillar", theEntityFactory);
-        myName = theName;
+        setName(theName);
     }
 
     public String getName()
     {
         return myName;
+    }
+
+    private void setName(final String theName)
+    {
+        if (theName != null)
+        {
+            myName = theName;
+        }
     }
 
     @Override

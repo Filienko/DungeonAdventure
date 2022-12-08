@@ -25,12 +25,12 @@ public class Monster extends DungeonCharacter
     /**
      * The specific Monster type.
      */
-    private final String myMonsterType;
+    private String myMonsterType; //should this be changed back to final?
 
     /**
      * The specific Monster type.
      */
-    private final Hero myHero;
+    private Hero myHero; //should this be changed back to final?
 
     /**
      * Monster constructor that calls its parent constructor to initialize the Monster's name, character type, hero status, hit points,
@@ -50,8 +50,8 @@ public class Monster extends DungeonCharacter
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
 
-        myMonsterType = theMonsterType;
-        myHero = theHero;
+        setMonsterType(theMonsterType);
+        setHero(theHero);
     }
 
     @Override
@@ -155,6 +155,22 @@ public class Monster extends DungeonCharacter
     public String getMonsterType()
     {
         return myMonsterType;
+    }
+
+    private void setMonsterType(final String theMonsterType)
+    {
+        if (theMonsterType != null)
+        {
+            myMonsterType = theMonsterType;
+        }
+    }
+
+    private void setHero(final Hero theHero)
+    {
+        if (theHero != null)
+        {
+            myHero = theHero;
+        }
     }
 
     @Override

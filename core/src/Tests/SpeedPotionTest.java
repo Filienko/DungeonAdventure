@@ -15,7 +15,7 @@ class SpeedPotionTest
     {
         SpeedPotion mySP = new SpeedPotion(new EntityFactory());
 
-        assertEquals(mySP.getStrength(), 3);
+        assertEquals(mySP.getStrength(), 2);
     }
 
     @Test
@@ -29,7 +29,7 @@ class SpeedPotionTest
     @Test
     void testItemBehavior()
     {
-        SpeedPotion mySP = new SpeedPotion(10, new EntityFactory());
+        SpeedPotion mySP = new SpeedPotion(2, new EntityFactory());
 
         Warrior myWarrior = new Warrior(new EntityFactory());
 
@@ -37,7 +37,7 @@ class SpeedPotionTest
 
         mySP.activate(myWarrior);
 
-        assertEquals(myWarrior.getMaxSpeed(), oldSpeed + 10);
+        assertEquals(myWarrior.getMaxSpeed(), oldSpeed + 2);
 
     }
 

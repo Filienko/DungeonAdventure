@@ -18,7 +18,7 @@ public class Pit extends Item
     public Pit(final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super("Pit", theEntityFactory);
-        myLocation = theLocation;
+        setMyLocation(theLocation);
         myDamageFall = 15;
     }
 
@@ -36,7 +36,10 @@ public class Pit extends Item
 
     public void setMyLocation(final Vec2 theLocation)
     {
-        myLocation = theLocation;
+        if (theLocation != null)
+        {
+            myLocation = theLocation;
+        }
     }
 
     public int getDamageFall()

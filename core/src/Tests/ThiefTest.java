@@ -45,7 +45,7 @@ class ThiefTest
     }
 
     /**
-     * Test method for {@link Thief#surpriseAttack(DungeonCharacter)} //why isnt link working?
+     * Test method for {@link Thief#attack()}
      */
     @Test
     void testAttack()
@@ -55,12 +55,12 @@ class ThiefTest
     }
 
     /**
-     * Test method for {@link Thief#special(DungeonCharacter)}
+     * Test method for {@link Thief#special()}
      */
     @Test
     void testSpecial()
     {
-        //finish surpriseAttack() method and then write these tests
+        //finish special() method and then write these tests
     }
 
     /**

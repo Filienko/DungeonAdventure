@@ -10,7 +10,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     /**
      * The specific character type.
      */
-    private final String myCharacterType;
+    private String myCharacterType; //should this be changed back to final?
 
     /**
      * Hero status that describes if the character is a Hero or a Monster.
@@ -61,13 +61,13 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                      final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
         super(theSize, thePos,theCharacterType, theEntityFactory);
-        myCharacterType = theCharacterType;
-        myHeroStatus = theHeroStatus;
-        myDamage = theDamage;
-        myHitPoints = theHitPoints;
-        myMaxSpeed = theMaxSpeed;
+        setCharacterType(theCharacterType);
+        setDamage(theDamage);
+        setHitPoints(theHitPoints);
+        setMaxSpeed(theMaxSpeed);
         setMyPos(thePos);
-        myVelocity = theVelocity;
+        setVelocity(theVelocity);
+        myHeroStatus = theHeroStatus;
         initiatedFrame = 0;
         myKnockback = false;
     }
@@ -131,13 +131,21 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public String getCharacterType() { return myCharacterType; }
 
+    protected void setCharacterType(final String theCharacterType)
+    {
+        if (theCharacterType != null)
+        {
+            myCharacterType = theCharacterType;
+        }
+    }
+
     /**
      * This method tells whether the character is a Hero.
      * @return The Character's hero status - True if the character is a Hero, false if it is a Monster.
      */
     public boolean getHeroStatus()
     {
-        return this.myHeroStatus;
+        return myHeroStatus;
     }
 
     /**
@@ -146,7 +154,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public int getHitPoints()
     {
-        return this.myHitPoints;
+        return myHitPoints;
     }
 
     /**
@@ -155,7 +163,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setHitPoints(final int theHitPoints)
     {
-        this.myHitPoints = theHitPoints;
+        if (theHitPoints >= 0 && theHitPoints <=10)
+        {
+            myHitPoints = theHitPoints;
+        }
     }
 
     /**
@@ -173,7 +184,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setDamage(final int theDamage)
     {
-        this.myDamage = theDamage;
+        if (theDamage >= 0 && theDamage <=10)
+        {
+            myDamage = theDamage;
+        }
     }
 
     /**
@@ -191,7 +205,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setMaxSpeed(final int theMaxSpeed)
     {
-        myMaxSpeed = theMaxSpeed;
+        if (theMaxSpeed <=10 && theMaxSpeed >= 1) //should max speed be 10?
+        {
+            myMaxSpeed = theMaxSpeed;
+        }
     }
 
     /**
@@ -210,7 +227,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setVelocity(final Vec2 theVelocity)
     {
-        myVelocity = theVelocity;
+        if (theVelocity != null)
+        {
+            myVelocity = theVelocity;
+        }
     }
 
     /**
@@ -220,9 +240,12 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setVelocity(final Vec2 theVelocity, final long theFramesLong)
     {
-        myVelocity = theVelocity;
-        setKnockback(true);
-        setKnockbackEndFrame(getCurrentFrame()+theFramesLong);
+        if (theVelocity != null && theFramesLong >= 0) //should these be checked in a single if?
+        {
+            myVelocity = theVelocity;
+            setKnockback(true); //should this line and next line be moved out of if statement
+            setKnockbackEndFrame(getCurrentFrame()+theFramesLong);
+        }
     }
 
     public boolean isKnockback()
@@ -242,7 +265,9 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
 
     public void setKnockbackEndFrame(final long theKnockbackEndFrame)
     {
-        myKnockbackEndFrame = theKnockbackEndFrame;
+        if (theKnockbackEndFrame >= 0) { // >= 0 or > 0
+            myKnockbackEndFrame = theKnockbackEndFrame;
+        }
     }
 
     public boolean isInvincibility()
@@ -257,8 +282,13 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
 
     public void setInvincibility(final boolean theInvincibility, final long theFrames)
     {
-        myInvincibility = theInvincibility;
-        myInvincibilityEndFrame += theFrames;
+        myInvincibility = theInvincibility; //should this be moved into if statement
+
+        if(theFrames >=0)
+        {
+            myInvincibilityEndFrame += theFrames;
+        }
+
     }
 
     public long getInvincibilityEndFrame()

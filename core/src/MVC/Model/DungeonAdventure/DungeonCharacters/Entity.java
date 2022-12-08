@@ -19,28 +19,31 @@ public abstract class Entity
 
     protected Entity(final Vec2 theSize, final Vec2 thePos, final String theType, final EntityFactory theEntityFactory)
     {
-        myEntityFactory = theEntityFactory; //things that inherit Entity should also keep track of what Entity Factory spawns it
-        mySize = theSize;
-        myPos = thePos;
-        myPreviousPos = thePos;
-        myType = theType;
-        myRotation = 0;
-        myActiveStatus = true;
-        myCurrentFrame = 0;
+        setMyEntityFactory(theEntityFactory); //things that inherit Entity should also keep track of what Entity Factory spawns it
+        setMySize(theSize);
+        setMyPos(thePos);
+        setMyPreviousPos(thePos);
+        if (theType != null && theType.length() > 1)
+        {
+            myType = theType;
+        }
+        setRotation(0);
+        setActiveStatus(true);
+        setCurrentFrame(0);
     }
 
     private Entity(final Vec2 theSize, final boolean theEntityAnimated,
-                   final Animation theAnimation, final EntityFactory theEntityFactory)
+                   final Animation theAnimation, final EntityFactory theEntityFactory) //is this constructor necessary?
     {
-        myEntityFactory = theEntityFactory;
+        setMyEntityFactory(theEntityFactory);
         myPos = new Vec2();
         myPreviousPos = new Vec2();
-        mySize = theSize;
+        setMySize(theSize);
         myEntityAnimated = theEntityAnimated;
-        myAnimation = theAnimation;
+        setMyAnimation(theAnimation);
 
-        myActiveStatus = true;
-        myCurrentFrame = 0;
+        setActiveStatus(true);
+        setCurrentFrame(0);
     }
 
     public abstract void update();
@@ -55,14 +58,20 @@ public abstract class Entity
         return myPos;
     }
 
-    public void setMyPos(Vec2 myPos)
+    public void setMyPos(Vec2 thePos)
     {
-        this.myPos = myPos;
+        if (thePos != null)  //can myPos ever be negative
+        {
+            myPos = thePos;
+        }
     }
 
     public void updateMyPos(final Vec2 theUpdate)
     {
-        myPos = myPos.add(theUpdate);
+        if (theUpdate != null)
+        {
+            myPos = myPos.add(theUpdate);
+        }
     }
 
     public Vec2 getMySize()
@@ -70,16 +79,24 @@ public abstract class Entity
         return mySize;
     }
 
-    public void setMySize(final Vec2 theSize) { mySize = theSize; }
+    public void setMySize(final Vec2 theSize) {
+        if (theSize != null)
+        {
+            mySize = theSize;
+        }
+    }
 
     public Vec2 getMyPreviousPos()
     {
         return myPreviousPos;
     }
 
-    public void setMyPreviousPos(final Vec2 myPreviousPos)
+    public void setMyPreviousPos(final Vec2 thePreviousPos)
     {
-        this.myPreviousPos = myPreviousPos;
+        if (thePreviousPos != null)
+        {
+            myPreviousPos = thePreviousPos;
+        }
     }
 
     public boolean isMyEntityAnimated()
@@ -87,9 +104,9 @@ public abstract class Entity
         return myEntityAnimated;
     }
 
-    public void setMyEntityAnimated(final boolean myEntityAnimated)
+    public void setMyEntityAnimated(final boolean theEntityAnimated)
     {
-        this.myEntityAnimated = myEntityAnimated;
+        myEntityAnimated = theEntityAnimated;
     }
 
     public Animation getMyAnimation()
@@ -99,7 +116,10 @@ public abstract class Entity
 
     public void setMyAnimation(final Animation theAnimation)
     {
-        myAnimation = theAnimation;
+        if (theAnimation != null)
+        {
+            myAnimation = theAnimation;
+        }
     }
 
     public String getType() { return myType; }
@@ -111,7 +131,12 @@ public abstract class Entity
 
     public int getRotation() { return myRotation; }
 
-    public void setRotation(int scale) { myRotation = scale; }
+    public void setRotation(int theScale) {
+        if (theScale >= 0) // can scale be negative?
+        {
+            myRotation = theScale;
+        }
+    }
 
     public void setActiveStatus(final boolean theActiveStatus)
     {
@@ -130,7 +155,10 @@ public abstract class Entity
 
     public void setCurrentFrame(final long theCurrentFrame)
     {
-        myCurrentFrame = theCurrentFrame;
+        if (theCurrentFrame >= 0)
+        {
+            myCurrentFrame = theCurrentFrame;
+        }
     }
 
     public EntityFactory getMyEntityFactory()
@@ -140,6 +168,9 @@ public abstract class Entity
 
     public void setMyEntityFactory(final EntityFactory theEntityFactory)
     {
-        myEntityFactory = theEntityFactory;
+        if (theEntityFactory != null)
+        {
+            myEntityFactory = theEntityFactory;
+        }
     }
 }

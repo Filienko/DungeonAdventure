@@ -73,6 +73,6 @@ class MonsterTest
         final Monster myMonster = new Monster("Ogre", 200, 30, 2, new Vec2(),
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
 
-        assertEquals("Monster {myCharacterType = 'Ogre', Hero status = false, myHitPoints = 200}", myMonster.toString());
+        assertEquals("Monster {myMonsterType = 'Ogre', Hero status = false, myHitPoints = 200}", myMonster.toString());
     }
 }

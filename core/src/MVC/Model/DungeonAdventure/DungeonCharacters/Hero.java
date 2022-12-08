@@ -16,13 +16,12 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The Hero's name that is input by the user.
      */
-
     private String myName;
 
     /**
      * The specific Hero type.
      */
-    private final String myCharacterType;
+    private String myCharacterType; //should this be changed back to final?
 
     /**
      * The Hero's weapon.
@@ -66,8 +65,8 @@ public abstract class Hero extends DungeonCharacter
         super("Hero", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 new Vec2(48, 48), thePos, theVelocity, theEntityFactory);
 
-        myName = theName;
-        myCharacterType = theCharacterType;
+        setName(theName);
+        setCharacterType(theCharacterType);
         myPotions = new ArrayList<>();
         myPillars = 0;
         myUpStatus = false;
@@ -95,7 +94,10 @@ public abstract class Hero extends DungeonCharacter
 
     public void setWeapon(final Sword theWeapon)
     {
-        myWeapon = theWeapon;
+        if (theWeapon != null)
+        {
+            myWeapon = theWeapon;
+        }
     }
 
     public abstract int special();
@@ -114,7 +116,6 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public int attack()
     {
-
         myAttackStatus = true;
         return 1;
     }
@@ -188,7 +189,10 @@ public abstract class Hero extends DungeonCharacter
      */
     public void setPotions(final List<Item> thePotions)
     {
-        myPotions = thePotions;
+        if (thePotions != null && thePotions.size() > 0)
+        {
+            myPotions = thePotions;
+        }
     }
 
     /**
@@ -197,7 +201,10 @@ public abstract class Hero extends DungeonCharacter
      */
     public void addPotion(final Item thePotion)
     {
-        myPotions.add(thePotion);
+        if (thePotion != null)
+        {
+            myPotions.add(thePotion);
+        }
     }
 
     /**
@@ -216,15 +223,6 @@ public abstract class Hero extends DungeonCharacter
     {
         myPillars++;
     }
-
-//    /**
-//     * This method adds a Pillar to the Hero's inventory.
-//     * @param thePillar Pillar to be added into inventory.
-//     */
-//    public void addPillar(final Pillar thePillar)
-//    {
-//        myPillars++;
-//    }
 
     //changed visibility for testing!!! reevaluate if this should be protected (was originally) or public
     /**
@@ -251,7 +249,10 @@ public abstract class Hero extends DungeonCharacter
      */
     private void setName(final String theName)
     {
-        myName = theName;
+        if (theName != null)
+        {
+            myName = theName;
+        }
     }
 
     public boolean isAttackStatus()
@@ -313,7 +314,10 @@ public abstract class Hero extends DungeonCharacter
 
     public void setFacing(final Vec2 theFacing)
     {
-        myFacing = theFacing;
+        if (theFacing != null)
+        {
+            myFacing = theFacing;
+        }
     }
 
     public boolean getAttackStatus() { return myAttackStatus; }

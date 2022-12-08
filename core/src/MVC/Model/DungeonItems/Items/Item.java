@@ -31,6 +31,9 @@ public abstract class Item extends Entity
 
     protected void setMyLocation(final Vec2 theLocation)
     {
-        myLocation = theLocation;
+        if (theLocation != null)
+        {
+            myLocation = theLocation;
+        }
     }
 }

@@ -16,7 +16,7 @@ class HealingPotionTest
         HealingPotion myHP = new HealingPotion(new EntityFactory());
 
         assertEquals(myHP.getType(), "Healing Potion");
-        assertEquals(myHP.getStrength(), 15);
+        assertEquals(myHP.getStrength(), 2);
     }
 
     @Test

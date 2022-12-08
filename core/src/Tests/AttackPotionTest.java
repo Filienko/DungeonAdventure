@@ -15,7 +15,7 @@ class AttackPotionTest
     {
         AttackPotion myAP = new AttackPotion(new EntityFactory());
 
-        assertEquals(myAP.getStrength(), 5);
+        assertEquals(myAP.getStrength(), 2);
     }
 
     @Test

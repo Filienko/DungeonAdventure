@@ -17,7 +17,7 @@ public class Sword extends Entity implements ICollidable
 {
     private static Sword mySword;
 
-    private final EntityFactory myEntityFactory;
+    private EntityFactory myEntityFactory; //should this be made final again? changed for constructor
 
     private final int myLifeSpan;
 
@@ -28,7 +28,7 @@ public class Sword extends Entity implements ICollidable
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), new Vec2(), "Sword", theEntityFactory);
-        myEntityFactory = theEntityFactory;
+        setMyEntityFactory(theEntityFactory);
         myLifeSpan = 15;
         setCurrentFrame(0);
         myHero = theHero;

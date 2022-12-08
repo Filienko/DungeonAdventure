@@ -47,19 +47,25 @@ class PriestessTest
      * Test method for {@link Priestess#(Hero)}. //why is the link not working?
      */
     @Test
-    void testHealHero()
+    void testSpecial()
     {
         final Priestess myPriestess1 = new Priestess(new EntityFactory());
         final Priestess myPriestess2 = new Priestess(new EntityFactory());
 
-        int oldHealth = myPriestess1.getHitPoints();
-        int restoredHealth = myPriestess1.special();
+        int oldHealth = myPriestess2.getHitPoints();
+        int restoredHealth = myPriestess2.special();
+        //myPriestess2.setHitPoints(oldHealth + restoredHealth);
+
+        System.out.println(oldHealth);
+        System.out.println(restoredHealth);
+
+        System.out.println(myPriestess2.getHitPoints());
 
         assertTrue(myPriestess2.getHitPoints() > oldHealth);
         assertEquals(myPriestess2.getHitPoints(), restoredHealth + oldHealth);
 
-        assertTrue(restoredHealth + oldHealth <= 75);
-        //this ensures that healHero does not heal over Priestess's maximum allowed hit points (75)
+        assertTrue(restoredHealth + oldHealth <= 10);
+        //this ensures that healHero does not heal over Priestess's maximum allowed hit points (10)
     }
 
     /**

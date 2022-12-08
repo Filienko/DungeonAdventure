@@ -45,7 +45,7 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#(DungeonCharacter, Vec2)} //why isnt link working?
+     * Test method for {@link Warrior#attack()}
      */
     @Test
     void testAttack()
@@ -53,7 +53,7 @@ class WarriorTest
         final Warrior myWarrior1 = new Warrior(new EntityFactory());
         final Warrior myWarrior2 = new Warrior(new EntityFactory());
 
-        int oldHealth = myWarrior1.getHitPoints();
+        int oldHealth = myWarrior2.getHitPoints();
         int damage = myWarrior1.attack();
 
         assertTrue(myWarrior2.getHitPoints() < oldHealth);
