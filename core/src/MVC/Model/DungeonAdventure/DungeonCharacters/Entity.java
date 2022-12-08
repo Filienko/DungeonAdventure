@@ -22,6 +22,7 @@ public abstract class Entity
         myEntityFactory = theEntityFactory; //things that inherit Entity should also keep track of what Entity Factory spawns it
         mySize = theSize;
         myPos = thePos;
+        myPreviousPos = thePos;
         myType = theType;
         myRotation = 0;
         myActiveStatus = true;
