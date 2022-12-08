@@ -6,17 +6,12 @@ import MVC.Model.Physics.Vec2;
 
 public class Bomb extends Item
 {
-    private final EntityFactory myEntityFactory;
-
-    private long myCurrentFrame;
-
     /**
      * Bomb constructor that calls its parent constructor to initialize its type and location.
      */
-    public Bomb(final EntityFactory theEntityFactory) {
+    public Bomb(final EntityFactory theEntityFactory)
+    {
         super("Bomb", theEntityFactory);
-        myEntityFactory = theEntityFactory;
-        myCurrentFrame = 0;
     }
 
     // not necessary?
@@ -40,10 +35,4 @@ public class Bomb extends Item
         theHero.setHitPoints(theHero.getHitPoints() / 2);
     }
 
-    @Override
-    public void update()
-    {
-        //itemBehavior();
-        myCurrentFrame++;
-    }
 }

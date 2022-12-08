@@ -132,4 +132,13 @@ public abstract class Entity
         myCurrentFrame = theCurrentFrame;
     }
 
+    public EntityFactory getMyEntityFactory()
+    {
+        return myEntityFactory;
+    }
+
+    public void setMyEntityFactory(final EntityFactory theEntityFactory)
+    {
+        myEntityFactory = theEntityFactory;
+    }
 }

@@ -95,7 +95,6 @@ public class RoomTests
         room.setNumber(100);
 
         assertTrue(room.getNumber()==100);
-        System.out.println(room.getMonsters());
         assertTrue(room.getMonsters().toString().length()>1);
         assertTrue(room.getItems().toString().contains("Potion"));
         assertTrue(room.isTheEntrance());
