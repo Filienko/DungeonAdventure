@@ -162,7 +162,7 @@ public class SceneGame extends Scene
 
         for (Entity e : myEntityFactory.getEntities())
         {
-            if (myDrawTextures)
+            if (myDrawTextures && e.getMyAnimation() != null)
             {
                 e.getMyAnimation().update();
                 sprite = e.getMyAnimation().getSprite();
@@ -201,7 +201,5 @@ public class SceneGame extends Scene
             }
 
         }
-
-
     }
 }

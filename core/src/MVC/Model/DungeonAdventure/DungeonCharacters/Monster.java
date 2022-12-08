@@ -102,11 +102,11 @@ public class Monster extends DungeonCharacter
                             (float) Math.floor(ePosition.getMyX()/704));
                     if(eRoom.equals(npcRoom))
                     {
+                        var distance = myHero.getMyPos().computeDistance(myHomePosition);
                         // If there's an intersection then the npc does not have sight on the player
-                        if (Physics.entityIntersect(heroPosition, npcPosition, e))
+                        if (Physics.entityIntersect(heroPosition, npcPosition, e) || MY_AGGRESSION_DISTANCE >= distance)
                         {
                             hasSight = false;
-                            break;
                         }
                     }
                 }
@@ -116,13 +116,13 @@ public class Monster extends DungeonCharacter
         if (hasSight)
         {
             direction = myHero.getMyPos().minus(npcPosition);
-            velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
-        else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
+        else
         {
             direction= myHomePosition.minus(npcPosition);
-            velocity= direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
+        velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
+
         setVelocity(velocity);
         setMyPreviousPos(getMyPos());
         updateMyPos(getVelocity());

@@ -13,9 +13,9 @@ class SwordTest
     @Test
     void testGetInstance()
     {
-        Sword mySword = Sword.getInstance(new Vec2(), new EntityFactory(), new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2()));
+        assertTrue(mySword.getMySize().equals(new Vec2()));
         assertEquals(0, mySword.getMyLifeSpan());
     }
 
@@ -28,20 +28,20 @@ class SwordTest
     @Test
     void getBoundingBox()
     {
-        Sword mySword = Sword.getInstance(new Vec2(5,5), new EntityFactory(),new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2(5,5)));
+        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
     }
 
     @Test
     void setBoundingBox()
     {
-        Sword mySword = Sword.getInstance(new Vec2(), new EntityFactory(),new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2()));
+        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
 
-        mySword.setBoundingBox(new Vec2(10,10));
+        mySword.setMySize(new Vec2(10,10));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2(10,10)));
+        assertTrue(mySword.getMySize().equals(new Vec2(10,10)));
     }
 }
