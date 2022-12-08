@@ -61,7 +61,7 @@ public abstract class Entity
 
     public void updateMyPos(final Vec2 theUpdate)
     {
-        myPos.add(theUpdate);
+        myPos = myPos.add(theUpdate);
     }
 
     public Vec2 getMySize()

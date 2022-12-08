@@ -1,17 +1,12 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
-import MVC.View.Animation;
-import com.badlogic.gdx.graphics.Texture;
 
 public abstract class DungeonCharacter extends Entity implements ICollidable
 {
-    private EntityFactory myEntityFactory;
-
     /**
      * The specific character type.
      */
@@ -91,7 +86,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void die()
     {
         setMySize(new Vec2(0, 0));
-        setMyAnimation(myEntityFactory.getAssets().getAnimation("enemyDeath"));
+        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"));
     }
 
     /**
@@ -232,46 +227,49 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         for(var t:getMyEntityFactory().getEntities())
         {
             overlap = Physics.getOverlap(this, t);
-            if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+            if (!t.getType().contentEquals(this.getType()))
             {
-                // If the tile blocks movement
-                if (t.getType().contains("Pit") || t.getType().contains("Wall") || t.getType().contains("Door") ||
-                        t.getType().contains("Monster") || t.getType().contains("Hero"))
+                if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    previousOverlap= Physics.getPreviousOverlap(this, t);
-
-                    // If the overlap is horizontal
-                    if (previousOverlap.getMyY() > 0)
+                    // If the tile blocks movement
+                    if (t.getType().contains("Pit") || t.getType().contains("Wall") || t.getType().contains("Door") ||
+                            t.getType().contains("Monster") || t.getType().contains("Hero"))
                     {
-                        // If the player came from the left, push them out to the left
-                        if (this.getMyPos().getMyX() < t.getMyPos().getMyX())
+                        previousOverlap = Physics.getPreviousOverlap(this, t);
+
+                        // If the overlap is horizontal
+                        if (previousOverlap.getMyY() > 0)
                         {
-                            this.getMyPos().setMyX(this.getMyPos().getMyX() - (overlap.getMyX()));
+                            // If the player came from the left, push them out to the left
+                            if (this.getMyPos().getMyX() < t.getMyPos().getMyX())
+                            {
+                                this.getMyPos().setMyX(this.getMyPos().getMyX() - (overlap.getMyX()));
+                            }
+                            // If the player came from the right push them out to the right
+                            else
+                            {
+                                this.getMyPos().setMyX(this.getMyPos().getMyX() + (overlap.getMyX()));
+                            }
                         }
-                        // If the player came from the right push them out to the right
-                        else
+
+                        // If the overlap is vertical
+                        if (previousOverlap.getMyX() > 0)
                         {
-                            this.getMyPos().setMyX(this.getMyPos().getMyX() + (overlap.getMyX()));
+                            // If the player came from above push them up
+                            if (this.getMyPos().getMyY() < t.getMyPos().getMyY())
+                            {
+                                this.getMyPos().setMyY(this.getMyPos().getMyY() - (overlap.getMyY()));
+                            }
+                            else
+                            {
+                                this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
+                            }
                         }
                     }
-
-                    // If the overlap is vertical
-                    if (previousOverlap.getMyX() > 0)
+                    else if (t instanceof Item && this.getHeroStatus())
                     {
-                        // If the player came from above push them up
-                        if (this.getMyPos().getMyY() < t.getMyPos().getMyY())
-                        {
-                            this.getMyPos().setMyY(this.getMyPos().getMyY() - (overlap.getMyY()));
-                        }
-                        else
-                        {
-                            this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
-                        }
+                        ((Item) t).activate((Hero) this);
                     }
-                }
-                else if (t instanceof Item && this.getHeroStatus())
-                {
-                    ((Item)t).activate((Hero)this);
                 }
             }
         }

@@ -108,7 +108,6 @@ public abstract class Hero extends DungeonCharacter
         {
             myAttackStatus = false;
         }
-
         incrementCurrentFrame();
     }
 
@@ -134,7 +133,6 @@ public abstract class Hero extends DungeonCharacter
         else if (!myUpStatus && myDownStatus)
         {
             y=-1;
-            newVelocity.setMyX(0);
             newVelocity.setMyY(-1 * getMaxSpeed());
         }
 
@@ -155,7 +153,6 @@ public abstract class Hero extends DungeonCharacter
         updateMyPos(getVelocity());
     }
 
-    //changed visibility of the following potions/pillars methods to public (were protected)
     /**
      * This method sets the Potions in the Hero's inventory.
      * @param thePotions Potions to be put into inventory.
