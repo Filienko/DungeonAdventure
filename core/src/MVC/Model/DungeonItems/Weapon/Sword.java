@@ -25,8 +25,6 @@ public class Sword extends Entity implements ICollidable
 
     private Hero myHero;
 
-    private int damage; //how much damage it does?
-
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), new Vec2(), "Sword", theEntityFactory);
@@ -94,7 +92,6 @@ public class Sword extends Entity implements ICollidable
         }
         else if (getCurrentFrame() < myLifeSpan)
         {
-
             movement();
             collide();
             incrementCurrentFrame();
@@ -133,5 +130,12 @@ public class Sword extends Entity implements ICollidable
         }
     }
 
-    private void movement() {}
+    private void movement()
+    {
+        Vec2 position = new Vec2();
+        position.setMyX(myHero.getMyPos().getMyX()+56*myHero.getFacing().getMyX());
+        position.setMyY(myHero.getMyPos().getMyX()+56*myHero.getFacing().getMyY());
+        setMyPreviousPos(getMyPos());
+        setMyPos(position);
+    }
 }

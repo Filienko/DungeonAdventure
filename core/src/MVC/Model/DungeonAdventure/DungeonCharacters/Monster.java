@@ -95,7 +95,7 @@ public class Monster extends DungeonCharacter
                 var isWall = e.getType().contains("Door");
                 var isDoor = e.getType().contains("Wall");
 
-                if(notMonster && notHero)
+                if(notHero)
                 {
                     Vec2 ePosition = e.getMyPos();
                     Vec2 eRoom = new Vec2((float) Math.floor(ePosition.getMyX()/1216),

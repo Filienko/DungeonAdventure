@@ -248,7 +248,6 @@ public class Room implements Cloneable
         {
             myItems.append(item);
         }
-
     }
 
     /**
