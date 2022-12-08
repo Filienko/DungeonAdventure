@@ -171,15 +171,15 @@ public class Room implements Cloneable
         for (int i = 0; i < theNumber; i++)
         {
             var randD = theRandom.nextDouble();
-            if (randD < 0.333)
+            if (randD < 0.25)
             {
-                addItem(new HealingPotion(theRandom.nextInt(15, 46), new EntityFactory())); //new EntityFactory or create an entity factory field??
+                addItem(new HealingPotion(theRandom.nextInt(1, 5), new EntityFactory())); //new EntityFactory or create an entity factory field??
             }
-            else if (randD < 0.67)
+            else if (randD < 0.5)
             {
                 addItem(new AttackPotion(theRandom.nextInt(1, 4), new EntityFactory()));
             }
-            else
+            else if (randD < 0.76)
             {
                 addItem(new SpeedPotion(theRandom.nextInt(1, 3), new EntityFactory()));
             }
@@ -248,7 +248,6 @@ public class Room implements Cloneable
         {
             myItems.append(item);
         }
-
     }
 
     /**
@@ -412,7 +411,7 @@ public class Room implements Cloneable
     {
         for (var monster:theMonsters)
         {
-            myMonsters.append(monster.getCharacterType()).append(",");
+            myMonsters.append(monster.getMonsterType()).append(",");
         }
     }
 

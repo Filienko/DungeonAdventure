@@ -25,23 +25,20 @@ public class Sword extends Entity implements ICollidable
 
     private Hero myHero;
 
-    private int damage; //how much damage it does?
-
-    private Sword(final Vec2 theBoundingBox, final EntityFactory theEntityFactory, final Hero theHero)
+    private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
-        super(new Vec2(), "Sword", new Vec2(), theEntityFactory);
+        super(new Vec2(48, 48), new Vec2(), "Sword", theEntityFactory);
         myEntityFactory = theEntityFactory;
         myLifeSpan = 15;
         setCurrentFrame(0);
         myHero = theHero;
-        myBoundingBox = theBoundingBox;
     }
 
     public static Sword getInstance(final Vec2 theBoundingBox, final EntityFactory theEntityFactory, final Hero theHero)
     {
         if (mySword == null)
         {
-            mySword = new Sword(theBoundingBox, theEntityFactory, theHero);
+            mySword = new Sword(theEntityFactory, theHero);
         }
         return mySword;
     }
@@ -58,43 +55,17 @@ public class Sword extends Entity implements ICollidable
 
     public int getMyLifeSpan() { return myLifeSpan; }
 
-    public void attack(final DungeonCharacter theOpponent)
-    {
-        if(theOpponent instanceof Thief)
-        {
-            attackThief(theOpponent);
-        }
-        else if(theOpponent instanceof Warrior)
-        {
-            attackWarrior(theOpponent);
-        }
-        else if(theOpponent instanceof Priestess)
-        {
-            attackPriestess(theOpponent);
-        }
-    }
-
-    private void attackPriestess(final DungeonCharacter theOpponent)
-    {
-    }
-
-    private void attackWarrior(final DungeonCharacter theOpponent)
-    {
-    }
-
-    private void attackThief(final DungeonCharacter theOpponent)
-    {
-    }
-
     @Override
-    public void update() {
+    public void update()
+    {
         if (getCurrentFrame() >= myLifeSpan)
         {
             destroy();
         }
         else if (getCurrentFrame() < myLifeSpan)
         {
-            super.movement();
+            movement();
+            collide();
             incrementCurrentFrame();
         }
     }
@@ -107,12 +78,12 @@ public class Sword extends Entity implements ICollidable
     {
         for (var e: myEntityFactory.getMonsters())
         {
-            if (e.getActiveStatus()==true)
+            if (e.getActiveStatus()==true && !e.isInvincibility())
             {
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    attack(e);
+                    e.applyDamage(myHero.attack());
                     if(e.getHitPoints()<=0)
                     {
                         //Potentially add sound
@@ -123,11 +94,27 @@ public class Sword extends Entity implements ICollidable
                     else
                     {
                         //Potentially add sound
-                        var lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
-                        //e.setInvincibility(true, lifespanLeft);
+                        long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
+                        var v = e.getMyPos().minus(this.getMyPos());
+                        var normalizedV = v.multiply(v.quickInverseMagnitude());
+                        e.setVelocity(normalizedV.multiply((float) -1.5),10);
+                        e.setInvincibility(true, lifespanLeft);
                     }
                 }
             }
+            //so i think it can take place in the same spot as invincibility logic,
+            // we just need to set the vector of the enemy to a vector away from the sword,
+            // so like take the vector between the enemy and the sword and set it to the reverse of that,
+            // then while the enemy is knockback we dont update its vector
         }
+    }
+
+    private void movement()
+    {
+        Vec2 position = new Vec2();
+        position.setMyX(myHero.getMyPos().getMyX()+56*myHero.getFacing().getMyX());
+        position.setMyY(myHero.getMyPos().getMyX()+56*myHero.getFacing().getMyY());
+        setMyPreviousPos(getMyPos());
+        setMyPos(position);
     }
 }

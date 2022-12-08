@@ -2,19 +2,14 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.Physics.Vec2;
 
 public class Exit extends Item
 {
     private static Exit myExit;
-    private static EntityFactory myEntityFactory;
-    private static long myCurrentFrame;
 
     private Exit(final EntityFactory theEntityFactory) //double check that constructor should be private
     {
         super("Exit", theEntityFactory);
-        myEntityFactory = theEntityFactory;
-        myCurrentFrame = 0;
     }
 
     public static Exit getInstance(final EntityFactory theEntityFactory) {
@@ -36,11 +31,6 @@ public class Exit extends Item
     {
         if(theHero.getPillars()==4)
             theHero.setActiveStatus(false);
-    }
-
-    @Override
-    public void update() {
-        //itemBehavior();
-        myCurrentFrame++;
+        destroy();
     }
 }

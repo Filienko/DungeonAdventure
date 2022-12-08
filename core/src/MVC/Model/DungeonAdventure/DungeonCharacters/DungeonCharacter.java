@@ -1,16 +1,12 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
-import MVC.Model.DungeonItems.Wall;
+import MVC.Model.DungeonItems.Items.Item;
+import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
-import MVC.View.Animation;
-import com.badlogic.gdx.graphics.Texture;
 
-public abstract class DungeonCharacter extends Entity
+public abstract class DungeonCharacter extends Entity implements ICollidable
 {
-    private EntityFactory myEntityFactory;
-
     /**
      * The specific character type.
      */
@@ -42,9 +38,11 @@ public abstract class DungeonCharacter extends Entity
      */
     private Vec2 myVelocity;
 
-    private long myCurrentFrame;
     private long initiatedFrame;
+    private long myInvincibilityEndFrame;
     private boolean myInvincibility;
+    private boolean myKnockback;
+    private long myKnockbackEndFrame;
 
     /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
@@ -59,9 +57,10 @@ public abstract class DungeonCharacter extends Entity
      * @param theVelocity The character's velocity.
      */
     DungeonCharacter(final String theCharacterType, final boolean theHeroStatus, final int theHitPoints,
-                     final int theDamage, final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
+                     final int theDamage, final int theMaxSpeed, final Vec2 theSize, final Vec2 thePos,
+                     final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super(new Vec2(),theCharacterType, new Vec2(), theEntityFactory);
+        super(theSize, thePos,theCharacterType, theEntityFactory);
         myCharacterType = theCharacterType;
         myHeroStatus = theHeroStatus;
         myDamage = theDamage;
@@ -69,66 +68,41 @@ public abstract class DungeonCharacter extends Entity
         myMaxSpeed = theMaxSpeed;
         setMyPos(thePos);
         myVelocity = theVelocity;
-        myCurrentFrame = 0;
         initiatedFrame = 0;
+        myKnockback = false;
     }
 
-    protected int attack() //should this be changed to a weapon? Vec2 theDamageArea is never used
-    {
-
-        var theOpponent = new Warrior(new EntityFactory());
-        Vec2 overlap = Physics.getOverlap(this, theOpponent);
-
-        int damage = 0;
-
-        if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
-        {
-            if (theOpponent.getHeroStatus() && !((theOpponent).isInvincibility()))
-            {
-                damage += myDamage;
-                ((Hero)theOpponent).setInvincibility(true);
-            } else if (!theOpponent.getHeroStatus())
-            {
-                damage += myDamage;
-            }
-        }
-
-        //apply invincibility for Heroes for 30 frames after each hit from Monsters
-        long delay = 30;
-        if(theOpponent.getHeroStatus() && ((Hero)theOpponent).isInvincibility())
-        {
-            if (myCurrentFrame <= initiatedFrame + delay)
-            {
-                initiatedFrame++;
-            } else
-            {
-                ((Hero)theOpponent).setInvincibility(false);
-            }
-        }
-
-        theOpponent.applyDamage(damage);
-
-        if (theOpponent.getHitPoints() == 0)
-        {
-            theOpponent.destroy();
-        }
-
-        return damage;
-    }
-
+    public abstract int attack();
+    public abstract void movement();
 
     @Override
     public void update()
     {
-        movement();
-        //attack();
-        myCurrentFrame++;
+        if(getCurrentFrame()==getInvincibilityEndFrame())
+        {
+            setInvincibility(false);
+        }
+        if(getCurrentFrame()==getKnockbackEndFrame())
+        {
+            setKnockback(false);
+        }
+
+        if(!isKnockback())
+        {
+            movement();
+        }
+        else
+        {
+            setMyPreviousPos(getMyPos());
+            updateMyPos(getVelocity());
+        }
+        collide();
     }
 
     public void die()
     {
-        setBoundingBox(new Vec2());
-        setMyAnimation(new Animation("deathAnimation",new Texture("path?"),15,4));
+        setMySize(new Vec2(0, 0));
+        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"));
     }
 
     /**
@@ -137,10 +111,15 @@ public abstract class DungeonCharacter extends Entity
      */
     public void applyDamage(final int theDamage)
     {
+        if(isInvincibility())
+            return;
+
         int damageOutcome = getHitPoints() - theDamage;
+
         if (damageOutcome <= 0) {
             setHitPoints(0);
-        } else if (damageOutcome > 0) {
+        } else if (damageOutcome > 0)
+        {
             setHitPoints(damageOutcome);
         }
 
@@ -234,14 +213,36 @@ public abstract class DungeonCharacter extends Entity
         myVelocity = theVelocity;
     }
 
-    public EntityFactory getMyEntityFactory()
+    /**
+     * This method sets the character's velocity.
+     * @param theVelocity The character's new velocity.
+     * @param theFramesLong amount of frames for following that velocity.
+     */
+    public void setVelocity(final Vec2 theVelocity, final long theFramesLong)
     {
-        return myEntityFactory;
+        myVelocity = theVelocity;
+        setKnockback(true);
+        setKnockbackEndFrame(getCurrentFrame()+theFramesLong);
     }
 
-    public void setMyEntityFactory(final EntityFactory theEntityFactory)
+    public boolean isKnockback()
     {
-        myEntityFactory = theEntityFactory;
+        return myKnockback;
+    }
+
+    public void setKnockback(final boolean theKnockback)
+    {
+        myKnockback = theKnockback;
+    }
+
+    public long getKnockbackEndFrame()
+    {
+        return myKnockbackEndFrame;
+    }
+
+    public void setKnockbackEndFrame(final long theKnockbackEndFrame)
+    {
+        myKnockbackEndFrame = theKnockbackEndFrame;
     }
 
     public boolean isInvincibility()
@@ -254,4 +255,71 @@ public abstract class DungeonCharacter extends Entity
         myInvincibility = theInvincibility;
     }
 
+    public void setInvincibility(final boolean theInvincibility, final long theFrames)
+    {
+        myInvincibility = theInvincibility;
+        myInvincibilityEndFrame += theFrames;
+    }
+
+    public long getInvincibilityEndFrame()
+    {
+        return myInvincibilityEndFrame;
+    }
+
+    @Override
+    public void collide()
+    {
+        Vec2 overlap;
+        Vec2 previousOverlap;
+
+        for(var t:getMyEntityFactory().getEntities())
+        {
+            overlap = Physics.getOverlap(this, t);
+            if (!t.getType().contentEquals(this.getType()))
+            {
+                if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+                {
+                    // If the tile blocks movement
+                    if (t.getType().contains("Pit") || t.getType().contains("Wall") || t.getType().contains("Door") ||
+                            t.getType().contains("Monster") || t.getType().contains("Hero"))
+                    {
+                        previousOverlap = Physics.getPreviousOverlap(this, t);
+
+                        // If the overlap is horizontal
+                        if (previousOverlap.getMyY() > 0)
+                        {
+                            // If the player came from the left, push them out to the left
+                            if (this.getMyPos().getMyX() < t.getMyPos().getMyX())
+                            {
+                                this.getMyPos().setMyX(this.getMyPos().getMyX() - (overlap.getMyX()));
+                            }
+                            // If the player came from the right push them out to the right
+                            else
+                            {
+                                this.getMyPos().setMyX(this.getMyPos().getMyX() + (overlap.getMyX()));
+                            }
+                        }
+
+                        // If the overlap is vertical
+                        if (previousOverlap.getMyX() > 0)
+                        {
+                            // If the player came from above push them up
+                            if (this.getMyPos().getMyY() < t.getMyPos().getMyY())
+                            {
+                                this.getMyPos().setMyY(this.getMyPos().getMyY() - (overlap.getMyY()));
+                            }
+                            else
+                            {
+                                this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
+                            }
+                        }
+                    }
+                    else if (t instanceof Item && this.getHeroStatus())
+                    {
+                        ((Item) t).activate((Hero) this);
+                    }
+                }
+            }
+        }
+    }
 }

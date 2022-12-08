@@ -21,9 +21,10 @@ class MonsterTest
     @Test
     void testMonsterConstructorOgre()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 60, 2, new Vec2(), new Vec2(), myHero, myEntityFactory);
+        final Monster myMonster = new Monster("Ogre", 200, 60, 2, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
 
-        assertEquals("Ogre", myMonster.getCharacterType());
+        assertEquals("Ogre", myMonster.getMonsterType());
         assertFalse(myMonster.getHeroStatus());
         assertEquals(200, myMonster.getHitPoints());
         assertEquals(2, myMonster.getMaxSpeed());
@@ -36,9 +37,10 @@ class MonsterTest
     @Test
     void testMonsterConstructorGremlin()
     {
-        final Monster myMonster = new Monster("Gremlin", 70, 15, 5, new Vec2(), new Vec2(), myHero, myEntityFactory);
+        final Monster myMonster = new Monster("Gremlin", 70, 15, 5, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
 
-        assertEquals("Gremlin", myMonster.getCharacterType());
+        assertEquals("Gremlin", myMonster.getMonsterType());
         assertFalse(myMonster.getHeroStatus());
         assertEquals(70, myMonster.getHitPoints());
         assertEquals(5, myMonster.getMaxSpeed());
@@ -52,7 +54,8 @@ class MonsterTest
     @Test
     void testAttack()
     {
-        final Monster myMonster = new Monster("Skeleton", 100, 30, 3, new Vec2(), new Vec2(), myHero, myEntityFactory);
+        final Monster myMonster = new Monster("Skeleton", 100, 30, 3, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
     }
 
     @Test
@@ -67,7 +70,8 @@ class MonsterTest
     @Test
     void testToString()
     {
-        final Monster myMonster = new Monster("Ogre", 200, 30, 2, new Vec2(), new Vec2(),myHero, myEntityFactory);
+        final Monster myMonster = new Monster("Ogre", 200, 30, 2, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
 
         assertEquals("Monster {myCharacterType = 'Ogre', Hero status = false, myHitPoints = 200}", myMonster.toString());
     }

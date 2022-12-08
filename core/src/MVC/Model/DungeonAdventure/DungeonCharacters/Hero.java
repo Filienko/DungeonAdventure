@@ -2,24 +2,12 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.DungeonItems.Weapon.Sword;
-import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Vec2;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public abstract class Hero extends DungeonCharacter implements ICollidable
+public abstract class Hero extends DungeonCharacter
 {
-    /**
-     * Factory that generated Hero.
-     */
-    private final EntityFactory myEntityFactory;
-
-    /**
-     * Random number generator used to generate the Hero's hit point count.
-     */
-    private static final Random RANDOM_GENERATOR = new Random();
-
     /**
      * A hero status that is hardcoded to true.
      */
@@ -51,20 +39,14 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
      */
     private int myPillars;
 
-    /**
-     * The Hero's hit points (health).
-     */
-    private final int myHitPoints;
-
     private boolean myUpStatus;
     private boolean myDownStatus;
     private boolean myLeftStatus;
     private boolean myRightStatus;
     private boolean myAttackStatus;
-
-    private long myCurrentFrame;
-    private long initiatedFrame;
-
+    private long myInitiatedFrame;
+    private long myAttackFrameEnd;
+    private Vec2 myFacing;
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
      * minimum/maximum damage it can inflict, max speed, position, velocity, Potions in inventory, and Pillars in
@@ -81,23 +63,20 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     public Hero(final String theName, final String theCharacterType, final int theHitPoints, final int theDamage,
                 final int theMaxSpeed, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super(theCharacterType, MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed, thePos, theVelocity, theEntityFactory);
+        super("Hero", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
+                new Vec2(48, 48), thePos, theVelocity, theEntityFactory);
+
         myName = theName;
         myCharacterType = theCharacterType;
         myPotions = new ArrayList<>();
         myPillars = 0;
-        //myHitPoints = RANDOM_GENERATOR.nextInt(75,100);
-        myHitPoints = theHitPoints;
-        myEntityFactory = theEntityFactory;
-
         myUpStatus = false;
         myDownStatus = false;
         myLeftStatus = false;
         myRightStatus = false;
-        myAttackStatus = false;
-
-        myCurrentFrame = 0;
-        initiatedFrame = 0;
+        myInitiatedFrame = 0;
+        myAttackFrameEnd = 0;
+        myFacing = new Vec2(0, 1);
     }
 
     /**
@@ -108,7 +87,6 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     {
         setMyPos(theCoordinates);
     }
-    
 
     public Sword getWeapon()
     {
@@ -120,47 +98,27 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         myWeapon = theWeapon;
     }
 
-    public abstract int special(final DungeonCharacter theOpponent);
+    public abstract int special();
 
     @Override
     public void update()
     {
-        movement();
-
-//        if(myAttackStatus) {   //is this how it should be formatted?
-//            attack();
-//        }
-        myCurrentFrame++;
-
+        super.update();
+        if(getCurrentFrame()==myAttackFrameEnd)
+        {
+            myAttackStatus = false;
+        }
+        incrementCurrentFrame();
     }
 
     @Override
     public int attack()
     {
+
         myAttackStatus = true;
-        int damage = 0;
-
-        //change this up so that weapon applies damage
-
-        if (myWeapon == null)
-        {
-            myWeapon = new EntityFactory().generateSword();
-            damage = super.attack(); //weapon applies damage?
-        }
-
-        long delay = 15;
-        if (myCurrentFrame <= initiatedFrame + delay)
-        {
-            initiatedFrame++;
-        } else
-        {
-            myAttackStatus = false; //delays setting to false for 15 frames
-        }
-
-        return damage;
+        return 1;
     }
 
-    @Override
     public void movement()
     {
         Vec2 newVelocity = new Vec2();
@@ -168,37 +126,62 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         if (myUpStatus && !myDownStatus)
         {
             newVelocity.setMyY(1 * getMaxSpeed());
-
-        } else if (!myUpStatus && myDownStatus)
+        }
+        else if (!myUpStatus && myDownStatus)
         {
-            newVelocity.setMyX(0);
             newVelocity.setMyY(-1 * getMaxSpeed());
-
-        } else if (!myUpStatus && !myDownStatus)
-        {
-            newVelocity.setMyY(0);
         }
 
         if (myLeftStatus && !myRightStatus)
         {
             newVelocity.setMyX(-1 * getMaxSpeed());
-
-        } else if (!myLeftStatus && myRightStatus)
+        }
+        else if (!myLeftStatus && myRightStatus)
         {
             newVelocity.setMyX(1 * getMaxSpeed());
-
-        } else if (!myLeftStatus && !myRightStatus)
-        {
-            newVelocity.setMyX(0);
         }
 
-        super.setVelocity(newVelocity);
+        if (newVelocity.getMyX() != 0 && newVelocity.getMyY() != 0)
+        {
+            newVelocity = newVelocity.multiply(newVelocity.quickInverseMagnitude());
+            newVelocity = newVelocity.multiply(getMaxSpeed());
+        }
 
-        //super.movement();
-
+        setVelocity(newVelocity);
+        facing();
+        setMyPreviousPos(getMyPos());
+        updateMyPos(getVelocity());
     }
 
-    //changed visibility of the following potions/pillars methods to public (were protected)
+    private void facing()
+    {
+        if (getVelocity().getMyX() != 0)
+        {
+            if (getVelocity().getMyX() > 0)
+            {
+                myFacing.setMyX(1);
+            }
+            else
+            {
+                myFacing.setMyX(-1);
+            }
+            myFacing.setMyY(0);
+        }
+        else if (getVelocity().getMyY() != 0)
+        {
+            if (getVelocity().getMyY() > 0)
+            {
+                myFacing.setMyY(1);
+            }
+            else
+            {
+                myFacing.setMyY(-1);
+            }
+            myFacing.setMyX(0);
+        }
+    }
+
+
     /**
      * This method sets the Potions in the Hero's inventory.
      * @param thePotions Potions to be put into inventory.
@@ -271,6 +254,16 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         myName = theName;
     }
 
+    public boolean isAttackStatus()
+    {
+        return myAttackStatus;
+    }
+
+    public void setAttackStatus(final boolean theAttackStatus)
+    {
+        myAttackStatus = theAttackStatus;
+    }
+
     public void setUp(final boolean theUpStatus) { myUpStatus = theUpStatus; }
 
     public void setDown(final boolean theDownStatus) { myDownStatus = theDownStatus; }
@@ -278,23 +271,6 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
     public void setLeft(final boolean theLeftStatus) { myLeftStatus = theLeftStatus; }
 
     public void setRight(final boolean theRightStatus) { myRightStatus = theRightStatus; }
-
-    /**
-     * Method that returns details about the Hero.
-     * @return A String that lists the Hero's name, what type of Hero it is,
-     * the Hero's hero status, and the Potions and Pillars in its inventory.
-     */
-    @Override
-    public String toString()
-    {
-        return "Name: " + myName +
-                " {" +
-                "myCharacterType = " + myCharacterType +
-                ", Hero status = " + MY_HERO_STATUS +
-                ", Potions = '" + myPotions.toString() + '\'' +
-                ", Pillars = " + myPillars +
-                '}';
-    }
 
     /**
      * This method returns a String describing the type of Hero it is.
@@ -316,22 +292,30 @@ public abstract class Hero extends DungeonCharacter implements ICollidable
         return MY_HERO_STATUS;
     }
 
-//    /**
-//     * This method retrieves the Hero's hit points.
-//     * @return The number of hit points a Hero has, represented by an int.
-//     */
-//    @Override
-//    public int getHitPoints()
-//    {
-//        return myHitPoints;
-//    }
-
     /**
-     * Analyzes whether the collision occurred between two objects and performs certain associated logic
+     * Method that returns details about the Hero.
+     * @return A String that lists the Hero's name, what type of Hero it is,
+     * the Hero's hero status, and the Potions and Pillars in its inventory.
      */
     @Override
-    public void collide()
+    public String toString()
     {
-
+        return "Name: " + myName +
+                " {" +
+                "myCharacterType = " + myCharacterType +
+                ", Hero status = " + MY_HERO_STATUS +
+                ", Potions = '" + myPotions.toString() + '\'' +
+                ", Pillars = " + myPillars +
+                '}';
     }
+
+    public Vec2 getFacing() { return myFacing; }
+
+    public void setFacing(final Vec2 theFacing)
+    {
+        myFacing = theFacing;
+    }
+
+    public boolean getAttackStatus() { return myAttackStatus; }
+
 }
