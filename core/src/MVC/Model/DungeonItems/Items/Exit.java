@@ -2,7 +2,6 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.Physics.Vec2;
 
 public class Exit extends Item
 {
@@ -32,5 +31,6 @@ public class Exit extends Item
     {
         if(theHero.getPillars()==4)
             theHero.setActiveStatus(false);
+        destroy();
     }
 }
