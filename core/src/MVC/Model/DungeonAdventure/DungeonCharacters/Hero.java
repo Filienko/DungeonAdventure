@@ -125,7 +125,7 @@ public abstract class Hero extends DungeonCharacter
 
         if (myUpStatus && !myDownStatus)
         {
-            newVelocity.setMyY(1 * getMaxSpeed());
+            newVelocity.setMyY(getMaxSpeed());
         }
         else if (!myUpStatus && myDownStatus)
         {
@@ -138,7 +138,7 @@ public abstract class Hero extends DungeonCharacter
         }
         else if (!myLeftStatus && myRightStatus)
         {
-            newVelocity.setMyX(1 * getMaxSpeed());
+            newVelocity.setMyX(getMaxSpeed());
         }
 
         if (newVelocity.getMyX() != 0 && newVelocity.getMyY() != 0)
