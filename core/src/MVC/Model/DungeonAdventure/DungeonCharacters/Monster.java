@@ -10,8 +10,7 @@ public class Monster extends DungeonCharacter
     /**
      * Monster's default position.
      */
-    private final Vec2 myHomePosition = new Vec2((new Random()).nextInt(1, 20),
-            (new Random()).nextInt(1, 12));
+    private final Vec2 myHomePosition;
 
     /**
      * Hero status that tells that this DungeonCharacter is a Monster.
@@ -49,9 +48,11 @@ public class Monster extends DungeonCharacter
     {
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
-
+        myHomePosition = thePos;
         myMonsterType = theMonsterType;
         myHero = theHero;
+        setInvincibility(false);
+        setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
     }
 
     @Override
@@ -135,21 +136,18 @@ public class Monster extends DungeonCharacter
     public void collide()
     {
         super.collide();
-
-        Vec2 overlap;
-        var e = getMyEntityFactory().getHero();
-
-        overlap = Physics.getOverlap(myHero, e);
-        if (overlap.getMyX() > 0 && overlap.getMyY() > 0 && !e.isInvincibility())
+        var overlap = Physics.getOverlap(this, getMyEntityFactory().getHero());
+        System.out.println();
+        if (Math.abs(overlap.getMyX()) > 0 && Math.abs(overlap.getMyY()) > 0
+                && !getMyEntityFactory().getHero().isInvincibility())
         {
-            myHero.applyDamage(attack());
-            if (myHero.getHitPoints() <= 0)
+            getMyEntityFactory().getHero().applyDamage(attack());
+            if (getMyEntityFactory().getHero().getHitPoints() <= 0)
             {
-                myHero.destroy();
+                getMyEntityFactory().getHero().destroy();
             }
-            myHero.setInvincibility(true,15);
+            getMyEntityFactory().getHero().setInvincibility(true,15);
         }
-
     }
 
     public String getMonsterType()

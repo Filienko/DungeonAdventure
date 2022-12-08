@@ -42,6 +42,8 @@ public class EntityFactory
     {
         //Updating, Deleting, and Collecting entities
         SuperMonsterDB DB = new MonsterDB();
+        var monster = DB.createMonsterDB(monsterType, myHero,this);
+        myEntities.add(monster);
         return DB.createMonsterDB(monsterType, myHero,this);
     }
 
@@ -213,22 +215,22 @@ public class EntityFactory
 
     public Monster generateOgre()
     {
-        return generateMonster("Ogre");
+        return generateMonster("ogre");
     }
 
     public Monster generateGremlin()
     {
-        return generateMonster("Gremlin");
+        return generateMonster("gremlin");
     }
 
     public Monster generateKnight()
     {
-        return generateMonster("Knight");
+        return generateMonster("knight");
     }
 
     public Monster generateRats()
     {
-        return generateMonster("Rats");
+        return generateMonster("rat");
     }
 
     public List<Monster> generateMonsters(final int theN)
@@ -402,7 +404,7 @@ public class EntityFactory
 {
         var sword = Sword.getInstance(this, myHero);
         myEntities.add(sword);
-        myEntities.add(generateGremlin());
+        generateKnight();
         return sword;
 }
 
