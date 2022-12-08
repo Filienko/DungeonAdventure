@@ -8,7 +8,7 @@ public class Wall extends Entity
 {
     public Wall(final Vec2 thePos, final Vec2 theBoundingBox)
     {
-        super(new Vec2(64, 64), thePos, "Wall", new EntityFactory()); //added new EntityFactory param
+        super(theBoundingBox, thePos, "Wall", new EntityFactory()); //added new EntityFactory param
     }
 
     @Override
