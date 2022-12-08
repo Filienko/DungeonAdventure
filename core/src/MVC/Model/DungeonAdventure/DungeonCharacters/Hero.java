@@ -122,36 +122,65 @@ public abstract class Hero extends DungeonCharacter
     public void movement()
     {
         Vec2 newVelocity = new Vec2();
-        int y = 0;
-        int x = 0;
 
         if (myUpStatus && !myDownStatus)
         {
-            y=1;
             newVelocity.setMyY(1 * getMaxSpeed());
         }
         else if (!myUpStatus && myDownStatus)
         {
-            y=-1;
             newVelocity.setMyY(-1 * getMaxSpeed());
         }
 
         if (myLeftStatus && !myRightStatus)
         {
-            x=-1;
             newVelocity.setMyX(-1 * getMaxSpeed());
         }
         else if (!myLeftStatus && myRightStatus)
         {
-            x = 1;
             newVelocity.setMyX(1 * getMaxSpeed());
         }
 
-        setFacing(new Vec2(x,y));
+        if (newVelocity.getMyX() != 0 && newVelocity.getMyY() != 0)
+        {
+            newVelocity = newVelocity.multiply(newVelocity.quickInverseMagnitude());
+            newVelocity = newVelocity.multiply(getMaxSpeed());
+        }
+
         setVelocity(newVelocity);
+        facing();
         setMyPreviousPos(getMyPos());
         updateMyPos(getVelocity());
     }
+
+    private void facing()
+    {
+        if (getVelocity().getMyX() != 0)
+        {
+            if (getVelocity().getMyX() > 0)
+            {
+                myFacing.setMyX(1);
+            }
+            else
+            {
+                myFacing.setMyX(-1);
+            }
+            myFacing.setMyY(0);
+        }
+        else if (getVelocity().getMyY() != 0)
+        {
+            if (getVelocity().getMyY() > 0)
+            {
+                myFacing.setMyY(1);
+            }
+            else
+            {
+                myFacing.setMyY(-1);
+            }
+            myFacing.setMyX(0);
+        }
+    }
+
 
     /**
      * This method sets the Potions in the Hero's inventory.
