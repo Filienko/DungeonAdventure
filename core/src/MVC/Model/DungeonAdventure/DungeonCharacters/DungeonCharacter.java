@@ -41,6 +41,8 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     private long initiatedFrame;
     private long myInvincibilityEndFrame;
     private boolean myInvincibility;
+    private boolean myKnockback;
+    private long myKnockbackEndFrame;
 
     /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
@@ -67,6 +69,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         setMyPos(thePos);
         myVelocity = theVelocity;
         initiatedFrame = 0;
+        myKnockback = false;
     }
 
     public abstract int attack();
@@ -79,7 +82,20 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             setInvincibility(false);
         }
-        movement();
+        if(getCurrentFrame()==getKnockbackEndFrame())
+        {
+            setKnockback(false);
+        }
+
+        if(!isKnockback())
+        {
+            movement();
+        }
+        else
+        {
+            setMyPreviousPos(getMyPos());
+            updateMyPos(getVelocity());
+        }
         collide();
     }
 
@@ -195,6 +211,38 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void setVelocity(final Vec2 theVelocity)
     {
         myVelocity = theVelocity;
+    }
+
+    /**
+     * This method sets the character's velocity.
+     * @param theVelocity The character's new velocity.
+     * @param theFramesLong amount of frames for following that velocity.
+     */
+    public void setVelocity(final Vec2 theVelocity, final long theFramesLong)
+    {
+        myVelocity = theVelocity;
+        setKnockback(true);
+        setKnockbackEndFrame(getCurrentFrame()+theFramesLong);
+    }
+
+    public boolean isKnockback()
+    {
+        return myKnockback;
+    }
+
+    public void setKnockback(final boolean theKnockback)
+    {
+        myKnockback = theKnockback;
+    }
+
+    public long getKnockbackEndFrame()
+    {
+        return myKnockbackEndFrame;
+    }
+
+    public void setKnockbackEndFrame(final long theKnockbackEndFrame)
+    {
+        myKnockbackEndFrame = theKnockbackEndFrame;
     }
 
     public boolean isInvincibility()
