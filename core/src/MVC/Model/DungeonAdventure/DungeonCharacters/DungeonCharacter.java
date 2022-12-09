@@ -305,7 +305,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         for(var t:getMyEntityFactory().getEntities())
         {
             overlap = Physics.getOverlap(this, t);
-            if (!t.getType().contentEquals(this.getType()))
+            if (!t.getType().contentEquals(this.getType()) && !t.getType().contentEquals("Sword"))
             {
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {

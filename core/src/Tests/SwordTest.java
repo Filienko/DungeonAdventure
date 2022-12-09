@@ -13,35 +13,35 @@ class SwordTest
     @Test
     void testGetInstance()
     {
-        Sword mySword = Sword.getInstance(new Vec2(), new EntityFactory(), new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2()));
-        assertEquals(15, mySword.getMyLifeSpan());
+        assertTrue(mySword.getMySize().equals(new Vec2()));
+        assertEquals(0, mySword.getMyLifeSpan()); //lifeSpan == 60 or 0???
     }
 
     @Test
-    void update()
+    void testUpdate()
     {
         //review update and then test it
     }
 
     @Test
-    void getBoundingBox()
+    void testGetMySize()
     {
-        Sword mySword = Sword.getInstance(new Vec2(5,5), new EntityFactory(),new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2(5,5)));
+        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
     }
 
     @Test
-    void setBoundingBox()
+    void testSetMySize()
     {
-        Sword mySword = Sword.getInstance(new Vec2(3,3), new EntityFactory(),new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2(3,3)));
+        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
 
-        mySword.setBoundingBox(new Vec2(10,10));
+        mySword.setMySize(new Vec2(10,10));
 
-        assertTrue(mySword.getBoundingBox().equals(new Vec2(10,10)));
+        assertTrue(mySword.getMySize().equals(new Vec2(10,10)));
     }
 }
