@@ -1,5 +1,6 @@
 package MVC.Controller;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public class MyInputProcessor extends InputAdapter
@@ -11,6 +12,7 @@ public class MyInputProcessor extends InputAdapter
         myGame = game;
     }
 
+    @Override
     public boolean keyDown(int keycode)
     {
         if (myGame.getCurrentScene().getActionMap().containsKey(keycode))
@@ -21,12 +23,23 @@ public class MyInputProcessor extends InputAdapter
         return true;
     }
 
+    @Override
     public boolean keyUp(int keycode)
     {
         if (myGame.getCurrentScene().getActionMap().containsKey(keycode))
         {
             Action action = new Action(myGame.getCurrentScene().getActionMap().get(keycode), "END");
             myGame.getCurrentScene().doAction(action);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button)
+    {
+        if (button == Input.Buttons.LEFT)
+        {
+            System.out.println("Mouse click at: " + x +", " + y);
         }
         return true;
     }

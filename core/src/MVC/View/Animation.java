@@ -25,7 +25,6 @@ public class Animation
         mySize          = new Vec2((float) texture.getWidth() / frameCount, texture.getHeight());
         mySprite        = new Sprite(texture, 0, 0, (int) mySize.getMyX(), (int) mySize.getMyY());
         mySprite.setOrigin(mySize.getMyX() / 2, mySize.getMyY() / 2);
-
     }
 
     // updates the animation to show the next frame, depending on its speed
@@ -49,4 +48,14 @@ public class Animation
     public Vec2 getSize()      { return mySize; }
 
     public Sprite getSprite()  { return mySprite; }
+
+    public void setPos(float x, float y)
+    {
+        float adjustedX = x;
+        float adjustedY = y;
+
+        if (myName.equals(""))
+        mySprite.setPosition(adjustedX, adjustedY);
+    }
+
 }
