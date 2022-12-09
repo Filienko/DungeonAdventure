@@ -14,13 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExitTest
 {
-
     @Test
     void testGetInstance()
     {
         Exit myExit = Exit.getInstance(new EntityFactory());
 
-        assertNotNull(myExit); //is this necessary?
         assertEquals(myExit.getType(), "Exit");
     }
 
@@ -74,12 +72,6 @@ class ExitTest
         myExit.activate(myWarrior);
 
         assertTrue(myWarrior.getActiveStatus());
-    }
-
-    @Test
-    void testUpdate()
-    {
-        //how to test update?
     }
 
 }

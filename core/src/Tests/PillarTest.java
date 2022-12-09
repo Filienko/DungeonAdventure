@@ -1,6 +1,7 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ class PillarTest
         assertTrue(myPillar.getName().equals("Inheritance"));
     }
 
+    //write another method for 2nd constructor?
+
     @Test
     void testGetName()
     {
@@ -26,14 +29,16 @@ class PillarTest
     }
 
     @Test
-    void testItemBehavior()
+    void testActivate()
     {
+        Pillar myPillar = new Pillar("Encapsulation", new EntityFactory());
+        Thief t1 = new Thief(new EntityFactory());
 
+        myPillar.activate(t1);
+
+        assertEquals(t1.getPillars(), 1);
+
+        assertFalse(myPillar.getActiveStatus());
     }
 
-    @Test
-    void testUpdate()
-    {
-        //write tests for update
-    }
 }

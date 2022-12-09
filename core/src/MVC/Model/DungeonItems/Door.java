@@ -15,25 +15,25 @@ public class Door extends Entity
     public Door(final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64), new Vec2(),"Door", theEntityFactory);
-        myLocation = new Vec2();
-        myMonsterCounter = 4;
+        setMyLocation(new Vec2());
+        setMonsterCounter(4);
     }
 
     public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         //TODO:assign correct bounding boxes to all of the Entities inheriting from Entity
         super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
-        myLocation = theLocation;
-        myMonsterCounter = theMonsterCounter;
+        setMyLocation(theLocation);
+        setMonsterCounter(theMonsterCounter);
 
     }
 
     public Door(final int theRoomNumber,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64),theLocation,"Door", theEntityFactory);
-        myRoomNumber = theRoomNumber;
-        myLocation = theLocation;
-        myMonsterCounter = theMonsterCounter;
+        setRoomNumber(theRoomNumber);
+        setMyLocation(theLocation);
+        setMonsterCounter(theMonsterCounter);
     }
 
     @Override
@@ -52,12 +52,23 @@ public class Door extends Entity
 
     public void setMyLocation(final Vec2 theLocation)
     {
-        myLocation = theLocation;
+        if (theLocation != null)
+        {
+            myLocation = theLocation;
+        }
     }
 
     public int getMonsterCounter()
     {
         return myMonsterCounter;
+    }
+
+    public void setMonsterCounter(final int theMonsterCounter)
+    {
+        if (theMonsterCounter >= 0)
+        {
+            myMonsterCounter = theMonsterCounter;
+        }
     }
 
     public void decrementMonsterCounter()
@@ -72,6 +83,9 @@ public class Door extends Entity
 
     private void setRoomNumber(final int theRoomNumber)
     {
-        myRoomNumber = theRoomNumber;
+        if (theRoomNumber > 0)
+        {
+            myRoomNumber = theRoomNumber;
+        }
     }
 }

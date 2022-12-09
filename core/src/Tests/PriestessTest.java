@@ -44,7 +44,7 @@ class PriestessTest
     }
 
     /**
-     * Test method for {@link Priestess#(Hero)}. //why is the link not working?
+     * Test method for {@link Priestess#special()}.
      */
     @Test
     void testSpecial()

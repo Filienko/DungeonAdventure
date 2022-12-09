@@ -7,7 +7,7 @@ public class Exit extends Item
 {
     private static Exit myExit;
 
-    private Exit(final EntityFactory theEntityFactory) //double check that constructor should be private
+    private Exit(final EntityFactory theEntityFactory)
     {
         super("Exit", theEntityFactory);
     }
@@ -21,7 +21,7 @@ public class Exit extends Item
         return myExit;
     }
 
-    public boolean checkFinishGame(final Hero theHero) //can this be the itemBehavior?
+    public boolean checkFinishGame(final Hero theHero) //checkFinishGame and activate are esssentially the same? do we need both?
     {
         return theHero.getPillars() == 4;
     }

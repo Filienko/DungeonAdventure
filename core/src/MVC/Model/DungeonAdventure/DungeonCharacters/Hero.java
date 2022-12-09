@@ -110,7 +110,6 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public int attack()
     {
-        //myAttackStatus = true; does this ever need to be updated??
         myWeapon = getMyEntityFactory().generateSword();
         return 1;
     }
@@ -275,6 +274,15 @@ public abstract class Hero extends DungeonCharacter
     public String getCharacterType()
     {
         return myCharacterType;
+    }
+
+    @Override
+    public void setCharacterType(final String theCharacterType)
+    {
+        if (theCharacterType != null)
+        {
+            myCharacterType = theCharacterType;
+        }
     }
 
     /**

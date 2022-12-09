@@ -16,6 +16,7 @@ class SpeedPotionTest
         SpeedPotion mySP = new SpeedPotion(new EntityFactory());
 
         assertEquals(mySP.getStrength(), 2);
+        assertEquals(mySP.getType(), "Speed Potion");
     }
 
     @Test
@@ -24,6 +25,7 @@ class SpeedPotionTest
         SpeedPotion mySP = new SpeedPotion(20, new EntityFactory());
 
         assertEquals(mySP.getStrength(), 20);
+        assertEquals(mySP.getType(), "Speed Potion");
     }
 
     @Test
@@ -39,11 +41,5 @@ class SpeedPotionTest
 
         assertEquals(myWarrior.getMaxSpeed(), oldSpeed + 2);
 
-    }
-
-    @Test
-    void testUpdate()
-    {
-        //write tests for update
     }
 }

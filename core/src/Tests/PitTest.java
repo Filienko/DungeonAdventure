@@ -65,14 +65,8 @@ class PitTest
     }
 
     @Test
-    void testItemBehavior()
+    void testActivate()
     {
 
-    }
-
-    @Test
-    void testUpdate()
-    {
-        //write tests for update
     }
 }

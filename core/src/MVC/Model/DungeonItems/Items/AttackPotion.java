@@ -18,7 +18,7 @@ public class AttackPotion extends Potion
 
     public void activate(final Hero theHero)
     {
-        theHero.setDamage(Math.max(10, theHero.getDamage() + super.getStrength()));
+        theHero.setDamage(Math.min(10, theHero.getDamage() + super.getStrength()));
         destroy();
     }
 

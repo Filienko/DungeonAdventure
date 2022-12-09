@@ -12,14 +12,14 @@ public class Pit extends Item
     public Pit(final EntityFactory theEntityFactory)
     {
         super("Pit", theEntityFactory);
-        myDamageFall = 15;
+        setDamageFall(15);
     }
 
     public Pit(final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super("Pit", theEntityFactory);
         setMyLocation(theLocation);
-        myDamageFall = 15;
+        setDamageFall(15);
     }
 
     @Override
@@ -47,5 +47,10 @@ public class Pit extends Item
         return myDamageFall;
     }
 
-    public void setDamageFall(final int theDamageFall) { myDamageFall = theDamageFall; }
+    public void setDamageFall(final int theDamageFall) {
+        if (myDamageFall > 0) //should there be a max on amt of damage
+        {
+            myDamageFall = theDamageFall;
+        }
+    }
 }

@@ -21,27 +21,23 @@ class AttackPotionTest
     @Test
     void testAPOverloadedConstructor()
     {
-        AttackPotion myAP = new AttackPotion(25, new EntityFactory());
+        AttackPotion myAP = new AttackPotion(4, new EntityFactory());
 
-        assertEquals(myAP.getStrength(), 25);
+        assertEquals(myAP.getStrength(), 4);
     }
 
     @Test
     void testActivate()
     {
-        AttackPotion myAP = new AttackPotion(10, new EntityFactory());
+        AttackPotion myAP = new AttackPotion(3, new EntityFactory());
 
         Warrior myWarrior = new Warrior(new EntityFactory());
 
         int damage = myWarrior.getDamage();
 
-        System.out.println(damage);
-
         myAP.activate(myWarrior);
 
-        System.out.println(myWarrior.getDamage());
-
-        assertEquals(myWarrior.getDamage(), damage + 10);
+        assertEquals(myWarrior.getDamage(), damage + 3);
 
     }
 
@@ -53,10 +49,4 @@ class AttackPotionTest
         assertEquals(myAP.getType(), "Attack Potion");
     }
 
-
-    @Test
-    void testUpdate()
-    {
-        //write tests for update
-    }
 }

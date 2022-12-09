@@ -27,19 +27,9 @@ class BombTest
 
         int hpExpected = myThief.getHitPoints() / 2;
 
-        //System.out.println(hpExpected);
-
         myBomb.activate(myThief);
-
-        //System.out.println(myThief.getHitPoints());
 
         assertEquals(myThief.getHitPoints(), hpExpected);
 
-    }
-
-    @Test
-    void testUpdate()
-    {
-        //write tests for update
     }
 }

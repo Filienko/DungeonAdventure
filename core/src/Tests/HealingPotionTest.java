@@ -29,7 +29,7 @@ class HealingPotionTest
     }
 
     @Test
-    void testActivate()
+    void testActivateLessThan10()
     {
         HealingPotion myHP = new HealingPotion(10, new EntityFactory());
 
@@ -43,8 +43,16 @@ class HealingPotionTest
     }
 
     @Test
-    void testUpdate()
+    void testActivateMoreThan10()
     {
-        //write tests for update
+        HealingPotion myHP = new HealingPotion(12, new EntityFactory());
+
+        Priestess myPriestess = new Priestess(new EntityFactory());
+
+        int HP = myPriestess.getHitPoints();
+
+        myHP.activate(myPriestess);
+
+        assertEquals(myPriestess.getHitPoints(), Math.min(10,(myPriestess.getHitPoints() +  12)));
     }
 }

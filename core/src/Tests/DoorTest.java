@@ -52,6 +52,16 @@ class DoorTest
     }
 
     @Test
+    void testGetMonsterCounter()
+    {
+        Door myDoor = new Door(12, new Vec2(5,5), new EntityFactory());
+
+        assertEquals( myDoor.getMonsterCounter(), 12);
+
+    }
+
+
+    @Test
     void testDecrementMonsterCounter()
     {
         Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
@@ -59,7 +69,6 @@ class DoorTest
         myDoor.decrementMonsterCounter();
 
         assertTrue(myDoor.getMonsterCounter()==1);
-        //can I add a getMonsterCounter() method to check if this test passes
     }
 
     @Test
@@ -75,5 +84,4 @@ class DoorTest
         myDoor.update();
         assertFalse(myDoor.getActiveStatus());
     }
-
 }
