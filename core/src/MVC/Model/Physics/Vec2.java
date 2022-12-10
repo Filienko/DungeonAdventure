@@ -42,7 +42,9 @@ private float myY;
 
     public Vec2 add(final float theX, final float theY)
     {
-        return new Vec2(this.myX + theX,this.myY + theY);
+        myX = this.myX + theX;
+        myY = this.myY + theY;
+        return new Vec2(myX + theX,myY + theY);
     };
 
     public Vec2 minus(final Vec2 theVector)

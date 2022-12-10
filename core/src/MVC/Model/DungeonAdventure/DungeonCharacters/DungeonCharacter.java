@@ -111,14 +111,13 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void applyDamage(final int theDamage)
     {
-        if(isInvincibility())
-            return;
-
         int damageOutcome = getHitPoints() - theDamage;
 
-        if (damageOutcome <= 0) {
+        if (damageOutcome <= 0)
+        {
             setHitPoints(0);
-        } else if (damageOutcome > 0)
+        }
+        else if (damageOutcome > 0)
         {
             setHitPoints(damageOutcome);
         }
@@ -242,7 +241,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
 
     public void setKnockbackEndFrame(final long theKnockbackEndFrame)
     {
-        myKnockbackEndFrame = theKnockbackEndFrame;
+        myKnockbackEndFrame = getCurrentFrame() + theKnockbackEndFrame;
     }
 
     public boolean isInvincibility()
@@ -258,7 +257,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void setInvincibility(final boolean theInvincibility, final long theFrames)
     {
         myInvincibility = theInvincibility;
-        myInvincibilityEndFrame += theFrames;
+        myInvincibilityEndFrame = getCurrentFrame() + theFrames;
     }
 
     public long getInvincibilityEndFrame()
@@ -314,7 +313,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                             }
                         }
                     }
-                    else if (t instanceof Item && this.getHeroStatus())
+                    else if ((t instanceof Item) && this.getHeroStatus())
                     {
                         ((Item) t).activate((Hero) this);
                     }
