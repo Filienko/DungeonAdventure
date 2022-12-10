@@ -60,10 +60,9 @@ public class Room implements Cloneable
     private Vec2 myLocation;
 
     /**
-     * The number of monsters located at room.
+     * Entity Factory associated with this Room instruction set.
      */
-    private int myMonstersNumber;
-
+    private EntityFactory myEntityFactory;
 
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
@@ -76,6 +75,7 @@ public class Room implements Cloneable
         myLocation = new Vec2();
         myItems = new StringBuilder();
         myMonsters = new StringBuilder();
+        myEntityFactory = new EntityFactory();
     }
 
     /**
@@ -89,29 +89,7 @@ public class Room implements Cloneable
         myLocation = theLocation;
         myItems = new StringBuilder();
         myMonsters = new StringBuilder();
-    }
-
-    /**
-     * Room constructor that creates a Room that is the Entrance or Exit and that has no Items, at the given location.
-     */
-    public Room(boolean theEntrance, int theNumber, Vec2 theLocation)
-    {
-        if(theEntrance)
-        {
-            myEntrance = true;
-            myExit = false;
-        }
-        else
-        {
-            myEntrance = false;
-            myExit = true;
-            addItem(Exit.getInstance(new EntityFactory())); //added new EntityFactory param
-        }
-
-        myNumber = theNumber;
-        myLocation = theLocation;
-        myItems = new StringBuilder();
-        myMonsters = new StringBuilder();
+        myEntityFactory = new EntityFactory();
     }
 
     /**
@@ -154,15 +132,47 @@ public class Room implements Cloneable
 
     public void populateMonsters(final int theN)
     {
-        setMonsters((new EntityFactory(null,"Warrior")).generateMonsters(theN));
-        myMonstersNumber = myMonstersNumber+4*theN;
+        var ran = new Random().nextDouble();
+        for (int j = 0; j < theN; j++)
+        {
+            if(ran <= 0.25)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    myMonsters.append("rat,");
+                }
+            }
+            else if(ran <= 0.50)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    myMonsters.append("gremlin,");
+                }
+            }
+            else if(ran <= 0.75)
+            {
+                myMonsters.append("knight,");
+            }
+            else
+            {
+                myMonsters.append("ogre,");
+            }
+        }
     }
 
     public void populatePit(double theChance)
     {
         if(theChance < 0.10)
         {
-            addItem(new Pit(new EntityFactory()));
+            addItem("pit");
+        }
+    }
+
+    public void populateBomb(double theChance)
+    {
+        if(theChance < 0.10)
+        {
+            addItem("bomb");
         }
     }
 
@@ -173,15 +183,15 @@ public class Room implements Cloneable
             var randD = theRandom.nextDouble();
             if (randD < 0.25)
             {
-                addItem(new HealingPotion(theRandom.nextInt(1, 5), new EntityFactory())); //new EntityFactory or create an entity factory field??
+                addItem("healthPotion");
             }
             else if (randD < 0.5)
             {
-                addItem(new AttackPotion(theRandom.nextInt(1, 4), new EntityFactory()));
+                addItem("attackPotion");
             }
             else if (randD < 0.76)
             {
-                addItem(new SpeedPotion(theRandom.nextInt(1, 3), new EntityFactory()));
+                addItem("speedPotion");
             }
         }
     }
@@ -279,19 +289,17 @@ public class Room implements Cloneable
     }
 
     /**
+     * This method sets the Item in the Room.
+     * @param theItem The Item to be contained in the Room.
+     */
+    public void addItem (String theItem)
+    {
+        myItems.append(theItem).append(",");
+    }
+    /**
      * This method removes all Items from the Room.
      */
-    public void clearRoom () { myItems.delete(0, myItems.length()); }
-
-    /**
-     * This method removes the Item from the Room.
-     * @param theItem The Item to be removed from the Room.
-     */
-    public void removeItem (Item theItem)
-    {
-        var item = theItem.getType();
-        myItems.delete(myItems.indexOf(item),myItems.indexOf(item)+item.length());
-    }
+    public void clearRoom () {myItems.delete(0, myItems.length()); }
 
     /**
      * This method retrieves the location of the Room in the Dungeon.
@@ -421,8 +429,8 @@ public class Room implements Cloneable
         return s;
     }
 
-    public int getNumberOfMonsters()
+    public void setEntityFactory(final EntityFactory theEntityFactory)
     {
-        return myMonstersNumber;
+        myEntityFactory = theEntityFactory;
     }
 }

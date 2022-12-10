@@ -1,6 +1,5 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
-import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
 
