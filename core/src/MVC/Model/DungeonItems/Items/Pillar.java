@@ -25,11 +25,6 @@ public class Pillar extends Item
     {
         setMyAnimation(getMyEntityFactory().getAssets().getAnimation("brokenPillar"));
         getMyEntityFactory().getHero().incrementPillars();
-        if(getMyAnimation().hasEnded())
-        {
-            super.destroy();
-        }
-        destroy();
     }
 
 
@@ -44,4 +39,3 @@ public class Pillar extends Item
         new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero());
     }
 }
-
