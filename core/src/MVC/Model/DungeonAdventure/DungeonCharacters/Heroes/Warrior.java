@@ -56,6 +56,6 @@ public class Warrior extends Hero
     public int special()
     {
         Random rand = new Random();
-        return rand.nextInt(2, 3);
+        return rand.nextInt(getDamage(), getDamage()+3);
     }
 }
