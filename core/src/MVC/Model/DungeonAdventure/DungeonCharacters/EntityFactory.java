@@ -58,7 +58,6 @@ public class EntityFactory
     public ArrayList<Entity> generateRoomEntities(final Room theRoom)
     {
         theRoom.setEntityFactory(this);
-        theRoom.populateTheRoom(true);
 
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
