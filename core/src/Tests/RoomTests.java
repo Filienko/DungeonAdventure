@@ -8,7 +8,6 @@ import MVC.Model.DungeonItems.Items.SpeedPotion;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Entity;
 
 import java.util.Random;
 
@@ -21,17 +20,14 @@ public class RoomTests
     {
         var room = new Room();
         room.populateTheRoom(true);
-        room.addItem(new Pillar("Encapsulation", new EntityFactory()));
+        room.addItem(new Pillar(new EntityFactory()));
         room.setE(true);
 
         room.populateTheRoom(true);
-        assertTrue(room.getItems().toString().contains("Pit"));
+        assertTrue(room.getItems().toString().contains("pit"));
         assertTrue(room.getItems().toString().contains("Potion"));
-        assertTrue(room.getItems().toString().contains("Encapsulation"));
-        assertTrue(room.getMonsters().toString().contains("Knight"));
-        assertTrue(room.getMonsters().toString().contains("Ogre"));
-        assertTrue(room.getMonsters().toString().contains("Gremlin"));
-        assertTrue(room.getMonsters().toString().contains("Swarm of Rats"));
+        assertTrue(room.getItems().toString().contains("pillar"));
+        assertTrue(room.getMonsters().toString().length()>3);
     }
 
     @Test
@@ -48,7 +44,7 @@ public class RoomTests
     {
         var room = new Room();
         room.populatePit(0.09);
-        assertTrue(room.getItems().toString().contains("Pit"));
+        assertTrue(room.getItems().toString().contains("pit"));
     }
 
     @Test
@@ -56,10 +52,7 @@ public class RoomTests
     {
         var room = new Room();
         room.populateMonsters(1);
-        assertTrue(room.getMonsters().toString().contains("Knight"));
-        assertTrue(room.getMonsters().toString().contains("Ogre"));
-        assertTrue(room.getMonsters().toString().contains("Gremlin"));
-        assertTrue(room.getMonsters().toString().contains("Swarm of Rats"));
+        assertTrue(room.getMonsters().toString().length()>3);
     }
 
     @Test

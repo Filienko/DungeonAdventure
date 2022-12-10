@@ -2,8 +2,6 @@ package MVC.Model.DungeonItems;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
-import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.DungeonUtils.Graph;
 import MVC.Model.Physics.Vec2;
 
@@ -20,8 +18,6 @@ public class Dungeon implements Serializable
 
     private Room[][] myDungeon;
 
-    private Hero myHero;
-
     private List<Room> myRooms;
 
     private int myDimension;
@@ -30,24 +26,7 @@ public class Dungeon implements Serializable
 
     public Dungeon()
     {
-        myHero = myEntityFactory.getHero(); //added EntityFactory
         myDimension = 4;
-        myRooms = generateRooms(myDimension);
-        myDungeon = generateDungeonFromRooms(myRooms,myDimension);
-    }
-
-    public Dungeon(final int theDimension)
-    {
-        if(theDimension<=2)
-        {
-            System.out.println("Minimum Dimension for the dungeon is 3 by 3. We are setting up the 4 by 4 maze");
-            myDimension = 4;
-        }
-        else
-        {
-            myDimension = theDimension;
-        }
-        myHero = myEntityFactory.getHero();
         myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);
     }
@@ -64,7 +43,6 @@ public class Dungeon implements Serializable
             myDimension = theDimension;
         }
         myEntityFactory = theEntityFactory;
-        myHero = theEntityFactory.getHero();
         myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);
     }
@@ -152,16 +130,14 @@ public class Dungeon implements Serializable
             arr.add(new Room(i, new Vec2(row,col)));
         }
 
-        var pillars = myEntityFactory.generatePillars();
         for (int i = 0; i < 4; i++)
         {
-            System.out.println(pillars.get(i).getType());
             var room = arr.get(new Random().nextInt(1,arr.size()));
-            room.addItem(pillars.get(i));
+            room.addItem("pillar");
         }
 
         arr.get(0).setEntranceStatus(true);
-        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(Exit.getInstance(myEntityFactory)); //added new EntityFactory param
+        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem("exit"); //added new EntityFactory param
 
         return arr;
     }
@@ -201,15 +177,10 @@ public class Dungeon implements Serializable
         }
         return answer;
     }
-    public void setHero(Hero theHero)
-    {
-        myHero = theHero;
-    }
     public void restoreFromMemento(Memento memento)
     {
         var dungeon = memento.getSavedState();
         myDungeon = dungeon.getDungeon();
-        myHero = dungeon.getHero();
         myRooms = dungeon.getRooms();
         myDimension = dungeon.getDimension();
     }
