@@ -1,5 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
 
@@ -16,6 +17,7 @@ public abstract class Entity
     private String myType;
     private boolean myActiveStatus;
     private long myCurrentFrame;
+    private Vec2 myRoom;
 
     protected Entity(final Vec2 theSize, final Vec2 thePos, final String theType, final EntityFactory theEntityFactory)
     {
@@ -27,19 +29,7 @@ public abstract class Entity
         myRotation = 0;
         myActiveStatus = true;
         myCurrentFrame = 0;
-    }
-
-    private Entity(final Vec2 theSize, final boolean theEntityAnimated,
-                   final Animation theAnimation, final EntityFactory theEntityFactory)
-    {
-        myEntityFactory = theEntityFactory;
-        myPos = new Vec2();
-        myPreviousPos = new Vec2();
-        mySize = theSize;
-        myEntityAnimated = theEntityAnimated;
-        myAnimation = theAnimation;
-        myActiveStatus = true;
-        myCurrentFrame = 0;
+        myRoom = new Vec2();
     }
 
     public abstract void update();
@@ -55,9 +45,9 @@ public abstract class Entity
         return myPos;
     }
 
-    public void setMyPos(Vec2 myPos)
+    public void setMyPos(Vec2 thePos)
     {
-        this.myPos = myPos;
+        myPos.copy(thePos);
     }
 
     public void updateMyPos(final Vec2 theUpdate)
@@ -138,8 +128,13 @@ public abstract class Entity
         return myEntityFactory;
     }
 
-    public void setMyEntityFactory(final EntityFactory theEntityFactory)
+    public Vec2 getRoom()
     {
-        myEntityFactory = theEntityFactory;
+        return myRoom;
+    }
+
+    public void setRoom(final Vec2 theRoom)
+    {
+        myRoom = theRoom;
     }
 }

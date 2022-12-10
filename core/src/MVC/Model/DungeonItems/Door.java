@@ -6,8 +6,6 @@ import MVC.Model.Physics.Vec2;
 
 public class Door extends Entity
 {
-    private int myRoomNumber;
-
     private Vec2 myLocation;
 
     private int myMonsterCounter;
@@ -28,10 +26,9 @@ public class Door extends Entity
 
     }
 
-    public Door(final int theRoomNumber,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
+    public Door(final Vec2 theRoom,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64),theLocation,"Door", theEntityFactory);
-        myRoomNumber = theRoomNumber;
         myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;
     }
@@ -63,15 +60,5 @@ public class Door extends Entity
     public void decrementMonsterCounter()
     {
         myMonsterCounter--;
-    }
-
-    private int getRoomNumber()
-    {
-        return myRoomNumber;
-    }
-
-    private void setRoomNumber(final int theRoomNumber)
-    {
-        myRoomNumber = theRoomNumber;
     }
 }

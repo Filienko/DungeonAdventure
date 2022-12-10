@@ -3,6 +3,7 @@ package MVC.Model.DungeonItems.Weapon;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
@@ -70,16 +71,14 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void collide()
     {
-        for (var e: myEntityFactory.getMonsters())
+        for (var c: myEntityFactory.getMonsters())
         {
-            System.out.println("IN ATTACK 2");
+            var e = (Monster) c;
             if (e.getActiveStatus() && !e.isInvincibility())
             {
-                System.out.println("IN ATTACK 1");
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    System.out.println("IN ATTACK 0");
                     e.applyDamage(myHero.attack());
                     if(e.getHitPoints()<=0)
                     {
@@ -90,7 +89,6 @@ public class Sword extends Entity implements ICollidable
                     }
                     else
                     {
-                        System.out.println("IN ATTACK");
                         //Potentially add sound
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
                         var v = e.getMyPos().minus(this.getMyPos());
