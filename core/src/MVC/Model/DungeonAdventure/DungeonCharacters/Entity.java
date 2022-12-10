@@ -88,7 +88,10 @@ public abstract class Entity
 
     public void setMyAnimation(final Animation theAnimation)
     {
-        myAnimation = theAnimation;
+        if (theAnimation != null)
+        {
+            myAnimation = new Animation(theAnimation);
+        }
     }
 
     public String getType() { return myType; }

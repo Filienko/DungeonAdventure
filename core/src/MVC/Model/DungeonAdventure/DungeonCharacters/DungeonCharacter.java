@@ -91,7 +91,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             destroy();
         }
-        else if(!isKnockback())
+        else if(myHitPoints > 0 && !isKnockback())
         {
             movement();
         }

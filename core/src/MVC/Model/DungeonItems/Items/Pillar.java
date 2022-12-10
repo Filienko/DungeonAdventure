@@ -9,13 +9,13 @@ public class Pillar extends Item
 
     public Pillar(final String theName, final EntityFactory theEntityFactory)
     {
-        super("Pillar", theEntityFactory);
+        super("pillar", theEntityFactory);
         myName = theName;
     }
 
     public Pillar(final String theName, final boolean theActive, final EntityFactory theEntityFactory) //what is theActive field for?
     {
-        super("Pillar", theEntityFactory);
+        super("pillar", theEntityFactory);
         myName = theName;
     }
 
