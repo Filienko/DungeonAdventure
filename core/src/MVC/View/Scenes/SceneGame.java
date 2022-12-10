@@ -166,7 +166,8 @@ public class SceneGame extends Scene
             {
                 e.getMyAnimation().update();
                 sprite = e.getMyAnimation().getSprite();
-                if (e.getMyAnimation().getName().equals("attackRight") && e.getMyAnimation().getSprite().getScaleX() == -1)
+                if (e.getMyAnimation().getName().equals("attackRight")
+                        && e.getMyAnimation().getSprite().getScaleX() == -1)
                 {
                     sprite.setPosition(e.getMyPos().getMyX() - 48, e.getMyPos().getMyY());
                 }
