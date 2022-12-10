@@ -26,15 +26,6 @@ public class Door extends Entity
         myMonsterCounter = theMonsterCounter;
     }
 
-    @Override
-    public void update()
-    {
-        if(myMonsterCounter == 0)
-        {
-            destroy();
-        }
-    }
-
     public int getMonsterCounter()
     {
         return myMonsterCounter;
@@ -43,5 +34,18 @@ public class Door extends Entity
     public void decrementMonsterCounter()
     {
         myMonsterCounter--;
+        System.out.println("ENEMY COUNTER " + myMonsterCounter);
+        if(myMonsterCounter == 0)
+    {
+        System.out.println(" WAS 0");
+        for (var pillar:getMyEntityFactory().getPillars())
+        {
+            if(pillar.getRoom().equals(getRoom()))
+            {
+                pillar.destroy();
+            }
+        }
+        destroy();
+    }
     }
 }

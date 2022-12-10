@@ -53,7 +53,6 @@ public class Dungeon implements Serializable
     public Room[][] generateDungeonFromRooms(List<Room> theRooms, int theDimension)
     {
         var edges = Graph.generateMaze(theDimension);
-        System.out.println(edges.size());
         var offset = theDimension+2;
         int src;
         int dest;

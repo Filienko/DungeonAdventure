@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class EntityFactoryTest
 {
-    EntityFactory entityFactory = new EntityFactory(null, "Warrior");
+    EntityFactory entityFactory = new EntityFactory(null, "Mock");
 
     @Test
     void testUpdate()
@@ -88,17 +88,16 @@ public class EntityFactoryTest
     @Test
     void testGenerateMonsters()
     {
-        var monsters = entityFactory.generateMonsters(1);
-        assertEquals("Ogre",monsters.get(0).getType());
-        assertEquals("Gremlin",monsters.get(1).getType());
-        assertEquals("Knight",monsters.get(2).getType());
-        assertEquals("Swarm of Rats",monsters.get(3).getType());
+        assertTrue(entityFactory.generateMonsters("rat").getMonsterType().contentEquals("rat"));
+        assertTrue(entityFactory.generateMonsters("ogre").getMonsterType().contentEquals("ogre"));
+        assertTrue(entityFactory.generateMonsters("knight").getMonsterType().contentEquals("knight"));
+        assertTrue(entityFactory.generateMonsters("gremlin").getMonsterType().contentEquals("gremlin"));
     }
 
     @Test
     void testAddItem()
     {
-        assertEquals("Pit",entityFactory.generateItem("Pit").getType());
+        assertEquals("Pit",entityFactory.generateItems("Pit").getType());
     }
 
     @Test

@@ -20,11 +20,18 @@ public class Pillar extends Item
         myName = theName;
     }
 
-    public Pillar(final String theName, final boolean theActive, final EntityFactory theEntityFactory) //what is theActive field for?
+    @Override
+    public void destroy()
     {
-        super("pillar", theEntityFactory);
-        myName = theName;
+        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("brokenPillar"));
+        getMyEntityFactory().getHero().incrementPillars();
+        if(getMyAnimation().hasEnded())
+        {
+            super.destroy();
+        }
+        destroy();
     }
+
 
     public String getName()
     {
@@ -34,8 +41,7 @@ public class Pillar extends Item
     @Override
     public void activate(final Hero theHero)
     {
-        theHero.incrementPillars();
-        destroy();
+        new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero());
     }
 }
 

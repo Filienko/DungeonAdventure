@@ -4,8 +4,6 @@ import MVC.Model.DungeonItems.Door;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
-import java.util.Random;
-
 public class Monster extends DungeonCharacter
 {
     /**
@@ -65,8 +63,7 @@ public class Monster extends DungeonCharacter
         {
             if (e.getRoom().equals(getRoom()))
             {
-                var d = (Door)e;
-                d.decrementMonsterCounter();
+                ((Door) e).decrementMonsterCounter();
             }
         }
         super.destroy();

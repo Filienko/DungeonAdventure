@@ -12,10 +12,8 @@ public abstract class Item extends Entity
 {
     protected Item(final String theType, final EntityFactory theEntityFactory)
     {
-        super(new Vec2(32, 32), new Vec2((new Random()).nextInt(1, 18),
-                (new Random()).nextInt(2, 11)), theType,  theEntityFactory);
-        setMyPos(new Vec2((new Random()).nextInt(2, 18),
-                (new Random()).nextInt(2, 11)));
+        super(new Vec2(32, 32), new Vec2((new Random()).nextInt(2, 10),
+                (new Random()).nextInt(2, 10)), theType,  theEntityFactory);
         if(getMyEntityFactory().getAssets()!=null)
         {
             setMyAnimation(getMyEntityFactory().getAssets().getAnimation(getType()));

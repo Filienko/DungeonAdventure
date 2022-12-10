@@ -64,12 +64,12 @@ public class SceneMenu extends Scene
                     if (myHeroSelection)
                     {
                         myGame.setCurrentScene("Dungeon",
-                            new SceneGame(myGame, myHeroSelections.get(myMenuIndex)), false);
+                                new SceneGame(myGame, myHeroSelections.get(myMenuIndex)), false);
                     }
                     else if (myTextElements.get(myMenuIndex).equals("NEW GAME"))
                     {
-                       myHeroSelection = true;
-                       System.out.println("Selected: 'New Game'");
+                        myHeroSelection = true;
+                        System.out.println("Selected: 'New Game'");
                     } else if (myTextElements.get(myMenuIndex).equals("LOAD GAME"))
                     {
                         // Deserialize
