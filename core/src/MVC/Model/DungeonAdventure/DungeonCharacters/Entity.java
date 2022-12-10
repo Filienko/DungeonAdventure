@@ -31,7 +31,7 @@ public abstract class Entity
         myRoom = new Vec2();
     }
 
-    public abstract void update();
+    public void update() {};
 
     public void destroy()
     {
@@ -74,11 +74,6 @@ public abstract class Entity
     public boolean isMyEntityAnimated()
     {
         return myEntityAnimated;
-    }
-
-    public void setMyEntityAnimated(final boolean myEntityAnimated)
-    {
-        this.myEntityAnimated = myEntityAnimated;
     }
 
     public Animation getMyAnimation()

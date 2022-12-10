@@ -3,6 +3,7 @@ package Tests;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonItems.Door;
 import MVC.Model.Physics.Vec2;
+import MVC.View.Assets;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,7 +66,7 @@ class DoorTest
     @Test
     void testUpdate()
     {
-        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
+        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory(new Assets(),"Mock"));
         assertTrue(myDoor.getActiveStatus());
         myDoor.decrementMonsterCounter();
         assertTrue(myDoor.getActiveStatus());

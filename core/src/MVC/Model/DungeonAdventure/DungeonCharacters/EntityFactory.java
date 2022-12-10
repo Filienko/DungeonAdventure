@@ -10,6 +10,8 @@ import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Assets;
 import com.badlogic.gdx.utils.ObjectMap;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -330,6 +332,10 @@ public class EntityFactory
         {
             return generatePriestess();
         }
+        else if (type1.contentEquals("Mock"))
+        {
+            return generateMockHero();
+        }
         return null;
     }
 
@@ -338,6 +344,12 @@ public class EntityFactory
         Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
         warrior.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(warrior);
+        return warrior;
+    }
+
+    public Hero generateMockHero()
+    {
+        Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
         return warrior;
     }
 
@@ -415,10 +427,16 @@ public class EntityFactory
     //added this method
     public Sword generateSword()
 {
-        var sword = Sword.getInstance(this, myHero);
+    var sword = Sword.getInstance(this, myHero);
+    if(myEntityMap.get("Sword")==null)
+    {
         myEntitiesToAdd.add(sword);
+        var weapons = new ArrayList<Entity>();
+        weapons.add(sword);
+        myEntityMap.put("Sword", weapons);
+    }
 
-        return sword;
+    return sword;
 }
 
     public ArrayList<Entity> getEntities() { return myEntities; }
@@ -455,4 +473,10 @@ public class EntityFactory
             }
         }
     }
+
+    public void renewSword()
+    {
+        myEntityMap.remove("Sword");
+    }
+
 }

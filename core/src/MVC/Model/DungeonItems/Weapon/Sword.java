@@ -21,7 +21,7 @@ public class Sword extends Entity implements ICollidable
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), theHero.getMyPos(), "Sword", theEntityFactory);
-        myLifeSpan = 10;
+        myLifeSpan = 15;
         setCurrentFrame(0);
         myHero = theHero;
     }
@@ -44,6 +44,7 @@ public class Sword extends Entity implements ICollidable
         if (getCurrentFrame() >= myLifeSpan)
         {
             destroy();
+            getMyEntityFactory().renewSword();
         }
         else if (getCurrentFrame() < myLifeSpan)
         {

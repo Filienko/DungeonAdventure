@@ -31,8 +31,6 @@ public class Door extends Entity
     {
         if(myMonsterCounter == 0)
         {
-            getMyEntityFactory().getHero().setHitPoints(1000);
-            getMyEntityFactory().getHero().setMaxSpeed(20);
             destroy();
         }
     }

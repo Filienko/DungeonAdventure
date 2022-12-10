@@ -7,6 +7,13 @@ public class Pillar extends Item
 {
     private final String myName;
 
+    public Pillar(final EntityFactory theEntityFactory)
+    {
+        super("pillar", theEntityFactory);
+        myName = "pillar";
+    }
+
+
     public Pillar(final String theName, final EntityFactory theEntityFactory)
     {
         super("pillar", theEntityFactory);

@@ -52,7 +52,10 @@ public class Monster extends DungeonCharacter
 
         myMonsterType = theMonsterType;
         myHero = theHero;
-        setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
+        if(getMyEntityFactory().getAssets()!=null)
+        {
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
+        }
     }
 
     @Override

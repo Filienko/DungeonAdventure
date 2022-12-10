@@ -87,20 +87,26 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
             setKnockback(false);
         }
 
-        if(myHitPoints <= 0 && getMyAnimation().hasEnded())
+        if(myHitPoints <= 0)
         {
-            destroy();
+            setDamage(0);
+            if(getMyAnimation().hasEnded())
+            {
+                destroy();
+                return;
+            }
         }
         else if(myHitPoints > 0 && !isKnockback())
         {
             movement();
+            collide();
         }
         else if (myHitPoints > 0)
         {
             setMyPreviousPos(getMyPos());
             updateMyPos(getVelocity());
+            collide();
         }
-        collide();
     }
 
     public void die()
