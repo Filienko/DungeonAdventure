@@ -38,7 +38,6 @@ public abstract class Entity
         mySize = theSize;
         myEntityAnimated = theEntityAnimated;
         myAnimation = theAnimation;
-
         myActiveStatus = true;
         myCurrentFrame = 0;
     }

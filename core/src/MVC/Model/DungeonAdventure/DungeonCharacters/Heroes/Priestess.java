@@ -37,11 +37,13 @@ public class Priestess extends Hero implements Healable
     @Override
     public int attack()
     {
+        var damage = super.attack();
+
         if((new Random()).nextDouble()<0.1)
         {
             special();
         }
-        return super.attack();
+        return damage;
     }
 
     /**
