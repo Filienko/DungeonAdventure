@@ -43,7 +43,7 @@ public class EntityFactory
         SuperMonsterDB DB = new MonsterDB();
         var monster = DB.createMonsterDB(monsterType, myHero,this);
         myEntitiesToAdd.add(monster);
-        return DB.createMonsterDB(monsterType, myHero,this);
+        return monster;
     }
 
     public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
@@ -150,7 +150,6 @@ public class EntityFactory
             monster = monster.substring(0,monster.indexOf(","));
             var e = generateMonster(monster);
             e.setRoom(location);
-            myEntitiesToAdd.add(e);
             monsterCounter++;
         }
 
