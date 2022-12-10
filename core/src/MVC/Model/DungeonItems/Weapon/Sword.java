@@ -95,7 +95,7 @@ public class Sword extends Entity implements ICollidable
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
                         var v = e.getMyPos().minus(this.getMyPos());
                         var normalizedV = v.multiply(v.quickInverseMagnitude());
-                        e.setVelocity(normalizedV.multiply((float) 4),15);
+                        e.setVelocity(normalizedV.multiply((float) 4),10);
                         e.setInvincibility(true, lifespanLeft);
                     }
                 }

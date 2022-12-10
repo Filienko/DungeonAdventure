@@ -221,7 +221,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     {
         myVelocity = theVelocity;
         setKnockback(true);
-        setKnockbackEndFrame(getCurrentFrame()+theFramesLong);
+        setKnockbackEndFrame(theFramesLong);
     }
 
     public boolean isKnockback()

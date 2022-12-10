@@ -8,7 +8,7 @@ public class AttackPotion extends Potion
 
     public AttackPotion(final EntityFactory theEntityFactory)
     {
-        super("attackPotion",20, theEntityFactory);
+        super("attackPotion",1, theEntityFactory);
     }
 
     public AttackPotion(final int theStrength, final EntityFactory theEntityFactory)
