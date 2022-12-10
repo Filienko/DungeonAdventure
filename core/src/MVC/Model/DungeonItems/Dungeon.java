@@ -74,12 +74,8 @@ public class Dungeon implements Serializable
                 {
                     if(theRooms.get(j).getNumber()==src)
                     {
-                        theRooms.get(j).setW(true);
-                    }
-                    else if (theRooms.get(j).getNumber()==dest)
-                    {
                         theRooms.get(j).setE(true);
-                        break;
+                        theRooms.get(j+1).setW(true);
                     }
                 }
             }
@@ -89,12 +85,8 @@ public class Dungeon implements Serializable
                 {
                     if(theRooms.get(j).getNumber()==src)
                     {
-                        theRooms.get(j).setS(true);
-                    }
-                    else if (theRooms.get(j).getNumber()==dest)
-                    {
                         theRooms.get(j).setN(true);
-                        break;
+                        theRooms.get(j+theDimension).setS(true);
                     }
                 }
             }
@@ -125,10 +117,23 @@ public class Dungeon implements Serializable
             }
 
             //Account for the buffer offset
-            int row = i / (n1 + 2);
+            //Adjust for positive value library coordinate system
+            int row = (i / (n1 + 2));
             int col = (i % (n1 + 2)) - 1;
-            arr.add(new Room(i, new Vec2(row,col)));
+            arr.add(new Room(i, new Vec2(col,row)));
         }
+
+//        for (int i = 0; i < arr.size(); i++)
+//        {
+//            if(i>=(n1*(i-1)))
+//            {
+//                arr.get(i).setLocation(arr.get(i).getLocation().minus(new Vec2()));
+//            }
+//            else
+//            {
+//                arr.get(i).setLocation(arr.get(i).getLocation().minus(new Vec2()));
+//            }
+//        }
 
         for (int i = 0; i < 4; i++)
         {
