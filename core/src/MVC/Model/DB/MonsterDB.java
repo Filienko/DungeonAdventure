@@ -97,7 +97,7 @@ public class MonsterDB extends SuperMonsterDB
         randVec = new Vec2((new Random()).nextInt(4, 8), (new Random()).nextInt(4, 8));
         String ratsQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,1,'rat',1,7,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,16,16)";
+                ") VALUES (0,1,'rat',1,7,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,32,32)";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)

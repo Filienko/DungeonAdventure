@@ -225,7 +225,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     {
         myVelocity = theVelocity;
         setKnockback(true);
-        setKnockbackEndFrame(getCurrentFrame()+theFramesLong);
+        setKnockbackEndFrame(theFramesLong);
     }
 
     public boolean isKnockback()
@@ -283,7 +283,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
                     // If the tile blocks movement
-                    if (t.getType().contains("Pit") || t.getType().contains("Wall") || t.getType().contains("Door") ||
+                    if (t.getType().contains("Pit") || t.getType().contains("Wall") ||
                             t.getType().contains("Monster") || t.getType().contains("Hero"))
                     {
                         previousOverlap = Physics.getPreviousOverlap(this, t);
@@ -317,7 +317,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                             }
                         }
                     }
-                    else if ((t instanceof Item) && this.getHeroStatus())
+                    if ((t instanceof Item) && this.getHeroStatus())
                     {
                         ((Item) t).activate((Hero) this);
                     }

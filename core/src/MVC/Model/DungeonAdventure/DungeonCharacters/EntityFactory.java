@@ -40,18 +40,16 @@ public class EntityFactory
     
     public Monster generateMonster(final String monsterType)
     {
-        //Updating, Deleting, and Collecting entities
         SuperMonsterDB DB = new MonsterDB();
         var monster = DB.createMonsterDB(monsterType, myHero,this);
         myEntitiesToAdd.add(monster);
-        return DB.createMonsterDB(monsterType, myHero,this);
+        return monster;
     }
 
     public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
     {
         for (var room: theDungeon.getRooms())
         {
-            var roomNumber = room.getNumber();
             generateRoomEntities(room);
         }
         return myEntitiesToAdd;
@@ -59,6 +57,8 @@ public class EntityFactory
 
     public ArrayList<Entity> generateRoomEntities(final Room theRoom)
     {
+        theRoom.setEntityFactory(this);
+
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
         Vec2 location = theRoom.getLocation();
@@ -132,18 +132,39 @@ public class EntityFactory
             }
         }
 
+        while(items.toString().contains(","))
+        {
+            String item = items.substring(0, items.indexOf(",")+1);
+            items.delete(0, items.indexOf(",")+1);
+            var i = generateItem(item.substring(0,item.indexOf(",")));
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
+                    (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            i.setMyPos(pixelPos);
+            myEntitiesToAdd.add(i);
+        }
+
+        int monsterCounter = 0;
+        while(monsters.toString().contains(","))
+        {
+            String monster = monsters.substring(0, monsters.indexOf(",")+1);
+            monsters.delete(0, monsters.indexOf(",")+1);
+            monster = monster.substring(0,monster.indexOf(","));
+            var e = generateMonster(monster);
+            e.setRoom(location);
+            monsterCounter++;
+        }
 
         if (theRoom.isN())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
-            Door door = new Door(1, pixelPos, this);
+            Door door = new Door(location,monsterCounter, pixelPos, this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             myEntitiesToAdd.add(door);
         }
         if (theRoom.isS())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
-            Door door = new Door(1, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(180);
             myEntitiesToAdd.add(door);
@@ -151,7 +172,7 @@ public class EntityFactory
         if (theRoom.isW())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
-            Door door = new Door(1, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(90);
             myEntitiesToAdd.add(door);
@@ -159,26 +180,12 @@ public class EntityFactory
         if (theRoom.isE())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
-            Door door = new Door(1, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(270);
             myEntitiesToAdd.add(door);
         }
 
-        while(items.length()>1)
-        {
-            String item = items.substring(0, items.indexOf(",")+1);
-            items.delete(0, items.indexOf(",")+1);
-            myEntitiesToAdd.add(generateItem(item.substring(0,item.indexOf(","))));
-        }
-
-        while(monsters.length()>0)
-        {
-            String monster = monsters.substring(0, monsters.indexOf(",")+1);
-            monsters.delete(0, monsters.indexOf(",")+1);
-            monster = monster.substring(0,monster.indexOf(","));
-            myEntitiesToAdd.add(generateMonster(monster));
-        }
         return myEntitiesToAdd;
     }
 
@@ -266,7 +273,7 @@ public class EntityFactory
 
     public Item generateItem(final String theItem)
     {
-        switch (theItem.toLowerCase(Locale.ROOT))
+        switch (theItem)
         {
             case "healthPotion" -> {
                 return new HealingPotion(this);
@@ -280,7 +287,7 @@ public class EntityFactory
             case "pit" -> {
                 return new Pit(this);
             }
-            case "encapsulation","inheritance","polymorphism","abstraction"-> {
+            case "pillar"-> {
                 return new Pillar(theItem, this);
             }
             case "exit" -> {
@@ -421,19 +428,16 @@ public class EntityFactory
         return myHero;
     }
 
-    public ArrayList<Monster> getMonsters()
+    public ArrayList<Entity> getMonsters()
     {
-        var monsters = new ArrayList<Monster>();
-        for (var e: myEntities)
-        {
-            if(e instanceof Monster)
-            {
-                monsters.add((Monster) e);
-            }
-        }
-
-        return monsters;
+        return myEntityMap.get("Monster");
     }
+
+    public ArrayList<Entity> getDoors()
+    {
+        return myEntityMap.get("Door");
+    }
+
     public Assets getAssets() { return myAssets; }
 
     private void removeDeadEntities()

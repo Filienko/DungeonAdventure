@@ -10,7 +10,7 @@ public class Bomb extends Item
      */
     public Bomb(final EntityFactory theEntityFactory)
     {
-        super("Bomb", theEntityFactory);
+        super("bomb", theEntityFactory);
     }
 
     /**

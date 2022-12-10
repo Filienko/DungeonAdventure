@@ -1,5 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DungeonItems.Door;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
@@ -10,8 +11,7 @@ public class Monster extends DungeonCharacter
     /**
      * Monster's default position.
      */
-    private final Vec2 myHomePosition = new Vec2((new Random()).nextInt(1, 20),
-            (new Random()).nextInt(1, 12));
+    private Vec2 myHomePosition;
 
     /**
      * Hero status that tells that this DungeonCharacter is a Monster.
@@ -53,6 +53,20 @@ public class Monster extends DungeonCharacter
         myMonsterType = theMonsterType;
         myHero = theHero;
         setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
+    }
+
+    @Override
+    public void destroy()
+    {
+        for (var e : getMyEntityFactory().getDoors())
+        {
+            if (e.getRoom().equals(getRoom()))
+            {
+                var d = (Door)e;
+                d.decrementMonsterCounter();
+            }
+        }
+        super.destroy();
     }
 
     @Override
@@ -157,6 +171,15 @@ public class Monster extends DungeonCharacter
     }
 
     @Override
+    public void setRoom(final Vec2 theRoom)
+    {
+        super.setRoom(theRoom);
+        myHomePosition = Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
+                (int) getMyPos().getMyX(),(int) getMyPos().getMyY());
+        setMyPos(myHomePosition);
+    }
+
+    @Override
     public String toString()
     {
         return "Monster {" +
@@ -165,5 +188,4 @@ public class Monster extends DungeonCharacter
                 ", myHitPoints = " + getHitPoints() +
                 '}';
     }
-
 }
