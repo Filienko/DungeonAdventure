@@ -28,7 +28,7 @@ class DoorTest
     @Test
     void testDoorOL2Constructor()
     {
-        Door myDoor = new Door(6,2, new Vec2(3,4), new EntityFactory());
+        Door myDoor = new Door(new Vec2(),2, new Vec2(3,4), new EntityFactory());
 
         assertTrue(myDoor.getMyLocation().equals(new Vec2(3,4)));
     }

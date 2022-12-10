@@ -135,7 +135,11 @@ public class EntityFactory
         {
             String item = items.substring(0, items.indexOf(",")+1);
             items.delete(0, items.indexOf(",")+1);
-            myEntitiesToAdd.add(generateItem(item.substring(0,item.indexOf(","))));
+            var i = generateItem(item.substring(0,item.indexOf(",")));
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
+                    (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            i.setMyPos(pixelPos);
+            myEntitiesToAdd.add(i);
         }
 
         int monsterCounter = 0;
@@ -145,10 +149,7 @@ public class EntityFactory
             monsters.delete(0, monsters.indexOf(",")+1);
             monster = monster.substring(0,monster.indexOf(","));
             var e = generateMonster(monster);
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                    (int) e.getMyPos().getMyX(), (int) e.getMyPos().getMyY());
-            e.setMyPos(pixelPos);
-            e.setHomePosition(pixelPos);
+            e.setRoom(location);
             myEntitiesToAdd.add(e);
             monsterCounter++;
         }
@@ -156,14 +157,14 @@ public class EntityFactory
         if (theRoom.isN())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
-            Door door = new Door(monsterCounter, pixelPos, this);
+            Door door = new Door(location,monsterCounter, pixelPos, this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             myEntitiesToAdd.add(door);
         }
         if (theRoom.isS())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
-            Door door = new Door(monsterCounter, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(180);
             myEntitiesToAdd.add(door);
@@ -171,7 +172,7 @@ public class EntityFactory
         if (theRoom.isW())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
-            Door door = new Door(monsterCounter, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(90);
             myEntitiesToAdd.add(door);
@@ -179,7 +180,7 @@ public class EntityFactory
         if (theRoom.isE())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
-            Door door = new Door(monsterCounter, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(270);
             myEntitiesToAdd.add(door);
@@ -429,18 +430,15 @@ public class EntityFactory
         return myHero;
     }
 
-    public ArrayList<Monster> getMonsters()
+    public ArrayList<Entity> getMonsters()
     {
-        var monsters = new ArrayList<Monster>();
-        for (var e: myEntities)
-        {
-            if(e instanceof Monster)
-            {
-                monsters.add((Monster) e);
-            }
-        }
-
-        return monsters;
+        return myEntityMap.get("Monster");
     }
+
+    public ArrayList<Entity> getDoors()
+    {
+        return myEntityMap.get("Door");
+    }
+
     public Assets getAssets() { return myAssets; }
 }
