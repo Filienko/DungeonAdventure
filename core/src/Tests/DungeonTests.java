@@ -1,8 +1,6 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
 import org.junit.After;
@@ -26,7 +24,7 @@ public class DungeonTests
     private final ByteArrayOutputStream err = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
-
+    private EntityFactory myEntityFactory = new EntityFactory();
     @BeforeEach
     private void setStreams() {
         System.setOut(new PrintStream(out));
@@ -44,7 +42,7 @@ public class DungeonTests
     {
         for (int i = 3; i < 10; i++)
         {
-            new Dungeon(i); //added new EntityFactory
+            new Dungeon(myEntityFactory,i);
             assertEquals(i*i-1, Integer.valueOf(out.toString().strip()));
             out.reset();
         }
@@ -60,7 +58,7 @@ public class DungeonTests
 
     void testRoomGenerationNormalValue(int theDimension)
     {
-        final Dungeon myDungeon = new Dungeon(theDimension); //added new EntityFactory
+        final Dungeon myDungeon = new Dungeon(myEntityFactory,theDimension); //added new EntityFactory
         ArrayList<Room> rooms = generateRooms(theDimension);
         var dungeonMadeOfRooms = (new Dungeon()).generateDungeonFromRooms(rooms,theDimension);
         testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
@@ -69,7 +67,7 @@ public class DungeonTests
     void testRoomGenerationUnderValue(int theDimension)
     {
         //Testing the edge case
-        final Dungeon myDungeon = new Dungeon(theDimension); //added new EntityFactory
+        final Dungeon myDungeon = new Dungeon(myEntityFactory,theDimension); //added new EntityFactory
         ArrayList<Room> rooms = generateRooms(Math.max(theDimension,4));
         var dungeonMadeOfRooms = (new Dungeon()).generateDungeonFromRooms(rooms,Math.max(theDimension,4));
         testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
@@ -95,9 +93,8 @@ public class DungeonTests
     @Test
     private void testDungeonSetters()
     {
-        var dungeon = new Dungeon();
+        var dungeon = new Dungeon(myEntityFactory,4);
 
-        dungeon = new Dungeon();
         assertTrue(dungeon.getRooms().size()==16);
         dungeon.setRooms(generateRooms(5));
         assertTrue(dungeon.getRooms().size()==25);

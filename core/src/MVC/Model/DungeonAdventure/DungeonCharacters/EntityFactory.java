@@ -330,6 +330,10 @@ public class EntityFactory
         {
             return generatePriestess();
         }
+        else if (type1.contentEquals("Mock"))
+        {
+            return generateMockHero();
+        }
         return null;
     }
 
@@ -338,6 +342,12 @@ public class EntityFactory
         Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
         warrior.setMyAnimation(myAssets.getAnimation("runDown"));
         myEntitiesToAdd.add(warrior);
+        return warrior;
+    }
+
+    public Hero generateMockHero()
+    {
+        Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
         return warrior;
     }
 

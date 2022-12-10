@@ -16,14 +16,12 @@ public class SaverTest
     void prepareFile()
     {
         var dungeon = new Dungeon();
-        dungeon.setHero(new Thief(new EntityFactory()));
         System.out.println(dungeon.getRooms().size());
         dungeon.getRooms().add(new Room());
         dungeon.getRooms().add(new Room());
         System.out.println(dungeon.getRooms().size());
         var caretaker = new Saver();
         caretaker.saveTheGame(dungeon);
-        dungeon.setHero(new Priestess(new EntityFactory()));
         dungeon.getRooms().add(new Room());
         dungeon.getRooms().add(new Room());
         dungeon.getRooms().add(new Room());

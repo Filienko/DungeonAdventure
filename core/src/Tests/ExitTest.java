@@ -3,12 +3,7 @@ package Tests;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Items.Exit;
-import MVC.Model.DungeonItems.Items.Pillar;
-import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 

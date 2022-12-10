@@ -278,7 +278,7 @@ public class Room implements Cloneable
      */
     public void addItem (Item theItem)
     {
-        if(theItem.getType().contentEquals("Pillar"))
+        if(theItem.getType().contentEquals("pillar"))
         {
             myItems.append(((Pillar) theItem).getName()).append(",");
         }

@@ -16,7 +16,10 @@ public abstract class Item extends Entity
                 (new Random()).nextInt(1, 12)), theType,  theEntityFactory);
         setMyPos(new Vec2((new Random()).nextInt(1, 20),
                 (new Random()).nextInt(1, 12)));
-        setMyAnimation(getMyEntityFactory().getAssets().getAnimation(getType()));
+        if(getMyEntityFactory().getAssets()!=null)
+        {
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation(getType()));
+        }
     }
 
     @Override
