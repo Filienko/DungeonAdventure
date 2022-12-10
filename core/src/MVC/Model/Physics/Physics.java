@@ -2,8 +2,8 @@ package MVC.Model.Physics;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 
-public class Physics {
-
+public class Physics
+{
     public static Vec2 getOverlap(Entity theEntity1, Entity theEntity2)
     {
         return getOverlapVector(theEntity1, theEntity2, theEntity1.getMyPos(), theEntity2.getMyPos());

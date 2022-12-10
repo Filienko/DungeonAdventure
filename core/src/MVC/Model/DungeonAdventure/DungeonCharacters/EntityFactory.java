@@ -43,7 +43,7 @@ public class EntityFactory
         //Updating, Deleting, and Collecting entities
         SuperMonsterDB DB = new MonsterDB();
         var monster = DB.createMonsterDB(monsterType, myHero,this);
-        myEntities.add(monster);
+        myEntitiesToAdd.add(monster);
         return DB.createMonsterDB(monsterType, myHero,this);
     }
 
@@ -268,13 +268,13 @@ public class EntityFactory
     {
         switch (theItem.toLowerCase(Locale.ROOT))
         {
-            case "healing potion" -> {
+            case "healthPotion" -> {
                 return new HealingPotion(this);
             }
-            case "attack potion" -> {
+            case "attackPotion" -> {
                 return new AttackPotion(this);
             }
-            case "speed potion" -> {
+            case "speedPotion" -> {
                 return new SpeedPotion(this);
             }
             case "pit" -> {
@@ -362,49 +362,58 @@ public class EntityFactory
         return arr;
     }
 
-//
-//    public static List<HealingPotion> generateHealingPotions(final int theN)
-//    {
-//        var arr = new ArrayList<HealingPotion>();
-//
-//        for (int i = 0; i < theN; i++)
-//        {
-//            arr.add(new HealingPotion());
-//        }
-//
-//        return arr;
-//    }
-//
-//    public static List<SpeedPotion> generateSpeedPotions(final int theN)
-//    {
-//        var arr = new ArrayList<SpeedPotion>();
-//
-//        for (int i = 0; i < theN; i++)
-//        {
-//            arr.add(new SpeedPotion());
-//        }
-//
-//        return arr;
-//    }
-//
-//    public static List<AttackPotion> generateAttackPotions(final int theN)
-//    {
-//        var arr = new ArrayList<AttackPotion>();
-//
-//        for (int i = 0; i < theN; i++)
-//        {
-//            arr.add(new AttackPotion());
-//        }
-//
-//        return arr;
-//    }
+
+    public List<HealingPotion> generateHealingPotions(final int theN)
+    {
+        var arr = new ArrayList<HealingPotion>();
+
+        for (int i = 0; i < theN; i++)
+        {
+            var p = new HealingPotion(this);
+            p.setMyPos(getHero().getMyPos().add(new Vec2(100,50)));
+            myEntitiesToAdd.add(p);
+        }
+
+        return arr;
+    }
+
+    public List<SpeedPotion> generateSpeedPotions(final int theN)
+    {
+        var arr = new ArrayList<SpeedPotion>();
+
+        for (int i = 0; i < theN; i++)
+        {
+            var p = new SpeedPotion(this);
+            p.setMyPos(getHero().getMyPos().add(new Vec2(100,-50)));
+            myEntitiesToAdd.add(p);
+        }
+
+        return arr;
+    }
+
+    public List<AttackPotion> generateAttackPotions(final int theN)
+    {
+        var arr = new ArrayList<AttackPotion>();
+
+        for (int i = 0; i < theN; i++)
+        {
+            var p = new AttackPotion(this);
+            p.setMyPos(getHero().getMyPos().add(new Vec2(-100,50)));
+            myEntitiesToAdd.add(p);
+        }
+
+        return arr;
+    }
 
     //added this method
     public Sword generateSword()
 {
         var sword = Sword.getInstance(this, myHero);
-        myEntities.add(sword);
-        generateKnight();
+        myEntitiesToAdd.add(sword);
+        myHero.setDamage(10);
+        generateAttackPotions(1);
+        generateOgre();
+
         return sword;
 }
 

@@ -60,7 +60,6 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void destroy()
     {
-        setMySize(new Vec2());
         super.destroy();
         myHero.setAttackStatus(false);
     }
@@ -73,26 +72,30 @@ public class Sword extends Entity implements ICollidable
     {
         for (var e: myEntityFactory.getMonsters())
         {
-            if (e.getActiveStatus()==true && !e.isInvincibility())
+            System.out.println("IN ATTACK 2");
+            if (e.getActiveStatus() && !e.isInvincibility())
             {
+                System.out.println("IN ATTACK 1");
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
+                    System.out.println("IN ATTACK 0");
                     e.applyDamage(myHero.attack());
                     if(e.getHitPoints()<=0)
                     {
                         //Potentially add sound
                         //TODO:Add appropriate animation logic
-                        e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
+                        //e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
                         e.destroy();
                     }
                     else
                     {
+                        System.out.println("IN ATTACK");
                         //Potentially add sound
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
                         var v = e.getMyPos().minus(this.getMyPos());
                         var normalizedV = v.multiply(v.quickInverseMagnitude());
-                        e.setVelocity(normalizedV.multiply((float) 4),10);
+                        e.setVelocity(normalizedV.multiply((float) 4),15);
                         e.setInvincibility(true, lifespanLeft);
                     }
                 }
