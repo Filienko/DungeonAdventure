@@ -34,6 +34,10 @@ public class Priestess extends Hero implements Healable
         super(theName,"Priestess", 10, 1, 5, thePos, new Vec2(), theEntityFactory);
     }
 
+    /**
+     * The Priestess's specific attack behavior. She has a 10% chance of healing herself during her attack.
+     * @return The amount of damage the Priestess does during her attack.
+     */
     @Override
     public int attack()
     {
@@ -47,10 +51,10 @@ public class Priestess extends Hero implements Healable
     }
 
     /**
-     * This is the Priestess's special skill. It allows the Priestess to heal another Hero by utilizing the heal method
+     * This is the Priestess's special skill. It allows the Priestess herself by utilizing the heal method
      * from the Healable interface. The maximum number of hit points the Priestess can restore is determined by
      * MY_MAX_HEAL.
-     * @return The number of the Hero's hit points that the Priestess restored.
+     * @return The number of hit points the Priestess restored.
      */
     public int special()
     {

@@ -217,7 +217,6 @@ public abstract class Hero extends DungeonCharacter
         myPillars++;
     }
 
-    //changed visibility for testing!!! reevaluate if this should be protected (was originally) or public
     /**
      * This method retrieves the Pillars in the Hero's inventory.
      * @return Pillars in inventory.

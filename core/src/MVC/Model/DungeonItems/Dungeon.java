@@ -30,6 +30,7 @@ public class Dungeon implements Serializable
 
     public Dungeon()
     {
+        myEntityFactory = new EntityFactory(); //initialized
         myHero = myEntityFactory.getHero(); //added EntityFactory
         myDimension = 4;
         myRooms = generateRooms(myDimension);
@@ -38,6 +39,7 @@ public class Dungeon implements Serializable
 
     public Dungeon(final int theDimension)
     {
+        myEntityFactory = new EntityFactory(); //initialized
         if(theDimension<=2)
         {
             System.out.println("Minimum Dimension for the dungeon is 3 by 3. We are setting up the 4 by 4 maze");

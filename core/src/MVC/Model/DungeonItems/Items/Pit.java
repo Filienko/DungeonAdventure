@@ -36,7 +36,7 @@ public class Pit extends Item
     }
 
     public void setDamageFall(final int theDamageFall) {
-        if (myDamageFall > 0) //should there be a max on amt of damage
+        if (theDamageFall > 0) //should there be a max on amt of damage
         {
             myDamageFall = theDamageFall;
         }

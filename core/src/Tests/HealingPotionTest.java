@@ -15,17 +15,17 @@ class HealingPotionTest
     {
         HealingPotion myHP = new HealingPotion(new EntityFactory());
 
-        assertEquals(myHP.getType(), "Healing Potion");
+        assertEquals(myHP.getType(), "healthPotion");
         assertEquals(myHP.getStrength(), 2);
     }
 
     @Test
     void testHPOverloadedConstructor()
     {
-        HealingPotion myHP = new HealingPotion(30, new EntityFactory());
+        HealingPotion myHP = new HealingPotion(5, new EntityFactory());
 
-        assertEquals(myHP.getType(), "Healing Potion");
-        assertEquals(myHP.getStrength(), 30);
+        assertEquals(myHP.getType(), "healthPotion");
+        assertEquals(myHP.getStrength(), 5);
     }
 
     @Test

@@ -10,18 +10,17 @@ import java.util.Random;
 public class Monster extends DungeonCharacter
 {
     /**
-     * Monster's default position.
-     */
-    private Vec2 myHomePosition;
-
-    /**
      * Hero status that tells that this DungeonCharacter is a Monster.
      */
     private final static boolean MY_HERO_STATUS = false;
 
-
     //TODO:Add variability to the monster's aggression
     private final static int MY_AGGRESSION_DISTANCE = 25;
+
+    /**
+     * Monster's default position.
+     */
+    private Vec2 myHomePosition;
 
     /**
      * The specific Monster type.
@@ -29,7 +28,7 @@ public class Monster extends DungeonCharacter
     private String myMonsterType; //should this be changed back to final?
 
     /**
-     * The specific Monster type.
+     * The Monster's Hero opponent.
      */
     private Hero myHero; //should this be changed back to final?
 
@@ -53,7 +52,7 @@ public class Monster extends DungeonCharacter
 
         setMonsterType(theMonsterType);
         setHero(theHero);
-        setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
+        //setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
     }
 
     @Override
@@ -165,24 +164,24 @@ public class Monster extends DungeonCharacter
         }
     }
 
+    /**
+     * This method retrieves the Monster's type.
+     * @return The Monster's type.
+     */
     public String getMonsterType()
     {
         return myMonsterType;
     }
 
+    /**
+     * This method sets the Monster's type
+     * @param theMonsterType The Monster's new type.
+     */
     private void setMonsterType(final String theMonsterType)
     {
         if (theMonsterType != null)
         {
             myMonsterType = theMonsterType;
-        }
-    }
-
-    private void setHero(final Hero theHero)
-    {
-        if (theHero != null)
-        {
-            myHero = theHero;
         }
     }
 
@@ -203,5 +202,13 @@ public class Monster extends DungeonCharacter
                 ", Hero status = " + MY_HERO_STATUS +
                 ", myHitPoints = " + getHitPoints() +
                 '}';
+    }
+
+    private void setHero(final Hero theHero)
+    {
+        if (theHero != null)
+        {
+            myHero = theHero;
+        }
     }
 }

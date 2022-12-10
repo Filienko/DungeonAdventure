@@ -45,7 +45,7 @@ public class PhysicsTest
         vec = vec.add(new Vec2(1,2));
         assertTrue(vec.getMyX()==2);
         assertTrue(vec.getMyY()==4);
-        vec = vec.add(3, 0);
+        vec = vec.add(new Vec2(3,0));
         assertTrue(vec.getMyX()==5);
         assertTrue(vec.getMyY()==4);
         vec.copy(new Vec2(1,1));

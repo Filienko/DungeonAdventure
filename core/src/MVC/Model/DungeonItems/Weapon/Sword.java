@@ -18,8 +18,6 @@ public class Sword extends Entity implements ICollidable
 
     private final int myLifeSpan;
 
-    private Vec2 myBoundingBox;
-
     private Hero myHero;
 
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)

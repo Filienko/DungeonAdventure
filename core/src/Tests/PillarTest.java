@@ -18,8 +18,6 @@ class PillarTest
         assertTrue(myPillar.getName().equals("Inheritance"));
     }
 
-    //write another method for 2nd constructor?
-
     @Test
     void testGetName()
     {

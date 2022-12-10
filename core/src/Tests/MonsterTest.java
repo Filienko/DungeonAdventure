@@ -2,14 +2,13 @@ package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MonsterTest
 {
@@ -54,16 +53,81 @@ class MonsterTest
     @Test
     void testAttack()
     {
-        final Monster myMonster = new Monster("Skeleton", 100, 30, 3, new Vec2(),
+        final Monster myMonster = new Monster("Swarm of Rats",1 , 1, 7, new Vec2(),
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
 
-        //write test
+        assertEquals(myMonster.attack(), 1);
     }
 
+    /**
+     * Test method for {@link Monster#destroy()}
+     */
+    @Test
+    void testDestroy()
+    {
+        final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
+
+        myMonster.destroy();
+
+        assertFalse(myMonster.getActiveStatus());
+
+        //write tests for destroy, theres more to it
+    }
+
+    /**
+     * Test method for {@link Monster#update()}
+     */
     @Test
     void testUpdate()
     {
         //write tests for update
+    }
+
+    /**
+     * Test method for {@link Monster#movement()}
+     */
+    @Test
+    void testMovement()
+    {
+        //write tests for Movement
+    }
+
+    /**
+     * Test method for {@link Monster#collide()}
+     */
+    @Test
+    void testCollide()
+    {
+        //write tests for collide
+    }
+
+    /**
+     * Test method for {@link Monster#getMonsterType()}
+     */
+    @Test
+    void testGetMonsterType()
+    {
+        final Monster myMonster = new Monster("Ogre", 10, 30, 2, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
+
+        assertEquals(myMonster.getMonsterType(), "Ogre");
+    }
+
+    /**
+     * Test method for {@link Monster#setRoom(Vec2)}
+     */
+    @Test
+    void testSetRoom()
+    {
+        final Monster myMonster = new Monster("Ogre", 10, 30, 2, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
+
+        Vec2 room = new Vec2(8,6);
+        myMonster.setRoom(new Vec2(8,6));
+        assertTrue(myMonster.getMyPos().equals(Physics.getPosition((int) room.getMyX(), (int) room.getMyY(),
+                (int) myMonster.getMyPos().getMyX(),(int) myMonster.getMyPos().getMyY()))); //review this
+
     }
 
     /**

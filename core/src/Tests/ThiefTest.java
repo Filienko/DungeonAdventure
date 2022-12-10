@@ -1,6 +1,5 @@
 package Tests;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.Physics.Vec2;
@@ -50,7 +49,9 @@ class ThiefTest
     @Test
     void testAttack()
     {
-        //finish attack() method and then write these tests
+        final Thief myThief = new Thief(new EntityFactory());
+
+        assertTrue(myThief.attack() == 1);
 
     }
 
@@ -60,7 +61,9 @@ class ThiefTest
     @Test
     void testSpecial()
     {
-        //finish special() method and then write these tests
+        final Thief myThief = new Thief(new EntityFactory());
+
+        assertTrue(myThief.getDamage() + 5 == myThief.special());
     }
 
     /**

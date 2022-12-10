@@ -36,11 +36,10 @@ public class Thief extends Hero
     }
 
     /**
-     * Thief's attack behavior. The Thief's hidden status is set to true and then the Thief is given
-     * the chance to do a surprise attack (40% chance of success) where the Thief performs an attack and then is given the
-     * chance to do another attack. The Thief has additional 40% chance of performing a simple attack.
+     * The Thief's specific attack behavior. They have a 25% chance of doing 5 extra points of damage using
+     * their special skill.
      *
-     * @return The amount of damage done to theOpponent's hit point count.
+     * @return The amount of damage the Thief does during their attack.
      */
     @Override
     public int attack()

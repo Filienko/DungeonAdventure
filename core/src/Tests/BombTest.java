@@ -15,7 +15,7 @@ class BombTest
     {
         Bomb myBomb = new Bomb(new EntityFactory());
 
-        assertTrue(myBomb.getType().equals("Bomb"));
+        assertTrue(myBomb.getType().equals("bomb"));
     }
 
     @Test

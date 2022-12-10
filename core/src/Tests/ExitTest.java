@@ -63,7 +63,7 @@ class ExitTest
     }
 
     @Test
-    void testActivateFails()
+    void testActivateNotFalse()
     {
         Exit myExit = Exit.getInstance(new EntityFactory());
 

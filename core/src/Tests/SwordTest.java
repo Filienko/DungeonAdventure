@@ -15,33 +15,44 @@ class SwordTest
     {
         Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getMySize().equals(new Vec2()));
-        assertEquals(0, mySword.getMyLifeSpan()); //lifeSpan == 60 or 0???
+        assertEquals(15, mySword.getMyLifeSpan());
+        assertEquals(0, mySword.getCurrentFrame());
     }
 
     @Test
     void testUpdate()
     {
-        //review update and then test it
+        Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
+
+        //write update test
     }
 
     @Test
-    void testGetMySize()
+    void getMyLifeSpan()
     {
         Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
+        assertEquals(15, mySword.getMyLifeSpan());
     }
 
     @Test
-    void testSetMySize()
+    void testDestroy()
     {
-        Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
 
-        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
+        mySword.destroy();
 
-        mySword.setMySize(new Vec2(10,10));
-
-        assertTrue(mySword.getMySize().equals(new Vec2(10,10)));
+        assertFalse(mySword.getActiveStatus());
     }
+
+    @Test
+    void testCollide()
+    {
+        Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
+
+        mySword.collide(); //myEntityFactory is null, initialized in constructor
+
+        //write collide test
+    }
+
 }

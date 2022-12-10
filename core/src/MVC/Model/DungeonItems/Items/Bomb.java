@@ -6,7 +6,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 public class Bomb extends Item
 {
     /**
-     * Bomb constructor that calls its parent constructor to initialize its type and location.
+     * Bomb constructor that calls its parent constructor to initialize its type and Entity Factory.
      */
     public Bomb(final EntityFactory theEntityFactory)
     {

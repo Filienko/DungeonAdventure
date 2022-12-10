@@ -2,7 +2,6 @@ package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -50,14 +49,9 @@ class WarriorTest
     @Test
     void testAttack()
     {
-        final Warrior myWarrior1 = new Warrior(new EntityFactory());
-        final Warrior myWarrior2 = new Warrior(new EntityFactory());
+        final Warrior myWarrior= new Warrior(new EntityFactory());
 
-        int oldHealth = myWarrior2.getHitPoints();
-        int damage = myWarrior1.attack();
-
-        assertTrue(myWarrior2.getHitPoints() < oldHealth);
-        assertEquals(myWarrior2.getHitPoints(), oldHealth - damage);
+        assertTrue(myWarrior.attack() == 1);
     }
 
     /**

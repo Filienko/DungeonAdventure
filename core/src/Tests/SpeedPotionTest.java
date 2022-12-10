@@ -15,17 +15,17 @@ class SpeedPotionTest
     {
         SpeedPotion mySP = new SpeedPotion(new EntityFactory());
 
-        assertEquals(mySP.getStrength(), 2);
-        assertEquals(mySP.getType(), "Speed Potion");
+        assertEquals(mySP.getStrength(), 1);
+        assertEquals(mySP.getType(), "speedPotion");
     }
 
     @Test
     void testSPOverloadedConstructor()
     {
-        SpeedPotion mySP = new SpeedPotion(20, new EntityFactory());
+        SpeedPotion mySP = new SpeedPotion(8, new EntityFactory());
 
-        assertEquals(mySP.getStrength(), 20);
-        assertEquals(mySP.getType(), "Speed Potion");
+        assertEquals(mySP.getStrength(), 8);
+        assertEquals(mySP.getType(), "speedPotion");
     }
 
     @Test

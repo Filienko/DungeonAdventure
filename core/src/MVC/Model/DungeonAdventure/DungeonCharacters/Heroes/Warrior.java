@@ -30,10 +30,10 @@ public class Warrior extends Hero
     }
 
     /**
-     * This method allows the Warrior to attack another DungeonCharacter. There is a 40% chance that a simple attack is
-     * performed. The Warrior also has a special skill called Crushing Blow, which also has a 40% chance of success.
+     * The Warrior's specific attack behavior. They have a 40% chance of performing their special skill
+     * during this attack
      *
-     * @return The amount of damage done to theOpponent's hit points.
+     * @return The amount of damage the Warrior does during their attack.
      */
     @Override
     public int attack()
@@ -49,8 +49,8 @@ public class Warrior extends Hero
     }
 
     /**
-     * This is the Warrior's special skill. damage amount between 75 and 175 is randomly generated.
-     * @return The amount of damage done to theOpponent's hit points.
+     * This is the Warrior's special skill. damage amount between 1 and 3 is randomly generated.
+     * @return The amount of damage the Warrior will inflict.
      */
     public int special()
     {

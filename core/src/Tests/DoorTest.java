@@ -14,7 +14,7 @@ class DoorTest
     {
         Door myDoor = new Door(new EntityFactory());
 
-        assertTrue(myDoor.getMyPos().equals(new Vec2(0,0)));
+        assertEquals(myDoor.getMonsterCounter(), 4);
     }
 
     @Test
@@ -23,6 +23,7 @@ class DoorTest
         Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
 
         assertTrue(myDoor.getMyPos().equals(new Vec2(5,5)));
+        assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
     @Test
@@ -31,35 +32,35 @@ class DoorTest
         Door myDoor = new Door(new Vec2(),2, new Vec2(3,4), new EntityFactory());
 
         assertTrue(myDoor.getMyPos().equals(new Vec2(3,4)));
+        assertEquals(myDoor.getMonsterCounter(), 2);
     }
-
-    @Test
-    void testgetMyPos()
-    {
-        Door myDoor = new Door(3, new Vec2(5,8), new EntityFactory());
-        assertTrue(myDoor.getMyPos().equals(new Vec2(5,8)));
-    }
-
-    @Test
-    void testSetMyLocation()
-    {
-        Door myDoor = new Door(new EntityFactory());
-        assertTrue(myDoor.getMyPos().equals(new Vec2(0,0)));
-
-        myDoor.setMyPos(new Vec2(20,25));
-
-        assertTrue(myDoor.getMyPos().equals(new Vec2(20,25)));
-    }
+//
+//    @Test
+//    void testgetMyPos()
+//    {
+//        Door myDoor = new Door(3, new Vec2(5,8), new EntityFactory());
+//        assertTrue(myDoor.getMyPos().equals(new Vec2(5,8)));
+//    }
 
     @Test
     void testGetMonsterCounter()
     {
-        Door myDoor = new Door(12, new Vec2(5,5), new EntityFactory());
+        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
 
-        assertEquals( myDoor.getMonsterCounter(), 12);
+        myDoor.getMonsterCounter();
 
+        assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
+    @Test
+    void testSetMonsterCounter()
+    {
+        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
+
+        myDoor.setMonsterCounter(3);
+
+        assertEquals(myDoor.getMonsterCounter(), 3);
+    }
 
     @Test
     void testDecrementMonsterCounter()
@@ -70,6 +71,7 @@ class DoorTest
 
         assertTrue(myDoor.getMonsterCounter()==1);
     }
+
 
     @Test
     void testUpdate()

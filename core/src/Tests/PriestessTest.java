@@ -49,23 +49,30 @@ class PriestessTest
     @Test
     void testSpecial()
     {
-        final Priestess myPriestess1 = new Priestess(new EntityFactory());
-        final Priestess myPriestess2 = new Priestess(new EntityFactory());
+        final Priestess myPriestess = new Priestess(new EntityFactory());
 
-        int oldHealth = myPriestess2.getHitPoints();
-        int restoredHealth = myPriestess2.special();
-        //myPriestess2.setHitPoints(oldHealth + restoredHealth);
+        myPriestess.setHitPoints(5);
 
-        System.out.println(oldHealth);
-        System.out.println(restoredHealth);
+        int oldHealth = myPriestess.getHitPoints();
+        int restoredHealth = myPriestess.special();
 
-        System.out.println(myPriestess2.getHitPoints());
-
-        assertTrue(myPriestess2.getHitPoints() > oldHealth);
-        assertEquals(myPriestess2.getHitPoints(), restoredHealth + oldHealth);
+        assertTrue(myPriestess.getHitPoints() > oldHealth);
+        assertEquals(myPriestess.getHitPoints(), restoredHealth + oldHealth);
 
         assertTrue(restoredHealth + oldHealth <= 10);
         //this ensures that healHero does not heal over Priestess's maximum allowed hit points (10)
+    }
+
+    /**
+     * Test method for {@link Priestess#attack()}
+     */
+    @Test
+    void testAttack()
+    {
+        final Priestess myPriestess = new Priestess(new EntityFactory());
+
+        assertTrue(myPriestess.attack() == 1);
+
     }
 
     /**
