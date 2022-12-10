@@ -109,6 +109,11 @@ public abstract class Hero extends DungeonCharacter
     public int attack()
     {
         myWeapon = getMyEntityFactory().generateSword();
+        return damage();
+    }
+
+    public int damage()
+    {
         return getDamage();
     }
 

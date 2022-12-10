@@ -21,7 +21,7 @@ public class Sword extends Entity implements ICollidable
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), theHero.getMyPos(), "Sword", theEntityFactory);
-        myLifeSpan = 10;
+        myLifeSpan = 15;
         setCurrentFrame(0);
         myHero = theHero;
     }
@@ -44,6 +44,7 @@ public class Sword extends Entity implements ICollidable
         if (getCurrentFrame() >= myLifeSpan)
         {
             destroy();
+            getMyEntityFactory().renewSword();
         }
         else if (getCurrentFrame() < myLifeSpan)
         {
@@ -66,15 +67,15 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void collide()
     {
-        for (var e: getMyEntityFactory().getMonsters())
+        for (var c: getMyEntityFactory().getMonsters())
         {
-
+            var e = (Monster) c;
             if (e.getActiveStatus() && !e.isInvincibility())
             {
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    e.applyDamage(myHero.getDamage());
+                    e.applyDamage(myHero.attack());
 
                     if(e.getHitPoints()<=0)
                     {
