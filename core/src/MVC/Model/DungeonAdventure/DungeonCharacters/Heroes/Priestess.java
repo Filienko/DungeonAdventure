@@ -35,9 +35,9 @@ public class Priestess extends Hero implements Healable
     }
 
     @Override
-    public int attack()
+    public int damage()
     {
-        var damage = super.attack();
+        var damage = super.damage();
 
         if((new Random()).nextDouble()<0.1)
         {

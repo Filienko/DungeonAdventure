@@ -36,15 +36,18 @@ public class Warrior extends Hero
      * @return The amount of damage done to theOpponent's hit points.
      */
     @Override
-    public int attack()
+    public int damage()
     {
-        var damage = super.attack();
+        var damage = 0;
         var chance = Math.random();
         if (chance < 0.4)
         {
             damage = special();
         }
-
+        else
+        {
+            damage = super.damage();
+        }
         return damage;
     }
 
