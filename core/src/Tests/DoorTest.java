@@ -14,7 +14,7 @@ class DoorTest
     {
         Door myDoor = new Door(new EntityFactory());
 
-        assertTrue(myDoor.getMyLocation().equals(new Vec2(0,0)));
+        assertTrue(myDoor.getMyPos().equals(new Vec2(0,0)));
     }
 
     @Test
@@ -22,7 +22,7 @@ class DoorTest
     {
         Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
 
-        assertTrue(myDoor.getMyLocation().equals(new Vec2(5,5)));
+        assertTrue(myDoor.getMyPos().equals(new Vec2(5,5)));
     }
 
     @Test
@@ -30,25 +30,25 @@ class DoorTest
     {
         Door myDoor = new Door(new Vec2(),2, new Vec2(3,4), new EntityFactory());
 
-        assertTrue(myDoor.getMyLocation().equals(new Vec2(3,4)));
+        assertTrue(myDoor.getMyPos().equals(new Vec2(3,4)));
     }
 
     @Test
-    void testGetMyLocation()
+    void testgetMyPos()
     {
         Door myDoor = new Door(3, new Vec2(5,8), new EntityFactory());
-        assertTrue(myDoor.getMyLocation().equals(new Vec2(5,8)));
+        assertTrue(myDoor.getMyPos().equals(new Vec2(5,8)));
     }
 
     @Test
     void testSetMyLocation()
     {
         Door myDoor = new Door(new EntityFactory());
-        assertTrue(myDoor.getMyLocation().equals(new Vec2(0,0)));
+        assertTrue(myDoor.getMyPos().equals(new Vec2(0,0)));
 
-        myDoor.setMyLocation(new Vec2(20,25));
+        myDoor.setMyPos(new Vec2(20,25));
 
-        assertTrue(myDoor.getMyLocation().equals(new Vec2(20,25)));
+        assertTrue(myDoor.getMyPos().equals(new Vec2(20,25)));
     }
 
     @Test

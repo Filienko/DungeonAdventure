@@ -6,7 +6,6 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.DungeonUtils.Graph;
 import MVC.Model.Physics.Vec2;
-import MVC.View.Assets;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,17 +26,17 @@ public class Dungeon implements Serializable
 
     private int myDimension;
 
-    //resolve errors here
+    private static EntityFactory myEntityFactory;
 
     public Dungeon()
     {
-        myHero = new Warrior("Brave Warrior",new Vec2(), new EntityFactory()); //added EntityFactory
+        myHero = myEntityFactory.getHero(); //added EntityFactory
         myDimension = 4;
         myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);
     }
 
-    public Dungeon(final Hero theHero, final int theDimension)
+    public Dungeon(final int theDimension)
     {
         if(theDimension<=2)
         {
@@ -48,28 +47,12 @@ public class Dungeon implements Serializable
         {
             myDimension = theDimension;
         }
-        myHero = theHero;
+        myHero = myEntityFactory.getHero();
         myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);
     }
 
-    public Dungeon(final Room[][] theDungeon)
-    {
-        myDungeon = theDungeon;
-        myHero = new Warrior("Brave Warrior",new Vec2(), new EntityFactory()); //added EntityFactory
-        myDimension = myDungeon.length;
-        myRooms = generateRooms(myDimension);
-    }
-
-    public Dungeon(final Room[][] theDungeon, final Hero theHero, final Vec2 theHeroPosition)
-    {
-        myDungeon = theDungeon;
-        myHero = theHero;
-        myDimension = myDungeon.length;
-        myRooms = generateRooms(myDimension);
-    }
-
-    private Dungeon(final Room[][] theDungeon, final Hero theHero, final List<Room> theRooms, final int theDimension)
+    public Dungeon(final EntityFactory theEntityFactory, final int theDimension)
     {
         if(theDimension<=2)
         {
@@ -80,9 +63,10 @@ public class Dungeon implements Serializable
         {
             myDimension = theDimension;
         }
-        myDungeon = theDungeon;
-        myHero = theHero;
-        myRooms = theRooms;
+        myEntityFactory = theEntityFactory;
+        myHero = theEntityFactory.getHero();
+        myRooms = generateRooms(myDimension);
+        myDungeon = generateDungeonFromRooms(myRooms,myDimension);
     }
 
     /**
@@ -95,64 +79,44 @@ public class Dungeon implements Serializable
         var offset = theDimension+2;
         int src;
         int dest;
-        for (int i = 0; i < edges.size()-1; i++)
+        for (int i = 0; i < edges.size(); i++)
         {
             src = edges.get(i).getSrc()-offset;
             dest = edges.get(i).getDest()-offset;
+            if(src > dest)
+            {
+                var temp = src;
+                src = dest;
+                dest = temp;
+            }
 
             if(src==dest-1)
             {
-                for (int j = 0; j < theRooms.size()-1; j++)
+                for (int j = 0; j < theRooms.size(); j++)
                 {
-                    if(theRooms.get(i).getNumber()==src)
+                    if(theRooms.get(j).getNumber()==src)
                     {
-                        theRooms.get(i).setW(true);
+                        theRooms.get(j).setW(true);
                     }
-                    else if (theRooms.get(i).getNumber()==dest)
+                    else if (theRooms.get(j).getNumber()==dest)
                     {
-                        theRooms.get(i).setE(true);
-                    }
-                }
-            }
-            else if (src==dest+1)
-            {
-                for (int j = 0; j < theRooms.size()-1; j++)
-                {
-                    if(theRooms.get(i).getNumber()==src)
-                    {
-                        theRooms.get(i).setE(true);
-                    }
-                    else if (theRooms.get(i).getNumber()==dest)
-                    {
-                        theRooms.get(i).setW(true);
+                        theRooms.get(j).setE(true);
+                        break;
                     }
                 }
             }
             else if (src==dest-offset)
             {
-                for (int j = 0; j < theRooms.size()-1; j++)
+                for (int j = 0; j < theRooms.size(); j++)
                 {
-                    if(theRooms.get(i).getNumber()==src)
+                    if(theRooms.get(j).getNumber()==src)
                     {
-                        theRooms.get(i).setS(true);
+                        theRooms.get(j).setS(true);
                     }
-                    else if (theRooms.get(i).getNumber()==dest)
+                    else if (theRooms.get(j).getNumber()==dest)
                     {
-                        theRooms.get(i).setN(true);
-                    }
-                }
-            }
-            else if(src==dest+offset)
-            {
-                for (int j = 0; j < theRooms.size()-1; j++)
-                {
-                    if(theRooms.get(i).getNumber()==src)
-                    {
-                        theRooms.get(i).setN(true);
-                    }
-                    else if (theRooms.get(i).getNumber()==dest)
-                    {
-                        theRooms.get(i).setS(true);
+                        theRooms.get(j).setN(true);
+                        break;
                     }
                 }
             }
@@ -188,7 +152,7 @@ public class Dungeon implements Serializable
             arr.add(new Room(i, new Vec2(row,col)));
         }
 
-        var pillars = (new EntityFactory()).generatePillars();
+        var pillars = myEntityFactory.generatePillars();
         for (int i = 0; i < 4; i++)
         {
             System.out.println(pillars.get(i).getType());
@@ -197,7 +161,7 @@ public class Dungeon implements Serializable
         }
 
         arr.get(0).setEntranceStatus(true);
-        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(Exit.getInstance(new EntityFactory())); //added new EntityFactory param
+        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem(Exit.getInstance(myEntityFactory)); //added new EntityFactory param
 
         return arr;
     }
@@ -205,11 +169,6 @@ public class Dungeon implements Serializable
     public Room[][] getDungeon()
     {
         return myDungeon;
-    }
-
-    public Hero getHero()
-    {
-        return myHero;
     }
 
     public List<Room> getRooms()
@@ -222,11 +181,6 @@ public class Dungeon implements Serializable
         return myDimension;
     }
 
-    public void setHero(final Hero theHero)
-    {
-        myHero = theHero;
-    }
-
     public void setRooms(final List<Room> theRooms)
     {
         myRooms = theRooms;
@@ -234,8 +188,7 @@ public class Dungeon implements Serializable
 
     public Memento saveToMemento() throws CloneNotSupportedException
     {
-        var factory = new EntityFactory();
-        return new Memento(this.myDungeon, (factory.generateHero(this.myHero.getCharacterType())),
+        return new Memento(this.myDungeon, myEntityFactory.getHero(),
                 copyRooms(this.myRooms), this.myDimension);
     }
 
@@ -248,7 +201,10 @@ public class Dungeon implements Serializable
         }
         return answer;
     }
-
+    public void setHero(Hero theHero)
+    {
+        myHero = theHero;
+    }
     public void restoreFromMemento(Memento memento)
     {
         var dungeon = memento.getSavedState();

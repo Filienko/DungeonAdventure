@@ -6,14 +6,11 @@ import MVC.Model.Physics.Vec2;
 
 public class Door extends Entity
 {
-    private Vec2 myLocation;
-
     private int myMonsterCounter;
 
     public Door(final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64), new Vec2(),"Door", theEntityFactory);
-        myLocation = new Vec2();
         myMonsterCounter = 4;
     }
 
@@ -21,7 +18,6 @@ public class Door extends Entity
     {
         //TODO:assign correct bounding boxes to all of the Entities inheriting from Entity
         super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
-        myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;
 
     }
@@ -29,7 +25,6 @@ public class Door extends Entity
     public Door(final Vec2 theRoom,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64),theLocation,"Door", theEntityFactory);
-        myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;
     }
 
@@ -38,18 +33,10 @@ public class Door extends Entity
     {
         if(myMonsterCounter == 0)
         {
+            getMyEntityFactory().getHero().setHitPoints(1000);
+            getMyEntityFactory().getHero().setMaxSpeed(20);
             destroy();
         }
-    }
-
-    public Vec2 getMyLocation()
-    {
-        return myLocation;
-    }
-
-    public void setMyLocation(final Vec2 theLocation)
-    {
-        myLocation = theLocation;
     }
 
     public int getMonsterCounter()

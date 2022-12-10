@@ -50,7 +50,6 @@ public class EntityFactory
     {
         for (var room: theDungeon.getRooms())
         {
-            var roomNumber = room.getNumber();
             generateRoomEntities(room);
         }
         return myEntitiesToAdd;
@@ -58,6 +57,9 @@ public class EntityFactory
 
     public ArrayList<Entity> generateRoomEntities(final Room theRoom)
     {
+        theRoom.setEntityFactory(this);
+        theRoom.populateTheRoom(true);
+
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
         Vec2 location = theRoom.getLocation();
@@ -131,7 +133,7 @@ public class EntityFactory
             }
         }
 
-        while(items.length()>1)
+        while(items.toString().contains(","))
         {
             String item = items.substring(0, items.indexOf(",")+1);
             items.delete(0, items.indexOf(",")+1);
@@ -143,7 +145,7 @@ public class EntityFactory
         }
 
         int monsterCounter = 0;
-        while(monsters.length()>0)
+        while(monsters.toString().contains(","))
         {
             String monster = monsters.substring(0, monsters.indexOf(",")+1);
             monsters.delete(0, monsters.indexOf(",")+1);
@@ -272,7 +274,7 @@ public class EntityFactory
 
     public Item generateItem(final String theItem)
     {
-        switch (theItem.toLowerCase(Locale.ROOT))
+        switch (theItem)
         {
             case "healthPotion" -> {
                 return new HealingPotion(this);
@@ -286,7 +288,7 @@ public class EntityFactory
             case "pit" -> {
                 return new Pit(this);
             }
-            case "encapsulation","inheritance","polymorphism","abstraction"-> {
+            case "pillar"-> {
                 return new Pillar(theItem, this);
             }
             case "exit" -> {
@@ -416,8 +418,6 @@ public class EntityFactory
 {
         var sword = Sword.getInstance(this, myHero);
         myEntitiesToAdd.add(sword);
-        generateAttackPotions(1);
-        generateOgre();
 
         return sword;
 }
