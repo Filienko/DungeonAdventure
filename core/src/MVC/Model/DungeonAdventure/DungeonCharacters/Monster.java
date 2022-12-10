@@ -126,7 +126,8 @@ public class Monster extends DungeonCharacter
         }
         setVelocity(velocity);
         setMyPreviousPos(getMyPos());
-        updateMyPos(getVelocity());
+        //updateMyPos(getVelocity());
+        setMyPos(new Vec2(300, 300));
     }
 
     /**

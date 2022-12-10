@@ -21,11 +21,9 @@ public class Door extends Entity
 
     public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        //TODO:assign correct bounding boxes to all of the Entities inheriting from Entity
         super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
         myLocation = theLocation;
         myMonsterCounter = theMonsterCounter;
-
     }
 
     public Door(final int theRoomNumber,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)

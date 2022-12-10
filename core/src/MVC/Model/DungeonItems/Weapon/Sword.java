@@ -78,7 +78,7 @@ public class Sword extends Entity implements ICollidable
                         //Potentially add sound
                         //TODO:Add appropriate animation logic
                         //e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
-                        e.destroy();
+                        e.die();
                     }
                     else
                     {

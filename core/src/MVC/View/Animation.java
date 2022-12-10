@@ -51,10 +51,10 @@ public class Animation
 
     public void setPos(float x, float y)
     {
-        float adjustedX = x;
-        float adjustedY = y;
+        float adjustedX = x - (mySize.getMyX() - 64) / 2;
+        float adjustedY = y - (mySize.getMyY() - 64) / 2;
 
-        if (myName.equals(""))
+
         mySprite.setPosition(adjustedX, adjustedY);
     }
 

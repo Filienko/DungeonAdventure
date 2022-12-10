@@ -136,14 +136,14 @@ public class EntityFactory
         if (theRoom.isN())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
-            Door door = new Door(0, pixelPos, this);
+            Door door = new Door(1, pixelPos, this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             myEntitiesToAdd.add(door);
         }
         if (theRoom.isS())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
-            Door door = new Door(0, pixelPos,this);
+            Door door = new Door(1, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(180);
             myEntitiesToAdd.add(door);
@@ -151,7 +151,7 @@ public class EntityFactory
         if (theRoom.isW())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
-            Door door = new Door(0, pixelPos,this);
+            Door door = new Door(1, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(90);
             myEntitiesToAdd.add(door);
@@ -159,7 +159,7 @@ public class EntityFactory
         if (theRoom.isE())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
-            Door door = new Door(0, pixelPos,this);
+            Door door = new Door(1, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(270);
             myEntitiesToAdd.add(door);
@@ -204,7 +204,7 @@ public class EntityFactory
 
         myEntitiesToAdd.removeAll(myEntitiesToAdd);
 
-        // removeDeadEntities();
+        removeDeadEntities();
 
         // update all entities
         for (Entity e : myEntities)
@@ -410,8 +410,7 @@ public class EntityFactory
 {
         var sword = Sword.getInstance(this, myHero);
         myEntitiesToAdd.add(sword);
-        myHero.setDamage(10);
-        
+
         return sword;
 }
 
@@ -436,4 +435,20 @@ public class EntityFactory
         return monsters;
     }
     public Assets getAssets() { return myAssets; }
+
+    private void removeDeadEntities()
+    {
+        for (int i = 0; i < myEntities.size();)
+        {
+            if (!myEntities.get(i).getActiveStatus())
+            {
+                myEntities.remove(i);
+                myTotalEntities--;
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
 }

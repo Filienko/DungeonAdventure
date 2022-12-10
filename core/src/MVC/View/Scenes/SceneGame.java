@@ -2,10 +2,7 @@ package MVC.View.Scenes;
 
 import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
-import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
@@ -48,6 +45,7 @@ public class SceneGame extends Scene
         testRoom.setS(true);
         testRoom.setW(true);
         myEntityFactory.generateRoomEntities(testRoom);
+        myEntityFactory.generateOgre();
     }
 
     protected void onEnd() {}
@@ -87,6 +85,7 @@ public class SceneGame extends Scene
             camera();
             myCurrentFrame++;
         }
+
     }
 
     private void camera()
@@ -181,6 +180,7 @@ public class SceneGame extends Scene
         Sprite sprite;
         e.getMyAnimation().update();
         sprite = e.getMyAnimation().getSprite();
+        /*
         if (e.getMyAnimation().getName().equals("attackRight")
                 && e.getMyAnimation().getSprite().getScaleX() == -1)
         {
@@ -190,10 +190,21 @@ public class SceneGame extends Scene
         {
             sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY() - 48);
         }
+        else if (e.getMyAnimation().getName().equals("ogre"))
+        {
+            sprite.setPosition(e.getMyPos().getMyX() - 16, e.getMyPos().getMyY() - 16);
+        }
+        else if (e.getMyAnimation().getName().equals("rat"))
+        {
+            sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        }
         else
         {
             sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
         }
+
+         */
+        e.getMyAnimation().setPos(e.getMyPos().getMyX(), e.getMyPos().getMyY());
         sprite.setRotation(e.getRotation());
         sprite.draw(myRenderer.getSpriteBatch());
     }
