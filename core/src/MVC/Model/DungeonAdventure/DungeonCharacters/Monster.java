@@ -3,12 +3,15 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
+import java.util.Random;
+
 public class Monster extends DungeonCharacter
 {
     /**
      * Monster's default position.
      */
-    private final Vec2 myHomePosition;
+    private final Vec2 myHomePosition = new Vec2((new Random()).nextInt(1, 20),
+            (new Random()).nextInt(1, 12));
 
     /**
      * Hero status that tells that this DungeonCharacter is a Monster.
@@ -46,10 +49,9 @@ public class Monster extends DungeonCharacter
     {
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
-        myHomePosition = thePos;
+
         myMonsterType = theMonsterType;
         myHero = theHero;
-        setInvincibility(false);
         setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
     }
 
@@ -78,7 +80,7 @@ public class Monster extends DungeonCharacter
         Vec2 npcRoom = new Vec2((float) Math.floor(npcPosition.getMyX() / 1216),
                 (float) Math.floor(npcPosition.getMyY() / 704));
         Vec2 direction;
-        Vec2 velocity ;
+        Vec2 velocity = new Vec2();
         boolean hasSight = false;
         if(heroRoom.equals(npcRoom))
         {
@@ -91,20 +93,19 @@ public class Monster extends DungeonCharacter
                         && !e.getType().contains("Thief");
                 var notPotion = !e.getType().contains("Potion");
                 var notPit = !e.getType().contains("Pit");
-                var notWall = !e.getType().contains("Door");
-                var notDoor = !e.getType().contains("Wall");
-                if(notHero && notWall && notDoor)
+                var isWall = e.getType().contains("Door");
+                var isDoor = e.getType().contains("Wall");
+
+                if(notHero)
                 {
                     Vec2 ePosition = e.getMyPos();
                     Vec2 eRoom = new Vec2((float) Math.floor(ePosition.getMyX()/1216),
                             (float) Math.floor(ePosition.getMyX()/704));
                     if(eRoom.equals(npcRoom))
                     {
-                        var distanceHeroFromMonsterHome = myHero.getMyPos().computeDistance(myHomePosition);
-                        // If there's an intersection then the npc does not have sight on the player
+//                        // If there's an intersection then the npc does not have sight on the player
 //                        if (Physics.entityIntersect(heroPosition, npcPosition, e))
 //                        {
-//                            System.out.println("IN LOOP 3");
 //                            hasSight = false;
 //                            break;
 //                        }
@@ -116,14 +117,13 @@ public class Monster extends DungeonCharacter
         if (hasSight)
         {
             direction = myHero.getMyPos().minus(npcPosition);
+            velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
-        else
+        else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
         {
             direction= myHomePosition.minus(npcPosition);
+            velocity= direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
-
-        velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
-
         setVelocity(velocity);
         setMyPreviousPos(getMyPos());
         updateMyPos(getVelocity());
@@ -136,12 +136,12 @@ public class Monster extends DungeonCharacter
     public void collide()
     {
         super.collide();
-        var overlap = Physics.getOverlap(this, myHero);
 
+        Vec2 overlap;
+        overlap = Physics.getOverlap(myHero, this);
         if (overlap.getMyX() >= 0 && overlap.getMyY() >= 0 && !myHero.isInvincibility())
         {
             myHero.applyDamage(attack());
-
             if (myHero.getHitPoints() <= 0)
             {
                 myHero.destroy();

@@ -411,7 +411,7 @@ public class EntityFactory
         var sword = Sword.getInstance(this, myHero);
         myEntitiesToAdd.add(sword);
         myHero.setDamage(10);
-
+        
         return sword;
 }
 

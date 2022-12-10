@@ -67,14 +67,11 @@ public class Sword extends Entity implements ICollidable
     {
         for (var e: getMyEntityFactory().getMonsters())
         {
-            //System.out.println("IN ATTACK 2");
             if (e.getActiveStatus() && !e.isInvincibility())
             {
-                //System.out.println("IN ATTACK 1");
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    //System.out.println("IN ATTACK 0");
                     e.applyDamage(myHero.getDamage());
                     if(e.getHitPoints()<=0)
                     {
@@ -85,7 +82,6 @@ public class Sword extends Entity implements ICollidable
                     }
                     else
                     {
-                        //System.out.println("IN ATTACK");
                         //Potentially add sound
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
                         var v = e.getMyPos().minus(this.getMyPos());
