@@ -77,7 +77,6 @@ public class RoomTests
         room.setE(false);
         room.setS(true);
         room.setN(true);
-        room.setMonsters((new EntityFactory()).generateMonsters(1));
         room.setLocation(new Vec2(1,2));
         room.addItem(new AttackPotion(new EntityFactory()));
         room.clearRoom();
