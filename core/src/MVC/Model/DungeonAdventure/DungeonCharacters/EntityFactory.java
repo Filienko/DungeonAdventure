@@ -40,7 +40,6 @@ public class EntityFactory
     
     public Monster generateMonster(final String monsterType)
     {
-        //Updating, Deleting, and Collecting entities
         SuperMonsterDB DB = new MonsterDB();
         var monster = DB.createMonsterDB(monsterType, myHero,this);
         myEntitiesToAdd.add(monster);
@@ -132,39 +131,6 @@ public class EntityFactory
             }
         }
 
-
-        if (theRoom.isN())
-        {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
-            Door door = new Door(0, pixelPos, this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            myEntitiesToAdd.add(door);
-        }
-        if (theRoom.isS())
-        {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
-            Door door = new Door(0, pixelPos,this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            door.setRotation(180);
-            myEntitiesToAdd.add(door);
-        }
-        if (theRoom.isW())
-        {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
-            Door door = new Door(0, pixelPos,this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            door.setRotation(90);
-            myEntitiesToAdd.add(door);
-        }
-        if (theRoom.isE())
-        {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
-            Door door = new Door(0, pixelPos,this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            door.setRotation(270);
-            myEntitiesToAdd.add(door);
-        }
-
         while(items.length()>1)
         {
             String item = items.substring(0, items.indexOf(",")+1);
@@ -172,13 +138,53 @@ public class EntityFactory
             myEntitiesToAdd.add(generateItem(item.substring(0,item.indexOf(","))));
         }
 
+        int monsterCounter = 0;
         while(monsters.length()>0)
         {
             String monster = monsters.substring(0, monsters.indexOf(",")+1);
             monsters.delete(0, monsters.indexOf(",")+1);
             monster = monster.substring(0,monster.indexOf(","));
-            myEntitiesToAdd.add(generateMonster(monster));
+            var e = generateMonster(monster);
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
+                    (int) e.getMyPos().getMyX(), (int) e.getMyPos().getMyY());
+            e.setMyPos(pixelPos);
+            e.setHomePosition(pixelPos);
+            myEntitiesToAdd.add(e);
+            monsterCounter++;
         }
+
+        if (theRoom.isN())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
+            Door door = new Door(monsterCounter, pixelPos, this);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            myEntitiesToAdd.add(door);
+        }
+        if (theRoom.isS())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
+            Door door = new Door(monsterCounter, pixelPos,this);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            door.setRotation(180);
+            myEntitiesToAdd.add(door);
+        }
+        if (theRoom.isW())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
+            Door door = new Door(monsterCounter, pixelPos,this);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            door.setRotation(90);
+            myEntitiesToAdd.add(door);
+        }
+        if (theRoom.isE())
+        {
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
+            Door door = new Door(monsterCounter, pixelPos,this);
+            door.setMyAnimation(myAssets.getAnimation("door"));
+            door.setRotation(270);
+            myEntitiesToAdd.add(door);
+        }
+
         return myEntitiesToAdd;
     }
 

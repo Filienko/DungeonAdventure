@@ -10,8 +10,7 @@ public class Monster extends DungeonCharacter
     /**
      * Monster's default position.
      */
-    private final Vec2 myHomePosition = new Vec2((new Random()).nextInt(1, 20),
-            (new Random()).nextInt(1, 12));
+    private Vec2 myHomePosition;
 
     /**
      * Hero status that tells that this DungeonCharacter is a Monster.
@@ -153,6 +152,11 @@ public class Monster extends DungeonCharacter
     public String getMonsterType()
     {
         return myMonsterType;
+    }
+
+    public void setHomePosition(final Vec2 theHomePosition)
+    {
+        myHomePosition = theHomePosition;
     }
 
     @Override
