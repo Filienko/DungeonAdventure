@@ -158,64 +158,79 @@ public class SceneGame extends Scene
 
     public void render()
     {
-        Sprite sprite;
-
         for (Entity e : myEntityFactory.getEntities())
         {
             if (myDrawTextures && e.getMyAnimation() != null)
             {
-                e.getMyAnimation().update();
-                sprite = e.getMyAnimation().getSprite();
-                if (e.getMyAnimation().getName().equals("attackRight")
-                        && e.getMyAnimation().getSprite().getScaleX() == -1)
-                {
-                    sprite.setPosition(e.getMyPos().getMyX() - 48, e.getMyPos().getMyY());
-                }
-                else if (e.getMyAnimation().getName().equals("attackDown"))
-                {
-                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY() - 48);
-                }
-                else
-                {
-                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-                }
-                sprite.setRotation(e.getRotation());
-                sprite.draw(myRenderer.getSpriteBatch());
+                renderTextures(e);
             }
             if (myDrawBoundingBoxes)
             {
-                var box = myRenderer.getAssets().getAnimation("boundingBox");
-                if (e.getMySize().getMyX() != 64 && e.getMySize().getMyY() != 64)
-                {
-                    box.getSprite().setScale(e.getMySize().getMyX() / 64, e.getMySize().getMyY() / 64);
-                }
-                else
-                {
-                    box.getSprite().setScale(1, 1);
-                }
-
-                box.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-                box.getSprite().draw(myRenderer.getSpriteBatch());
-
-                var pos = myRenderer.getAssets().getAnimation("pos");
-                pos.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-                pos.getSprite().draw(myRenderer.getSpriteBatch());
+                renderBoundingBoxes(e);
             }
             if (e.getType().equals("Hero") || e.getType().equals("Monster"))
             {
-                DungeonCharacter character = (DungeonCharacter) e;
-                var health = myRenderer.getAssets().getAnimation("health");
-                float x = character.getMyPos().getMyX();
-                float y = character.getMyPos().getMyY() + 64;
-                for (int i = 0; i < character.getHitPoints(); i++)
-                {
-                    health.getSprite().setPosition(x, y);
-                    health.getSprite().draw(myRenderer.getSpriteBatch());
-
-                    x+= health.getSize().getMyX();
-                }
+                renderHealthBars(e);
             }
 
         }
     }
+
+    private void renderTextures(final Entity e)
+    {
+        Sprite sprite;
+        e.getMyAnimation().update();
+        sprite = e.getMyAnimation().getSprite();
+        if (e.getMyAnimation().getName().equals("attackRight")
+                && e.getMyAnimation().getSprite().getScaleX() == -1)
+        {
+            sprite.setPosition(e.getMyPos().getMyX() - 48, e.getMyPos().getMyY());
+        }
+        else if (e.getMyAnimation().getName().equals("attackDown"))
+        {
+            sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY() - 48);
+        }
+        else
+        {
+            sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        }
+        sprite.setRotation(e.getRotation());
+        sprite.draw(myRenderer.getSpriteBatch());
+    }
+
+    private void renderBoundingBoxes(final Entity e)
+    {
+        var box = myRenderer.getAssets().getAnimation("boundingBox");
+        if (e.getMySize().getMyX() != 64 && e.getMySize().getMyY() != 64)
+        {
+            box.getSprite().setScale(e.getMySize().getMyX() / 64, e.getMySize().getMyY() / 64);
+        }
+        else
+        {
+            box.getSprite().setScale(1, 1);
+        }
+
+        box.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        box.getSprite().draw(myRenderer.getSpriteBatch());
+
+        var pos = myRenderer.getAssets().getAnimation("pos");
+        pos.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        pos.getSprite().draw(myRenderer.getSpriteBatch());
+    }
+
+    private void renderHealthBars(final Entity e)
+    {
+        DungeonCharacter character = (DungeonCharacter) e;
+        var health = myRenderer.getAssets().getAnimation("health");
+        float x = character.getMyPos().getMyX();
+        float y = character.getMyPos().getMyY() + 64;
+        for (int i = 0; i < character.getHitPoints(); i++)
+        {
+            health.getSprite().setPosition(x, y);
+            health.getSprite().draw(myRenderer.getSpriteBatch());
+
+            x+= health.getSize().getMyX();
+        }
+    }
+
 }

@@ -13,19 +13,14 @@ public class Sword extends Entity implements ICollidable
 {
     private static Sword mySword;
 
-    private final EntityFactory myEntityFactory;
-
     private final int myLifeSpan;
-
-    private Vec2 myBoundingBox;
 
     private Hero myHero;
 
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), theHero.getMyPos(), "Sword", theEntityFactory);
-        myEntityFactory = theEntityFactory;
-        myLifeSpan = 60;
+        myLifeSpan = 10;
         setCurrentFrame(0);
         myHero = theHero;
     }
@@ -70,17 +65,17 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void collide()
     {
-        for (var e: myEntityFactory.getMonsters())
+        for (var e: getMyEntityFactory().getMonsters())
         {
-            System.out.println("IN ATTACK 2");
+            //System.out.println("IN ATTACK 2");
             if (e.getActiveStatus() && !e.isInvincibility())
             {
-                System.out.println("IN ATTACK 1");
+                //System.out.println("IN ATTACK 1");
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    System.out.println("IN ATTACK 0");
-                    e.applyDamage(myHero.attack());
+                    //System.out.println("IN ATTACK 0");
+                    e.applyDamage(myHero.getDamage());
                     if(e.getHitPoints()<=0)
                     {
                         //Potentially add sound
@@ -90,7 +85,7 @@ public class Sword extends Entity implements ICollidable
                     }
                     else
                     {
-                        System.out.println("IN ATTACK");
+                        //System.out.println("IN ATTACK");
                         //Potentially add sound
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
                         var v = e.getMyPos().minus(this.getMyPos());

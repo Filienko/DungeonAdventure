@@ -246,10 +246,7 @@ public abstract class Hero extends DungeonCharacter
         myName = theName;
     }
 
-    public boolean isAttackStatus()
-    {
-        return myAttackStatus;
-    }
+    public boolean getAttackStatus() { return myAttackStatus; }
 
     public void setAttackStatus(final boolean theAttackStatus)
     {
@@ -302,7 +299,5 @@ public abstract class Hero extends DungeonCharacter
     }
     
     public Vec2 getFacing() { return myFacing; }
-
-    public boolean getAttackStatus() { return myAttackStatus; }
 
 }
