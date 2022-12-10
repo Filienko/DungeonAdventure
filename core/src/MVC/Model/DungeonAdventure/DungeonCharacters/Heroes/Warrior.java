@@ -39,22 +39,20 @@ public class Warrior extends Hero
     @Override
     public int attack()
     {
-        double chance = Math.random();
-        int damage = super.attack();
-
+        var chance = Math.random();
         if (chance < 0.4)
         {
-            damage = special();
+            return special();
         }
 
-        return damage;
+        return super.attack();
     }
 
     /**
      * This is the Warrior's special skill. damage amount between 75 and 175 is randomly generated.
      * @return The amount of damage done to theOpponent's hit points.
      */
-    public int special() //theOpponent is never used, change ?
+    public int special()
     {
         Random rand = new Random();
         return rand.nextInt(2, 3);

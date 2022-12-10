@@ -162,11 +162,22 @@ public class SceneGame extends Scene
 
         for (Entity e : myEntityFactory.getEntities())
         {
-            if (myDrawTextures)
+            if (myDrawTextures && e.getMyAnimation() != null)
             {
                 e.getMyAnimation().update();
                 sprite = e.getMyAnimation().getSprite();
-                sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+                if (e.getMyAnimation().getName().equals("attackRight") && e.getMyAnimation().getSprite().getScaleX() == -1)
+                {
+                    sprite.setPosition(e.getMyPos().getMyX() - 48, e.getMyPos().getMyY());
+                }
+                else if (e.getMyAnimation().getName().equals("attackDown"))
+                {
+                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY() - 48);
+                }
+                else
+                {
+                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+                }
                 sprite.setRotation(e.getRotation());
                 sprite.draw(myRenderer.getSpriteBatch());
             }
@@ -184,6 +195,10 @@ public class SceneGame extends Scene
 
                 box.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
                 box.getSprite().draw(myRenderer.getSpriteBatch());
+
+                var pos = myRenderer.getAssets().getAnimation("pos");
+                pos.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+                pos.getSprite().draw(myRenderer.getSpriteBatch());
             }
             if (e.getType().equals("Hero") || e.getType().equals("Monster"))
             {
@@ -201,7 +216,5 @@ public class SceneGame extends Scene
             }
 
         }
-
-
     }
 }
