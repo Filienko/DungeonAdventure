@@ -9,7 +9,7 @@ public class Exit extends Item
 
     private Exit(final EntityFactory theEntityFactory) //double check that constructor should be private
     {
-        super("Exit", theEntityFactory);
+        super("exit", theEntityFactory);
     }
 
     public static Exit getInstance(final EntityFactory theEntityFactory) {

@@ -27,6 +27,18 @@ public class Animation
         mySprite.setOrigin(mySize.getMyX() / 2, mySize.getMyY() / 2);
     }
 
+    // Shallow Copy Constructor
+    public Animation(final Animation other)
+    {
+        myFrameCount = other.myFrameCount;
+        myCurrentFrame = 0;
+        mySpeed = other.mySpeed;
+        myName = other.myName;
+        mySize = other.mySize;
+        mySprite = other.mySprite;
+    }
+
+
     // updates the animation to show the next frame, depending on its speed
     // animation loops when it reaches the end
     public void update()

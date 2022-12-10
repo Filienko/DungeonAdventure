@@ -177,30 +177,6 @@ public class SceneGame extends Scene
         Sprite sprite;
         e.getMyAnimation().update();
         sprite = e.getMyAnimation().getSprite();
-        /*
-        if (e.getMyAnimation().getName().equals("attackRight")
-                && e.getMyAnimation().getSprite().getScaleX() == -1)
-        {
-            sprite.setPosition(e.getMyPos().getMyX() - 48, e.getMyPos().getMyY());
-        }
-        else if (e.getMyAnimation().getName().equals("attackDown"))
-        {
-            sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY() - 48);
-        }
-        else if (e.getMyAnimation().getName().equals("ogre"))
-        {
-            sprite.setPosition(e.getMyPos().getMyX() - 16, e.getMyPos().getMyY() - 16);
-        }
-        else if (e.getMyAnimation().getName().equals("rat"))
-        {
-            sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-        }
-        else
-        {
-            sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-        }
-
-         */
         e.getMyAnimation().setPos(e.getMyPos().getMyX(), e.getMyPos().getMyY());
         sprite.setRotation(e.getRotation());
         sprite.draw(myRenderer.getSpriteBatch());
