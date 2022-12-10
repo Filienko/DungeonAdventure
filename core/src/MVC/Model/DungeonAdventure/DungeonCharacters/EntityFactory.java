@@ -410,7 +410,6 @@ public class EntityFactory
 {
         var sword = Sword.getInstance(this, myHero);
         myEntitiesToAdd.add(sword);
-        myHero.setDamage(10);
         generateAttackPotions(1);
         generateOgre();
 

@@ -39,13 +39,14 @@ public class Warrior extends Hero
     @Override
     public int attack()
     {
+        var damage = super.attack();
         var chance = Math.random();
         if (chance < 0.4)
         {
-            return special();
+            damage = special();
         }
 
-        return super.attack();
+        return damage;
     }
 
     /**
