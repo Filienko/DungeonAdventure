@@ -1,6 +1,5 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
@@ -39,9 +38,8 @@ public class Warrior extends Hero
     @Override
     public int attack()
     {
-        double chance = Math.random();
-        int damage = super.attack();
-
+        var damage = super.attack();
+        var chance = Math.random();
         if (chance < 0.4)
         {
             damage = special();
@@ -57,6 +55,6 @@ public class Warrior extends Hero
     public int special()
     {
         Random rand = new Random();
-        return rand.nextInt(2, 3);
+        return rand.nextInt(getDamage(), getDamage()+3);
     }
 }

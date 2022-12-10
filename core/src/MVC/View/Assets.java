@@ -62,7 +62,7 @@ public class Assets
                 }
                 else
                 {
-                    System.out.println("Error: unknown asset type");
+                    //System.out.println("Error: unknown asset type");
                 }
             }
         }

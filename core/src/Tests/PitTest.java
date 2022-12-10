@@ -25,7 +25,7 @@ class PitTest
 
         assertTrue(myPit.getType().equals("Pit"));
         assertEquals(myPit.getDamageFall(), 15);
-        assertTrue(myPit.getMyLocation().equals(new Vec2(10,10)));
+        assertTrue(myPit.getMyPos().equals(new Vec2(10,10)));
     }
 
     @Test
@@ -33,7 +33,7 @@ class PitTest
     {
         Pit myPit = new Pit(new Vec2(5,5), new EntityFactory());
 
-        assertTrue(myPit.getMyLocation().equals(new Vec2(5,5)));
+        assertTrue(myPit.getMyPos().equals(new Vec2(5,5)));
     }
 
     @Test
@@ -41,9 +41,9 @@ class PitTest
     {
         Pit myPit = new Pit(new Vec2(5,5), new EntityFactory());
 
-        myPit.setMyLocation(new Vec2(6,6));
+        myPit.setMyPos(new Vec2(6,6));
 
-        assertTrue(myPit.getMyLocation().equals(new Vec2(6,6)));
+        assertTrue(myPit.getMyPos().equals(new Vec2(6,6)));
     }
 
     @Test

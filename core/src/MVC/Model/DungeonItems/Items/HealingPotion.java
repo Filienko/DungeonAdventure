@@ -7,12 +7,12 @@ public class HealingPotion extends Potion
 {
     public HealingPotion(final EntityFactory theEntityFactory)
     {
-        super("Healing Potion",2, theEntityFactory);
+        super("healthPotion",2, theEntityFactory);
     }
 
     public HealingPotion(final int theStrength, final EntityFactory theEntityFactory)
     {
-        super("Healing Potion", theStrength, theEntityFactory);
+        super("healthPotion", theStrength, theEntityFactory);
     }
 
     @Override

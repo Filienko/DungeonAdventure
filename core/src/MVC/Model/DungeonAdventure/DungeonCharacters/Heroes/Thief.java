@@ -45,10 +45,10 @@ public class Thief extends Hero
     @Override
     public int attack()
     {
+        var damage = super.attack();
         //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are hidden,
         //they get the chance to surprise attack. otherwise, they do a regular attack.
 
-        int damage = 1;
         var chance = Math.random();
         if (chance < 0.25)
         {
@@ -85,7 +85,7 @@ public class Thief extends Hero
 //        {
 //            damage = super.attack();
 //        }
-        return 5;
+        return getDamage()+5;
     }
 
     /**

@@ -42,12 +42,8 @@ public class SceneGame extends Scene
 
     private void initialize()
     {
-        Room testRoom = new Room(0, new Vec2(0, 0));
-        testRoom.setN(true);
-        testRoom.setE(true);
-        testRoom.setS(true);
-        testRoom.setW(true);
-        myEntityFactory.generateRoomEntities(testRoom);
+        Dungeon testDungeon = new Dungeon(myEntityFactory,3);
+        myEntityFactory.generateGameEntities(testDungeon);
     }
 
     protected void onEnd() {}
@@ -166,7 +162,18 @@ public class SceneGame extends Scene
             {
                 e.getMyAnimation().update();
                 sprite = e.getMyAnimation().getSprite();
-                sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+                if (e.getMyAnimation().getName().equals("attackRight") && e.getMyAnimation().getSprite().getScaleX() == -1)
+                {
+                    sprite.setPosition(e.getMyPos().getMyX() - 48, e.getMyPos().getMyY());
+                }
+                else if (e.getMyAnimation().getName().equals("attackDown"))
+                {
+                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY() - 48);
+                }
+                else
+                {
+                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+                }
                 sprite.setRotation(e.getRotation());
                 sprite.draw(myRenderer.getSpriteBatch());
             }
@@ -184,6 +191,10 @@ public class SceneGame extends Scene
 
                 box.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
                 box.getSprite().draw(myRenderer.getSpriteBatch());
+
+                var pos = myRenderer.getAssets().getAnimation("pos");
+                pos.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+                pos.getSprite().draw(myRenderer.getSpriteBatch());
             }
             if (e.getType().equals("Hero") || e.getType().equals("Monster"))
             {

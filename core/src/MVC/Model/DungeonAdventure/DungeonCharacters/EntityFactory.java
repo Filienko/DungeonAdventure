@@ -40,16 +40,16 @@ public class EntityFactory
     
     public Monster generateMonster(final String monsterType)
     {
-        //Updating, Deleting, and Collecting entities
         SuperMonsterDB DB = new MonsterDB();
-        return DB.createMonsterDB(monsterType, myHero,this);
+        var monster = DB.createMonsterDB(monsterType, myHero,this);
+        myEntitiesToAdd.add(monster);
+        return monster;
     }
 
     public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
     {
         for (var room: theDungeon.getRooms())
         {
-            var roomNumber = room.getNumber();
             generateRoomEntities(room);
         }
         return myEntitiesToAdd;
@@ -57,6 +57,8 @@ public class EntityFactory
 
     public ArrayList<Entity> generateRoomEntities(final Room theRoom)
     {
+        theRoom.setEntityFactory(this);
+
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
         Vec2 location = theRoom.getLocation();
@@ -130,18 +132,39 @@ public class EntityFactory
             }
         }
 
+        while(items.toString().contains(","))
+        {
+            String item = items.substring(0, items.indexOf(",")+1);
+            items.delete(0, items.indexOf(",")+1);
+            var i = generateItem(item.substring(0,item.indexOf(",")));
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
+                    (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            i.setMyPos(pixelPos);
+            myEntitiesToAdd.add(i);
+        }
+
+        int monsterCounter = 0;
+        while(monsters.toString().contains(","))
+        {
+            String monster = monsters.substring(0, monsters.indexOf(",")+1);
+            monsters.delete(0, monsters.indexOf(",")+1);
+            monster = monster.substring(0,monster.indexOf(","));
+            var e = generateMonster(monster);
+            e.setRoom(location);
+            monsterCounter++;
+        }
 
         if (theRoom.isN())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
-            Door door = new Door(0, pixelPos, this);
+            Door door = new Door(location,monsterCounter, pixelPos, this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             myEntitiesToAdd.add(door);
         }
         if (theRoom.isS())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
-            Door door = new Door(0, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(180);
             myEntitiesToAdd.add(door);
@@ -149,7 +172,7 @@ public class EntityFactory
         if (theRoom.isW())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
-            Door door = new Door(0, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(90);
             myEntitiesToAdd.add(door);
@@ -157,26 +180,12 @@ public class EntityFactory
         if (theRoom.isE())
         {
             pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
-            Door door = new Door(0, pixelPos,this);
+            Door door = new Door(location,monsterCounter, pixelPos,this);
             door.setMyAnimation(myAssets.getAnimation("door"));
             door.setRotation(270);
             myEntitiesToAdd.add(door);
         }
 
-        while(items.length()>1)
-        {
-            String item = items.substring(0, items.indexOf(",")+1);
-            items.delete(0, items.indexOf(",")+1);
-            myEntitiesToAdd.add(generateItem(item.substring(0,item.indexOf(","))));
-        }
-
-        while(monsters.length()>0)
-        {
-            String monster = monsters.substring(0, monsters.indexOf(",")+1);
-            monsters.delete(0, monsters.indexOf(",")+1);
-            monster = monster.substring(0,monster.indexOf(","));
-            myEntitiesToAdd.add(generateMonster(monster));
-        }
         return myEntitiesToAdd;
     }
 
@@ -213,22 +222,22 @@ public class EntityFactory
 
     public Monster generateOgre()
     {
-        return generateMonster("Ogre");
+        return generateMonster("ogre");
     }
 
     public Monster generateGremlin()
     {
-        return generateMonster("Gremlin");
+        return generateMonster("gremlin");
     }
 
     public Monster generateKnight()
     {
-        return generateMonster("Knight");
+        return generateMonster("knight");
     }
 
     public Monster generateRats()
     {
-        return generateMonster("Rats");
+        return generateMonster("rat");
     }
 
     public List<Monster> generateMonsters(final int theN)
@@ -264,21 +273,21 @@ public class EntityFactory
 
     public Item generateItem(final String theItem)
     {
-        switch (theItem.toLowerCase(Locale.ROOT))
+        switch (theItem)
         {
-            case "healing potion" -> {
+            case "healthPotion" -> {
                 return new HealingPotion(this);
             }
-            case "attack potion" -> {
+            case "attackPotion" -> {
                 return new AttackPotion(this);
             }
-            case "speed potion" -> {
+            case "speedPotion" -> {
                 return new SpeedPotion(this);
             }
             case "pit" -> {
                 return new Pit(this);
             }
-            case "encapsulation","inheritance","polymorphism","abstraction"-> {
+            case "pillar"-> {
                 return new Pillar(theItem, this);
             }
             case "exit" -> {
@@ -360,49 +369,55 @@ public class EntityFactory
         return arr;
     }
 
-//
-//    public static List<HealingPotion> generateHealingPotions(final int theN)
-//    {
-//        var arr = new ArrayList<HealingPotion>();
-//
-//        for (int i = 0; i < theN; i++)
-//        {
-//            arr.add(new HealingPotion());
-//        }
-//
-//        return arr;
-//    }
-//
-//    public static List<SpeedPotion> generateSpeedPotions(final int theN)
-//    {
-//        var arr = new ArrayList<SpeedPotion>();
-//
-//        for (int i = 0; i < theN; i++)
-//        {
-//            arr.add(new SpeedPotion());
-//        }
-//
-//        return arr;
-//    }
-//
-//    public static List<AttackPotion> generateAttackPotions(final int theN)
-//    {
-//        var arr = new ArrayList<AttackPotion>();
-//
-//        for (int i = 0; i < theN; i++)
-//        {
-//            arr.add(new AttackPotion());
-//        }
-//
-//        return arr;
-//    }
+
+    public List<HealingPotion> generateHealingPotions(final int theN)
+    {
+        var arr = new ArrayList<HealingPotion>();
+
+        for (int i = 0; i < theN; i++)
+        {
+            var p = new HealingPotion(this);
+            p.setMyPos(getHero().getMyPos().add(new Vec2(100,50)));
+            myEntitiesToAdd.add(p);
+        }
+
+        return arr;
+    }
+
+    public List<SpeedPotion> generateSpeedPotions(final int theN)
+    {
+        var arr = new ArrayList<SpeedPotion>();
+
+        for (int i = 0; i < theN; i++)
+        {
+            var p = new SpeedPotion(this);
+            p.setMyPos(getHero().getMyPos().add(new Vec2(100,-50)));
+            myEntitiesToAdd.add(p);
+        }
+
+        return arr;
+    }
+
+    public List<AttackPotion> generateAttackPotions(final int theN)
+    {
+        var arr = new ArrayList<AttackPotion>();
+
+        for (int i = 0; i < theN; i++)
+        {
+            var p = new AttackPotion(this);
+            p.setMyPos(getHero().getMyPos().add(new Vec2(-100,50)));
+            myEntitiesToAdd.add(p);
+        }
+
+        return arr;
+    }
 
     //added this method
     public Sword generateSword()
 {
         var sword = Sword.getInstance(this, myHero);
-        myEntities.add(sword);
-        myEntities.add(generateGremlin());
+        myEntitiesToAdd.add(sword);
+
         return sword;
 }
 
@@ -413,18 +428,15 @@ public class EntityFactory
         return myHero;
     }
 
-    public ArrayList<Monster> getMonsters()
+    public ArrayList<Entity> getMonsters()
     {
-        var monsters = new ArrayList<Monster>();
-        for (var e: myEntities)
-        {
-            if(e instanceof Monster)
-            {
-                monsters.add((Monster) e);
-            }
-        }
-
-        return monsters;
+        return myEntityMap.get("Monster");
     }
+
+    public ArrayList<Entity> getDoors()
+    {
+        return myEntityMap.get("Door");
+    }
+
     public Assets getAssets() { return myAssets; }
 }

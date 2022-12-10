@@ -3,6 +3,7 @@ package MVC.Model.DungeonItems.Weapon;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
@@ -60,7 +61,6 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void destroy()
     {
-        setMySize(new Vec2());
         super.destroy();
         myHero.setAttackStatus(false);
     }
@@ -71,9 +71,10 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void collide()
     {
-        for (var e: myEntityFactory.getMonsters())
+        for (var c: myEntityFactory.getMonsters())
         {
-            if (e.getActiveStatus()==true && !e.isInvincibility())
+            var e = (Monster) c;
+            if (e.getActiveStatus() && !e.isInvincibility())
             {
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
@@ -83,7 +84,7 @@ public class Sword extends Entity implements ICollidable
                     {
                         //Potentially add sound
                         //TODO:Add appropriate animation logic
-                        e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
+                        //e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
                         e.destroy();
                     }
                     else

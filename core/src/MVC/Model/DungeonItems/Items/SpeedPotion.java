@@ -7,12 +7,12 @@ public class SpeedPotion extends Potion
 {
     public SpeedPotion(final EntityFactory theEntityFactory)
     {
-        super("Speed Potion",2, theEntityFactory);
+        super("speedPotion",1, theEntityFactory);
     }
 
     public SpeedPotion(final int theStrength, final EntityFactory theEntityFactory)
     {
-        super("Speed Potion",theStrength, theEntityFactory);
+        super("speedPotion",theStrength, theEntityFactory);
     }
 
     @Override

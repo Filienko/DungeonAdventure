@@ -16,6 +16,7 @@ public abstract class Entity
     private String myType;
     private boolean myActiveStatus;
     private long myCurrentFrame;
+    private Vec2 myRoom;
 
     protected Entity(final Vec2 theSize, final Vec2 thePos, final String theType, final EntityFactory theEntityFactory)
     {
@@ -32,25 +33,12 @@ public abstract class Entity
         setCurrentFrame(0);
     }
 
-    private Entity(final Vec2 theSize, final boolean theEntityAnimated,
-                   final Animation theAnimation, final EntityFactory theEntityFactory) //is this constructor necessary?
-    {
-        setMyEntityFactory(theEntityFactory);
-        myPos = new Vec2();
-        myPreviousPos = new Vec2();
-        setMySize(theSize);
-        myEntityAnimated = theEntityAnimated;
-        setMyAnimation(theAnimation);
-
-        setActiveStatus(true);
-        setCurrentFrame(0);
-    }
-
     public abstract void update();
 
     public void destroy()
     {
         myActiveStatus = false;
+        setMySize(new Vec2());
     }
 
     public Vec2 getMyPos()
@@ -60,9 +48,9 @@ public abstract class Entity
 
     public void setMyPos(Vec2 thePos)
     {
-        if (thePos != null)  //can myPos ever be negative
+        if (thePos != null)  //can myPos ever be negative?
         {
-            myPos = thePos;
+            myPos.copy(thePos);
         }
     }
 
@@ -166,11 +154,21 @@ public abstract class Entity
         return myEntityFactory;
     }
 
-    public void setMyEntityFactory(final EntityFactory theEntityFactory)
+    protected void setMyEntityFactory(final EntityFactory theEntityFactory) //should this be less visible?
     {
         if (theEntityFactory != null)
         {
             myEntityFactory = theEntityFactory;
         }
+    }
+
+    public Vec2 getRoom()
+    {
+        return myRoom;
+    }
+
+    public void setRoom(final Vec2 theRoom)
+    {
+        myRoom = theRoom;
     }
 }

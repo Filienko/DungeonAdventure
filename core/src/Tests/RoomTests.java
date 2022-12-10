@@ -91,7 +91,6 @@ public class RoomTests
         room.addItem(new SpeedPotion(new EntityFactory()));
         room.addItem(new HealingPotion(new EntityFactory()));
         room.addItem(new AttackPotion(new EntityFactory()));
-        room.removeItem(new AttackPotion(new EntityFactory()));
         room.setNumber(100);
 
         assertTrue(room.getNumber()==100);

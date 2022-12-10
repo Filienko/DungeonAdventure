@@ -6,40 +6,28 @@ import MVC.Model.Physics.Vec2;
 
 public class Pit extends Item
 {
-    private Vec2 myLocation;
     private int myDamageFall;
 
     public Pit(final EntityFactory theEntityFactory)
     {
-        super("Pit", theEntityFactory);
-        setDamageFall(15);
+        super("pit", theEntityFactory);
+        setDamageFall(2);
     }
 
     public Pit(final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        super("Pit", theEntityFactory);
-        setMyLocation(theLocation);
-        setDamageFall(15);
+        super("pit", theEntityFactory);
+        setDamageFall(2);
     }
 
     @Override
     public void activate(final Hero theHero)
     {
-        theHero.setHitPoints(theHero.getHitPoints() - myDamageFall);
-        destroy();
-    }
-
-    public Vec2 getMyLocation()
-    {
-        return myLocation;
-    }
-
-    public void setMyLocation(final Vec2 theLocation)
-    {
-        if (theLocation != null)
+        if(theHero.getHitPoints() > myDamageFall)
         {
-            myLocation = theLocation;
+            theHero.setHitPoints(theHero.getHitPoints() - myDamageFall);
         }
+        destroy();
     }
 
     public int getDamageFall()
@@ -53,4 +41,5 @@ public class Pit extends Item
             myDamageFall = theDamageFall;
         }
     }
+
 }

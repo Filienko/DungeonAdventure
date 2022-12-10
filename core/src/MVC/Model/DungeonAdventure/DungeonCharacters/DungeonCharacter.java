@@ -111,14 +111,13 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void applyDamage(final int theDamage)
     {
-        if(isInvincibility())
-            return;
-
         int damageOutcome = getHitPoints() - theDamage;
 
-        if (damageOutcome <= 0) {
+        if (damageOutcome <= 0)
+        {
             setHitPoints(0);
-        } else if (damageOutcome > 0)
+        }
+        else if (damageOutcome > 0)
         {
             setHitPoints(damageOutcome);
         }
@@ -244,7 +243,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             myVelocity = theVelocity;
             setKnockback(true); //should this line and next line be moved out of if statement
-            setKnockbackEndFrame(getCurrentFrame()+theFramesLong);
+            setKnockbackEndFrame(theFramesLong);
         }
     }
 
@@ -266,7 +265,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void setKnockbackEndFrame(final long theKnockbackEndFrame)
     {
         if (theKnockbackEndFrame >= 0) { // >= 0 or > 0
-            myKnockbackEndFrame = theKnockbackEndFrame;
+            myKnockbackEndFrame = getCurrentFrame() + theKnockbackEndFrame;
         }
     }
 
@@ -286,7 +285,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
 
         if(theFrames >=0)
         {
-            myInvincibilityEndFrame += theFrames;
+            myInvincibilityEndFrame = getCurrentFrame() + theFrames;
         }
 
     }
@@ -310,7 +309,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
                     // If the tile blocks movement
-                    if (t.getType().contains("Pit") || t.getType().contains("Wall") || t.getType().contains("Door") ||
+                    if (t.getType().contains("Pit") || t.getType().contains("Wall") ||
                             t.getType().contains("Monster") || t.getType().contains("Hero"))
                     {
                         previousOverlap = Physics.getPreviousOverlap(this, t);
@@ -344,7 +343,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                             }
                         }
                     }
-                    else if (t instanceof Item && this.getHeroStatus())
+                    if ((t instanceof Item) && this.getHeroStatus())
                     {
                         ((Item) t).activate((Hero) this);
                     }
