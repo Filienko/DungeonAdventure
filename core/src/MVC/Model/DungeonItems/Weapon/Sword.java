@@ -14,19 +14,14 @@ public class Sword extends Entity implements ICollidable
 {
     private static Sword mySword;
 
-    private final EntityFactory myEntityFactory;
-
     private final int myLifeSpan;
-
-    private Vec2 myBoundingBox;
 
     private Hero myHero;
 
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), theHero.getMyPos(), "Sword", theEntityFactory);
-        myEntityFactory = theEntityFactory;
-        myLifeSpan = 60;
+        myLifeSpan = 10;
         setCurrentFrame(0);
         myHero = theHero;
     }
@@ -71,21 +66,22 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void collide()
     {
-        for (var c: myEntityFactory.getMonsters())
+        for (var e: getMyEntityFactory().getMonsters())
         {
-            var e = (Monster) c;
+
             if (e.getActiveStatus() && !e.isInvincibility())
             {
                 Vec2 overlap = Physics.getOverlap(this, e);
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
-                    e.applyDamage(myHero.attack());
+                    e.applyDamage(myHero.getDamage());
+
                     if(e.getHitPoints()<=0)
                     {
                         //Potentially add sound
                         //TODO:Add appropriate animation logic
                         //e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
-                        e.destroy();
+                        e.die();
                     }
                     else
                     {

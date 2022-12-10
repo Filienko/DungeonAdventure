@@ -16,6 +16,12 @@ public class Physics
 
     public static Vec2 getOverlapVector(final Entity theEntity1, final Entity theEntity2, final Vec2 thePosition1, final Vec2 thePosition2)
     {
+        if (theEntity1.getMySize().equals(new Vec2(0, 0))
+                || theEntity2.getMySize().equals(new Vec2(0, 0)))
+        {
+            return new Vec2(0, 0);
+        }
+
         Vec2 en1HalfSize= theEntity1.getMySize().divide(2);
         Vec2 en2HalfSize= theEntity2.getMySize().divide(2);
 

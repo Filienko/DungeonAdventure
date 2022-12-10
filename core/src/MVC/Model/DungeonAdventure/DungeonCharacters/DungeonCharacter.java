@@ -78,20 +78,24 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     @Override
     public void update()
     {
-        if(getCurrentFrame()==getInvincibilityEndFrame())
+        if(getCurrentFrame() >= getInvincibilityEndFrame())
         {
             setInvincibility(false);
         }
-        if(getCurrentFrame()==getKnockbackEndFrame())
+        if(getCurrentFrame() >= getKnockbackEndFrame())
         {
             setKnockback(false);
         }
 
-        if(!isKnockback())
+        if(myHitPoints <= 0 && getMyAnimation().hasEnded())
+        {
+            destroy();
+        }
+        else if(!isKnockback())
         {
             movement();
         }
-        else
+        else if (myHitPoints > 0)
         {
             setMyPreviousPos(getMyPos());
             updateMyPos(getVelocity());

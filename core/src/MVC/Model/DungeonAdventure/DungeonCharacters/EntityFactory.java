@@ -211,7 +211,7 @@ public class EntityFactory
 
         myEntitiesToAdd.removeAll(myEntitiesToAdd);
 
-        // removeDeadEntities();
+        removeDeadEntities();
 
         // update all entities
         for (Entity e : myEntities)
@@ -439,4 +439,20 @@ public class EntityFactory
     }
 
     public Assets getAssets() { return myAssets; }
+
+    private void removeDeadEntities()
+    {
+        for (int i = 0; i < myEntities.size();)
+        {
+            if (!myEntities.get(i).getActiveStatus())
+            {
+                myEntities.remove(i);
+                myTotalEntities--;
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
 }

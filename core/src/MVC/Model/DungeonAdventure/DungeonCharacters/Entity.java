@@ -36,7 +36,7 @@ public abstract class Entity
     public void destroy()
     {
         myActiveStatus = false;
-        setMySize(new Vec2());
+        setMySize(new Vec2(0, 0));
     }
 
     public Vec2 getMyPos()
