@@ -85,7 +85,7 @@ public class Thief extends Hero
 //        {
 //            damage = super.attack();
 //        }
-        return 5;
+        return getDamage()+5;
     }
 
     /**
