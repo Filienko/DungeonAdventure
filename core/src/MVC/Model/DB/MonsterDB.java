@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
 
 public class MonsterDB extends SuperMonsterDB
 {
@@ -23,19 +24,19 @@ public class MonsterDB extends SuperMonsterDB
         myEntityFactory = theEntityFactory;
         myHero = theHero;
 
-        if(monsterType.contentEquals("Ogre"))
+        if(monsterType.contentEquals("ogre"))
         {
             return createMonster(1,theHero);
         }
-        else if(monsterType.contentEquals("Gremlin"))
+        else if(monsterType.contentEquals("gremlin"))
         {
             return createMonster(2,theHero);
         }
-        else if (monsterType.contentEquals("Knight"))
+        else if (monsterType.contentEquals("knight"))
         {
             return createMonster(3,theHero);
         }
-        else if (monsterType.contains("Rats"))
+        else if (monsterType.contains("rat"))
         {
             return createMonster(4,theHero);
         }
@@ -80,19 +81,23 @@ public class MonsterDB extends SuperMonsterDB
             System.exit(0);
         }
 
-        //next insert three rows of data
+        var randVec = new Vec2((new Random()).nextInt(4, 8), (new Random()).nextInt(4, 8));
+        //next insert four rows of data
         String ogreQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,5,'Ogre',2,2,0,0,0,0,96,96)";
+                ") VALUES (0,5,'ogre',2,2,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,96,96)";
+        randVec = new Vec2((new Random()).nextInt(4, 8), (new Random()).nextInt(4, 8));
         String gremlinQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,3,'Gremlin',1,3,0,0,0,0,64,64)";
+                ") VALUES (0,3,'gremlin',1,3,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,64,64)";
+        randVec = new Vec2((new Random()).nextInt(4, 8), (new Random()).nextInt(4, 8));
         String knightQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,3,'Knight',1,5,0,0,0,0,64,64)";
+                ") VALUES (0,3,'knight',1,5,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,64,64)";
+        randVec = new Vec2((new Random()).nextInt(4, 8), (new Random()).nextInt(4, 8));
         String ratsQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,1,'Swarm of Rats',1,7,0,0,0,0,16,16)";
+                ") VALUES (0,1,'rat',1,7,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,16,16)";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
