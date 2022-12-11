@@ -448,7 +448,8 @@ public class EntityFactory
         {
             if (!myEntities.get(i).getActiveStatus())
             {
-                myEntities.remove(i);
+                var e = myEntities.remove(i);
+                myEntityMap.get(e.getType().toLowerCase()).remove(e);
                 myTotalEntities--;
             }
             else
