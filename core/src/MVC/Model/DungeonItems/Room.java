@@ -40,6 +40,11 @@ public class Room implements Cloneable
     private boolean myS;
 
     /**
+     * Boolean that tells if the Room contains lava
+     */
+    private boolean myLava;
+
+    /**
      * Boolean that tells if the Room is the Exit of the Dungeon.
      */
     private boolean myExit;
@@ -402,6 +407,17 @@ public class Room implements Cloneable
     {
         myS = theS;
     }
+
+    /**
+     * Method to set if the Room has lava.
+     * @param isLava signifies that the Room has lava.
+     */
+    public void setLava(final boolean isLava) { myLava = isLava; }
+
+    /**
+     * @return whether the Room has lava.
+     */
+    public boolean isLava() { return myLava; }
 
     public StringBuilder getMonsters()
     {

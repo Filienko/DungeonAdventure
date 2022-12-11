@@ -14,7 +14,7 @@ public class Sword extends Entity implements ICollidable
 {
     private static Sword mySword;
 
-    private final int myLifeSpan;
+    private final long myLifeSpan;
 
     private Hero myHero;
 
@@ -35,7 +35,7 @@ public class Sword extends Entity implements ICollidable
         return mySword;
     }
 
-    public int getMyLifeSpan() { return myLifeSpan; }
+    public long getMyLifeSpan() { return myLifeSpan; }
 
     @Override
     public void update()
