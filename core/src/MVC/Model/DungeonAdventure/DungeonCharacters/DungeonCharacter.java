@@ -45,6 +45,16 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     private long myKnockbackEndFrame;
 
     /**
+     * Signifies if the character took damage from lava.
+     */
+    private boolean myBurning;
+
+    /**
+     * The last frame this character took damage.
+     */
+    private long myLastDamageFrame;
+
+    /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
      * minimum and maximum damage amounts, maximum speed, and position.
      *
@@ -70,6 +80,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         myVelocity = theVelocity;
         initiatedFrame = 0;
         myKnockback = false;
+        myBurning = false;
     }
 
     public abstract int attack();
@@ -81,6 +92,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         if(getCurrentFrame() >= getInvincibilityEndFrame())
         {
             setInvincibility(false);
+            myBurning = false;
         }
         if(getCurrentFrame() >= getKnockbackEndFrame())
         {
@@ -93,7 +105,6 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
             if(getMyAnimation().hasEnded())
             {
                 destroy();
-                return;
             }
         }
         else if(myHitPoints > 0 && !isKnockback())
@@ -131,7 +142,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             setHitPoints(damageOutcome);
         }
-
+        myLastDamageFrame = getCurrentFrame();
     }
 
     /**
@@ -275,6 +286,12 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         return myInvincibilityEndFrame;
     }
 
+    public void setBurning(final boolean theBurning) { myBurning = theBurning; }
+
+    public boolean isBurning() { return myBurning; }
+
+    public long getLastDamageFrame() { return myLastDamageFrame; }
+
     @Override
     public void collide()
     {
@@ -291,7 +308,8 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                     // If the tile blocks movement
                     if (t.getType().contains("Wall")  || t.getType().contains("Door")  || t.getType().contains("exit")
                             || t.getType().contains("Monster")  || t.getType().contains("pillar")
-                            || t.getType().contains("Hero"))
+                            || t.getType().contains("Hero")
+                            || (t.getType().equals("Lava") && this.getType().equals("Monster")))
                     {
                         previousOverlap = Physics.getPreviousOverlap(this, t);
 
@@ -322,6 +340,15 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                             {
                                 this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
                             }
+                        }
+                    }
+                    else if (t.getType().equals("Lava") && this.getType().equals("Hero"))
+                    {
+                        if (!this.isInvincibility())
+                        {
+                            this.applyDamage(1);
+                            this.setInvincibility(true, 45);
+                            myBurning = true;
                         }
                     }
                     if ((t instanceof Item) && this.getHeroStatus())

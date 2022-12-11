@@ -11,9 +11,12 @@ import MVC.Model.Physics.Vec2;
 import MVC.View.Assets;
 import com.badlogic.gdx.utils.ObjectMap;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class EntityFactory
 {
@@ -54,80 +57,13 @@ public class EntityFactory
         return myEntitiesToAdd;
     }
 
-    public ArrayList<Entity> generateRoomEntities(final Room theRoom)
-    {
+    public ArrayList<Entity> generateRoomEntities(final Room theRoom) {
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
         Vec2 location = theRoom.getLocation();
-
         Vec2 pixelPos;
-        Wall wall;
-        // Generate walls along the north and south
-        for (int i = 0; i <= 18; i++)
-        {
-            if (!(i == 9 && theRoom.isN()))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), i, 10);
-                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
-                if (i == 0 || i == 18)
-                {
-                    wall.setMyAnimation(myAssets.getAnimation("corner"));
-                }
-                else
-                {
-                    wall.setMyAnimation(myAssets.getAnimation("wall"));
-                }
-                if (i == 18)
-                {
-                    wall.setRotation(270);
-                }
-                myEntitiesToAdd.add(wall);
-            }
 
-            if (!(i == 9 && theRoom.isS()))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), i, 0);
-                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
-                if (i == 0 || i == 18)
-                {
-                    wall.setMyAnimation(myAssets.getAnimation("corner"));
-                }
-                else
-                {
-                    wall.setMyAnimation(myAssets.getAnimation("wall"));
-                }
-                if (i == 0)
-                {
-                    wall.setRotation(90);
-                }
-                else
-                {
-                    wall.setRotation(180);
-                }
-                myEntitiesToAdd.add(wall);
-            }
-        }
-        // Generate walls along the east and west
-        for (int i = 1; i < 10; i++)
-        {
-            if (!(i == 5 && theRoom.isW()))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, i);
-                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
-                wall.setMyAnimation(myAssets.getAnimation("wall"));
-                wall.setRotation(90);
-                myEntitiesToAdd.add(wall);
-            }
-
-            if (!(i == 5 && theRoom.isE()))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, i);
-                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
-                wall.setMyAnimation(myAssets.getAnimation("wall"));
-                wall.setRotation(270);
-                myEntitiesToAdd.add(wall);
-            }
-        }
+        generateWalls((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
 
         while(items.toString().contains(","))
         {
@@ -162,42 +98,123 @@ public class EntityFactory
 
         if (theRoom.isN())
         {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
-            Door door = new Door(location,monsterCounter, pixelPos, this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            door.setRoom(location);
-            myEntitiesToAdd.add(door);
+            generateDoor(location, monsterCounter, 9, 10, 0);
+        }
+        else
+        {
+            generateWall(location, 9, 10, 0);
         }
         if (theRoom.isS())
         {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 0);
-            Door door = new Door(location,monsterCounter, pixelPos,this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            door.setRotation(180);
-            door.setRoom(location);
-            myEntitiesToAdd.add(door);
+            generateDoor(location, monsterCounter, 9, 0, 180);
+        }
+        else
+        {
+            generateWall(location, 9, 0, 180);
         }
         if (theRoom.isW())
         {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 0, 5);
-            Door door = new Door(location,monsterCounter, pixelPos,this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            door.setRotation(90);
-            door.setRoom(location);
-            myEntitiesToAdd.add(door);
+            generateDoor(location, monsterCounter, 0, 5, 90);
+        }
+        else
+        {
+            generateWall(location, 0, 5, 90);
         }
         if (theRoom.isE())
         {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 18, 5);
-            Door door = new Door(location,monsterCounter, pixelPos,this);
-            door.setMyAnimation(myAssets.getAnimation("door"));
-            door.setRotation(270);
-            door.setRoom(location);
-            myEntitiesToAdd.add(door);
+            generateDoor(location, monsterCounter, 18, 5, 270);
+        }
+        else
+        {
+            generateWall(location, 18, 5, 270);
+        }
+
+        if (theRoom.isLava())
+        {
+            generateLava((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
         }
 
         return myEntitiesToAdd;
     }
+
+    private void generateLava(final int roomX, final int roomY)
+    {
+        try
+        {
+            File file = new File("lava.txt");
+            Scanner sc = new Scanner(file);
+            Vec2 pixelPos;
+            Wall lava;
+
+            while (sc.hasNextLine())
+            {
+                String[] tiles = sc.nextLine().split(" ");
+                int tileX = Integer.parseInt(tiles[0]);
+                int tileY = Integer.parseInt(tiles[1]);
+                pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
+                lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                lava.setMyAnimation(myAssets.getAnimation("lava"));
+                lava.setType("Lava");
+                myEntitiesToAdd.add(lava);
+            }
+            sc.close();
+        }
+        catch (FileNotFoundException fnfe )
+        {
+            System.out.println("File: lava.txt not found");
+        }
+    }
+
+    private void generateWalls(final int roomX, final int roomY)
+    {
+        try
+        {
+            File file = new File("walls.txt");
+            Scanner sc = new Scanner(file);
+            Vec2 pixelPos;
+            Wall wall;
+
+            while (sc.hasNextLine())
+            {
+                String[] attributes = sc.nextLine().split(" ");
+                int tileX = Integer.parseInt(attributes[0]);
+                int tileY = Integer.parseInt(attributes[1]);
+                pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
+                String animation = attributes[2];
+                int rotation = Integer.parseInt(attributes[3]);
+
+                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                wall.setMyAnimation(myAssets.getAnimation(animation));
+                wall.setRotation(rotation);
+                myEntitiesToAdd.add(wall);
+            }
+        }
+        catch (FileNotFoundException fnfe )
+        {
+            System.out.println("File: walls.txt not found");
+        }
+    }
+
+    private void generateDoor(final Vec2 theLocation, final int theMonsterCounter, final int tileX, final int tileY,
+                              final int theRotation)
+    {
+        Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), tileX, tileY);
+        Door door = new Door(theLocation, theMonsterCounter, pixelPos, this);
+        door.setMyAnimation(myAssets.getAnimation("door"));
+        door.setRoom(theLocation);
+        door.setRotation(theRotation);
+        myEntitiesToAdd.add(door);
+    }
+
+    private void generateWall(final Vec2 theLocation, final int tileX, final int tileY, final int theRotation)
+    {
+        Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), tileX, tileY);
+        Wall wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+        wall.setMyAnimation(myAssets.getAnimation("wall"));
+        wall.setRotation(theRotation);
+        myEntitiesToAdd.add(wall);
+    }
+
 
     public void update()
     {
@@ -299,21 +316,7 @@ public class EntityFactory
         return new HealingPotion(this);
     }
 
-    public Pit generatePit()
-    {
-        return new Pit(this); //added new EntityFactory param
-    }
-
-//    public static ArrayList<Pit> generatePit(final int theN)
-//    {
-//        var arr = new ArrayList<Pit>();
-//
-//        for (int i = 0; i < theN; i++)
-//        {
-//            arr.add(new Pit());
-//        }
-//        return arr;
-//    }
+    public Pit generatePit() { return new Pit(this); }
 
     public Hero generateHero(final String type1)
     {
@@ -438,7 +441,15 @@ public class EntityFactory
 
     public ArrayList<Entity> getEntities() { return myEntities; }
 
-    public ArrayList<Entity> getEntities(final String type) { return myEntityMap.get(type.toLowerCase()); }
+    public ArrayList<Entity> getEntities(final String type)
+    {
+        if (myEntityMap.get(type.toLowerCase()) != null)
+        {
+            return myEntityMap.get(type.toLowerCase());
+        }
+
+        return new ArrayList<Entity>();
+    }
 
     public Hero getHero()
     {
