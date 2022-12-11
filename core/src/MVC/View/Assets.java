@@ -105,10 +105,6 @@ public class Assets
         myFontMap.put(fontName + "40Black", generator.generateFont(parameter));
 
         generator.dispose();
-        if (myFontMap.get(fontName) == null)
-        {
-            System.out.println("Could not load font: " + fileName);
-        }
     }
 
     private void addSound(final String soundName, final String fileName)
