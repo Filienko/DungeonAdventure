@@ -289,8 +289,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
                     // If the tile blocks movement
-                    if (t.getType().contains("Door")  || t.getType().contains("exit")
-                            || t.getType().contains("Wall") || t.getType().contains("Monster")
+                    if (t.getType().contains("Door")  || t.getType().contains("exit")|| t.getType().contains("Monster")
                             || t.getType().contains("Hero"))
                     {
                         previousOverlap = Physics.getPreviousOverlap(this, t);

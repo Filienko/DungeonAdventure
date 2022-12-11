@@ -44,4 +44,3 @@ public class Pillar extends Item
         new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero());
     }
 }
-
