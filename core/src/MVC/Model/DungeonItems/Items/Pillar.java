@@ -2,8 +2,6 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.Physics.Physics;
-import MVC.Model.Physics.Vec2;
 
 public class Pillar extends Item
 {
