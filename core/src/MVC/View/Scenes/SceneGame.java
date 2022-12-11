@@ -8,6 +8,7 @@ import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -190,6 +191,35 @@ public class SceneGame extends Scene
         sprite = e.getMyAnimation().getSprite();
         e.getMyAnimation().setPos(e.getMyPos().getMyX(), e.getMyPos().getMyY());
         sprite.setRotation(e.getRotation());
+
+        if (e.getMyAnimation().getName().equals("exit"))
+        {
+            if (myHero.getPillars() < 4)
+            {
+                sprite.setAlpha(0.25f);
+            }
+            else
+            {
+                sprite.setAlpha(1f);
+            }
+        }
+        else if (e.getMyAnimation().getName().equals("rat"))
+        {
+            Monster rat = (Monster) e;
+            double angle = Math.atan2(rat.getVelocity().getMyY(), rat.getVelocity().getMyX()) * 57.296 + 90;
+            sprite.setRotation((float) angle);
+        }
+        else if (e.getType().equals("Monster") || e.getType().equals("Hero"))
+        {
+            if (((DungeonCharacter) e).isInvincibility())
+            {
+                sprite.setAlpha(0.5f);
+            }
+            else
+            {
+                sprite.setAlpha(1.0f);
+            }
+        }
         sprite.draw(myRenderer.getSpriteBatch());
     }
 
