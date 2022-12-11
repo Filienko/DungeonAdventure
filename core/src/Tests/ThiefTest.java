@@ -24,7 +24,6 @@ class ThiefTest
         assertEquals(10, myThief.getHitPoints());
         assertEquals(5, myThief.getMaxSpeed());
         assertEquals(1, myThief.getDamage());
-        assertFalse(myThief.getHiddenStatus());
     }
 
     /**
@@ -64,32 +63,5 @@ class ThiefTest
         final Thief myThief = new Thief(new EntityFactory());
 
         assertTrue(myThief.getDamage() + 5 == myThief.special());
-    }
-
-    /**
-     * Test method for {@link Thief#getHiddenStatus()}
-     */
-    @Test
-    void testGetHiddenStatus()
-    {
-        final Thief myThief = new Thief(new EntityFactory());
-
-        assertFalse(myThief.getHiddenStatus());
-    }
-
-    /**
-     * Test method for {@link Thief#setHiddenStatus(boolean)}
-     */
-    @Test
-    void testSetMyHiddenStatus()
-    {
-        final Thief myThief = new Thief(new EntityFactory());
-
-        assertFalse(myThief.getHiddenStatus());
-
-        myThief.setHiddenStatus(true);
-
-        assertTrue(myThief.getHiddenStatus());
-
     }
 }

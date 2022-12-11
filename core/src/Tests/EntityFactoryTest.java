@@ -1,5 +1,6 @@
 package Tests;
 
+import MVC.Controller.GameEngine;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
@@ -9,6 +10,12 @@ import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.DungeonItems.Items.HealingPotion;
 import MVC.Model.DungeonItems.Items.Pit;
 import MVC.Model.DungeonItems.Room;
+import MVC.View.Assets;
+import MVC.View.MyRenderer;
+import MVC.View.Scenes.SceneGame;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,7 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class EntityFactoryTest
 {
-    EntityFactory entityFactory = new EntityFactory(null, "Warrior");
+    private EntityFactory entityFactory;
+    @BeforeEach
+    void createFactory()
+    {
+        Assets myAssets = new Assets();
+        myAssets.loadAssets();
+        entityFactory = new EntityFactory(myAssets, "Warrior");
+    }
 
     @Test
     void testUpdate()
@@ -42,9 +56,9 @@ public class EntityFactoryTest
     void testGenerateRoomEntities()
     {
         var expectedList = new ArrayList<Entity>();
-        expectedList.add(new Pit(new EntityFactory())); //added new EntityFactory()
-        expectedList.add(new HealingPotion(new EntityFactory()));
-        expectedList.add(new AttackPotion(new EntityFactory()));
+        expectedList.add(new Pit(entityFactory)); //added new EntityFactory()
+        expectedList.add(new HealingPotion(entityFactory));
+        expectedList.add(new AttackPotion(entityFactory));
 
         expectedList.add(entityFactory.generateOgre());
         expectedList.add(entityFactory.generateRats());

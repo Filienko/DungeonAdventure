@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PhysicsTest
 {
+    EntityFactory theEntityFactory = new EntityFactory();
     @Test
     void testPhysics()
     {

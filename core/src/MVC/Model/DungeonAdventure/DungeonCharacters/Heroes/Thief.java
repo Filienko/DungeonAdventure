@@ -7,15 +7,6 @@ import MVC.Model.Physics.Vec2;
 
 public class Thief extends Hero
 {
-    /**
-     * Chance of being hidden when entering a room.
-     */
-    private static final double MY_HIDDEN_CHANCE = 0.4;
-
-    /**
-     * The Thief's hidden status.
-     */
-    private boolean myHiddenStatus = false;
 
     /**
      * Thief constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
@@ -85,23 +76,5 @@ public class Thief extends Hero
 //            damage = super.attack();
 //        }
         return getDamage()+5;
-    }
-
-    /**
-     * This method retrieves the Thief's hidden status.
-     * @return Thief's hidden status - true if hidden, false if visible.
-     */
-    public boolean getHiddenStatus()
-    {
-        return myHiddenStatus;
-    }
-
-    /**
-     * This method sets the Thief's hidden status.
-     * @param theStatus Thief's new hidden status - true if hidden, false if visible.
-     */
-    public void setHiddenStatus(final boolean theStatus)
-    {
-        myHiddenStatus = theStatus;
     }
 }
