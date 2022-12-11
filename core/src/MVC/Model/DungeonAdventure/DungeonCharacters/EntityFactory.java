@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class EntityFactory
 {
@@ -199,16 +200,16 @@ public class EntityFactory
         for (Entity e : myEntitiesToAdd)
         {
             myEntities.add(e);
-            var type = myEntityMap.get(e.getType());
+            var type = myEntityMap.get(e.getType().toLowerCase());
             if(type==null)
             {
                 var list = new ArrayList<Entity>();
                 list.add(e);
-                myEntityMap.put(e.getType(),list);
+                myEntityMap.put(e.getType().toLowerCase(),list);
             }
             else
             {
-                myEntityMap.get(e.getType()).add(e);
+                myEntityMap.get(e.getType().toLowerCase()).add(e);
             }
             myTotalEntities++;
         }
@@ -432,24 +433,11 @@ public class EntityFactory
 
     public ArrayList<Entity> getEntities() { return myEntities; }
 
+    public ArrayList<Entity> getEntities(final String type) { return myEntityMap.get(type.toLowerCase()); }
+
     public Hero getHero()
     {
         return myHero;
-    }
-
-    public ArrayList<Entity> getMonsters()
-    {
-        return myEntityMap.get("Monster");
-    }
-
-    public ArrayList<Entity> getDoors()
-    {
-        return myEntityMap.get("Door");
-    }
-
-    public ArrayList<Entity> getPillars()
-    {
-        return myEntityMap.get("pillar");
     }
 
     public Assets getAssets() { return myAssets; }
