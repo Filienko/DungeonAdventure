@@ -122,26 +122,27 @@ public class Dungeon implements Serializable
             arr.add(new Room(i, new Vec2(col,row)));
         }
 
-//        for (int i = 0; i < arr.size(); i++)
-//        {
-//            if(i>=(n1*(i-1)))
-//            {
-//                arr.get(i).setLocation(arr.get(i).getLocation().minus(new Vec2()));
-//            }
-//            else
-//            {
-//                arr.get(i).setLocation(arr.get(i).getLocation().minus(new Vec2()));
-//            }
-//        }
+        arr.get(0).setEntranceStatus(true);
+        var exit = new Random().nextInt(1,arr.size());
+        arr.get(exit).setExitStatus(true).addItem("exit");
+
+        var notTaken = new ArrayList<Integer>();
+
+        for (int i = 1; i < arr.size(); i++)
+        {
+            if(i != exit)
+            {
+            notTaken.add(i);
+            }
+        }
 
         for (int i = 0; i < 4; i++)
         {
-            var room = arr.get(new Random().nextInt(1,arr.size()));
+            var randomIndex = new Random().nextInt(0,notTaken.size());
+            var room = arr.get(notTaken.get(randomIndex));
             room.addItem("pillar");
+            notTaken.remove(randomIndex);
         }
-
-        arr.get(0).setEntranceStatus(true);
-        arr.get(new Random().nextInt(1,arr.size())).setExitStatus(true).addItem("exit"); //added new EntityFactory param
 
         return arr;
     }
