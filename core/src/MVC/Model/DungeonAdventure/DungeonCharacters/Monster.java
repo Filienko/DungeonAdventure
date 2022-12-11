@@ -1,6 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Door;
+import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
@@ -47,6 +48,7 @@ public class Monster extends DungeonCharacter
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
 
+        myHomePosition = new Vec2();
         setMonsterType(theMonsterType);
         setHero(theHero);
         if(getMyEntityFactory().getAssets()!=null)
@@ -58,13 +60,28 @@ public class Monster extends DungeonCharacter
     @Override
     public void destroy()
     {
+        var destroyPillar = true;
         for (var e : getMyEntityFactory().getEntities("door"))
         {
             if (e.getRoom().equals(getRoom()))
             {
                 ((Door) e).decrementMonsterCounter();
+                if(((Door) e).getMonsterCounter()<=0){destroyPillar = false;}
             }
         }
+
+        if(destroyPillar)
+        {
+            for (var p : getMyEntityFactory().getEntities("pillar"))
+            {
+                Pillar pillar = (Pillar) p;
+                if(!pillar.isBroken() && pillar.getRoom().equals(getRoom()))
+                {
+                    pillar.breakPillar();
+                }
+            }
+        }
+
         super.destroy();
     }
 
@@ -159,16 +176,11 @@ public class Monster extends DungeonCharacter
     public void setRoom(final Vec2 theRoom)
     {
         super.setRoom(theRoom);
-        myHomePosition = Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
-                (int) getMyPos().getMyX(),(int) getMyPos().getMyY());
+        myHomePosition.copy(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
+                (int) getMyPos().getMyX(),(int) getMyPos().getMyY()));
         setMyPos(myHomePosition);
         System.out.println(getMyPos().getMyX());
         System.out.println(getMyPos().getMyY());
-    }
-
-    public void setHomePosition(final Vec2 theHomePosition)
-    {
-        myHomePosition.copy(theHomePosition);
     }
 
     @Override

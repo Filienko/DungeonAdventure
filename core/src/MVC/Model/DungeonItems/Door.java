@@ -45,21 +45,9 @@ public class Door extends Entity
     public void decrementMonsterCounter()
     {
         myMonsterCounter--;
-        System.out.println("ENEMY COUNTER " + myMonsterCounter);
 
         if (myMonsterCounter <= 0)
         {
-            System.out.println(" WAS 0");
-
-            for (var p : getMyEntityFactory().getEntities("pillar"))
-            {
-                Pillar pillar = (Pillar) p;
-                if(!pillar.isBroken() && pillar.getRoom().equals(getRoom()))
-                {
-                    pillar.breakPillar();
-                }
-            }
-
             Vec2 overlap;
             for (var d : getMyEntityFactory().getEntities("door"))
             {

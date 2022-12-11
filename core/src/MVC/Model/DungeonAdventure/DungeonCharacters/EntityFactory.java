@@ -134,8 +134,15 @@ public class EntityFactory
             String item = items.substring(0, items.indexOf(",")+1);
             items.delete(0, items.indexOf(",")+1);
             var i = generateItems(item.substring(0,item.indexOf(",")));
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                    (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9,5);
+            }
+            else
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
+                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            }
             i.setRoom(location);
             i.setMyPos(pixelPos);
             myEntitiesToAdd.add(i);
@@ -148,11 +155,7 @@ public class EntityFactory
             monsters.delete(0, monsters.indexOf(",")+1);
             monster = monster.substring(0,monster.indexOf(","));
             var e = generateMonsters(monster);
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                    (int) e.getMyPos().getMyX(), (int) e.getMyPos().getMyY());
             e.setRoom(location);
-            e.setHomePosition(pixelPos);
-            e.setMyPos(pixelPos.add(new Vec2(monsterCounter*25,0)));
             myEntitiesToAdd.add(e);
             monsterCounter++;
         }
