@@ -148,11 +148,7 @@ public class EntityFactory
             monsters.delete(0, monsters.indexOf(",")+1);
             monster = monster.substring(0,monster.indexOf(","));
             var e = generateMonsters(monster);
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                    (int) e.getMyPos().getMyX(), (int) e.getMyPos().getMyY());
             e.setRoom(location);
-            e.setHomePosition(pixelPos);
-            e.setMyPos(pixelPos.add(new Vec2(monsterCounter*25,0)));
             myEntitiesToAdd.add(e);
             monsterCounter++;
         }

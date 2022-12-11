@@ -132,6 +132,6 @@ public abstract class Entity
 
     public void setRoom(final Vec2 theRoom)
     {
-        myRoom = theRoom;
+        myRoom.copy(theRoom);
     }
 }
