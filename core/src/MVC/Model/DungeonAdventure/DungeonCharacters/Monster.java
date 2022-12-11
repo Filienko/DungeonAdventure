@@ -59,7 +59,7 @@ public class Monster extends DungeonCharacter
     @Override
     public void destroy()
     {
-        for (var e : getMyEntityFactory().getDoors())
+        for (var e : getMyEntityFactory().getEntities("door"))
         {
             if (e.getRoom().equals(getRoom()))
             {
@@ -95,39 +95,8 @@ public class Monster extends DungeonCharacter
                 (float) Math.floor(npcPosition.getMyY() / 704));
         Vec2 direction;
         Vec2 velocity = new Vec2();
-        boolean hasSight = false;
-        if(heroRoom.equals(npcRoom))
-        {
-            hasSight = true;
-            for (var e: getMyEntityFactory().getEntities())
-            {
-                var notMonster = !e.getType().contains("ogre") && !e.getType().contains("rat")
-                        && !e.getType().contains("knight") && !e.getType().contains("gremlin");
-                var notHero = !e.getType().contains("Priestess") && !e.getType().contains("Warrior")
-                        && !e.getType().contains("Thief");
-                var notPotion = !e.getType().contains("Potion");
-                var notPit = !e.getType().contains("Pit");
-                var isWall = e.getType().contains("Door");
-                var isDoor = e.getType().contains("Wall");
 
-                if(notHero)
-                {
-                    Vec2 ePosition = e.getMyPos();
-                    Vec2 eRoom = new Vec2((float) Math.floor(ePosition.getMyX()/1216),
-                            (float) Math.floor(ePosition.getMyX()/704));
-                    if(eRoom.equals(npcRoom))
-                    {
-//                        // If there's an intersection then the npc does not have sight on the player
-//                        if (Physics.entityIntersect(heroPosition, npcPosition, e))
-//                        {
-//                            hasSight = false;
-//                            break;
-//                        }
-                    }
-                }
-            }
-        }
-
+        boolean hasSight = heroRoom.equals(npcRoom);
         if (hasSight)
         {
             direction = myHero.getMyPos().minus(npcPosition);
@@ -135,13 +104,14 @@ public class Monster extends DungeonCharacter
         }
         else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
         {
-            direction= myHomePosition.minus(npcPosition);
-            velocity= direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
+            direction = myHomePosition.minus(npcPosition);
+            velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
+
         setVelocity(velocity);
         setMyPreviousPos(getMyPos());
         updateMyPos(getVelocity());
-        //setMyPos(new Vec2(300, 300));
+
     }
 
     /**

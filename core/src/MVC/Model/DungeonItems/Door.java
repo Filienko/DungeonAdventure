@@ -2,6 +2,8 @@ package MVC.Model.DungeonItems;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonItems.Items.Pillar;
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
 public class Door extends Entity
@@ -35,17 +37,33 @@ public class Door extends Entity
     {
         myMonsterCounter--;
         System.out.println("ENEMY COUNTER " + myMonsterCounter);
-        if(myMonsterCounter == 0)
-    {
-        System.out.println(" WAS 0");
-        for (var pillar:getMyEntityFactory().getPillars())
+
+        if (myMonsterCounter <= 0)
         {
-            if(pillar.getRoom().equals(getRoom()))
+            System.out.println(" WAS 0");
+
+            for (var p : getMyEntityFactory().getEntities("pillar"))
             {
-                pillar.destroy();
+                Pillar pillar = (Pillar) p;
+                if(!pillar.isBroken() && pillar.getRoom().equals(getRoom()))
+                {
+                    pillar.breakPillar();
+                }
             }
+
+            Vec2 overlap;
+            for (var d : getMyEntityFactory().getEntities("door"))
+            {
+                if (d != this && !d.getMySize().equals(new Vec2(0, 0)))
+                {
+                    overlap = Physics.getOverlap(this, d);
+                    if (overlap.getMyX() > -1 && overlap.getMyY() > -1)
+                    {
+                        d.destroy();
+                    }
+                }
+            }
+            this.destroy();
         }
-        destroy();
-    }
     }
 }

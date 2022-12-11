@@ -5,8 +5,10 @@ import MVC.Controller.GameEngine;
 import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
@@ -24,7 +26,8 @@ public class SceneGame extends Scene
         myDrawTextures = true;
         myDrawBoundingBoxes = false;
 
-        registerAction(Input.Keys.ESCAPE, "PAUSE");
+        registerAction(Input.Keys.P, "PAUSE");
+        registerAction(Input.Keys.ESCAPE, "QUIT");
         registerAction(Input.Keys.W, "UP");
         registerAction(Input.Keys.S, "DOWN");
         registerAction(Input.Keys.A, "LEFT");
@@ -45,14 +48,18 @@ public class SceneGame extends Scene
 
     }
 
-    protected void onEnd() {}
+    protected void onEnd()
+    {
+        // serialize
+        myGame.setCurrentScene("Menu", null, true);
+    }
 
     public  void doAction(final Action action)
     {
         if (action.getType().equals("START"))
         {
                  if (action.getName().equals("PAUSE"))              { setPaused(); }
-            else if (action.getName().equals("QUIT"))               { onEnd(); }
+            else if (action.getName().equals("QUIT"))               { if (!myPaused) {setPaused(); } else { onEnd(); }}
             else if (action.getName().equals("UP"))                 { myHero.setUp(true); }
             else if (action.getName().equals("DOWN"))               { myHero.setDown(true); }
             else if (action.getName().equals("LEFT"))               { myHero.setLeft(true); }
@@ -168,7 +175,11 @@ public class SceneGame extends Scene
             {
                 renderHealthBars(e);
             }
+        }
 
+        if (myPaused)
+        {
+            renderPaused();
         }
     }
 
@@ -216,5 +227,21 @@ public class SceneGame extends Scene
             x+= health.getSize().getMyX();
         }
     }
+
+    private void renderPaused()
+    {
+        int roomX = (int) Math.floor(myHero.getMyPos().getMyX() / 1216);
+        int roomY = (int) Math.floor(myHero.getMyPos().getMyY() / 704);
+        Vec2 pixelPos = Physics.getPosition(roomX, roomY, 3, 9);
+        BitmapFont font = myRenderer.getAssets().getFont("mario24");
+        font.draw(myRenderer.getSpriteBatch(), """
+                UP:W DOWN:S LEFT:A RIGHT:D
+                ATTACK:SPACE
+                PAUSE:P
+                SAVE AND QUIT:ESC
+                TOGGLE TEXTURES:T
+                TOGGLE BOUNDING BOXES:B""", pixelPos.getMyX(), pixelPos.getMyY());
+    }
+
 
 }

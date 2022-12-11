@@ -67,7 +67,7 @@ public class Sword extends Entity implements ICollidable
     @Override
     public void collide()
     {
-        for (var e: getMyEntityFactory().getMonsters())
+        for (var e: getMyEntityFactory().getEntities("monster"))
         {
             Monster m = (Monster) e;
             if (m.getActiveStatus() && !m.isInvincibility())
