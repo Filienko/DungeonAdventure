@@ -10,10 +10,4 @@ public class Wall extends Entity
     {
         super(theBoundingBox, thePos, "Wall", new EntityFactory());
     }
-
-    @Override
-    public void update()
-    {
-
-    }
 }

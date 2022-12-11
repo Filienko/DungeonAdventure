@@ -24,7 +24,7 @@ public abstract class Entity
         setMySize(theSize);
         setMyPos(thePos);
         setMyPreviousPos(thePos);
-        if (theType != null && theType.length() > 1)
+        if (theType != null && theType.length() > 1) //should i simplify this w a method?
         {
             myType = theType;
         }
@@ -33,12 +33,12 @@ public abstract class Entity
         setCurrentFrame(0);
     }
 
-    public abstract void update();
+    public void update() {};
 
     public void destroy()
     {
         myActiveStatus = false;
-        setMySize(new Vec2());
+        setMySize(new Vec2(0, 0));
     }
 
     public Vec2 getMyPos()
@@ -50,8 +50,8 @@ public abstract class Entity
     {
         if (thePos != null)  //can myPos ever be negative?
         {
-            //myPos.copy(thePos);
-            myPos = thePos;
+            myPos.copy(thePos);
+            //myPos = thePos;
         }
     }
 
@@ -93,11 +93,6 @@ public abstract class Entity
         return myEntityAnimated;
     }
 
-    public void setMyEntityAnimated(final boolean theEntityAnimated)
-    {
-        myEntityAnimated = theEntityAnimated;
-    }
-
     public Animation getMyAnimation()
     {
         return myAnimation;
@@ -107,7 +102,8 @@ public abstract class Entity
     {
         if (theAnimation != null)
         {
-            myAnimation = theAnimation;
+            myAnimation = new Animation(theAnimation);
+            // why not myAnimation = theAnimation; ??
         }
     }
 

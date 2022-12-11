@@ -33,9 +33,9 @@ public class Thief extends Hero
      * @return The amount of damage the Thief does during their attack.
      */
     @Override
-    public int attack()
+    public int damage()
     {
-        var damage = super.attack();
+        var damage = 0;
         //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are hidden,
         //they get the chance to surprise attack. otherwise, they do a regular attack.
 
@@ -43,6 +43,10 @@ public class Thief extends Hero
         if (chance < 0.25)
         {
             damage = special();
+        }
+        else
+        {
+            damage = super.damage();
         }
 
         return damage;

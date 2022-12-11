@@ -2,6 +2,8 @@ package MVC.Model.DungeonItems;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonItems.Items.Pillar;
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
 public class Door extends Entity
@@ -16,7 +18,6 @@ public class Door extends Entity
 
     public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
-        //TODO:assign correct bounding boxes to all of the Entities inheriting from Entity
         super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
         setMonsterCounter(theMonsterCounter);
 
@@ -26,17 +27,6 @@ public class Door extends Entity
     {
         super(new Vec2(64, 64),theLocation,"Door", theEntityFactory);
         setMonsterCounter(theMonsterCounter);
-    }
-
-    @Override
-    public void update()
-    {
-        if(myMonsterCounter == 0)
-        {
-            getMyEntityFactory().getHero().setHitPoints(1000);
-            getMyEntityFactory().getHero().setMaxSpeed(20);
-            destroy();
-        }
     }
 
     public int getMonsterCounter()
@@ -55,5 +45,34 @@ public class Door extends Entity
     public void decrementMonsterCounter()
     {
         myMonsterCounter--;
+        System.out.println("ENEMY COUNTER " + myMonsterCounter);
+
+        if (myMonsterCounter <= 0)
+        {
+            System.out.println(" WAS 0");
+
+            for (var p : getMyEntityFactory().getEntities("pillar"))
+            {
+                Pillar pillar = (Pillar) p;
+                if(!pillar.isBroken() && pillar.getRoom().equals(getRoom()))
+                {
+                    pillar.breakPillar();
+                }
+            }
+
+            Vec2 overlap;
+            for (var d : getMyEntityFactory().getEntities("door"))
+            {
+                if (d != this && !d.getMySize().equals(new Vec2(0, 0)))
+                {
+                    overlap = Physics.getOverlap(this, d);
+                    if (overlap.getMyX() > -1 && overlap.getMyY() > -1)
+                    {
+                        d.destroy();
+                    }
+                }
+            }
+            this.destroy();
+        }
     }
 }

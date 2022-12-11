@@ -12,18 +12,16 @@ public abstract class Item extends Entity
 {
     protected Item(final String theType, final EntityFactory theEntityFactory)
     {
-        super(new Vec2(64, 64), new Vec2((new Random()).nextInt(1, 20),
-                (new Random()).nextInt(1, 12)), theType,  theEntityFactory);
-        setMyPos(new Vec2((new Random()).nextInt(1, 20),
-                (new Random()).nextInt(1, 12)));
-        //setMyAnimation(getMyEntityFactory().getAssets().getAnimation(getType()));
+        super(new Vec2(32, 32), new Vec2((new Random()).nextInt(2, 10),
+                (new Random()).nextInt(2, 10)), theType,  theEntityFactory);
+        if(getMyEntityFactory().getAssets()!=null)
+        {
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation(getType()));
+        }
     }
 
     @Override
-    public void update()
-    {
-        //activate();
-    }
+    public void update() {}
 
     @Override
     public void setRoom(final Vec2 theRoom)

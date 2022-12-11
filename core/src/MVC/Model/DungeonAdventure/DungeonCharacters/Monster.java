@@ -1,11 +1,8 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Door;
-import MVC.Model.DungeonItems.Door;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
-
-import java.util.Random;
 
 public class Monster extends DungeonCharacter
 {
@@ -52,18 +49,20 @@ public class Monster extends DungeonCharacter
 
         setMonsterType(theMonsterType);
         setHero(theHero);
-        //setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
+        if(getMyEntityFactory().getAssets()!=null)
+        {
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
+        }
     }
 
     @Override
     public void destroy()
     {
-        for (var e : getMyEntityFactory().getDoors())
+        for (var e : getMyEntityFactory().getEntities("door"))
         {
             if (e.getRoom().equals(getRoom()))
             {
-                var d = (Door)e;
-                d.decrementMonsterCounter();
+                ((Door) e).decrementMonsterCounter();
             }
         }
         super.destroy();
@@ -95,39 +94,8 @@ public class Monster extends DungeonCharacter
                 (float) Math.floor(npcPosition.getMyY() / 704));
         Vec2 direction;
         Vec2 velocity = new Vec2();
-        boolean hasSight = false;
-        if(heroRoom.equals(npcRoom))
-        {
-            hasSight = true;
-            for (var e: getMyEntityFactory().getEntities())
-            {
-                var notMonster = !e.getType().contains("ogre") && !e.getType().contains("rat")
-                        && !e.getType().contains("knight") && !e.getType().contains("gremlin");
-                var notHero = !e.getType().contains("Priestess") && !e.getType().contains("Warrior")
-                        && !e.getType().contains("Thief");
-                var notPotion = !e.getType().contains("Potion");
-                var notPit = !e.getType().contains("Pit");
-                var isWall = e.getType().contains("Door");
-                var isDoor = e.getType().contains("Wall");
 
-                if(notHero)
-                {
-                    Vec2 ePosition = e.getMyPos();
-                    Vec2 eRoom = new Vec2((float) Math.floor(ePosition.getMyX()/1216),
-                            (float) Math.floor(ePosition.getMyX()/704));
-                    if(eRoom.equals(npcRoom))
-                    {
-//                        // If there's an intersection then the npc does not have sight on the player
-//                        if (Physics.entityIntersect(heroPosition, npcPosition, e))
-//                        {
-//                            hasSight = false;
-//                            break;
-//                        }
-                    }
-                }
-            }
-        }
-
+        boolean hasSight = heroRoom.equals(npcRoom);
         if (hasSight)
         {
             direction = myHero.getMyPos().minus(npcPosition);
@@ -135,12 +103,14 @@ public class Monster extends DungeonCharacter
         }
         else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
         {
-            direction= myHomePosition.minus(npcPosition);
-            velocity= direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
+            direction = myHomePosition.minus(npcPosition);
+            velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
+
         setVelocity(velocity);
         setMyPreviousPos(getMyPos());
         updateMyPos(getVelocity());
+
     }
 
     /**
@@ -192,6 +162,13 @@ public class Monster extends DungeonCharacter
         myHomePosition = Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
                 (int) getMyPos().getMyX(),(int) getMyPos().getMyY());
         setMyPos(myHomePosition);
+        System.out.println(getMyPos().getMyX());
+        System.out.println(getMyPos().getMyY());
+    }
+
+    public void setHomePosition(final Vec2 theHomePosition)
+    {
+        myHomePosition.copy(theHomePosition);
     }
 
     @Override

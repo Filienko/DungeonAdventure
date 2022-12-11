@@ -60,11 +60,6 @@ public class Room implements Cloneable
     private Vec2 myLocation;
 
     /**
-     * Entity Factory associated with this Room instruction set.
-     */
-    private EntityFactory myEntityFactory;
-
-    /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
      */
     public Room()
@@ -75,7 +70,6 @@ public class Room implements Cloneable
         myLocation = new Vec2();
         myItems = new StringBuilder();
         myMonsters = new StringBuilder();
-        myEntityFactory = new EntityFactory();
     }
 
     /**
@@ -89,7 +83,6 @@ public class Room implements Cloneable
         myLocation = theLocation;
         myItems = new StringBuilder();
         myMonsters = new StringBuilder();
-        myEntityFactory = new EntityFactory();
     }
 
     /**
@@ -278,7 +271,7 @@ public class Room implements Cloneable
      */
     public void addItem (Item theItem)
     {
-        if(theItem.getType().contentEquals("Pillar"))
+        if(theItem.getType().contentEquals("pillar"))
         {
             myItems.append(((Pillar) theItem).getName()).append(",");
         }
@@ -427,10 +420,5 @@ public class Room implements Cloneable
     {
         Room s = (Room) super.clone();
         return s;
-    }
-
-    public void setEntityFactory(final EntityFactory theEntityFactory)
-    {
-        myEntityFactory = theEntityFactory;
     }
 }

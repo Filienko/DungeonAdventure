@@ -111,6 +111,11 @@ public abstract class Hero extends DungeonCharacter
     public int attack()
     {
         myWeapon = getMyEntityFactory().generateSword();
+        return damage();
+    }
+
+    public int damage()
+    {
         return getDamage();
     }
 
@@ -247,10 +252,7 @@ public abstract class Hero extends DungeonCharacter
         }
     }
 
-    public boolean isAttackStatus()
-    {
-        return myAttackStatus;
-    }
+    public boolean getAttackStatus() { return myAttackStatus; }
 
     public void setAttackStatus(final boolean theAttackStatus)
     {
@@ -312,7 +314,5 @@ public abstract class Hero extends DungeonCharacter
     }
 
     public Vec2 getFacing() { return myFacing; }
-
-    public boolean getAttackStatus() { return myAttackStatus; }
 
 }

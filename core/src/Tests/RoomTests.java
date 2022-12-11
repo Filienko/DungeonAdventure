@@ -8,7 +8,6 @@ import MVC.Model.DungeonItems.Items.SpeedPotion;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Entity;
 
 import java.util.Random;
 
@@ -21,14 +20,14 @@ public class RoomTests
     {
         var room = new Room();
         room.populateTheRoom(true);
-        room.addItem(new Pillar("Encapsulation", new EntityFactory()));
+        room.addItem(new Pillar(new EntityFactory()));
         room.setE(true);
 
         room.populateTheRoom(true);
         assertTrue(room.getItems().toString().contains("pit"));
         assertTrue(room.getItems().toString().contains("Potion"));
-        assertTrue(room.getItems().toString().contains("Encapsulation"));
-        assertTrue(room.getMonsters().toString().length() > 1);
+        assertTrue(room.getItems().toString().contains("pillar"));
+        assertTrue(room.getMonsters().toString().length()>3);
     }
 
     @Test
@@ -53,7 +52,7 @@ public class RoomTests
     {
         var room = new Room();
         room.populateMonsters(1);
-        assertTrue(room.getMonsters().toString().length() > 1);
+        assertTrue(room.getMonsters().toString().length()>3);
     }
 
     @Test
@@ -78,7 +77,6 @@ public class RoomTests
         room.setE(false);
         room.setS(true);
         room.setN(true);
-        room.setMonsters((new EntityFactory()).generateMonsters(1));
         room.setLocation(new Vec2(1,2));
         room.addItem(new AttackPotion(new EntityFactory()));
         room.clearRoom();

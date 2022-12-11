@@ -107,25 +107,35 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     @Override
     public void update()
     {
-        if(getCurrentFrame()==getInvincibilityEndFrame())
+        if(getCurrentFrame() >= getInvincibilityEndFrame())
         {
             setInvincibility(false);
         }
-        if(getCurrentFrame()==getKnockbackEndFrame())
+        if(getCurrentFrame() >= getKnockbackEndFrame())
         {
             setKnockback(false);
         }
 
-        if(!isKnockback())
+        if(myHitPoints <= 0)
+        {
+            setDamage(0);
+            if(getMyAnimation().hasEnded())
+            {
+                destroy();
+                return;
+            }
+        }
+        else if(myHitPoints > 0 && !isKnockback())
         {
             movement();
+            collide();
         }
-        else
+        else if (myHitPoints > 0)
         {
             setMyPreviousPos(getMyPos());
             updateMyPos(getVelocity());
+            collide();
         }
-        collide();
     }
 
     /**
@@ -381,8 +391,8 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
                     // If the tile blocks movement
-                    if (t.getType().contains("Pit") || t.getType().contains("Wall") ||
-                            t.getType().contains("Monster") || t.getType().contains("Hero"))
+                    if (t.getType().contains("Wall")  || t.getType().contains("Door")  || t.getType().contains("exit")|| t.getType().contains("Monster")
+                            || t.getType().contains("Hero"))
                     {
                         previousOverlap = Physics.getPreviousOverlap(this, t);
 

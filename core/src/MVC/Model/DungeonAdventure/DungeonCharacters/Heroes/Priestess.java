@@ -39,9 +39,9 @@ public class Priestess extends Hero implements Healable
      * @return The amount of damage the Priestess does during her attack.
      */
     @Override
-    public int attack()
+    public int damage()
     {
-        var damage = super.attack();
+        var damage = super.damage();
 
         if((new Random()).nextDouble()<0.1)
         {

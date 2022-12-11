@@ -2,14 +2,13 @@ package MVC.View.Scenes;
 
 import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
-import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
+import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
@@ -27,7 +26,8 @@ public class SceneGame extends Scene
         myDrawTextures = true;
         myDrawBoundingBoxes = false;
 
-        registerAction(Input.Keys.ESCAPE, "PAUSE");
+        registerAction(Input.Keys.P, "PAUSE");
+        registerAction(Input.Keys.ESCAPE, "QUIT");
         registerAction(Input.Keys.W, "UP");
         registerAction(Input.Keys.S, "DOWN");
         registerAction(Input.Keys.A, "LEFT");
@@ -42,18 +42,24 @@ public class SceneGame extends Scene
 
     private void initialize()
     {
+
         Dungeon testDungeon = new Dungeon(myEntityFactory,3);
         myEntityFactory.generateGameEntities(testDungeon);
+
     }
 
-    protected void onEnd() {}
+    protected void onEnd()
+    {
+        // serialize
+        myGame.setCurrentScene("Menu", null, true);
+    }
 
     public  void doAction(final Action action)
     {
         if (action.getType().equals("START"))
         {
                  if (action.getName().equals("PAUSE"))              { setPaused(); }
-            else if (action.getName().equals("QUIT"))               { onEnd(); }
+            else if (action.getName().equals("QUIT"))               { if (!myPaused) {setPaused(); } else { onEnd(); }}
             else if (action.getName().equals("UP"))                 { myHero.setUp(true); }
             else if (action.getName().equals("DOWN"))               { myHero.setDown(true); }
             else if (action.getName().equals("LEFT"))               { myHero.setLeft(true); }
@@ -83,6 +89,7 @@ public class SceneGame extends Scene
             camera();
             myCurrentFrame++;
         }
+
     }
 
     private void camera()
@@ -154,63 +161,87 @@ public class SceneGame extends Scene
 
     public void render()
     {
-        Sprite sprite;
-
         for (Entity e : myEntityFactory.getEntities())
         {
             if (myDrawTextures && e.getMyAnimation() != null)
             {
-                e.getMyAnimation().update();
-                sprite = e.getMyAnimation().getSprite();
-                if (e.getMyAnimation().getName().equals("attackRight") && e.getMyAnimation().getSprite().getScaleX() == -1)
-                {
-                    sprite.setPosition(e.getMyPos().getMyX() - 48, e.getMyPos().getMyY());
-                }
-                else if (e.getMyAnimation().getName().equals("attackDown"))
-                {
-                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY() - 48);
-                }
-                else
-                {
-                    sprite.setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-                }
-                sprite.setRotation(e.getRotation());
-                sprite.draw(myRenderer.getSpriteBatch());
+                renderTextures(e);
             }
             if (myDrawBoundingBoxes)
             {
-                var box = myRenderer.getAssets().getAnimation("boundingBox");
-                if (e.getMySize().getMyX() != 64 && e.getMySize().getMyY() != 64)
-                {
-                    box.getSprite().setScale(e.getMySize().getMyX() / 64, e.getMySize().getMyY() / 64);
-                }
-                else
-                {
-                    box.getSprite().setScale(1, 1);
-                }
-
-                box.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-                box.getSprite().draw(myRenderer.getSpriteBatch());
-
-                var pos = myRenderer.getAssets().getAnimation("pos");
-                pos.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-                pos.getSprite().draw(myRenderer.getSpriteBatch());
+                renderBoundingBoxes(e);
             }
             if (e.getType().equals("Hero") || e.getType().equals("Monster"))
             {
-                DungeonCharacter character = (DungeonCharacter) e;
-                var health = myRenderer.getAssets().getAnimation("health");
-                float x = character.getMyPos().getMyX();
-                float y = character.getMyPos().getMyY() + 64;
-                for (int i = 0; i < character.getHitPoints(); i++)
-                {
-                    health.getSprite().setPosition(x, y);
-                    health.getSprite().draw(myRenderer.getSpriteBatch());
-
-                    x+= health.getSize().getMyX();
-                }
+                renderHealthBars(e);
             }
+        }
 
+        if (myPaused)
+        {
+            renderPaused();
         }
     }
+
+    private void renderTextures(final Entity e)
+    {
+        Sprite sprite;
+        e.getMyAnimation().update();
+        sprite = e.getMyAnimation().getSprite();
+        e.getMyAnimation().setPos(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        sprite.setRotation(e.getRotation());
+        sprite.draw(myRenderer.getSpriteBatch());
+    }
+
+    private void renderBoundingBoxes(final Entity e)
+    {
+        var box = myRenderer.getAssets().getAnimation("boundingBox");
+        if (e.getMySize().getMyX() != 64 && e.getMySize().getMyY() != 64)
+        {
+            box.getSprite().setScale(e.getMySize().getMyX() / 64, e.getMySize().getMyY() / 64);
+        }
+        else
+        {
+            box.getSprite().setScale(1, 1);
+        }
+
+        box.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        box.getSprite().draw(myRenderer.getSpriteBatch());
+
+        var pos = myRenderer.getAssets().getAnimation("pos");
+        pos.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        pos.getSprite().draw(myRenderer.getSpriteBatch());
+    }
+
+    private void renderHealthBars(final Entity e)
+    {
+        DungeonCharacter character = (DungeonCharacter) e;
+        var health = myRenderer.getAssets().getAnimation("health");
+        float x = character.getMyPos().getMyX();
+        float y = character.getMyPos().getMyY() + 64;
+        for (int i = 0; i < character.getHitPoints(); i++)
+        {
+            health.getSprite().setPosition(x, y);
+            health.getSprite().draw(myRenderer.getSpriteBatch());
+
+            x+= health.getSize().getMyX();
+        }
+    }
+
+    private void renderPaused()
+    {
+        int roomX = (int) Math.floor(myHero.getMyPos().getMyX() / 1216);
+        int roomY = (int) Math.floor(myHero.getMyPos().getMyY() / 704);
+        Vec2 pixelPos = Physics.getPosition(roomX, roomY, 3, 9);
+        BitmapFont font = myRenderer.getAssets().getFont("mario24");
+        font.draw(myRenderer.getSpriteBatch(), """
+                UP:W DOWN:S LEFT:A RIGHT:D
+                ATTACK:SPACE
+                PAUSE:P
+                SAVE AND QUIT:ESC
+                TOGGLE TEXTURES:T
+                TOGGLE BOUNDING BOXES:B""", pixelPos.getMyX(), pixelPos.getMyY());
+    }
+
+
 }
