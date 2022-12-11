@@ -14,10 +14,11 @@ public class Pit extends Item
         setDamageFall(2);
     }
 
-    public Pit(final Vec2 theLocation, final EntityFactory theEntityFactory)
+    public Pit(final Vec2 theLocation, final EntityFactory theEntityFactory) //this constructor is never used?
     {
         super("pit", theEntityFactory);
         setDamageFall(2);
+        setMyPos(theLocation);
     }
 
     @Override

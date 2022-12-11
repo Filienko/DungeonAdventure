@@ -21,7 +21,7 @@ public class Exit extends Item
         return myExit;
     }
 
-    public boolean checkFinishGame(final Hero theHero) //checkFinishGame and activate are esssentially the same? do we need both?
+    public boolean checkFinishGame(final Hero theHero)
     {
         return theHero.getPillars() == 4;
     }
@@ -30,7 +30,7 @@ public class Exit extends Item
     public void activate(final Hero theHero)
     {
         System.out.println(theHero.getPillars());
-        if(checkFinishGame(getMyEntityFactory().getHero()))
+        if(checkFinishGame(theHero)) //was getMyEntityFactory().getHero() instead of theHero, is this ok?
         {
             destroy();
             theHero.setActiveStatus(false);

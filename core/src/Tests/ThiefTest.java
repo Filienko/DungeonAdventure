@@ -48,7 +48,7 @@ class ThiefTest
     @Test
     void testAttack()
     {
-        final Thief myThief = new Thief(new EntityFactory());
+        final Thief myThief = new Thief(new EntityFactory(null, "Mock"));
 
         assertTrue(myThief.attack() == 1);
 

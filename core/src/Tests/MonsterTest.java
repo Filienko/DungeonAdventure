@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MonsterTest
 {
-    EntityFactory myEntityFactory = new EntityFactory();
+    EntityFactory myEntityFactory = new EntityFactory(null, "Mock");
     Hero myHero = new Warrior(myEntityFactory);
     /**
      * Test method for Monster's constructor (uses Ogre statistics).
@@ -71,6 +71,7 @@ class MonsterTest
         myMonster.destroy();
 
         assertFalse(myMonster.getActiveStatus());
+        assertTrue(myMonster.getMySize().equals(new Vec2()));
 
         //write tests for destroy, theres more to it
     }
@@ -81,7 +82,38 @@ class MonsterTest
     @Test
     void testUpdate()
     {
-        //write tests for update
+        final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
+
+
+        long iEndFrame = myMonster.getInvincibilityEndFrame();
+        myMonster.setCurrentFrame(iEndFrame+1);
+        myMonster.setInvincibility(true);
+        myMonster.update();
+        assertFalse(myMonster.isInvincibility());
+
+        long kEndFrame = myMonster.getKnockbackEndFrame();
+        myMonster.setCurrentFrame(kEndFrame+1);
+        myMonster.setKnockback(true);
+        myMonster.update();
+        assertFalse(myMonster.isKnockback());
+
+//        myMonster.setHitPoints(0);
+//        myMonster.update();
+//        assertEquals(myMonster.getDamage(), 0);
+
+        //^^ one more else if to write tests for
+
+        myMonster.setHitPoints(1);
+        myMonster.setKnockback(false);
+        myMonster.update();
+        Vec2 pos = myMonster.getMyPos();
+        Vec2 vel = myMonster.getVelocity();
+        assertTrue(myMonster.getMyPreviousPos().equals(pos));
+        assertTrue(myMonster.getMyPos().equals(vel));
+
+
+        assertEquals(myMonster.getCurrentFrame(), 3);
     }
 
     /**

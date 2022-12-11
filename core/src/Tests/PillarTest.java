@@ -1,6 +1,7 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.Physics.Vec2;
@@ -10,10 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PillarTest
 {
+    EntityFactory theEntityFactory = new EntityFactory(null, "Mock");
     @Test
     void testPillarConstructor()
     {
-        Pillar myPillar = new Pillar("Inheritance", new EntityFactory());
+        Pillar myPillar = new Pillar("Inheritance", theEntityFactory);
 
         assertTrue(myPillar.getName().equals("Inheritance"));
     }
@@ -21,7 +23,7 @@ class PillarTest
     @Test
     void testGetName()
     {
-        Pillar myPillar = new Pillar("Abstraction", new EntityFactory());
+        Pillar myPillar = new Pillar("Abstraction", theEntityFactory);
 
         assertTrue(myPillar.getName().equals("Abstraction"));
     }
@@ -29,14 +31,12 @@ class PillarTest
     @Test
     void testActivate()
     {
-        Pillar myPillar = new Pillar("Encapsulation", new EntityFactory());
-        Thief t1 = new Thief(new EntityFactory());
+        Pillar myPillar = new Pillar("Encapsulation", theEntityFactory);
+        Hero mock = theEntityFactory.generateMockHero();
+        mock.setHitPoints(5);
 
-        myPillar.activate(t1);
-
-        assertEquals(t1.getPillars(), 1);
-
-        assertFalse(myPillar.getActiveStatus());
+        myPillar.activate(mock);
+        assertEquals(mock.getHitPoints(), 6);
     }
 
 }

@@ -9,6 +9,8 @@ import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -84,6 +86,9 @@ public class RoomTests
         room.addItem(new HealingPotion(new EntityFactory()));
         room.addItem(new AttackPotion(new EntityFactory()));
         room.setNumber(100);
+
+        room.setMonsters(Arrays.asList(new EntityFactory().generateMonster("ogre"),
+                new EntityFactory().generateMonster("gremlin")));
 
         assertTrue(room.getNumber()==100);
         assertTrue(room.getMonsters().toString().length()>1);

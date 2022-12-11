@@ -14,7 +14,7 @@ class ExitTest
     {
         Exit myExit = Exit.getInstance(new EntityFactory());
 
-        assertEquals(myExit.getType(), "Exit");
+        assertEquals(myExit.getType(), "exit");
     }
 
     @Test
@@ -43,16 +43,18 @@ class ExitTest
     @Test
     void testActivateSetsFalse()
     {
-        Exit myExit = Exit.getInstance(new EntityFactory());
+        Exit myExit = Exit.getInstance(new EntityFactory(null, "Mock"));
 
-        Warrior myWarrior = new Warrior(new EntityFactory());
+        Warrior myWarrior = new Warrior(new EntityFactory(null, "Mock"));
 
         for (int i = 0; i < 4; i++)
         {
             myWarrior.incrementPillars();
         }
-
+        System.out.println(myWarrior.getPillars());
         myExit.activate(myWarrior);
+
+        System.out.println(myWarrior.getActiveStatus());
 
         assertFalse(myWarrior.getActiveStatus());
     }
@@ -60,7 +62,7 @@ class ExitTest
     @Test
     void testActivateNotFalse()
     {
-        Exit myExit = Exit.getInstance(new EntityFactory());
+        Exit myExit = Exit.getInstance(new EntityFactory(null, "Mock"));
 
         Warrior myWarrior = new Warrior(new EntityFactory());
 

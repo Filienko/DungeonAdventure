@@ -25,6 +25,7 @@ class SwordTest
         Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
 
         //write update test
+
     }
 
     @Test

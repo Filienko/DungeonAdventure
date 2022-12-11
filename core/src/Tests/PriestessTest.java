@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PriestessTest
 {
+
     /**
      * Test method for Priestess's default constructor.
      */
@@ -69,9 +70,9 @@ class PriestessTest
     @Test
     void testAttack()
     {
-        final Priestess myPriestess = new Priestess(new EntityFactory());
+        final Priestess myPriestess = new Priestess(new EntityFactory(null, "Mock"));
 
-        assertTrue(myPriestess.attack() == 1);
+        assertTrue(myPriestess.attack() == 1); //this this ok if im testing priestess^^
 
     }
 

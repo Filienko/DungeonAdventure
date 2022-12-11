@@ -38,11 +38,6 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     private Vec2 myVelocity;
 
     /**
-     * The frame a specific action is initiated on.
-     */
-    private long initiatedFrame;
-
-    /**
      * The frame where a Dungeon Character's invincibility ends, and they can start taking damage again.
      */
     private long myInvincibilityEndFrame;
@@ -85,8 +80,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         setMaxSpeed(theMaxSpeed);
         setMyPos(thePos);
         setVelocity(theVelocity);
-        myHeroStatus = theHeroStatus;
-        initiatedFrame = 0;
+        myHeroStatus = theHeroStatus; //could i add a private setter?
         myKnockback = false;
     }
 

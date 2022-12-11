@@ -11,12 +11,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PhysicsTest
 {
-    EntityFactory theEntityFactory = new EntityFactory();
+    EntityFactory theEntityFactory = new EntityFactory(null, "Mock");
     @Test
     void testPhysics()
     {
-        var hero = (new EntityFactory()).generateThief();
-        Entity ogre = (new EntityFactory()).generateOgre();
+        //var hero = (new EntityFactory()).generateMockHero();
+        //Entity ogre = (new EntityFactory()).generateOgre();
+
+        var hero = theEntityFactory.generateMockHero();
+        Entity ogre = theEntityFactory.generateOgre();
+
+        hero.setMyPos(new Vec2());
+        ogre.setMyPos(new Vec2());
 
         hero.setMyPreviousPos(new Vec2(1,1));
         ogre.setMyPreviousPos(new Vec2(-1,2));

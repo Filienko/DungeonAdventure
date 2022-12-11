@@ -370,7 +370,7 @@ public class EntityFactory
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation", this)); //added new EntityFactory params here
+        arr.add(new Pillar("Encapsulation", this));
         arr.add(new Pillar("Inheritance", this));
         arr.add(new Pillar("Abstraction", this));
         arr.add(new Pillar("Polymorphism", this));

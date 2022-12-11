@@ -103,7 +103,7 @@ public abstract class Entity
         if (theAnimation != null)
         {
             myAnimation = new Animation(theAnimation);
-            // why not myAnimation = theAnimation; ??
+            // why not myAnimation = theAnimation; ?
         }
     }
 
@@ -166,6 +166,9 @@ public abstract class Entity
 
     public void setRoom(final Vec2 theRoom)
     {
-        myRoom.copy(theRoom);
+        if (theRoom != null) {
+            //myRoom.copy(theRoom);
+            myRoom = theRoom;
+        }
     }
 }

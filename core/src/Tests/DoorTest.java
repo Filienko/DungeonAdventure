@@ -77,7 +77,9 @@ class DoorTest
     @Test
     void testUpdate()
     {
-        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory(new Assets(),"Mock"));
+        EntityFactory theEntityFactory = new EntityFactory(null,"Mock");
+        Door myDoor = new Door(2, new Vec2(5,5), theEntityFactory);
+
         assertTrue(myDoor.getActiveStatus());
         myDoor.decrementMonsterCounter();
         assertTrue(myDoor.getActiveStatus());

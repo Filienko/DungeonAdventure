@@ -66,7 +66,7 @@ public class Monster extends DungeonCharacter
             if (e.getRoom().equals(getRoom()))
             {
                 ((Door) e).decrementMonsterCounter();
-                if(((Door) e).getMonsterCounter()<=0){destroyPillar = false;}
+                if(((Door) e).getMonsterCounter()<0){ destroyPillar = false; } //changed from <= 0 to < 0
             }
         }
 

@@ -44,14 +44,14 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#attack()}
+     * Test method for {@link Warrior#damage()}
      */
     @Test
-    void testAttack()
+    void testDamage()
     {
-        final Warrior myWarrior= new Warrior(new EntityFactory());
+        final Warrior myWarrior= new Warrior(new EntityFactory(null, "Mock"));
 
-        assertTrue(myWarrior.attack() == 1);
+        assertTrue(myWarrior.damage() == 1 || (myWarrior.damage() <=4 && myWarrior.damage() >= 1));
     }
 
     /**
@@ -64,6 +64,6 @@ class WarriorTest
 
         int damage = myWarrior.special();
 
-        assertTrue(damage < 4 && damage > 1);
+        assertTrue(damage < 4 && damage >= 1);
     }
 }
