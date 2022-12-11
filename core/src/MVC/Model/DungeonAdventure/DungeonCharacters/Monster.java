@@ -147,6 +147,13 @@ public class Monster extends DungeonCharacter
         myHomePosition = Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
                 (int) getMyPos().getMyX(),(int) getMyPos().getMyY());
         setMyPos(myHomePosition);
+        System.out.println(getMyPos().getMyX());
+        System.out.println(getMyPos().getMyY());
+    }
+
+    public void setHomePosition(final Vec2 theHomePosition)
+    {
+        myHomePosition.copy(theHomePosition);
     }
 
     @Override

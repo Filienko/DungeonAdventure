@@ -144,14 +144,16 @@ public class EntityFactory
         int monsterCounter = 0;
         while(monsters.toString().contains(","))
         {
-            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9, 10);
             String monster = monsters.substring(0, monsters.indexOf(",")+1);
             monsters.delete(0, monsters.indexOf(",")+1);
             monster = monster.substring(0,monster.indexOf(","));
             var e = generateMonsters(monster);
-            myEntitiesToAdd.add(e);
+            pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
+                    (int) e.getMyPos().getMyX(), (int) e.getMyPos().getMyY());
             e.setRoom(location);
+            e.setHomePosition(pixelPos);
             e.setMyPos(pixelPos.add(new Vec2(monsterCounter*25,0)));
+            myEntitiesToAdd.add(e);
             monsterCounter++;
         }
 
