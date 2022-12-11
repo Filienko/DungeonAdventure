@@ -26,7 +26,6 @@ public class Dungeon implements Serializable
 
     public Dungeon()
     {
-        myEntityFactory = new EntityFactory(); //initialized ???
         myDimension = 4;
         myRooms = generateRooms(myDimension);
         myDungeon = generateDungeonFromRooms(myRooms,myDimension);

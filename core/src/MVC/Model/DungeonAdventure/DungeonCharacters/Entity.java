@@ -50,8 +50,8 @@ public abstract class Entity
     {
         if (thePos != null)  //can myPos ever be negative?
         {
-            myPos.copy(thePos);
-            //myPos = thePos;
+            //myPos.copy(thePos);
+            myPos = thePos;
         }
     }
 
