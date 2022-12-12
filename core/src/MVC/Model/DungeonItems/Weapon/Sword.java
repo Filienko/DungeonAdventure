@@ -16,7 +16,8 @@ public class Sword extends Entity implements ICollidable
 
     private EntityFactory myEntityFactory; //should this be made final again? changed for constructor
     //^^ main no longer has this??
-    private final int myLifeSpan;
+
+    private final long myLifeSpan;
 
     private Hero myHero;
 
@@ -38,7 +39,7 @@ public class Sword extends Entity implements ICollidable
         return mySword;
     }
 
-    public int getMyLifeSpan() { return myLifeSpan; }
+    public long getMyLifeSpan() { return myLifeSpan; }
 
     @Override
     public void update()

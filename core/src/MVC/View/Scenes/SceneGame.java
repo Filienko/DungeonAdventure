@@ -5,12 +5,14 @@ import MVC.Controller.GameEngine;
 import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
+import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+
+import java.util.ArrayList;
 
 
 public class SceneGame extends Scene
@@ -18,6 +20,8 @@ public class SceneGame extends Scene
     private Hero myHero;
     private boolean myDrawTextures;
     private boolean myDrawBoundingBoxes;
+    private boolean myMuted;
+    private ArrayList<String> myRenderOrder;
 
     public SceneGame(GameEngine game, String hero)
     {
@@ -26,6 +30,20 @@ public class SceneGame extends Scene
         initialize();
         myDrawTextures = true;
         myDrawBoundingBoxes = false;
+        myMuted = false;
+
+        myRenderOrder = new ArrayList<>();
+        myRenderOrder.add("Lava");
+        myRenderOrder.add("Wall");
+        myRenderOrder.add("Door");
+        myRenderOrder.add("Exit");
+        myRenderOrder.add("attackPotion");
+        myRenderOrder.add("healthPotion");
+        myRenderOrder.add("speedPotion");
+        myRenderOrder.add("Monster");
+        myRenderOrder.add("Hero");
+        myRenderOrder.add("Sword");
+        myRenderOrder.add("Pillar");
 
         registerAction(Input.Keys.P, "PAUSE");
         registerAction(Input.Keys.ESCAPE, "QUIT");
@@ -37,6 +55,7 @@ public class SceneGame extends Scene
         registerAction(Input.Keys.SPACE, "ATTACK");
         registerAction(Input.Keys.T, "TOGGLE_TEXTURE");
         registerAction(Input.Keys.B, "TOGGLE_BOXES");
+        registerAction(Input.Keys.M, "TOGGLE_SOUND");
 
         myHero = myEntityFactory.getHero();
     }
@@ -44,8 +63,21 @@ public class SceneGame extends Scene
     private void initialize()
     {
 
-        Dungeon testDungeon = new Dungeon(myEntityFactory,3);
-        myEntityFactory.generateGameEntities(testDungeon);
+        //Dungeon testDungeon = new Dungeon(myEntityFactory,3);
+        //myEntityFactory.generateGameEntities(testDungeon);
+
+
+        Room testRoom = new Room(1, new Vec2(0, 0));
+        testRoom.setLava(true);
+        testRoom.setN(false);
+        testRoom.setW(false);
+        testRoom.setE(true);
+        testRoom.setS(true);
+        testRoom.populateMonsters(1);
+        myEntityFactory.generateRoomEntities(testRoom);
+
+
+
 
     }
 
@@ -68,6 +100,7 @@ public class SceneGame extends Scene
             else if (action.getName().equals("ATTACK"))             { myHero.attack(); }
             else if (action.getName().equals("TOGGLE_TEXTURE"))     { myDrawTextures = !myDrawTextures; }
             else if (action.getName().equals("TOGGLE_BOXES"))       { myDrawBoundingBoxes = !myDrawBoundingBoxes; }
+            else if (action.getName().equals("TOGGLE_SOUND"))       { myMuted = !myMuted; }
         }
         else if (action.getType().equals("END"))
         {
@@ -162,19 +195,26 @@ public class SceneGame extends Scene
 
     public void render()
     {
-        for (Entity e : myEntityFactory.getEntities())
+        for (String k : myRenderOrder)
         {
-            if (myDrawTextures && e.getMyAnimation() != null)
+            for (Entity e : myEntityFactory.getEntities(k))
             {
-                renderTextures(e);
-            }
-            if (myDrawBoundingBoxes)
-            {
-                renderBoundingBoxes(e);
-            }
-            if (e.getType().equals("Hero") || e.getType().equals("Monster"))
-            {
-                renderHealthBars(e);
+                if (myDrawTextures && e.getMyAnimation() != null)
+                {
+                    renderTextures(e);
+                }
+                if (myDrawBoundingBoxes)
+                {
+                    renderBoundingBoxes(e);
+                }
+                if (e.getType().equals("Hero") || e.getType().equals("Monster"))
+                {
+                    renderHealthBars(e);
+                }
+                if (!myMuted)
+                {
+                    sounds(e);
+                }
             }
         }
 
@@ -211,13 +251,17 @@ public class SceneGame extends Scene
         }
         else if (e.getType().equals("Monster") || e.getType().equals("Hero"))
         {
-            if (((DungeonCharacter) e).isInvincibility())
+            if (((DungeonCharacter) e).isBurning())
             {
-                sprite.setAlpha(0.5f);
+                sprite.setColor(1, .325f, .286f, 0.5f);
+            }
+            else if (((DungeonCharacter) e).isInvincibility())
+            {
+                sprite.setColor(1, 1, 1, 0.5f);
             }
             else
             {
-                sprite.setAlpha(1.0f);
+                sprite.setColor(1, 1, 1, 1);
             }
         }
         sprite.draw(myRenderer.getSpriteBatch());
@@ -270,8 +314,56 @@ public class SceneGame extends Scene
                 PAUSE:P
                 SAVE AND QUIT:ESC
                 TOGGLE TEXTURES:T
-                TOGGLE BOUNDING BOXES:B""", pixelPos.getMyX(), pixelPos.getMyY());
+                TOGGLE BOUNDING BOXES:B
+                TOGGLE SOUND:M""", pixelPos.getMyX(), pixelPos.getMyY());
     }
 
+    private void sounds(final Entity e)
+    {
+        if (e.getType().equals("Monster"))
+        {
+            Monster mon = (Monster) e;
+            if (mon.getLastDamageFrame() == mon.getCurrentFrame())
+            {
+                if (mon.getHitPoints() > 0)
+                {
+                    myRenderer.getAssets().getSound("enemyHit").play(.5f);
+                }
+                else
+                {
+                    myRenderer.getAssets().getSound("enemyDie").play(.5f);
+                }
+            }
+        }
+        else if (e.getType().equals("Hero"))
+        {
+            Hero h = (Hero) e;
+            if (h.getLastDamageFrame() == h.getCurrentFrame())
+            {
+                if (h.getHitPoints() > 0)
+                {
+                    myRenderer.getAssets().getSound("linkHurt").play(.5f);
+                }
+                else
+                {
+                    myRenderer.getAssets().getSound("linkDie").play(.5f);
+                }
+            }
+        }
+        else if (e.getType().equals("Sword"))
+        {
+            if (e.getCurrentFrame() == 1)
+            {
+                myRenderer.getAssets().getSound("slash").play(.5f);
+            }
+        }
+        else if (e.getType().contains("Potion"))
+        {
+            if (!e.getActiveStatus())
+            {
+                myRenderer.getAssets().getSound("getItem").play(.5f);
+            }
+        }
+    }
 
 }

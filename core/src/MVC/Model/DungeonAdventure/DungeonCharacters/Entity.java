@@ -107,7 +107,8 @@ public abstract class Entity
         }
     }
 
-    public String getType() { return myType; }
+    public void setType(final String theType)   { myType = theType; }
+    public String getType()                     { return myType; }
 
     protected void incrementCurrentFrame() //?
     {
