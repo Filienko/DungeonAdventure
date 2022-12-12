@@ -21,7 +21,7 @@ public abstract class Item extends Entity
     }
 
     @Override
-    public void update() {}
+    public void update(){};
 
     @Override
     public void setRoom(final Vec2 theRoom)
@@ -31,5 +31,5 @@ public abstract class Item extends Entity
                 (int) getMyPos().getMyX(),(int) getMyPos().getMyY()));
     }
 
-    public abstract void activate(final Hero theHero);
+    public void activate(final Hero theHero){};
 }
