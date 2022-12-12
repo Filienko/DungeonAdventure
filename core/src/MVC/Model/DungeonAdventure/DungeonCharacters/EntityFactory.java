@@ -300,8 +300,8 @@ public class EntityFactory
             case "speedPotion" -> {
                 return new SpeedPotion(this);
             }
-            case "pit" -> {
-                return new Pit(this);
+            case "lava" -> {
+                return new Lava(this);
             }
             case "pillar"-> {
                 return new Pillar(theItem, this);
@@ -316,7 +316,7 @@ public class EntityFactory
         return new HealingPotion(this);
     }
 
-    public Pit generatePit() { return new Pit(this); }
+    public Lava generateLava() { return new Lava(this); }
 
     public Hero generateHero(final String type1)
     {

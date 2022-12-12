@@ -30,7 +30,7 @@ public class Exit extends Item
     public void activate(final Hero theHero)
     {
         System.out.println(theHero.getPillars());
-        if(checkFinishGame(theHero)) //was getMyEntityFactory().getHero() instead of theHero, is this ok?
+        if(checkFinishGame(theHero)) //is getMyEntityFactory().getHero() instead of theHero ok?
         {
             destroy();
             theHero.setActiveStatus(false);

@@ -48,7 +48,7 @@ public class Pillar extends Item
     @Override
     public void activate(final Hero theHero)
     {
-//        new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero());
+        //new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero()); //why?
         new HealingPotion(1,getMyEntityFactory()).activate(theHero);
     }
 }

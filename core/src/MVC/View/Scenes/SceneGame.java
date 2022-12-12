@@ -63,18 +63,18 @@ public class SceneGame extends Scene
     private void initialize()
     {
 
-        //Dungeon testDungeon = new Dungeon(myEntityFactory,3);
-        //myEntityFactory.generateGameEntities(testDungeon);
+        Dungeon testDungeon = new Dungeon(myEntityFactory,3);
+        myEntityFactory.generateGameEntities(testDungeon);
 
 
-        Room testRoom = new Room(1, new Vec2(0, 0));
-        testRoom.setLava(true);
-        testRoom.setN(false);
-        testRoom.setW(false);
-        testRoom.setE(true);
-        testRoom.setS(true);
-        testRoom.populateMonsters(1);
-        myEntityFactory.generateRoomEntities(testRoom);
+//        Room testRoom = new Room(1, new Vec2(0, 0));
+//        testRoom.setLava(true);
+//        testRoom.setN(false);
+//        testRoom.setW(false);
+//        testRoom.setE(true);
+//        testRoom.setS(true);
+//        testRoom.populateMonsters(1);
+        //myEntityFactory.generateRoomEntities(testRoom);
 
 
 

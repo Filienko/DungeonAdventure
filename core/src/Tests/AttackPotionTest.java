@@ -10,10 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AttackPotionTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
+
     @Test
     void testAPConstructor()
     {
-        AttackPotion myAP = new AttackPotion(new EntityFactory());
+        AttackPotion myAP = new AttackPotion(entityFactory);
 
         assertEquals(myAP.getStrength(), 1);
     }
@@ -21,7 +23,7 @@ class AttackPotionTest
     @Test
     void testAPOverloadedConstructor()
     {
-        AttackPotion myAP = new AttackPotion(4, new EntityFactory());
+        AttackPotion myAP = new AttackPotion(4, entityFactory);
 
         assertEquals(myAP.getStrength(), 4);
     }
@@ -29,9 +31,9 @@ class AttackPotionTest
     @Test
     void testActivate()
     {
-        AttackPotion myAP = new AttackPotion(3, new EntityFactory());
+        AttackPotion myAP = new AttackPotion(3, entityFactory);
 
-        Warrior myWarrior = new Warrior(new EntityFactory());
+        Warrior myWarrior = new Warrior(entityFactory);
 
         int damage = myWarrior.getDamage();
 
@@ -44,7 +46,7 @@ class AttackPotionTest
     @Test
     void testGetType()
     {
-        AttackPotion myAP = new AttackPotion(new EntityFactory());
+        AttackPotion myAP = new AttackPotion(entityFactory);
 
         assertEquals(myAP.getType(), "attackPotion");
     }

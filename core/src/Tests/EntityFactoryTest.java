@@ -7,7 +7,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.DungeonItems.Items.HealingPotion;
-import MVC.Model.DungeonItems.Items.Pit;
+import MVC.Model.DungeonItems.Items.Lava;
 import MVC.Model.DungeonItems.Room;
 import MVC.View.Assets;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class EntityFactoryTest
 {
-    EntityFactory entityFactory = new EntityFactory(null, "Mock");
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
 
     @Test
     void testUpdate()
@@ -44,7 +44,7 @@ public class EntityFactoryTest
     void testGenerateRoomEntities()
     {
         var expectedList = new ArrayList<Entity>();
-        expectedList.add(new Pit(entityFactory)); //added new EntityFactory() -- changed it
+        expectedList.add(new Lava(entityFactory));
         expectedList.add(new HealingPotion(entityFactory));
         expectedList.add(new AttackPotion(entityFactory));
 
@@ -99,13 +99,13 @@ public class EntityFactoryTest
     @Test
     void testAddItem()
     {
-        assertEquals("pit",entityFactory.generateItems("pit").getType());
+        assertEquals("speedPotion",entityFactory.generateItems("speedPotion").getType());
     }
 
     @Test
-    void testGeneratePit()
+    void testGenerateLava()
     {
-        assertEquals("pit",entityFactory.generatePit().getType());
+        assertEquals("lava",entityFactory.generateLava().getType());
     }
 
     @Test

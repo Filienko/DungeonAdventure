@@ -18,7 +18,7 @@ public class Monster extends DungeonCharacter
     /**
      * Monster's default position.
      */
-    private Vec2 myHomePosition;
+    private final Vec2 myHomePosition;
 
     /**
      * The specific Monster type.
@@ -66,7 +66,7 @@ public class Monster extends DungeonCharacter
             if (e.getRoom().equals(getRoom()))
             {
                 ((Door) e).decrementMonsterCounter();
-                if(((Door) e).getMonsterCounter()<0){ destroyPillar = false; } //changed from <= 0 to < 0
+                if(((Door) e).getMonsterCounter()<0){ destroyPillar = false; }
             }
         }
 

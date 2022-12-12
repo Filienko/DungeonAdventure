@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PillarTest
 {
-    EntityFactory theEntityFactory = new EntityFactory(null, "Mock");
+    private final EntityFactory theEntityFactory = new EntityFactory(null, "Mock");
     @Test
     void testPillarConstructor()
     {

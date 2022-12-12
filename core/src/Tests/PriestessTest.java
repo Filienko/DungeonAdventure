@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PriestessTest
 {
-
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     /**
      * Test method for Priestess's default constructor.
      */
     @Test
     void testPriestessConstructor()
     {
-        final Priestess myPriestess = new Priestess(new EntityFactory());
+        final Priestess myPriestess = new Priestess(entityFactory);
 
         assertEquals("Priestess", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getCharacterType());
@@ -34,7 +34,7 @@ class PriestessTest
     @Test
     void testPriestessOLConstructor()
     {
-        final Priestess myPriestess = new Priestess("P", new Vec2(), new EntityFactory());
+        final Priestess myPriestess = new Priestess("P", new Vec2(), entityFactory);
 
         assertEquals("P", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getCharacterType());
@@ -50,7 +50,7 @@ class PriestessTest
     @Test
     void testSpecial()
     {
-        final Priestess myPriestess = new Priestess(new EntityFactory());
+        final Priestess myPriestess = new Priestess(entityFactory);
 
         myPriestess.setHitPoints(5);
 
@@ -65,14 +65,14 @@ class PriestessTest
     }
 
     /**
-     * Test method for {@link Priestess#attack()}
+     * Test method for {@link Priestess#damage()}
      */
     @Test
     void testAttack()
     {
-        final Priestess myPriestess = new Priestess(new EntityFactory(null, "Mock"));
+        final Priestess myPriestess = new Priestess(entityFactory);
 
-        assertTrue(myPriestess.attack() == 1); //this this ok if im testing priestess^^
+        assertTrue(myPriestess.damage() == 1); //this this ok if im testing priestess^^
 
     }
 
@@ -82,7 +82,7 @@ class PriestessTest
     @Test
     void testToString()
     {
-        final Priestess myPriestess = new Priestess("P", new Vec2(), new EntityFactory());
+        final Priestess myPriestess = new Priestess("P", new Vec2(), entityFactory);
 
         assertEquals("Name: P {myCharacterType = Priestess, Hero status = true, Potions = '[]', Pillars = 0}", myPriestess.toString());
     }

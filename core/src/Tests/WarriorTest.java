@@ -11,13 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WarriorTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     /**
      * Test method for Warrior's default constructor.
      */
     @Test
     void testWarriorConstructor()
     {
-        final Warrior myWarrior = new Warrior(new EntityFactory());
+        final Warrior myWarrior = new Warrior(entityFactory);
 
         assertEquals("Warrior", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getCharacterType());
@@ -33,7 +34,7 @@ class WarriorTest
     @Test
     void testWarriorOLConstructor()
     {
-        final Warrior myWarrior = new Warrior("W", new Vec2(), new EntityFactory());
+        final Warrior myWarrior = new Warrior("W", new Vec2(), entityFactory);
 
         assertEquals("W", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getCharacterType());
@@ -49,7 +50,7 @@ class WarriorTest
     @Test
     void testDamage()
     {
-        final Warrior myWarrior= new Warrior(new EntityFactory(null, "Mock"));
+        final Warrior myWarrior= new Warrior(entityFactory);
 
         assertTrue(myWarrior.damage() == 1 || (myWarrior.damage() <=4 && myWarrior.damage() >= 1));
     }
@@ -60,7 +61,7 @@ class WarriorTest
     @Test
     void testSpecial()
     {
-        final Warrior myWarrior = new Warrior(new EntityFactory());
+        final Warrior myWarrior = new Warrior(entityFactory);
 
         int damage = myWarrior.special();
 

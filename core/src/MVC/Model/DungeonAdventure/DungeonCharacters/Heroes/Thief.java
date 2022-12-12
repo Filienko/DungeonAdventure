@@ -36,8 +36,6 @@ public class Thief extends Hero
     public int damage()
     {
         var damage = 0;
-        //when they enter a room they have chance to surprise attack - chance to start out hidden, if they are hidden,
-        //they get the chance to surprise attack. otherwise, they do a regular attack.
 
         var chance = Math.random();
         if (chance < 0.25)

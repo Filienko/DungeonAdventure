@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MonsterTest
 {
-    EntityFactory myEntityFactory = new EntityFactory(null, "Mock");
-    Hero myHero = new Warrior(myEntityFactory);
+    private final EntityFactory myEntityFactory = new EntityFactory(null, "Mock");
+    private final Hero myHero = new Warrior(myEntityFactory);
     /**
      * Test method for Monster's constructor (uses Ogre statistics).
      */

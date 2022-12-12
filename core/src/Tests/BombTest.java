@@ -10,10 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BombTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     @Test
     void testBombConstructor()
     {
-        Bomb myBomb = new Bomb(new EntityFactory());
+        Bomb myBomb = new Bomb(entityFactory);
 
         assertTrue(myBomb.getType().equals("bomb"));
     }
@@ -21,9 +22,9 @@ class BombTest
     @Test
     void testActivate()
     {
-        Bomb myBomb = new Bomb(new EntityFactory());
+        Bomb myBomb = new Bomb(entityFactory);
 
-        Thief myThief = new Thief(new EntityFactory());
+        Thief myThief = new Thief(entityFactory);
 
         int hpExpected = myThief.getHitPoints() / 2;
 
