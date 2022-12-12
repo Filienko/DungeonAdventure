@@ -5,6 +5,9 @@ import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Monster extends DungeonCharacter
 {
     /**
@@ -176,11 +179,52 @@ public class Monster extends DungeonCharacter
     public void setRoom(final Vec2 theRoom)
     {
         super.setRoom(theRoom);
-        myHomePosition.copy(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
-                (int) getMyPos().getMyX(),(int) getMyPos().getMyY()));
-        setMyPos(myHomePosition);
-        System.out.println(getMyPos().getMyX());
-        System.out.println(getMyPos().getMyY());
+        var allowedTiles = new ArrayList<Vec2>();
+        allowedTiles.add(new Vec2(9,9));
+        allowedTiles.add(new Vec2(9,1));
+        allowedTiles.add(new Vec2(1,5));
+        allowedTiles.add(new Vec2(17,5));
+
+        //Starting at the middle row
+        for (int i = 2; i <= 16; i++)
+        {
+            if(i==8||i==9||i==10) {continue;}
+            allowedTiles.add(new Vec2(i,5));
+        }
+
+        for (int i = 5; i <= 13; i++)
+        {
+            if(i==8||i==9||i==10) {continue;}
+            allowedTiles.add(new Vec2(i,4));
+            allowedTiles.add(new Vec2(i,6));
+        }
+
+        for (int i = 6; i <= 12; i++)
+        {
+            allowedTiles.add(new Vec2(i,2));
+            allowedTiles.add(new Vec2(i,3));
+            allowedTiles.add(new Vec2(i,7));
+            allowedTiles.add(new Vec2(i,8));
+        }
+
+        var monsterPos = allowedTiles.get(new Random().nextInt(0,allowedTiles.size()));
+        setMyPos(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
+                (int) monsterPos.getMyX(), (int) monsterPos.getMyY()));
+        myHomePosition.copy(getMyPos());
+    }
+
+    public void setRoom(final Vec2 theRoom, int theRatPos)
+    {
+        super.setRoom(theRoom);
+        var allowedTiles = new ArrayList<Vec2>();
+        allowedTiles.add(new Vec2(9,9));
+        allowedTiles.add(new Vec2(9,1));
+        allowedTiles.add(new Vec2(1,5));
+        allowedTiles.add(new Vec2(17,5));
+        var monsterPos = allowedTiles.get(theRatPos);
+        setMyPos(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
+                (int) monsterPos.getMyX(), (int) monsterPos.getMyY()));
+        myHomePosition.copy(getMyPos());
     }
 
     @Override

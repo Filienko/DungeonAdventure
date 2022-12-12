@@ -163,7 +163,6 @@ public class Room implements Cloneable
         if(theChance < 0.10)
         {
             setLava(true);
-            //addItem("lava"); //will not adding lava to list of items mess anything up? bc adding makes a random lava square
         }
     }
 
