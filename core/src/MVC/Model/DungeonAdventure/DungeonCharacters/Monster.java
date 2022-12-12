@@ -8,28 +8,27 @@ import MVC.Model.Physics.Vec2;
 public class Monster extends DungeonCharacter
 {
     /**
-     * Monster's default position.
-     */
-    private Vec2 myHomePosition;
-
-    /**
      * Hero status that tells that this DungeonCharacter is a Monster.
      */
     private final static boolean MY_HERO_STATUS = false;
-
 
     //TODO:Add variability to the monster's aggression
     private final static int MY_AGGRESSION_DISTANCE = 25;
 
     /**
-     * The specific Monster type.
+     * Monster's default position.
      */
-    private final String myMonsterType;
+    private final Vec2 myHomePosition;
 
     /**
      * The specific Monster type.
      */
-    private final Hero myHero;
+    private String myMonsterType; //should this be changed back to final?
+
+    /**
+     * The Monster's Hero opponent.
+     */
+    private Hero myHero; //should this be changed back to final?
 
     /**
      * Monster constructor that calls its parent constructor to initialize the Monster's name, character type, hero status, hit points,
@@ -48,9 +47,10 @@ public class Monster extends DungeonCharacter
     {
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
+
         myHomePosition = new Vec2();
-        myMonsterType = theMonsterType;
-        myHero = theHero;
+        setMonsterType(theMonsterType);
+        setHero(theHero);
         if(getMyEntityFactory().getAssets()!=null)
         {
             setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
@@ -66,7 +66,7 @@ public class Monster extends DungeonCharacter
             if (e.getRoom().equals(getRoom()))
             {
                 ((Door) e).decrementMonsterCounter();
-                if(((Door) e).getMonsterCounter()<=0){destroyPillar = false;}
+                if(((Door) e).getMonsterCounter()<0){ destroyPillar = false; }
             }
         }
 
@@ -151,9 +151,25 @@ public class Monster extends DungeonCharacter
         }
     }
 
+    /**
+     * This method retrieves the Monster's type.
+     * @return The Monster's type.
+     */
     public String getMonsterType()
     {
         return myMonsterType;
+    }
+
+    /**
+     * This method sets the Monster's type
+     * @param theMonsterType The Monster's new type.
+     */
+    private void setMonsterType(final String theMonsterType)
+    {
+        if (theMonsterType != null)
+        {
+            myMonsterType = theMonsterType;
+        }
     }
 
     @Override
@@ -175,5 +191,13 @@ public class Monster extends DungeonCharacter
                 ", Hero status = " + MY_HERO_STATUS +
                 ", myHitPoints = " + getHitPoints() +
                 '}';
+    }
+
+    private void setHero(final Hero theHero)
+    {
+        if (theHero != null)
+        {
+            myHero = theHero;
+        }
     }
 }

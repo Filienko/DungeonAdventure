@@ -9,22 +9,25 @@ import MVC.Model.DungeonItems.Room;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RoomTests
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     @Test
     void testRoomPopulate()
     {
         var room = new Room();
         room.populateTheRoom(true);
-        room.addItem(new Pillar(new EntityFactory()));
+        room.addItem(new Pillar(entityFactory));
         room.setE(true);
 
         room.populateTheRoom(true);
-        assertTrue(room.getItems().toString().contains("pit"));
+        assertTrue(room.getItems().toString().contains("lava"));
         assertTrue(room.getItems().toString().contains("Potion"));
         assertTrue(room.getItems().toString().contains("pillar"));
         assertTrue(room.getMonsters().toString().length()>3);
@@ -40,11 +43,11 @@ public class RoomTests
     }
 
     @Test
-    void testRoomPopulatePit()
+    void testRoomPopulateLava()
     {
         var room = new Room();
-        room.populatePit(0.09);
-        assertTrue(room.getItems().toString().contains("pit"));
+        room.populateLava(0.09);
+        assertTrue(room.getItems().toString().contains("lava")); //test no longer passes
     }
 
     @Test
@@ -78,12 +81,15 @@ public class RoomTests
         room.setS(true);
         room.setN(true);
         room.setLocation(new Vec2(1,2));
-        room.addItem(new AttackPotion(new EntityFactory()));
+        room.addItem(new AttackPotion(entityFactory));
         room.clearRoom();
-        room.addItem(new SpeedPotion(new EntityFactory()));
-        room.addItem(new HealingPotion(new EntityFactory()));
-        room.addItem(new AttackPotion(new EntityFactory()));
+        room.addItem(new SpeedPotion(entityFactory));
+        room.addItem(new HealingPotion(entityFactory));
+        room.addItem(new AttackPotion(entityFactory));
         room.setNumber(100);
+
+        room.setMonsters(Arrays.asList(entityFactory.generateMonster("ogre"),
+                new EntityFactory().generateMonster("gremlin")));
 
         assertTrue(room.getNumber()==100);
         assertTrue(room.getMonsters().toString().length()>1);

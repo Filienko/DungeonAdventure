@@ -11,13 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PriestessTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     /**
      * Test method for Priestess's default constructor.
      */
     @Test
     void testPriestessConstructor()
     {
-        final Priestess myPriestess = new Priestess(new EntityFactory());
+        final Priestess myPriestess = new Priestess(entityFactory);
 
         assertEquals("Priestess", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getCharacterType());
@@ -33,7 +34,7 @@ class PriestessTest
     @Test
     void testPriestessOLConstructor()
     {
-        final Priestess myPriestess = new Priestess("P", new Vec2(), new EntityFactory());
+        final Priestess myPriestess = new Priestess("P", new Vec2(), entityFactory);
 
         assertEquals("P", myPriestess.getName());
         assertEquals("Priestess", myPriestess.getCharacterType());
@@ -44,22 +45,35 @@ class PriestessTest
     }
 
     /**
-     * Test method for {@link Priestess#(Hero)}. //why is the link not working?
+     * Test method for {@link Priestess#special()}.
      */
     @Test
-    void testHealHero()
+    void testSpecial()
     {
-        final Priestess myPriestess1 = new Priestess(new EntityFactory());
-        final Priestess myPriestess2 = new Priestess(new EntityFactory());
+        final Priestess myPriestess = new Priestess(entityFactory);
 
-        int oldHealth = myPriestess1.getHitPoints();
-        int restoredHealth = myPriestess1.special();
+        myPriestess.setHitPoints(5);
 
-        assertTrue(myPriestess2.getHitPoints() > oldHealth);
-        assertEquals(myPriestess2.getHitPoints(), restoredHealth + oldHealth);
+        int oldHealth = myPriestess.getHitPoints();
+        int restoredHealth = myPriestess.special();
 
-        assertTrue(restoredHealth + oldHealth <= 75);
-        //this ensures that healHero does not heal over Priestess's maximum allowed hit points (75)
+        assertTrue(myPriestess.getHitPoints() > oldHealth);
+        assertEquals(myPriestess.getHitPoints(), restoredHealth + oldHealth);
+
+        assertTrue(restoredHealth + oldHealth <= 10);
+        //this ensures that healHero does not heal over Priestess's maximum allowed hit points (10)
+    }
+
+    /**
+     * Test method for {@link Priestess#damage()}
+     */
+    @Test
+    void testAttack()
+    {
+        final Priestess myPriestess = new Priestess(entityFactory);
+
+        assertTrue(myPriestess.damage() == 1); //this this ok if im testing priestess^^
+
     }
 
     /**
@@ -68,9 +82,8 @@ class PriestessTest
     @Test
     void testToString()
     {
-        final Priestess myPriestess = new Priestess("P", new Vec2(), new EntityFactory());
+        final Priestess myPriestess = new Priestess("P", new Vec2(), entityFactory);
 
-        assertEquals("Name: P {myCharacterType = Priestess, \n Hero status = true, \n Potions = [], " +
-                "\n Pillars = []}", myPriestess.toString());
+        assertEquals("Name: P {myCharacterType = Priestess, Hero status = true, Potions = '[]', Pillars = 0}", myPriestess.toString());
     }
 }

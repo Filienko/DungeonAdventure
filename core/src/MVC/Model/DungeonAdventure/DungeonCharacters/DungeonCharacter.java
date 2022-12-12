@@ -10,7 +10,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     /**
      * The specific character type.
      */
-    private final String myCharacterType;
+    private String myCharacterType; //should this be changed back to final?
 
     /**
      * Hero status that describes if the character is a Hero or a Monster.
@@ -20,7 +20,6 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     /**
      * The amount of damage the character can inflict.
      */
-
     private int myDamage;
 
     /**
@@ -38,10 +37,24 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     private Vec2 myVelocity;
 
-    private long initiatedFrame;
+    /**
+     * The frame where a Dungeon Character's invincibility ends, and they can start taking damage again.
+     */
     private long myInvincibilityEndFrame;
+
+    /**
+     * Tells if a Dungeon Character is invincible which determines if they can take damage.
+     */
     private boolean myInvincibility;
+
+    /**
+     * Tells if the Dungeon Character is being knocked back by an attack. -- ??
+     */
     private boolean myKnockback;
+
+    /**
+     * The frame where a Dungeon Character stops being knocked back. -- ??
+     */
     private long myKnockbackEndFrame;
 
     /**
@@ -71,21 +84,31 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                      final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
         super(theSize, thePos,theCharacterType, theEntityFactory);
-        myCharacterType = theCharacterType;
-        myHeroStatus = theHeroStatus;
-        myDamage = theDamage;
-        myHitPoints = theHitPoints;
-        myMaxSpeed = theMaxSpeed;
+        setCharacterType(theCharacterType);
+        setDamage(theDamage);
+        setHitPoints(theHitPoints);
+        setMaxSpeed(theMaxSpeed);
         setMyPos(thePos);
-        myVelocity = theVelocity;
-        initiatedFrame = 0;
+        setVelocity(theVelocity);
+        myHeroStatus = theHeroStatus; //could i add a private setter?
         myKnockback = false;
         myBurning = false;
     }
 
+    /**
+     * The DungeonCharacter's attack behavior.
+     * @return Amount of damage the character inflicts, expressed as an int.
+     */
     public abstract int attack();
+
+    /**
+     * The DungeonCharacter's movement behavior.
+     */
     public abstract void movement();
 
+    /**
+     * Information about the DungeonCharacter that is to be updated.
+     */
     @Override
     public void update()
     {
@@ -120,6 +143,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         }
     }
 
+    /**
+     * This method tells what must be done when a Dungeon Character dies. Its size is set to 0 and
+     * its animation is updated to a death animation.
+     */
     public void die()
     {
         setMySize(new Vec2(0, 0));
@@ -152,12 +179,24 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public String getCharacterType() { return myCharacterType; }
 
     /**
+     * This method sets the Dungeon Character's type.
+     * @param theCharacterType The specific type of character it is.
+     */
+    protected void setCharacterType(final String theCharacterType)
+    {
+        if (theCharacterType != null)
+        {
+            myCharacterType = theCharacterType;
+        }
+    }
+
+    /**
      * This method tells whether the character is a Hero.
      * @return The Character's hero status - True if the character is a Hero, false if it is a Monster.
      */
     public boolean getHeroStatus()
     {
-        return this.myHeroStatus;
+        return myHeroStatus;
     }
 
     /**
@@ -166,7 +205,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public int getHitPoints()
     {
-        return this.myHitPoints;
+        return myHitPoints;
     }
 
     /**
@@ -175,7 +214,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setHitPoints(final int theHitPoints)
     {
-        this.myHitPoints = theHitPoints;
+        if (theHitPoints >= 0 && theHitPoints <=10)
+        {
+            myHitPoints = theHitPoints;
+        }
     }
 
     /**
@@ -193,7 +235,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setDamage(final int theDamage)
     {
-        this.myDamage = theDamage;
+        if (theDamage >= 0 && theDamage <=10)
+        {
+            myDamage = theDamage;
+        }
     }
 
     /**
@@ -211,7 +256,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setMaxSpeed(final int theMaxSpeed)
     {
-        myMaxSpeed = theMaxSpeed;
+        if (theMaxSpeed <=10 && theMaxSpeed >= 1) //should max speed be 10?
+        {
+            myMaxSpeed = theMaxSpeed;
+        }
     }
 
     /**
@@ -230,7 +278,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setVelocity(final Vec2 theVelocity)
     {
-        myVelocity = theVelocity;
+        if (theVelocity != null)
+        {
+            myVelocity = theVelocity;
+        }
     }
 
     /**
@@ -240,47 +291,92 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setVelocity(final Vec2 theVelocity, final long theFramesLong)
     {
-        myVelocity = theVelocity;
-        setKnockback(true);
-        setKnockbackEndFrame(theFramesLong);
+        if (theVelocity != null && theFramesLong >= 0) //should these be checked in a single if?
+        {
+            myVelocity = theVelocity;
+            setKnockback(true); //should this line and next line be moved out of if statement
+            setKnockbackEndFrame(theFramesLong);
+        }
     }
 
+    /**
+     * This method tells if the character is being knocked back by an attack.
+     * @return True if the character is being knocked back, false if not.
+     */
     public boolean isKnockback()
     {
         return myKnockback;
     }
 
+    /**
+     * This method sets the character's knockback status.
+     * @param theKnockback True if the character is being knocked back, false if not.
+     */
     public void setKnockback(final boolean theKnockback)
     {
         myKnockback = theKnockback;
     }
 
+    /**
+     * This method retrieves the frame when a character will stop being knocked back.
+     * @return The frame where a character stops being knocked back.
+     */
     public long getKnockbackEndFrame()
     {
         return myKnockbackEndFrame;
     }
 
+    /**
+     * This method sets the final frame where a character gets knocked back
+     * @param theKnockbackEndFrame The final frame of a knock back.
+     */
     public void setKnockbackEndFrame(final long theKnockbackEndFrame)
     {
-        myKnockbackEndFrame = getCurrentFrame() + theKnockbackEndFrame;
+        if (theKnockbackEndFrame >= 0) { // >= 0 or > 0
+            myKnockbackEndFrame = getCurrentFrame() + theKnockbackEndFrame;
+        }
     }
 
+    /**
+     * Retrieves the Dungeon Character's invincible status which tells and if they can take damage.
+     * @return True if they are, false if they are not.
+     */
     public boolean isInvincibility()
     {
         return myInvincibility;
     }
 
+    /**
+     * This method sets the DungeonCharacter's invincibility status.
+     * @param theInvincibility True if they are invincible and cannot take damage, false if they are not
+     *                         invincible and can take damage.
+     */
     public void setInvincibility(final boolean theInvincibility)
     {
         myInvincibility = theInvincibility;
     }
 
+    /**
+     * This method sets the DungeonCharacter's invincibility status for a specific number of frames.
+     * @param theInvincibility True if they are invincible and cannot take damage, false if they are not
+     *                         invincible and can take damage.
+     * @param theFrames The number of frames the Dungeon Character is invincible for.
+     */
     public void setInvincibility(final boolean theInvincibility, final long theFrames)
     {
-        myInvincibility = theInvincibility;
-        myInvincibilityEndFrame = getCurrentFrame() + theFrames;
+
+        if(theFrames >=0)
+        {
+            myInvincibility = theInvincibility; //should this be moved out of if statement
+            myInvincibilityEndFrame = getCurrentFrame() + theFrames;
+        }
+
     }
 
+    /**
+     * This method retrieves the frame where a Dungeon Character's invincibility ends.
+     * @return The frame where a Dungeon Character stops being invincible.
+     */
     public long getInvincibilityEndFrame()
     {
         return myInvincibilityEndFrame;

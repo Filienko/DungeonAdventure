@@ -7,7 +7,7 @@ public class Exit extends Item
 {
     private static Exit myExit;
 
-    private Exit(final EntityFactory theEntityFactory) //double check that constructor should be private
+    private Exit(final EntityFactory theEntityFactory)
     {
         super("exit", theEntityFactory);
     }
@@ -21,7 +21,7 @@ public class Exit extends Item
         return myExit;
     }
 
-    public boolean checkFinishGame(final Hero theHero) //can this be the itemBehavior?
+    public boolean checkFinishGame(final Hero theHero)
     {
         return theHero.getPillars() == 4;
     }
@@ -30,7 +30,7 @@ public class Exit extends Item
     public void activate(final Hero theHero)
     {
         System.out.println(theHero.getPillars());
-        if(checkFinishGame(getMyEntityFactory().getHero()))
+        if(checkFinishGame(theHero)) //is getMyEntityFactory().getHero() instead of theHero ok?
         {
             destroy();
             theHero.setActiveStatus(false);

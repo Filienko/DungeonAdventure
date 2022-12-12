@@ -10,41 +10,50 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HealingPotionTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     @Test
     void testHPConstructor()
     {
-        HealingPotion myHP = new HealingPotion(new EntityFactory());
+        HealingPotion myHP = new HealingPotion(entityFactory);
 
-        assertEquals(myHP.getType(), "Healing Potion");
-        assertEquals(myHP.getStrength(), 15);
+        assertEquals(myHP.getType(), "healthPotion");
+        assertEquals(myHP.getStrength(), 2);
     }
 
     @Test
     void testHPOverloadedConstructor()
     {
-        HealingPotion myHP = new HealingPotion(30, new EntityFactory());
+        HealingPotion myHP = new HealingPotion(5,entityFactory);
 
-        assertEquals(myHP.getType(), "Healing Potion");
-        assertEquals(myHP.getStrength(), 30);
+        assertEquals(myHP.getType(), "healthPotion");
+        assertEquals(myHP.getStrength(), 5);
     }
 
     @Test
-    void testActivate()
+    void testActivateLessThan10()
     {
-        HealingPotion myHP = new HealingPotion(10, new EntityFactory());
+        HealingPotion myHP = new HealingPotion(10, entityFactory);
 
-        Priestess myPriestess = new Priestess(new EntityFactory());
+        Priestess myPriestess = new Priestess(entityFactory);
 
         int HP = myPriestess.getHitPoints();
 
         myHP.activate(myPriestess);
 
-        assertEquals(myPriestess.getHitPoints(), HP + 10);
+        assertEquals(myPriestess.getHitPoints(), Math.min(10,(myPriestess.getHitPoints() +  10)));
     }
 
     @Test
-    void testUpdate()
+    void testActivateMoreThan10()
     {
-        //write tests for update
+        HealingPotion myHP = new HealingPotion(12, entityFactory);
+
+        Priestess myPriestess = new Priestess(entityFactory);
+
+        int HP = myPriestess.getHitPoints();
+
+        myHP.activate(myPriestess);
+
+        assertEquals(myPriestess.getHitPoints(), Math.min(10,(myPriestess.getHitPoints() +  12)));
     }
 }

@@ -118,12 +118,12 @@ public class Room implements Cloneable
         populatePotions(random,1);
         if(theTest)
         {
-            populatePit(0.09);
+            populateLava(0.09);
             populatePotions(new Random(), 1);
         }
         else
         {
-            populatePit(random.nextDouble());
+            populateLava(random.nextDouble());
         }
         populateMonsters(1);
     }
@@ -158,11 +158,12 @@ public class Room implements Cloneable
         }
     }
 
-    public void populatePit(double theChance)
+    public void populateLava(double theChance)
     {
         if(theChance < 0.10)
         {
-            addItem("pit");
+            setLava(true);
+            //addItem("lava"); //will not adding lava to list of items mess anything up? bc adding makes a random lava square
         }
     }
 
@@ -173,6 +174,8 @@ public class Room implements Cloneable
             addItem("bomb");
         }
     }
+
+
 
     public void populatePotions(final Random theRandom, int theNumber)
     {

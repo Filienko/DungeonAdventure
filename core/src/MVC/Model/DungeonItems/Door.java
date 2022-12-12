@@ -13,24 +13,33 @@ public class Door extends Entity
     public Door(final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64), new Vec2(),"Door", theEntityFactory);
-        myMonsterCounter = 4;
+        setMonsterCounter(4);
     }
 
     public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
-        myMonsterCounter = theMonsterCounter;
+        setMonsterCounter(theMonsterCounter);
+
     }
 
     public Door(final Vec2 theRoom,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64),theLocation,"Door", theEntityFactory);
-        myMonsterCounter = theMonsterCounter;
+        setMonsterCounter(theMonsterCounter);
     }
 
     public int getMonsterCounter()
     {
         return myMonsterCounter;
+    }
+
+    public void setMonsterCounter(final int theMonsterCounter)
+    {
+        if (theMonsterCounter >= 0)
+        {
+            myMonsterCounter = theMonsterCounter;
+        }
     }
 
     public void decrementMonsterCounter()
