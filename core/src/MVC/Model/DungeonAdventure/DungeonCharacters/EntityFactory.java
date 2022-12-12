@@ -91,7 +91,16 @@ public class EntityFactory
             monsters.delete(0, monsters.indexOf(",")+1);
             monster = monster.substring(0,monster.indexOf(","));
             var e = generateMonsters(monster);
-            e.setRoom(location);
+
+            if(e.getMonsterType().contentEquals("rat"))
+            {
+                e.setRoom(location,monsterCounter);
+            }
+            else
+            {
+                e.setRoom(location);
+            }
+
             myEntitiesToAdd.add(e);
             monsterCounter++;
         }
