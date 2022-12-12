@@ -1,6 +1,5 @@
 package Tests;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.Physics.Vec2;
@@ -10,14 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ThiefTest
 {
-
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     /**
      * Test method for Thief's default constructor.
      */
     @Test
     void testThiefConstructor()
     {
-        final Thief myThief = new Thief(new EntityFactory());
+        final Thief myThief = new Thief(entityFactory);
 
         assertEquals("Thief", myThief.getName());
         assertEquals("Thief", myThief.getCharacterType());
@@ -25,7 +24,6 @@ class ThiefTest
         assertEquals(10, myThief.getHitPoints());
         assertEquals(5, myThief.getMaxSpeed());
         assertEquals(1, myThief.getDamage());
-        assertFalse(myThief.getHiddenStatus());
     }
 
     /**
@@ -34,7 +32,7 @@ class ThiefTest
     @Test
     void testThiefOLConstructor()
     {
-        final Thief myThief = new Thief("T", new Vec2(), new EntityFactory());
+        final Thief myThief = new Thief("T", new Vec2(), entityFactory);
 
         assertEquals("T", myThief.getName());
         assertEquals("Thief", myThief.getCharacterType());
@@ -45,48 +43,25 @@ class ThiefTest
     }
 
     /**
-     * Test method for {@link Thief#surpriseAttack(DungeonCharacter)} //why isnt link working?
+     * Test method for {@link Thief#damage()}
      */
     @Test
-    void testAttack()
+    void testDamage()
     {
-        //finish attack() method and then write these tests
+        final Thief myThief = new Thief(entityFactory);
+
+        assertTrue(myThief.damage() == 1 || myThief.damage() == 6);
 
     }
 
     /**
-     * Test method for {@link Thief#special(DungeonCharacter)}
+     * Test method for {@link Thief#special()}
      */
     @Test
     void testSpecial()
     {
-        //finish surpriseAttack() method and then write these tests
-    }
+        final Thief myThief = new Thief(entityFactory);
 
-    /**
-     * Test method for {@link Thief#getHiddenStatus()}
-     */
-    @Test
-    void testGetHiddenStatus()
-    {
-        final Thief myThief = new Thief(new EntityFactory());
-
-        assertFalse(myThief.getHiddenStatus());
-    }
-
-    /**
-     * Test method for {@link Thief#setHiddenStatus(boolean)}
-     */
-    @Test
-    void testSetMyHiddenStatus()
-    {
-        final Thief myThief = new Thief(new EntityFactory());
-
-        assertFalse(myThief.getHiddenStatus());
-
-        myThief.setHiddenStatus(true);
-
-        assertTrue(myThief.getHiddenStatus());
-
+        assertEquals(myThief.getDamage() + 5, myThief.special());
     }
 }

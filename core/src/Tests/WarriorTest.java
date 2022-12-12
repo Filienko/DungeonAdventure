@@ -2,7 +2,6 @@ package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -12,13 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WarriorTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     /**
      * Test method for Warrior's default constructor.
      */
     @Test
     void testWarriorConstructor()
     {
-        final Warrior myWarrior = new Warrior(new EntityFactory());
+        final Warrior myWarrior = new Warrior(entityFactory);
 
         assertEquals("Warrior", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getCharacterType());
@@ -34,7 +34,7 @@ class WarriorTest
     @Test
     void testWarriorOLConstructor()
     {
-        final Warrior myWarrior = new Warrior("W", new Vec2(), new EntityFactory());
+        final Warrior myWarrior = new Warrior("W", new Vec2(), entityFactory);
 
         assertEquals("W", myWarrior.getName());
         assertEquals("Warrior", myWarrior.getCharacterType());
@@ -45,19 +45,14 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#(DungeonCharacter, Vec2)} //why isnt link working?
+     * Test method for {@link Warrior#damage()}
      */
     @Test
-    void testAttack()
+    void testDamage()
     {
-        final Warrior myWarrior1 = new Warrior(new EntityFactory());
-        final Warrior myWarrior2 = new Warrior(new EntityFactory());
+        final Warrior myWarrior= new Warrior(entityFactory);
 
-        int oldHealth = myWarrior1.getHitPoints();
-        int damage = myWarrior1.attack();
-
-        assertTrue(myWarrior2.getHitPoints() < oldHealth);
-        assertEquals(myWarrior2.getHitPoints(), oldHealth - damage);
+        assertTrue(myWarrior.damage() == 1 || (myWarrior.damage() <=4 && myWarrior.damage() >= 1));
     }
 
     /**
@@ -66,10 +61,10 @@ class WarriorTest
     @Test
     void testSpecial()
     {
-        final Warrior myWarrior = new Warrior(new EntityFactory());
+        final Warrior myWarrior = new Warrior(entityFactory);
 
         int damage = myWarrior.special();
 
-        assertTrue(damage < 4 && damage > 1);
+        assertTrue(damage < 4 && damage >= 1);
     }
 }

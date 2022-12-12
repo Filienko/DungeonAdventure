@@ -5,21 +5,20 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class Pillar extends Item
 {
-    private final String myName;
+    private String myName; //should this be changed back to final?
     private boolean myBroken;
 
     public Pillar(final EntityFactory theEntityFactory)
     {
         super("pillar", theEntityFactory);
-        myName = "pillar";
+        setName("pillar");
         myBroken = false;
     }
 
-
     public Pillar(final String theName, final EntityFactory theEntityFactory)
     {
-        super("pillar", theEntityFactory);
-        myName = theName;
+        super(theName, theEntityFactory);
+        setName(theName);
         myBroken = false;
     }
 
@@ -38,9 +37,18 @@ public class Pillar extends Item
 
     public boolean isBroken() { return myBroken; }
 
+    private void setName(final String theName)
+    {
+        if (theName != null)
+        {
+            myName = theName;
+        }
+    }
+
     @Override
     public void activate(final Hero theHero)
     {
-        new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero());
+        //new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero()); //why?
+        new HealingPotion(1,getMyEntityFactory()).activate(theHero);
     }
 }

@@ -10,63 +10,69 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DoorTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     @Test
     void testDoorConstructor()
     {
-        Door myDoor = new Door(new EntityFactory());
+        Door myDoor = new Door(entityFactory);
 
-        assertTrue(myDoor.getMyPos().equals(new Vec2(0,0)));
+        assertEquals(myDoor.getMonsterCounter(), 4);
     }
 
     @Test
     void testDoorOL1Constructor()
     {
-        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
+        Door myDoor = new Door(2, new Vec2(5,5), entityFactory);
 
         assertTrue(myDoor.getMyPos().equals(new Vec2(5,5)));
+        assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
     @Test
     void testDoorOL2Constructor()
     {
-        Door myDoor = new Door(new Vec2(),2, new Vec2(3,4), new EntityFactory());
+        Door myDoor = new Door(new Vec2(),2, new Vec2(3,4), entityFactory);
 
         assertTrue(myDoor.getMyPos().equals(new Vec2(3,4)));
+        assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
     @Test
-    void testgetMyPos()
+    void testGetMonsterCounter()
     {
-        Door myDoor = new Door(3, new Vec2(5,8), new EntityFactory());
-        assertTrue(myDoor.getMyPos().equals(new Vec2(5,8)));
+        Door myDoor = new Door(2, new Vec2(5,5), entityFactory);
+
+        myDoor.getMonsterCounter();
+
+        assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
     @Test
-    void testSetMyLocation()
+    void testSetMonsterCounter()
     {
-        Door myDoor = new Door(new EntityFactory());
-        assertTrue(myDoor.getMyPos().equals(new Vec2(0,0)));
+        Door myDoor = new Door(2, new Vec2(5,5), entityFactory);
 
-        myDoor.setMyPos(new Vec2(20,25));
+        myDoor.setMonsterCounter(3);
 
-        assertTrue(myDoor.getMyPos().equals(new Vec2(20,25)));
+        assertEquals(myDoor.getMonsterCounter(), 3);
     }
 
     @Test
     void testDecrementMonsterCounter()
     {
-        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory());
+        Door myDoor = new Door(2, new Vec2(5,5), entityFactory);
 
         myDoor.decrementMonsterCounter();
 
         assertTrue(myDoor.getMonsterCounter()==1);
-        //can I add a getMonsterCounter() method to check if this test passes
     }
+
 
     @Test
     void testUpdate()
     {
-        Door myDoor = new Door(2, new Vec2(5,5), new EntityFactory(new Assets(),"Mock"));
+        Door myDoor = new Door(2, new Vec2(5,5), entityFactory);
+
         assertTrue(myDoor.getActiveStatus());
         myDoor.decrementMonsterCounter();
         assertTrue(myDoor.getActiveStatus());
@@ -76,5 +82,4 @@ class DoorTest
         myDoor.update();
         assertFalse(myDoor.getActiveStatus());
     }
-
 }

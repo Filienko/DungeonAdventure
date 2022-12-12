@@ -300,8 +300,8 @@ public class EntityFactory
             case "speedPotion" -> {
                 return new SpeedPotion(this);
             }
-            case "pit" -> {
-                return new Pit(this);
+            case "lava" -> {
+                return new Lava(this);
             }
             case "pillar"-> {
                 return new Pillar(theItem, this);
@@ -316,7 +316,7 @@ public class EntityFactory
         return new HealingPotion(this);
     }
 
-    public Pit generatePit() { return new Pit(this); }
+    public Lava generateLava() { return new Lava(this); }
 
     public Hero generateHero(final String type1)
     {
@@ -373,7 +373,7 @@ public class EntityFactory
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation", this)); //added new EntityFactory params here
+        arr.add(new Pillar("Encapsulation", this));
         arr.add(new Pillar("Inheritance", this));
         arr.add(new Pillar("Abstraction", this));
         arr.add(new Pillar("Polymorphism", this));

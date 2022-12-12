@@ -20,15 +20,17 @@ public abstract class Entity
 
     protected Entity(final Vec2 theSize, final Vec2 thePos, final String theType, final EntityFactory theEntityFactory)
     {
-        myEntityFactory = theEntityFactory; //things that inherit Entity should also keep track of what Entity Factory spawns it
-        mySize = theSize;
-        myPos = thePos;
-        myPreviousPos = thePos;
-        myType = theType;
-        myRotation = 0;
-        myActiveStatus = true;
-        myCurrentFrame = 0;
-        myRoom = new Vec2();
+        setMyEntityFactory(theEntityFactory); //things that inherit Entity should also keep track of what Entity Factory spawns it
+        setMySize(theSize);
+        setMyPos(thePos);
+        setMyPreviousPos(thePos);
+        if (theType != null && theType.length() > 1) //should i simplify this w a method?
+        {
+            myType = theType;
+        }
+        setRotation(0);
+        setActiveStatus(true);
+        setCurrentFrame(0);
     }
 
     public void update() {};
@@ -46,12 +48,19 @@ public abstract class Entity
 
     public void setMyPos(Vec2 thePos)
     {
-        myPos.copy(thePos);
+        if (thePos != null)  //can myPos ever be negative?
+        {
+            //myPos.copy(thePos);
+            myPos = thePos;
+        }
     }
 
     public void updateMyPos(final Vec2 theUpdate)
     {
-        myPos = myPos.add(theUpdate);
+        if (theUpdate != null)
+        {
+            myPos = myPos.add(theUpdate);
+        }
     }
 
     public Vec2 getMySize()
@@ -59,16 +68,24 @@ public abstract class Entity
         return mySize;
     }
 
-    public void setMySize(final Vec2 theSize) { mySize = theSize; }
+    public void setMySize(final Vec2 theSize) {
+        if (theSize != null)
+        {
+            mySize = theSize;
+        }
+    }
 
     public Vec2 getMyPreviousPos()
     {
         return myPreviousPos;
     }
 
-    public void setMyPreviousPos(final Vec2 myPreviousPos)
+    public void setMyPreviousPos(final Vec2 thePreviousPos)
     {
-        this.myPreviousPos = myPreviousPos;
+        if (thePreviousPos != null)
+        {
+            myPreviousPos = thePreviousPos;
+        }
     }
 
     public boolean isMyEntityAnimated()
@@ -86,6 +103,7 @@ public abstract class Entity
         if (theAnimation != null)
         {
             myAnimation = new Animation(theAnimation);
+            // why not myAnimation = theAnimation; ?
         }
     }
 
@@ -99,7 +117,12 @@ public abstract class Entity
 
     public int getRotation() { return myRotation; }
 
-    public void setRotation(int scale) { myRotation = scale; }
+    public void setRotation(int theScale) {
+        if (theScale >= 0) // can scale be negative?
+        {
+            myRotation = theScale;
+        }
+    }
 
     public void setActiveStatus(final boolean theActiveStatus)
     {
@@ -118,12 +141,23 @@ public abstract class Entity
 
     public void setCurrentFrame(final long theCurrentFrame)
     {
-        myCurrentFrame = theCurrentFrame;
+        if (theCurrentFrame >= 0)
+        {
+            myCurrentFrame = theCurrentFrame;
+        }
     }
 
     public EntityFactory getMyEntityFactory()
     {
         return myEntityFactory;
+    }
+
+    protected void setMyEntityFactory(final EntityFactory theEntityFactory) //should this be less visible?
+    {
+        if (theEntityFactory != null)
+        {
+            myEntityFactory = theEntityFactory;
+        }
     }
 
     public Vec2 getRoom()
@@ -133,6 +167,9 @@ public abstract class Entity
 
     public void setRoom(final Vec2 theRoom)
     {
-        myRoom.copy(theRoom);
+        if (theRoom != null) {
+            //myRoom.copy(theRoom);
+            myRoom = theRoom;
+        }
     }
 }

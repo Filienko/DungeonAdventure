@@ -10,49 +10,45 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AttackPotionTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
+
     @Test
     void testAPConstructor()
     {
-        AttackPotion myAP = new AttackPotion(new EntityFactory());
+        AttackPotion myAP = new AttackPotion(entityFactory);
 
-        assertEquals(myAP.getStrength(), 5);
+        assertEquals(myAP.getStrength(), 1);
     }
 
     @Test
     void testAPOverloadedConstructor()
     {
-        AttackPotion myAP = new AttackPotion(25, new EntityFactory());
+        AttackPotion myAP = new AttackPotion(4, entityFactory);
 
-        assertEquals(myAP.getStrength(), 25);
+        assertEquals(myAP.getStrength(), 4);
     }
 
     @Test
     void testActivate()
     {
-        AttackPotion myAP = new AttackPotion(10, new EntityFactory());
+        AttackPotion myAP = new AttackPotion(3, entityFactory);
 
-        Warrior myWarrior = new Warrior(new EntityFactory());
+        Warrior myWarrior = new Warrior(entityFactory);
 
         int damage = myWarrior.getDamage();
 
         myAP.activate(myWarrior);
 
-        assertEquals(myWarrior.getDamage(), damage + 10);
+        assertEquals(myWarrior.getDamage(), damage + 3);
 
     }
 
     @Test
     void testGetType()
     {
-        AttackPotion myAP = new AttackPotion(new EntityFactory());
+        AttackPotion myAP = new AttackPotion(entityFactory);
 
-        assertEquals(myAP.getType(), "Attack Potion");
+        assertEquals(myAP.getType(), "attackPotion");
     }
 
-
-    @Test
-    void testUpdate()
-    {
-        //write tests for update
-    }
 }

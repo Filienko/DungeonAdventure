@@ -8,6 +8,6 @@ public class Wall extends Entity
 {
     public Wall(final Vec2 thePos, final Vec2 theBoundingBox)
     {
-        super(theBoundingBox, thePos, "Wall", new EntityFactory()); //added new EntityFactory param
+        super(theBoundingBox, thePos, "Wall", new EntityFactory());
     }
 }

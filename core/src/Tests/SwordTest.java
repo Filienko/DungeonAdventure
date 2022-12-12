@@ -10,38 +10,67 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SwordTest
 {
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     @Test
     void testGetInstance()
     {
-        Sword mySword = Sword.getInstance(new EntityFactory(), new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(entityFactory, new Warrior(entityFactory));
 
-        assertTrue(mySword.getMySize().equals(new Vec2()));
-        assertEquals(0, mySword.getMyLifeSpan());
+        assertEquals(15, mySword.getMyLifeSpan());
+        assertEquals(0, mySword.getCurrentFrame());
     }
 
     @Test
-    void update()
+    void testUpdate()
     {
-        //review update and then test it
+        Sword mySword = Sword.getInstance(entityFactory, new Warrior(entityFactory));
+
+        //no way to retrieve sword's hero, add getter for testing?
+        //assertFalse(entityFactory.getHero().getActiveStatus());
+
+        mySword.setCurrentFrame(mySword.getMyLifeSpan() + 1);
+
+        mySword.update();
+
+        //assertTrue(entityFactory.getHero().getAttackStatus());
+        assertFalse(mySword.getActiveStatus());
+        assertFalse(entityFactory.getEntities().contains("Sword"));
+
+        long frame = mySword.getCurrentFrame();
+        mySword.setCurrentFrame(mySword.getMyLifeSpan() - 1);
+
+        mySword.update(); //calls movement, collide - write tests
+
+        assertEquals(mySword.getCurrentFrame(), frame + 1);
+
     }
 
     @Test
-    void getBoundingBox()
+    void getMyLifeSpan()
     {
-        Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(entityFactory,new Warrior(entityFactory));
 
-        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
+        assertEquals(15, mySword.getMyLifeSpan());
     }
 
     @Test
-    void setBoundingBox()
+    void testDestroy()
     {
-        Sword mySword = Sword.getInstance(new EntityFactory(),new Warrior(new EntityFactory()));
+        Sword mySword = Sword.getInstance(entityFactory, new Warrior(entityFactory));
 
-        assertTrue(mySword.getMySize().equals(new Vec2(46,46)));
+        mySword.destroy();
 
-        mySword.setMySize(new Vec2(10,10));
-
-        assertTrue(mySword.getMySize().equals(new Vec2(10,10)));
+        assertFalse(mySword.getActiveStatus());
     }
+
+    @Test
+    void testCollide()
+    {
+        Sword mySword = Sword.getInstance(entityFactory, new Warrior(entityFactory));
+
+        mySword.collide(); //myEntityFactory is null, initialized in constructor
+
+        //write collide test
+    }
+
 }

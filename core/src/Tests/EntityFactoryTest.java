@@ -7,8 +7,10 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.DungeonItems.Items.HealingPotion;
-import MVC.Model.DungeonItems.Items.Pit;
+import MVC.Model.DungeonItems.Items.Lava;
 import MVC.Model.DungeonItems.Room;
+import MVC.View.Assets;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class EntityFactoryTest
 {
-    EntityFactory entityFactory = new EntityFactory(null, "Mock");
+    private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
 
     @Test
     void testUpdate()
@@ -42,9 +44,9 @@ public class EntityFactoryTest
     void testGenerateRoomEntities()
     {
         var expectedList = new ArrayList<Entity>();
-        expectedList.add(new Pit(new EntityFactory())); //added new EntityFactory()
-        expectedList.add(new HealingPotion(new EntityFactory()));
-        expectedList.add(new AttackPotion(new EntityFactory()));
+        expectedList.add(new Lava(entityFactory));
+        expectedList.add(new HealingPotion(entityFactory));
+        expectedList.add(new AttackPotion(entityFactory));
 
         expectedList.add(entityFactory.generateOgre());
         expectedList.add(entityFactory.generateRats());
@@ -68,22 +70,22 @@ public class EntityFactoryTest
     @Test
     void testGenerateOgre()
     {
-        assertEquals("Ogre",entityFactory.generateOgre());
+        assertEquals("ogre",entityFactory.generateOgre().getMonsterType());
     }
     @Test
     void testGenerateGremlin()
     {
-        assertEquals("Gremlin",entityFactory.generateGremlin());
+        assertEquals("gremlin",entityFactory.generateGremlin().getMonsterType());
     }
     @Test
     void testGenerateKnight()
     {
-        assertEquals("Knight",entityFactory.generateKnight());
+        assertEquals("knight",entityFactory.generateKnight().getMonsterType());
     }
     @Test
     void testGenerateRats()
     {
-        assertEquals("Swarm of Rats",entityFactory.generateRats());
+        assertEquals("rat",entityFactory.generateRats().getMonsterType());
     }
     @Test
     void testGenerateMonsters()
@@ -97,19 +99,19 @@ public class EntityFactoryTest
     @Test
     void testAddItem()
     {
-        assertEquals("Pit",entityFactory.generateItems("Pit").getType());
+        assertEquals("speedPotion",entityFactory.generateItems("speedPotion").getType());
     }
 
     @Test
-    void testGeneratePit()
+    void testGenerateLava()
     {
-        assertEquals("Pit",entityFactory.generatePit().getType());
+        assertEquals("lava",entityFactory.generateLava().getType());
     }
 
     @Test
     void testGenerateHero()
     {
-        assertEquals("Thief",entityFactory.generateHero("Warrior").getType());
+        assertEquals("Warrior",entityFactory.generateHero("Warrior").getType());
         assertEquals("Thief",entityFactory.generateHero("Thief").getType());
         assertEquals("Thief",entityFactory.generateHero("Priestess").getType());
     }
@@ -142,8 +144,7 @@ public class EntityFactoryTest
     @Test
     void testGenerateSword()
     {
-        //assertEquals("Sword",entityFactory.generateSword(new Thief()).getType());
-        assertEquals("Sword",entityFactory.generateSword());
+        assertEquals("Sword",entityFactory.generateSword().getType());
     }
 
 }
