@@ -14,13 +14,6 @@ public class Lava extends Item
         setDamage(2);
     }
 
-    public Lava(final Vec2 theLocation, final EntityFactory theEntityFactory) //this constructor is never used?
-    {
-        super("lava", theEntityFactory);
-        setDamage(2);
-        setMyPos(theLocation);
-    }
-
     @Override
     public void activate(final Hero theHero)
     {

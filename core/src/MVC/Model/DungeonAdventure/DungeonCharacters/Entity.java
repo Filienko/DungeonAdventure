@@ -20,20 +20,18 @@ public abstract class Entity
 
     protected Entity(final Vec2 theSize, final Vec2 thePos, final String theType, final EntityFactory theEntityFactory)
     {
-        setMyEntityFactory(theEntityFactory); //things that inherit Entity should also keep track of what Entity Factory spawns it
+        setMyEntityFactory(theEntityFactory);
+        //things that inherit from Entity should also keep track of what Entity Factory spawns it
         setMySize(theSize);
         setMyPos(thePos);
         setMyPreviousPos(thePos);
-        if (theType != null && theType.length() > 1) //should i simplify this w a method?
-        {
-            myType = theType;
-        }
+        setType(theType);
         setRotation(0);
         setActiveStatus(true);
         setCurrentFrame(0);
     }
 
-    public void update() {};
+    public void update() {}
 
     public void destroy()
     {
@@ -107,7 +105,13 @@ public abstract class Entity
         }
     }
 
-    public void setType(final String theType)   { myType = theType; }
+    public void setType(final String theType)
+    {
+        if (theType != null && theType.length() > 1)
+        {
+            myType = theType;
+        }
+    }
     public String getType()                     { return myType; }
 
     protected void incrementCurrentFrame() //?
@@ -118,7 +122,7 @@ public abstract class Entity
     public int getRotation() { return myRotation; }
 
     public void setRotation(int theScale) {
-        if (theScale >= 0) // can scale be negative?
+        if (theScale >= 0)
         {
             myRotation = theScale;
         }

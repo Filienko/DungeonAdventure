@@ -45,10 +45,11 @@ public abstract class Hero extends DungeonCharacter
     private boolean myAttackStatus;
     private long myInitiatedFrame;
     private Vec2 myFacing;
+    private boolean myUsingSpecial;
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
-     * minimum/maximum damage it can inflict, max speed, position, velocity, Potions in inventory, and Pillars in
-     * inventory.
+     * damage it can inflict, max speed, position, velocity, Potions and Pillars in inventory, booleans that tell which
+     * direction it is moving in, and a vector that describes which direction it is facing.
      *
      * @param theName The Hero's name, determined by the user.
      * @param theCharacterType The specific type of Hero it is.
@@ -66,12 +67,12 @@ public abstract class Hero extends DungeonCharacter
 
         setName(theName);
         setCharacterType(theCharacterType);
-        myPotions = new ArrayList<>();
-        myPillars = 0;
-        myUpStatus = false;
-        myDownStatus = false;
-        myLeftStatus = false;
-        myRightStatus = false;
+        setPotions(new ArrayList<>());
+        setPillars(0);
+        setUp(false);
+        setDown(false);
+        setLeft(false);
+        setRight(false);
         myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
     }
@@ -182,12 +183,33 @@ public abstract class Hero extends DungeonCharacter
     }
 
     /**
+     * This method sets the Hero's special skill usage status. If the Hero
+     * is using their special skill, this will be set to True. Else, it will
+     * be set to False.
+     * @param theSpecialStatus The Hero's special skill usage status
+     */
+    public void setUsingSpecial(final boolean theSpecialStatus)
+    {
+        myUsingSpecial = theSpecialStatus;
+    }
+
+    /**
+     * This method retrieves the Hero's special skill usage status. If the Hero
+     * is using their special skill, this will be True. Else, it will be False.
+     * @return The Hero's special skill usage status
+     */
+    public boolean getUsingSpecial()
+    {
+        return myUsingSpecial;
+    }
+
+    /**
      * This method sets the Potions in the Hero's inventory.
      * @param thePotions Potions to be put into inventory.
      */
     public void setPotions(final List<Item> thePotions)
     {
-        if (thePotions != null && thePotions.size() > 0)
+        if (thePotions != null && thePotions.size() >= 0)
         {
             myPotions = thePotions;
         }
@@ -229,6 +251,18 @@ public abstract class Hero extends DungeonCharacter
     public int getPillars()
     {
         return myPillars;
+    }
+
+    /**
+     * This method sets the Pillars in the Hero's inventory.
+     * @param thePillars Number of pillars to be added to inventory.
+     */
+    public void setPillars(final int thePillars)
+    {
+        if(thePillars >= 0)
+        {
+            myPillars = thePillars;
+        }
     }
 
     /**
