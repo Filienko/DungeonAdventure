@@ -81,6 +81,7 @@ public class EntityFactory
             }
             i.setRoom(location);
             i.setMyPos(pixelPos);
+            i.setMyPreviousPos(pixelPos);
             myEntitiesToAdd.add(i);
         }
 
@@ -213,6 +214,7 @@ public class EntityFactory
         door.setRoom(theLocation);
         door.setRotation(theRotation);
         myEntitiesToAdd.add(door);
+
     }
 
     private void generateWall(final Vec2 theLocation, final int tileX, final int tileY, final int theRotation)

@@ -4,6 +4,7 @@ import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
 import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonItems.Dungeon;
+import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.DungeonItems.Room;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
@@ -11,17 +12,18 @@ import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
 
 public class SceneGame extends Scene
 {
-    private Hero myHero;
+    private final Hero myHero;
     private boolean myDrawTextures;
     private boolean myDrawBoundingBoxes;
     private boolean myMuted;
-    private ArrayList<String> myRenderOrder;
+    private final ArrayList<String> myRenderOrder;
 
     public SceneGame(GameEngine game, String hero)
     {
@@ -67,14 +69,17 @@ public class SceneGame extends Scene
         myEntityFactory.generateGameEntities(testDungeon);
 
 
-//        Room testRoom = new Room(1, new Vec2(0, 0));
-//        testRoom.setLava(true);
-//        testRoom.setN(false);
-//        testRoom.setW(false);
-//        testRoom.setE(true);
-//        testRoom.setS(true);
-//        testRoom.populateMonsters(1);
-        //myEntityFactory.generateRoomEntities(testRoom);
+        /*Room testRoom = new Room(1, new Vec2(0, 0));
+        testRoom.addItem("pillar");
+        testRoom.setLava(false);
+        testRoom.setN(false);
+        testRoom.setW(false);
+        testRoom.setE(true);
+        testRoom.setS(true);
+        //testRoom.populateMonsters(1);
+        myEntityFactory.generateRoomEntities(testRoom);
+
+         */
 
 
 
@@ -83,7 +88,10 @@ public class SceneGame extends Scene
 
     protected void onEnd()
     {
-        // serialize
+        // TODO: serialize
+
+        myRenderer.getCamera().position.x = 608;
+        myRenderer.getCamera().position.y = 352;
         myGame.setCurrentScene("Menu", null, true);
     }
 
@@ -91,7 +99,7 @@ public class SceneGame extends Scene
     {
         if (action.getType().equals("START"))
         {
-                 if (action.getName().equals("PAUSE"))              { setPaused(); }
+                 if (action.getName().equals("PAUSE"))              { if (!Exit.isExited()) { setPaused(); }}
             else if (action.getName().equals("QUIT"))               { if (!myPaused) {setPaused(); } else { onEnd(); }}
             else if (action.getName().equals("UP"))                 { myHero.setUp(true); }
             else if (action.getName().equals("DOWN"))               { myHero.setDown(true); }
@@ -113,7 +121,8 @@ public class SceneGame extends Scene
 
     public void update()
     {
-        if (!myPaused)
+
+        if (!myPaused && !Exit.isExited())
         {
             myEntityFactory.update();
             if (myHero.getHitPoints() > 0)
@@ -207,7 +216,12 @@ public class SceneGame extends Scene
                 {
                     renderBoundingBoxes(e);
                 }
-                if (e.getType().equals("Hero") || e.getType().equals("Monster"))
+                if (e.getType().equals("Hero"))
+                {
+                    renderHealthBars(e);
+                    renderAura((Hero) e);
+                }
+                else if ( e.getType().equals("Monster"))
                 {
                     renderHealthBars(e);
                 }
@@ -221,6 +235,10 @@ public class SceneGame extends Scene
         if (myPaused)
         {
             renderPaused();
+        }
+        else if (Exit.isExited())
+        {
+            renderEndScreen();
         }
     }
 
@@ -249,7 +267,30 @@ public class SceneGame extends Scene
             double angle = Math.atan2(rat.getVelocity().getMyY(), rat.getVelocity().getMyX()) * 57.296 + 90;
             sprite.setRotation((float) angle);
         }
-        else if (e.getType().equals("Monster") || e.getType().equals("Hero"))
+        else if (e.getType().equals("Monster"))
+        {
+            if (((DungeonCharacter) e).isKnockback())
+            {
+                float v = ((DungeonCharacter) e).getVelocity().getMagnitudeSquared();
+                if (v == 0)
+                {
+                    sprite.setColor(0.58f, 0f, 0.83f, 0.5f);
+                }
+                else if (v >= 895 && v <= 905)
+                {
+                    sprite.setColor(1f, 0f, 0f, 0.5f);
+                }
+            }
+            else if (((DungeonCharacter) e).isInvincibility())
+            {
+                sprite.setColor(1, 1, 1, 0.5f);
+            }
+            else
+            {
+                sprite.setColor(1, 1, 1, 1);
+            }
+        }
+        else if (e.getType().equals("Hero"))
         {
             if (((DungeonCharacter) e).isBurning())
             {
@@ -302,11 +343,31 @@ public class SceneGame extends Scene
         }
     }
 
+    private void renderAura(final Hero theHero)
+    {
+        if (theHero.getUsingSpecial())
+        {
+            if (theHero.getCharacterType().equals("Priestess"))
+            {
+                var aura = myRenderer.getAssets().getAnimation("aura");
+                aura.setPos(theHero.getMyPos().getMyX(), theHero.getMyPos().getMyY());
+                aura.getSprite().setAlpha(0.5f);
+                aura.getSprite().draw(myRenderer.getSpriteBatch());
+            }
+        }
+    }
+
     private void renderPaused()
     {
         int roomX = (int) Math.floor(myHero.getMyPos().getMyX() / 1216);
         int roomY = (int) Math.floor(myHero.getMyPos().getMyY() / 704);
-        Vec2 pixelPos = Physics.getPosition(roomX, roomY, 3, 9);
+        var shade = myRenderer.getAssets().getAnimation("pause");
+        Vec2 pixelPos = Physics.getPosition(roomX, roomY, 0, 0);
+        shade.getSprite().setPosition(pixelPos.getMyX(), pixelPos.getMyY());
+        shade.getSprite().setAlpha(.5f);
+        shade.getSprite().draw(myRenderer.getSpriteBatch());
+
+        pixelPos = Physics.getPosition(roomX, roomY, 3, 9);
         BitmapFont font = myRenderer.getAssets().getFont("mario24");
         font.draw(myRenderer.getSpriteBatch(), """
                 UP:W DOWN:S LEFT:A RIGHT:D
@@ -364,6 +425,25 @@ public class SceneGame extends Scene
                 myRenderer.getAssets().getSound("getItem").play(.5f);
             }
         }
+    }
+
+    private void renderEndScreen()
+    {
+        var shade = myRenderer.getAssets().getAnimation("pause");
+        int roomX = (int) Math.floor(myHero.getMyPos().getMyX() / 1216);
+        int roomY = (int) Math.floor(myHero.getMyPos().getMyY() / 704);
+        Vec2 pixelPos = Physics.getPosition(roomX, roomY, 0, 0);
+        shade.getSprite().setPosition(pixelPos.getMyX(), pixelPos.getMyY());
+        shade.getSprite().setAlpha(.5f);
+        shade.getSprite().draw(myRenderer.getSpriteBatch());
+
+        pixelPos = Physics.getPosition(roomX, roomY, 6, 7);
+        BitmapFont font = myRenderer.getAssets().getFont("mario128");
+        font.draw(myRenderer.getSpriteBatch(), "VICTORY!", pixelPos.getMyX(), pixelPos.getMyY());
+
+        pixelPos = Physics.getPosition(roomX, roomY, 5, 5);
+        font = myRenderer.getAssets().getFont("mario24");
+        font.draw(myRenderer.getSpriteBatch(), "PRESS ESC TO RETURN TO MENU", pixelPos.getMyX(), pixelPos.getMyY());
     }
 
 }

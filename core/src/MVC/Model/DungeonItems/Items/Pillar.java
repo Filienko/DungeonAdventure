@@ -2,6 +2,7 @@ package MVC.Model.DungeonItems.Items;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
+import MVC.Model.Physics.Vec2;
 
 public class Pillar extends Item
 {
@@ -12,6 +13,7 @@ public class Pillar extends Item
     {
         super("pillar", theEntityFactory);
         setName("pillar");
+        setMySize(new Vec2(64, 64));
         myBroken = false;
     }
 
@@ -19,6 +21,7 @@ public class Pillar extends Item
     {
         super(theName, theEntityFactory);
         setName(theName);
+        setMySize(new Vec2(64, 64));
         myBroken = false;
     }
 

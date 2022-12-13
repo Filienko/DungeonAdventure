@@ -6,6 +6,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 public class Exit extends Item
 {
     private static Exit myExit;
+    private static boolean myExited = false;
 
     private Exit(final EntityFactory theEntityFactory)
     {
@@ -26,14 +27,16 @@ public class Exit extends Item
         return theHero.getPillars() == 4;
     }
 
+    public static boolean isExited() { return myExited; }
+
     @Override
     public void activate(final Hero theHero)
     {
         System.out.println(theHero.getPillars());
         if(checkFinishGame(theHero)) //is getMyEntityFactory().getHero() instead of theHero ok?
         {
-            destroy();
-            theHero.setActiveStatus(false);
+            myExited = true;
+            theHero.destroy();
         }
     }
 }

@@ -40,13 +40,17 @@ public class Warrior extends Hero
     {
         var damage = 0;
         var chance = Math.random();
-        if (chance < 0.4)
+        if (chance < 1)
         {
             damage = special();
+            setMyKnockbackPower(30);
+            setMyKnockbackLength(10);
         }
         else
         {
             damage = super.damage();
+            setMyKnockbackPower(4);
+            setMyKnockbackLength(10);
         }
         return damage;
     }

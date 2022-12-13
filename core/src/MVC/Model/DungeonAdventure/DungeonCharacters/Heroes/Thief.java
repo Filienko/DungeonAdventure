@@ -41,10 +41,14 @@ public class Thief extends Hero
         if (chance < 0.25)
         {
             damage = special();
+            setMyKnockbackPower(0);
+            setMyKnockbackLength(60);
         }
         else
         {
             damage = super.damage();
+            setMyKnockbackPower(4);
+            setMyKnockbackLength(10);
         }
 
         return damage;
