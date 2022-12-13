@@ -29,7 +29,6 @@ public class Pillar extends Item
         myBroken = true;
     }
 
-
     public String getName()
     {
         return myName;
@@ -43,12 +42,5 @@ public class Pillar extends Item
         {
             myName = theName;
         }
-    }
-
-    @Override
-    public void activate(final Hero theHero)
-    {
-        //new HealingPotion(1,getMyEntityFactory()).activate(getMyEntityFactory().getHero()); //why?
-        new HealingPotion(1,getMyEntityFactory()).activate(theHero);
     }
 }

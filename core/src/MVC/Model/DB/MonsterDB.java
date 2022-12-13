@@ -81,24 +81,20 @@ public class MonsterDB extends SuperMonsterDB
             System.exit(0);
         }
 
-        var randVec = new Vec2((new Random()).nextInt(5, 8), (new Random()).nextInt(5, 8));
         //next insert four rows of data
         String ogreQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,5,'ogre',2,2,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,96,96)";
-        randVec = new Vec2((new Random()).nextInt(5, 8), (new Random()).nextInt(5, 8));
+                ") VALUES (0,5,'ogre',2,2,0,0,0,0,96,96)";
         String gremlinQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,3,'gremlin',1,3,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,64,64)";
-        randVec = new Vec2((new Random()).nextInt(5, 8), (new Random()).nextInt(5, 8));
+                ") VALUES (0,3,'gremlin',1,3,0,0,0,0,64,64)";
         String knightQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,3,'knight',1,5,"+randVec.getMyX()+","+randVec.getMyY()+",0,0,64,64)";
-        randVec = new Vec2((new Random()).nextInt(5, 8), (new Random()).nextInt(5, 8));
+                ") VALUES (0,3,'knight',1,5,0,0,0,0,63,63)";
 
         String ratsQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
-                ") VALUES (0,1,'rat',1,"+(new Random().nextInt(4,7))+","+randVec.getMyX()+","+randVec.getMyY()+",0,0,32,32)";
+                ") VALUES (0,1,'rat',1,"+(new Random().nextInt(4,7))+",0,0,0,0,32,32)";
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
