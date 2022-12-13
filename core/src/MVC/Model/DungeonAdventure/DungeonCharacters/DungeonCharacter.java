@@ -397,9 +397,16 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         for(var t:getMyEntityFactory().getEntities())
         {
             overlap = Physics.getOverlap(this, t);
+            var xDef = 2;
+            var yDef = 2;
+            if(this instanceof Hero)
+            {
+                xDef = 0;
+                yDef = 0;
+            }
             if (!t.getType().contentEquals(this.getType()) && !t.getType().contentEquals("Sword"))
             {
-                if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+                if (overlap.getMyX() > xDef && overlap.getMyY() > yDef)
                 {
                     // If the tile blocks movement
                     if (t.getType().contains("Wall")  || t.getType().contains("Door")  || t.getType().contains("exit")

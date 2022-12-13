@@ -29,7 +29,6 @@ public class Pillar extends Item
         myBroken = true;
     }
 
-
     public String getName()
     {
         return myName;
