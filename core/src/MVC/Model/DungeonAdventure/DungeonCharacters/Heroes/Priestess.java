@@ -35,7 +35,7 @@ public class Priestess extends Hero implements Healable
     }
 
     /**
-     * The Priestess's specific attack behavior. She has a 10% chance of healing herself during her attack.
+     * The Priestess's specific attack behavior. She has a 5% chance of healing herself during her attack.
      * @return The amount of damage the Priestess does during her attack.
      */
     @Override
@@ -43,7 +43,7 @@ public class Priestess extends Hero implements Healable
     {
         var damage = super.damage();
 
-        if((new Random()).nextDouble()<0.1)
+        if((new Random()).nextDouble()<0.05)
         {
             special();
         }

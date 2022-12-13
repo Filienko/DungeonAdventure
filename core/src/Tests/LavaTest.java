@@ -12,7 +12,7 @@ class LavaTest
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     @Test
-    void testPitConstructor()
+    void testLavaConstructor()
     {
         Lava myLava = new Lava(entityFactory);
 
@@ -21,45 +21,35 @@ class LavaTest
     }
 
     @Test
-    void testPitOL1Constructor()
+    void testSetDamage()
     {
-        Lava myLava = new Lava(new Vec2(10,10), entityFactory);
+        Lava myLava = new Lava(entityFactory);
 
-        assertTrue(myLava.getType().equals("lava"));
+        myLava.setDamage(20);
+
+        assertEquals(myLava.getDamage(), 20);
+    }
+
+    @Test
+    void testGetDamage()
+    {
+        Lava myLava = new Lava(entityFactory);
+
         assertEquals(myLava.getDamage(), 2);
-        assertTrue(myLava.getMyPos().equals(new Vec2(10,10)));
-    }
-
-    @Test
-    void testSetDamageFall()
-    {
-        Lava myPit = new Lava(new Vec2(20,20), entityFactory);
-
-        myPit.setDamage(20);
-
-        assertEquals(myPit.getDamage(), 20);
-    }
-
-    @Test
-    void testGetDamageFall()
-    {
-        Lava myPit = new Lava(new Vec2(2,2), entityFactory);
-
-        assertEquals(myPit.getDamage(), 2);
     }
 
     @Test
     void testActivate()
     {
-        Lava myPit = new Lava(entityFactory);
+        Lava myLava = new Lava(entityFactory);
         Thief myThief = new Thief(entityFactory);
 
         int HP = myThief.getHitPoints();
 
-        myPit.activate(myThief);
+        myLava.activate(myThief);
 
-        assertEquals(myThief.getHitPoints(), HP - myPit.getDamage());
-        assertFalse(myPit.getActiveStatus());
+        assertEquals(myThief.getHitPoints(), HP - myLava.getDamage());
+        assertFalse(myLava.getActiveStatus());
 
     }
 }

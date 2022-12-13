@@ -27,7 +27,7 @@ public class RoomTests
         room.setE(true);
 
         room.populateTheRoom(true);
-        assertTrue(room.getItems().toString().contains("lava"));
+        assertTrue(room.isLava());
         assertTrue(room.getItems().toString().contains("Potion"));
         assertTrue(room.getItems().toString().contains("pillar"));
         assertTrue(room.getMonsters().toString().length()>3);
@@ -47,7 +47,7 @@ public class RoomTests
     {
         var room = new Room();
         room.populateLava(0.09);
-        assertTrue(room.getItems().toString().contains("lava")); //test no longer passes
+        assertTrue(room.isLava());
     }
 
     @Test
