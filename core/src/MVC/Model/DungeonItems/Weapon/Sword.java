@@ -83,19 +83,13 @@ public class Sword extends Entity implements ICollidable
 
                     if(m.getHitPoints()<=0)
                     {
-                        //Potentially add sound
-                        //TODO:Add appropriate animation logic
-                        //e.setMyAnimation(new Animation("EnemyDeath",new Texture(""),2,1));
                         m.die();
                     }
                     else
                     {
-                        //Potentially add sound
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
-                        var v = e.getMyPos().minus(this.getMyPos());
-                        var normalizedV = v.multiply(v.quickInverseMagnitude());
-                        m.setVelocity(normalizedV.multiply((float) 4),10);
                         m.setInvincibility(true, lifespanLeft);
+                        m.knockback(this, myHero.getMyKnockbackPower(), myHero.getMyKnockbackLength());
                     }
                 }
             }

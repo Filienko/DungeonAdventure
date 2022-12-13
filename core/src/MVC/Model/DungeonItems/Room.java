@@ -125,7 +125,11 @@ public class Room implements Cloneable
         {
             populateLava(random.nextDouble());
         }
-        populateMonsters(1);
+
+        if (!myLocation.equals(new Vec2(0, 0)))
+        {
+            populateMonsters(1);
+        }
     }
 
     public void populateMonsters(final int theN)

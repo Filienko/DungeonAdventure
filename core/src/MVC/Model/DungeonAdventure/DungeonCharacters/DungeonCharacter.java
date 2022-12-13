@@ -68,6 +68,16 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     private long myLastDamageFrame;
 
     /**
+     * The magnitude that this character knocks back other entities with.
+     */
+    private float myKnockbackPower;
+
+    /**
+     * The duration that this character knocks back other entities.
+     */
+    private long myKnockbackLength;
+
+    /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
      * minimum and maximum damage amounts, maximum speed, and position.
      *
@@ -139,6 +149,11 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             setMyPreviousPos(getMyPos());
             updateMyPos(getVelocity());
+            if (!Physics.getRoom(getMyPos().getMyX(), getMyPos().getMyY())
+                    .equals(Physics.getRoom(getMyPreviousPos().getMyX(), getMyPreviousPos().getMyY())))
+            {
+                setMyPos(getMyPreviousPos());
+            }
             collide();
         }
     }
@@ -294,9 +309,17 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         if (theVelocity != null && theFramesLong >= 0) //should these be checked in a single if?
         {
             myVelocity = theVelocity;
-            setKnockback(true); //should this line and next line be moved out of if statement
-            setKnockbackEndFrame(theFramesLong);
         }
+    }
+
+    public void knockback(Entity e, float power, long duration)
+    {
+        var v = this.getMyPos().minus(e.getMyPos());
+        var normalizedV = v.multiply(v.quickInverseMagnitude());
+        setVelocity(normalizedV.multiply(power), duration);
+
+        setKnockback(true);
+        setKnockbackEndFrame(duration);
     }
 
     /**
@@ -336,6 +359,27 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
             myKnockbackEndFrame = getCurrentFrame() + theKnockbackEndFrame;
         }
     }
+
+    /**
+     * This method sets the knockback magnitude of this character
+     * @param thePower The magnitude applied to knockback from this character.
+     */
+    public void setMyKnockbackPower(float thePower)     { myKnockbackPower = thePower; }
+
+    /**
+     * @return The magnitude applied to knockback from this character.
+     */
+    public float getMyKnockbackPower()                  { return myKnockbackPower; }
+
+    /**
+     * @param theDuration How long a knockback from this character lasts.
+     */
+    public void setMyKnockbackLength(long theDuration)  { myKnockbackLength = theDuration; }
+
+    /**
+     * @return The duration of a knockback from this character.
+     */
+    public long getMyKnockbackLength()                  { return myKnockbackLength; }
 
     /**
      * Retrieves the Dungeon Character's invincible status which tells and if they can take damage.

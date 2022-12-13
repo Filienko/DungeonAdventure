@@ -70,9 +70,11 @@ public class SceneMenu extends Scene
                     {
                         myHeroSelection = true;
                         System.out.println("Selected: 'New Game'");
-                    } else if (myTextElements.get(myMenuIndex).equals("LOAD GAME"))
+                    }
+                    else if (myTextElements.get(myMenuIndex).equals("LOAD GAME"))
                     {
-                        // Deserialize
+                        // TODO: Deserialize
+
                         System.out.println("Selected: 'Load Game'");
                     } else if (myTextElements.get(myMenuIndex).equals("QUIT"))
                     {

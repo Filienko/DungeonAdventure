@@ -36,16 +36,23 @@ public class Door extends Entity
 
     public void setMonsterCounter(final int theMonsterCounter)
     {
-        if (theMonsterCounter >= 0)
+        if (theMonsterCounter > 0)
         {
             myMonsterCounter = theMonsterCounter;
+        }
+        else
+        {
+            decrementMonsterCounter();
         }
     }
 
     public void decrementMonsterCounter()
     {
         myMonsterCounter--;
+    }
 
+    public void update()
+    {
         if (myMonsterCounter <= 0)
         {
             Vec2 overlap;
@@ -63,4 +70,5 @@ public class Door extends Entity
             this.destroy();
         }
     }
+
 }

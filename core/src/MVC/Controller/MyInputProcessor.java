@@ -41,6 +41,22 @@ public class MyInputProcessor extends InputAdapter
         {
             System.out.println("Mouse click at: " + x +", " + y);
         }
+        if (myGame.getCurrentScene().getActionMap().containsKey(button))
+        {
+            Action action = new Action(myGame.getCurrentScene().getActionMap().get(button), "START");
+            myGame.getCurrentScene().doAction(action);
+        }
         return true;
+    }
+
+    @Override
+    public boolean touchUp (int x, int y, int pointer, int button)
+    {
+        if (myGame.getCurrentScene().getActionMap().containsKey(button))
+        {
+            Action action = new Action(myGame.getCurrentScene().getActionMap().get(button), "END");
+            myGame.getCurrentScene().doAction(action);
+        }
+        return false;
     }
 }

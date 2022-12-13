@@ -84,7 +84,7 @@ private float myY;
         return (myX * myX) + (myY * myY);
     };
 
-    //TODO:Research the efficiency, algorithm from StackOverflow
+    // Code by Greg Walsh for the Doom game engine.
     public float quickInverseMagnitude()
     {
         var x = getMagnitudeSquared();

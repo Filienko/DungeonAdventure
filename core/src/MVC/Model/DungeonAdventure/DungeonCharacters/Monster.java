@@ -58,6 +58,8 @@ public class Monster extends DungeonCharacter
         {
             setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
         }
+        setMyKnockbackPower(3);
+        setMyKnockbackLength(8);
     }
 
     @Override
@@ -151,6 +153,7 @@ public class Monster extends DungeonCharacter
                 myHero.destroy();
             }
             myHero.setInvincibility(true,45);
+            myHero.knockback(this, getMyKnockbackPower(), getMyKnockbackLength());
         }
     }
 
