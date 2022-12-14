@@ -8,6 +8,10 @@ import MVC.Model.Physics.Vec2;
 public abstract class DungeonCharacter extends Entity implements ICollidable
 {
     /**
+     * Monster's default position.
+     */
+    protected Vec2 myHomePosition;
+    /**
      * The specific character type.
      */
     private String myCharacterType; //should this be changed back to final?
@@ -103,6 +107,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         myHeroStatus = theHeroStatus; //could i add a private setter?
         myKnockback = false;
         myBurning = false;
+        myHomePosition = new Vec2();
     }
 
     /**
@@ -426,7 +431,15 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         return myInvincibilityEndFrame;
     }
 
-    public void setBurning(final boolean theBurning) { myBurning = theBurning; }
+    public Vec2 getHomePosition()
+    {
+        return myHomePosition;
+    }
+
+    public void setHomePosition(final Vec2 theHomePosition)
+    {
+        myHomePosition.copy(theHomePosition);
+    }
 
     public boolean isBurning() { return myBurning; }
 

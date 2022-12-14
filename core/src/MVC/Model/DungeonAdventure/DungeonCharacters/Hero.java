@@ -74,10 +74,18 @@ public abstract class Hero extends DungeonCharacter
         setDown(false);
         setLeft(false);
         setRight(false);
+        setHomePosition(getMyPos());
         myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
         setMyKnockbackPower(4);
         setMyKnockbackLength(10);
+    }
+
+    @Override
+    public void destroy()
+    {
+        setMyPos(getHomePosition());
+        setHitPoints(10);
     }
 
     /**
