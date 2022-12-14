@@ -43,6 +43,9 @@ public class SceneGame extends Scene
         myRenderOrder.add("healthPotion");
         myRenderOrder.add("speedPotion");
         myRenderOrder.add("Monster");
+        myRenderOrder.add("Tail");
+        myRenderOrder.add("Body");
+        myRenderOrder.add("Worm");
         myRenderOrder.add("Hero");
         myRenderOrder.add("Sword");
         myRenderOrder.add("Pillar");
@@ -70,7 +73,7 @@ public class SceneGame extends Scene
 
 
         /*Room testRoom = new Room(1, new Vec2(0, 0));
-        testRoom.addItem("pillar");
+        testRoom.setExitStatus(true);
         testRoom.setLava(false);
         testRoom.setN(false);
         testRoom.setW(false);
@@ -80,9 +83,6 @@ public class SceneGame extends Scene
         myEntityFactory.generateRoomEntities(testRoom);
 
          */
-
-
-
 
     }
 
@@ -100,7 +100,7 @@ public class SceneGame extends Scene
         if (action.getType().equals("START"))
         {
                  if (action.getName().equals("PAUSE"))              { if (!Exit.isExited()) { setPaused(); }}
-            else if (action.getName().equals("QUIT"))               { if (!myPaused) {setPaused(); } else { onEnd(); }}
+            else if (action.getName().equals("QUIT"))               { if (!myPaused && !Exit.isExited()) {setPaused(); } else { onEnd(); }}
             else if (action.getName().equals("UP"))                 { myHero.setUp(true); }
             else if (action.getName().equals("DOWN"))               { myHero.setDown(true); }
             else if (action.getName().equals("LEFT"))               { myHero.setLeft(true); }
@@ -221,7 +221,7 @@ public class SceneGame extends Scene
                     renderHealthBars(e);
                     renderAura((Hero) e);
                 }
-                else if ( e.getType().equals("Monster"))
+                else if ( e.getType().equals("Monster") || e.getType().equals("Worm"))
                 {
                     renderHealthBars(e);
                 }
@@ -252,7 +252,7 @@ public class SceneGame extends Scene
 
         if (e.getMyAnimation().getName().equals("exit"))
         {
-            if (myHero.getPillars() < 4)
+            if (!((Exit) e).checkFinishGame())
             {
                 sprite.setAlpha(0.25f);
             }
@@ -304,6 +304,18 @@ public class SceneGame extends Scene
             {
                 sprite.setColor(1, 1, 1, 1);
             }
+        }
+        else if (e.getType().equals("Worm"))
+        {
+            Worm w = (Worm) e;
+            double angle = Math.atan2(w.getVelocity().getMyY(), w.getVelocity().getMyX()) * 57.296 + 135;
+            sprite.setRotation((float) angle);
+        }
+        else if (e.getType().equals("Body") || e.getType().equals("Tail"))
+        {
+            Vec2 vector = e.getMyPos().minus(e.getMyPreviousPos());
+            double angle = Math.atan2(vector.getMyY(), vector.getMyX()) * 57.296 + 135;
+            sprite.setRotation((float) angle);
         }
         sprite.draw(myRenderer.getSpriteBatch());
     }

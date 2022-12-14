@@ -117,4 +117,21 @@ public class Physics
         return new Vec2(roomX, roomY);
     }
 
+    public static Vec2 calculateBezierPoint(final float t,
+                        final Vec2 point0, final Vec2 point1, final Vec2 point2, final Vec2 point3)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+        float uuu = uu * u;
+        float ttt = tt * t;
+
+        Vec2 p = point0.multiply(uuu);          // first term
+        p = p.add(point1.multiply(3 * uu * t)); // second term
+        p = p.add(point2.multiply(3 * u * tt)); // third term
+        p = p.add(point3.multiply(ttt));        // fourth term
+
+        return p;
+    }
+
 }

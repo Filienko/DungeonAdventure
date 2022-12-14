@@ -34,7 +34,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     /**
      * The maximum speed of the character.
      */
-    private int myMaxSpeed;
+    private float myMaxSpeed;
 
     /**
      * The character's velocity.
@@ -274,7 +274,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      * This method retrieves the character's maximum speed.
      * @return How fast a character can move, expressed as an int.
      */
-    public int getMaxSpeed()
+    public float getMaxSpeed()
     {
         return myMaxSpeed;
     }
@@ -283,9 +283,9 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      * This method sets the character's speed.
      * @param theMaxSpeed The character's new speed.
      */
-    public void setMaxSpeed(final int theMaxSpeed)
+    public void setMaxSpeed(final float theMaxSpeed)
     {
-        if (theMaxSpeed <=10 && theMaxSpeed >= 1) //should max speed be 10?
+        if (myMaxSpeed <= 100 && theMaxSpeed >= -100)
         {
             myMaxSpeed = theMaxSpeed;
         }
