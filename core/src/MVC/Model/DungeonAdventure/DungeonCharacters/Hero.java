@@ -91,7 +91,6 @@ public abstract class Hero extends DungeonCharacter
         setHitPoints(10);
         setDamage(1);
         setMaxSpeed(5);
-
     }
 
     /**

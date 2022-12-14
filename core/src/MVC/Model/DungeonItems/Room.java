@@ -163,7 +163,7 @@ public class Room implements Cloneable
 
     public void populateLava(double theChance)
     {
-        if(theChance < 0.10 && !myEntrance && !myExit)
+        if(theChance < 0.20 && !myEntrance && !myExit)
         {
             setLava(true);
         }

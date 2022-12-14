@@ -465,5 +465,4 @@ public class EntityFactory
     {
         myEntityMap.remove("Sword");
     }
-
 }
