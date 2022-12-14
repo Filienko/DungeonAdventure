@@ -184,25 +184,24 @@ public class Monster extends DungeonCharacter
         super.setRoom(theRoom);
         var allowedTiles = new ArrayList<Vec2>();
         //Starting at the middle row
-        for (int i = 2; i <= 16; i++)
+        for (int i = 6; i < 12; i++)
         {
             if(i==8||i==9||i==10) {continue;}
             allowedTiles.add(new Vec2(i,5));
         }
 
-        for (int i = 6; i <13; i++)
+        for (int i = 6; i < 12; i++)
         {
             if(i==8||i==9||i==10) {continue;}
             allowedTiles.add(new Vec2(i,4));
             allowedTiles.add(new Vec2(i,6));
         }
 
-        for (int i = 6; i < 13; i++)
+        for (int i = 6; i < 12; i++)
         {
             allowedTiles.add(new Vec2(i,2));
             allowedTiles.add(new Vec2(i,3));
             allowedTiles.add(new Vec2(i,7));
-            allowedTiles.add(new Vec2(i,8));
         }
 
         var monsterPos = allowedTiles.get(new Random().nextInt(0,allowedTiles.size()));
