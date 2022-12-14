@@ -1,6 +1,5 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters.Heroes;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.DungeonCharacter;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.Physics.Vec2;
@@ -45,6 +44,8 @@ public class Thief extends Hero
         else
         {
             damage = super.damage();
+            setMyKnockbackPower(4);
+            setMyKnockbackLength(10);
         }
 
         return damage;
@@ -56,27 +57,10 @@ public class Thief extends Hero
      */
     public int special()
     {
-//        double chance = Math.random();
-//
-//        if (chance < MY_HIDDEN_CHANCE)
-//        {
-//            myHiddenStatus = true;
-//        }
-//
-//        int damage = 1;
-//        if (myHiddenStatus)
-//        {
-//            chance = Math.random();
-//            if (chance < 0.8)
-//            {
-//                damage = 3;
-//            }
-//            myHiddenStatus = false;
-//        }
-//        else
-//        {
-//            damage = super.attack();
-//        }
+        setUsingSpecial(true);
+        setMyKnockbackPower(0);
+        setMyKnockbackLength(60);
+
         return getDamage()+5;
     }
 }

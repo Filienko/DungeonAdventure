@@ -94,6 +94,9 @@ public class Assets
         parameter.color = Color.CHARTREUSE;
         myFontMap.put(fontName + "48", generator.generateFont(parameter));
 
+        parameter.size = 62;
+        myFontMap.put(fontName + "128", generator.generateFont(parameter));
+
         parameter.size = 24;
         parameter.color = Color.WHITE;
         myFontMap.put(fontName + "24", generator.generateFont(parameter));

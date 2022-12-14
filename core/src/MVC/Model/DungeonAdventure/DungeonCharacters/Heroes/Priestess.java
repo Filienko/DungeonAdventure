@@ -58,6 +58,8 @@ public class Priestess extends Hero implements Healable
      */
     public int special()
     {
+        setUsingSpecial(true);
+
         return heal(this, MY_MAX_HEAL);
     }
 }

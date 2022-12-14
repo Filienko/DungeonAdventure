@@ -1,6 +1,5 @@
 package MVC.Model.DungeonItems;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonItems.Items.*;
 import MVC.Model.Physics.Vec2;
@@ -125,7 +124,11 @@ public class Room implements Cloneable
         {
             populateLava(random.nextDouble());
         }
-        populateMonsters(1);
+
+        if (!myLocation.equals(new Vec2(0, 0)))
+        {
+            populateMonsters(1);
+        }
     }
 
     public void populateMonsters(final int theN)
@@ -160,7 +163,7 @@ public class Room implements Cloneable
 
     public void populateLava(double theChance)
     {
-        if(theChance < 0.10)
+        if(theChance < 0.10 && !myEntrance && !myExit)
         {
             setLava(true);
         }
@@ -189,7 +192,7 @@ public class Room implements Cloneable
             {
                 addItem("attackPotion");
             }
-            else if (randD < 0.76)
+            else if (randD < 0.75)
             {
                 addItem("speedPotion");
             }

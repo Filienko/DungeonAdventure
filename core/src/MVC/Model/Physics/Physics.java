@@ -108,4 +108,13 @@ public class Physics
 
         return new Vec2(pixelX, pixelY);
     }
+
+    public static Vec2 getRoom(final float thePixelX, final float thePixelY)
+    {
+        float roomX = (float) Math.floor(thePixelX / 1216);
+        float roomY = (float) Math.floor(thePixelY / 704);
+
+        return new Vec2(roomX, roomY);
+    }
+
 }

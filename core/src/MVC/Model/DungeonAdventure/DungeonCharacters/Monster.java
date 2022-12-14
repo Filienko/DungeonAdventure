@@ -19,11 +19,6 @@ public class Monster extends DungeonCharacter
     private final static int MY_AGGRESSION_DISTANCE = 25;
 
     /**
-     * Monster's default position.
-     */
-    private final Vec2 myHomePosition;
-
-    /**
      * The specific Monster type.
      */
     private String myMonsterType; //should this be changed back to final?
@@ -51,13 +46,14 @@ public class Monster extends DungeonCharacter
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
 
-        myHomePosition = new Vec2();
         setMonsterType(theMonsterType);
         setHero(theHero);
         if(getMyEntityFactory().getAssets()!=null)
         {
             setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
         }
+        setMyKnockbackPower(3);
+        setMyKnockbackLength(8);
     }
 
     @Override
@@ -121,9 +117,9 @@ public class Monster extends DungeonCharacter
             direction = myHero.getMyPos().minus(npcPosition);
             velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
-        else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
+        else if (getHomePosition().getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
         {
-            direction = myHomePosition.minus(npcPosition);
+            direction = getHomePosition().minus(npcPosition);
             velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
 
@@ -156,6 +152,7 @@ public class Monster extends DungeonCharacter
                 myHero.update();
             }
             myHero.setInvincibility(true,45);
+            myHero.knockback(this, getMyKnockbackPower(), getMyKnockbackLength());
         }
     }
 
@@ -185,37 +182,31 @@ public class Monster extends DungeonCharacter
     {
         super.setRoom(theRoom);
         var allowedTiles = new ArrayList<Vec2>();
-        allowedTiles.add(new Vec2(9,9));
-        allowedTiles.add(new Vec2(9,1));
-        allowedTiles.add(new Vec2(1,5));
-        allowedTiles.add(new Vec2(17,5));
-
         //Starting at the middle row
-        for (int i = 2; i <= 16; i++)
+        for (int i = 6; i < 12; i++)
         {
             if(i==8||i==9||i==10) {continue;}
             allowedTiles.add(new Vec2(i,5));
         }
 
-        for (int i = 5; i <= 13; i++)
+        for (int i = 6; i < 12; i++)
         {
             if(i==8||i==9||i==10) {continue;}
             allowedTiles.add(new Vec2(i,4));
             allowedTiles.add(new Vec2(i,6));
         }
 
-        for (int i = 6; i <= 12; i++)
+        for (int i = 6; i < 12; i++)
         {
             allowedTiles.add(new Vec2(i,2));
             allowedTiles.add(new Vec2(i,3));
             allowedTiles.add(new Vec2(i,7));
-            allowedTiles.add(new Vec2(i,8));
         }
 
         var monsterPos = allowedTiles.get(new Random().nextInt(0,allowedTiles.size()));
         setMyPos(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
                 (int) monsterPos.getMyX(), (int) monsterPos.getMyY()));
-        myHomePosition.copy(getMyPos());
+        setHomePosition(getMyPos());
     }
 
     public void setRoom(final Vec2 theRoom, int theRatPos)
@@ -229,7 +220,15 @@ public class Monster extends DungeonCharacter
         var monsterPos = allowedTiles.get(theRatPos);
         setMyPos(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
                 (int) monsterPos.getMyX(), (int) monsterPos.getMyY()));
-        myHomePosition.copy(getMyPos());
+        setHomePosition(getMyPos());
+    }
+
+    private void setHero(final Hero theHero)
+    {
+        if (theHero != null)
+        {
+            myHero = theHero;
+        }
     }
 
     @Override
@@ -240,13 +239,5 @@ public class Monster extends DungeonCharacter
                 ", Hero status = " + MY_HERO_STATUS +
                 ", myHitPoints = " + getHitPoints() +
                 '}';
-    }
-
-    private void setHero(final Hero theHero)
-    {
-        if (theHero != null)
-        {
-            myHero = theHero;
-        }
     }
 }

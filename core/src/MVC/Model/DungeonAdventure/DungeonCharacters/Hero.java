@@ -76,8 +76,25 @@ public abstract class Hero extends DungeonCharacter
         setDown(false);
         setLeft(false);
         setRight(false);
+        setHomePosition(getMyPos());
         myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
+        setMyKnockbackPower(4);
+        setMyKnockbackLength(10);
+    }
+
+    /**
+     * Overriding the destroy to temporarily allow Hero to go back.
+     * TODO:Delete after testing
+     */
+    @Override
+    public void destroy()
+    {
+        setMyPos(getHomePosition());
+        setHitPoints(10);
+        setDamage(1);
+        setMaxSpeed(5);
+
     }
 
     public void setRoom(final Room theRoom)
@@ -112,6 +129,10 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public void update()
     {
+         if (getMyEntityFactory().getEntities("sword").isEmpty())
+         {
+             myUsingSpecial = false;
+         }
         super.update();
         incrementCurrentFrame();
     }

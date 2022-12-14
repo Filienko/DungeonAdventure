@@ -29,6 +29,7 @@ public abstract class Item extends Entity
         super.setRoom(theRoom);
         setMyPos(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
                 (int) getMyPos().getMyX(),(int) getMyPos().getMyY()));
+        setMyPreviousPos(getMyPos());
     }
 
     public void activate(final Hero theHero){};

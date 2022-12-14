@@ -47,6 +47,8 @@ public class Warrior extends Hero
         else
         {
             damage = super.damage();
+            setMyKnockbackPower(4);
+            setMyKnockbackLength(10);
         }
         return damage;
     }
@@ -57,7 +59,11 @@ public class Warrior extends Hero
      */
     public int special()
     {
+        setUsingSpecial(true);
+        setMyKnockbackPower(30);
+        setMyKnockbackLength(10);
         Random rand = new Random();
+
         return rand.nextInt(getDamage(), getDamage()+3);
     }
 }

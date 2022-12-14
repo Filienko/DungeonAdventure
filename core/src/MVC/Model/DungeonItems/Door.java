@@ -2,7 +2,6 @@ package MVC.Model.DungeonItems;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
@@ -36,16 +35,23 @@ public class Door extends Entity
 
     public void setMonsterCounter(final int theMonsterCounter)
     {
-        if (theMonsterCounter >= 0)
+        if (theMonsterCounter > 0)
         {
             myMonsterCounter = theMonsterCounter;
+        }
+        else
+        {
+            decrementMonsterCounter();
         }
     }
 
     public void decrementMonsterCounter()
     {
         myMonsterCounter--;
+    }
 
+    public void update()
+    {
         if (myMonsterCounter <= 0)
         {
             Vec2 overlap;
