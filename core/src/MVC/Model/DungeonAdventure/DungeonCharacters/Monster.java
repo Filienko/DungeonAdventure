@@ -21,12 +21,12 @@ public class Monster extends DungeonCharacter
     /**
      * The specific Monster type.
      */
-    private String myMonsterType; //should this be changed back to final?
+    private String myMonsterType;
 
     /**
      * The Monster's Hero opponent.
      */
-    private Hero myHero; //should this be changed back to final?
+    private Hero myHero;
 
     /**
      * Monster constructor that calls its parent constructor to initialize the Monster's name, character type, hero status, hit points,
@@ -48,6 +48,7 @@ public class Monster extends DungeonCharacter
 
         setMonsterType(theMonsterType);
         setHero(theHero);
+        setMaxSpeed(theMaxSpeed);
         if(getMyEntityFactory().getAssets()!=null)
         {
             setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
@@ -65,7 +66,11 @@ public class Monster extends DungeonCharacter
             if (e.getRoom().equals(getRoom()))
             {
                 ((Door) e).decrementMonsterCounter();
-                if(((Door) e).getMonsterCounter()<0){ destroyPillar = false; }
+                if(((Door) e).getMonsterCounter()<0)
+                {
+                    destroyPillar = false;
+                }
+
             }
         }
 
@@ -73,10 +78,14 @@ public class Monster extends DungeonCharacter
         {
             for (var p : getMyEntityFactory().getEntities("pillar"))
             {
-                Pillar pillar = (Pillar) p;
-                if(!pillar.isBroken() && pillar.getRoom().equals(getRoom()))
+                if (p.getRoom().equals(getRoom()))
                 {
-                    pillar.breakPillar();
+                    Pillar thePillar = (Pillar) p;
+                    thePillar.decrementMonsterCounter();
+                    if (!thePillar.isBroken())
+                    {
+                        thePillar.breakPillar();
+                    }
                 }
             }
         }
@@ -126,7 +135,6 @@ public class Monster extends DungeonCharacter
         setVelocity(velocity);
         setMyPreviousPos(getMyPos());
         updateMyPos(getVelocity());
-
     }
 
     /**

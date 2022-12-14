@@ -35,7 +35,7 @@ public class Door extends Entity
 
     public void setMonsterCounter(final int theMonsterCounter)
     {
-        if (theMonsterCounter > 0)
+        if (theMonsterCounter >= 0)
         {
             myMonsterCounter = theMonsterCounter;
         }
@@ -47,7 +47,10 @@ public class Door extends Entity
 
     public void decrementMonsterCounter()
     {
-        myMonsterCounter--;
+        if (myMonsterCounter > 0)
+        {
+            myMonsterCounter--;
+        }
     }
 
     public void update()

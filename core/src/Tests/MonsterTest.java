@@ -1,9 +1,12 @@
 package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
+import MVC.Model.DungeonItems.Door;
+import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -46,7 +49,6 @@ class MonsterTest
         assertEquals(1, myMonster.getDamage());
     }
 
-
     /**
      * Test method for {@link Monster#attack()}
      */
@@ -56,7 +58,7 @@ class MonsterTest
         final Monster myMonster = new Monster("Swarm of Rats",1 , 1, 7, new Vec2(),
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
 
-        assertEquals(myMonster.attack(), 1);
+        assertEquals(myMonster.attack(), myMonster.getDamage());
     }
 
     /**
@@ -68,12 +70,27 @@ class MonsterTest
         final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
 
-        myMonster.destroy();
+        myEntityFactory.generatePillars();
 
+        myMonster.destroy();
         assertFalse(myMonster.getActiveStatus());
         assertTrue(myMonster.getMySize().equals(new Vec2()));
 
-        //write tests for destroy, theres more to it
+        for (int i = 0; i < myMonster.getMyEntityFactory().getEntities().size(); i++)
+        {
+            Entity e = myMonster.getMyEntityFactory().getEntities().get(i);
+            if (e.getType().equals("door"))
+            {
+                assertTrue(((Door)e).getMonsterCounter()<0);
+                //System.out.println("true");
+            } else if (e.getType().equals("pillar"))
+            {
+                assertTrue(((Pillar)e).isBroken());
+                //System.out.println("true");
+            }
+
+            assertTrue(myMonster.getMyEntityFactory().getEntities().size() > 1);
+        }
     }
 
     /**
@@ -84,7 +101,6 @@ class MonsterTest
     {
         final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
-
 
         long iEndFrame = myMonster.getInvincibilityEndFrame();
         myMonster.setCurrentFrame(iEndFrame+1);
@@ -98,11 +114,12 @@ class MonsterTest
         myMonster.update();
         assertFalse(myMonster.isKnockback());
 
+        //cannot test this bc assets are null
 //        myMonster.setHitPoints(0);
+//        myHero.setInvincibility(false);
+//
 //        myMonster.update();
 //        assertEquals(myMonster.getDamage(), 0);
-
-        //^^ one more else if to write tests for
 
         myMonster.setHitPoints(1);
         myMonster.setKnockback(false);
@@ -112,8 +129,18 @@ class MonsterTest
         assertTrue(myMonster.getMyPreviousPos().equals(pos));
         assertTrue(myMonster.getMyPos().equals(vel));
 
+        myMonster.setHitPoints(1);
+        myMonster.setKnockback(true);
+        Vec2 oldPos = myMonster.getMyPos();
+        Vec2 oldPrev = myMonster.getMyPreviousPos();
+        Vec2 vel2 = myMonster.getVelocity();
+        myMonster.update();
 
-        assertEquals(myMonster.getCurrentFrame(), 3);
+        assertTrue(oldPos.equals(myMonster.getMyPreviousPos()));
+        assertTrue((oldPos.add(vel2)).equals(myMonster.getMyPos()));
+        assertTrue(oldPrev.equals(myMonster.getMyPos()));
+
+        assertEquals(myMonster.getCurrentFrame(), 4);
     }
 
     /**
@@ -123,6 +150,13 @@ class MonsterTest
     void testMovement()
     {
         //write tests for Movement
+        final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
+
+        Vec2 vel1 = myMonster.getVelocity();
+
+        myMonster.movement();
+
     }
 
     /**
@@ -131,7 +165,35 @@ class MonsterTest
     @Test
     void testCollide()
     {
-        //write tests for collide
+        final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
+
+        myHero.setHitPoints(4);
+        myMonster.setMyPos(new Vec2());
+        myHero.setMyPos(new Vec2());
+        myMonster.collide();
+
+        assertEquals(4 - myMonster.attack(), myHero.getHitPoints());
+        assertTrue(myHero.isInvincibility());
+
+
+        myHero.setInvincibility(false);
+        myHero.setHitPoints(1);
+        myMonster.collide();
+
+        assertTrue(myHero.getMyPos().equals(myHero.getHomePosition()));
+        assertTrue(myHero.getHitPoints() == 10);
+        assertTrue(myHero.getDamage() == 1);
+        assertTrue(myHero.getMaxSpeed() == 5);
+
+
+        myMonster.setMyPos(new Vec2(2,2));
+        myHero.setMyPos(new Vec2(1,1));
+        int oldHP = myHero.getHitPoints();;
+        myMonster.collide();
+
+        assertEquals(oldHP, myHero.getHitPoints());
+
     }
 
     /**
@@ -140,7 +202,7 @@ class MonsterTest
     @Test
     void testGetMonsterType()
     {
-        final Monster myMonster = new Monster("Ogre", 10, 30, 2, new Vec2(),
+        final Monster myMonster = new Monster("Ogre", 10, 3, 2, new Vec2(),
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
 
         assertEquals(myMonster.getMonsterType(), "Ogre");
@@ -152,13 +214,29 @@ class MonsterTest
     @Test
     void testSetRoom()
     {
-        final Monster myMonster = new Monster("Ogre", 10, 30, 2, new Vec2(),
+        final Monster myMonster = new Monster("Ogre", 10, 3, 2, new Vec2(),
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
 
         Vec2 room = new Vec2(8,6);
         myMonster.setRoom(new Vec2(8,6));
         assertTrue(myMonster.getMyPos().equals(Physics.getPosition((int) room.getMyX(), (int) room.getMyY(),
-                (int) myMonster.getMyPos().getMyX(),(int) myMonster.getMyPos().getMyY()))); //review this
+                (int) myMonster.getMyPos().getMyX(),(int) myMonster.getMyPos().getMyY()))); //not passing
+
+    }
+
+    /**
+     * Test method for {@link Monster#setRoom(Vec2, int)}
+     */
+    @Test
+    void testSetRoom2()
+    {
+        final Monster myMonster = new Monster("Gremlin", 10, 3, 3, new Vec2(),
+                new Vec2(), myHero, new Vec2(),myEntityFactory);
+
+        Vec2 room = new Vec2(8,6);
+        myMonster.setRoom(new Vec2(8,6), 2);
+        assertTrue(myMonster.getMyPos().equals(Physics.getPosition((int) room.getMyX(), (int) room.getMyY(),
+                (int) myMonster.getMyPos().getMyX(),(int) myMonster.getMyPos().getMyY()))); //not passing?
 
     }
 
