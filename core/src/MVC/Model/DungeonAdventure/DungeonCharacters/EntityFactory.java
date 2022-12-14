@@ -14,8 +14,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class EntityFactory
@@ -388,49 +386,6 @@ public class EntityFactory
         arr.add(new Pillar("Inheritance", this));
         arr.add(new Pillar("Abstraction", this));
         arr.add(new Pillar("Polymorphism", this));
-
-        return arr;
-    }
-
-
-    public List<HealingPotion> generateHealingPotions(final int theN)
-    {
-        var arr = new ArrayList<HealingPotion>();
-
-        for (int i = 0; i < theN; i++)
-        {
-            var p = new HealingPotion(this);
-            p.setMyPos(getHero().getMyPos().add(new Vec2(100,50)));
-            myEntitiesToAdd.add(p);
-        }
-
-        return arr;
-    }
-
-    public List<SpeedPotion> generateSpeedPotions(final int theN)
-    {
-        var arr = new ArrayList<SpeedPotion>();
-
-        for (int i = 0; i < theN; i++)
-        {
-            var p = new SpeedPotion(this);
-            p.setMyPos(getHero().getMyPos().add(new Vec2(100,-50)));
-            myEntitiesToAdd.add(p);
-        }
-
-        return arr;
-    }
-
-    public List<AttackPotion> generateAttackPotions(final int theN)
-    {
-        var arr = new ArrayList<AttackPotion>();
-
-        for (int i = 0; i < theN; i++)
-        {
-            var p = new AttackPotion(this);
-            p.setMyPos(getHero().getMyPos().add(new Vec2(-100,50)));
-            myEntitiesToAdd.add(p);
-        }
 
         return arr;
     }

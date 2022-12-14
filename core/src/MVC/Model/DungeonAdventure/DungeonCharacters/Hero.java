@@ -2,7 +2,6 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
 import MVC.Model.DungeonItems.Weapon.Sword;
-import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,10 +73,25 @@ public abstract class Hero extends DungeonCharacter
         setDown(false);
         setLeft(false);
         setRight(false);
+        setHomePosition(getMyPos());
         myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
         setMyKnockbackPower(4);
         setMyKnockbackLength(10);
+    }
+
+    /**
+     * Overriding the destroy to temporarily allow Hero to go back.
+     * TODO:Delete after testing
+     */
+    @Override
+    public void destroy()
+    {
+        setMyPos(getHomePosition());
+        setHitPoints(10);
+        setDamage(1);
+        setMaxSpeed(5);
+
     }
 
     /**

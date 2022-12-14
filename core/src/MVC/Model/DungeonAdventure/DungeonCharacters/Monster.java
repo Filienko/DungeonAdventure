@@ -19,11 +19,6 @@ public class Monster extends DungeonCharacter
     private final static int MY_AGGRESSION_DISTANCE = 25;
 
     /**
-     * Monster's default position.
-     */
-    private final Vec2 myHomePosition;
-
-    /**
      * The specific Monster type.
      */
     private String myMonsterType; //should this be changed back to final?
@@ -51,7 +46,6 @@ public class Monster extends DungeonCharacter
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
 
-        myHomePosition = new Vec2();
         setMonsterType(theMonsterType);
         setHero(theHero);
         if(getMyEntityFactory().getAssets()!=null)
@@ -123,9 +117,9 @@ public class Monster extends DungeonCharacter
             direction = myHero.getMyPos().minus(npcPosition);
             velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
-        else if (myHomePosition.getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
+        else if (getHomePosition().getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
         {
-            direction = myHomePosition.minus(npcPosition);
+            direction = getHomePosition().minus(npcPosition);
             velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
 
@@ -207,7 +201,7 @@ public class Monster extends DungeonCharacter
         var monsterPos = allowedTiles.get(new Random().nextInt(0,allowedTiles.size()));
         setMyPos(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
                 (int) monsterPos.getMyX(), (int) monsterPos.getMyY()));
-        myHomePosition.copy(getMyPos());
+        setHomePosition(getMyPos());
     }
 
     public void setRoom(final Vec2 theRoom, int theRatPos)
@@ -221,7 +215,15 @@ public class Monster extends DungeonCharacter
         var monsterPos = allowedTiles.get(theRatPos);
         setMyPos(Physics.getPosition((int) theRoom.getMyX(), (int) theRoom.getMyY(),
                 (int) monsterPos.getMyX(), (int) monsterPos.getMyY()));
-        myHomePosition.copy(getMyPos());
+        setHomePosition(getMyPos());
+    }
+
+    private void setHero(final Hero theHero)
+    {
+        if (theHero != null)
+        {
+            myHero = theHero;
+        }
     }
 
     @Override
@@ -232,13 +234,5 @@ public class Monster extends DungeonCharacter
                 ", Hero status = " + MY_HERO_STATUS +
                 ", myHitPoints = " + getHitPoints() +
                 '}';
-    }
-
-    private void setHero(final Hero theHero)
-    {
-        if (theHero != null)
-        {
-            myHero = theHero;
-        }
     }
 }
