@@ -71,8 +71,6 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     private long myLastDamageFrame;
 
-    private Vec2 myHomePosition;
-
     /**
      * The magnitude that this character knocks back other entities with.
      */

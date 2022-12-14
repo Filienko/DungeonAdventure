@@ -22,7 +22,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The specific Hero type.
      */
-    private String myCharacterType; //should this be changed back to final?
+    private String myCharacterType;
 
     /**
      * The Hero's weapon.
@@ -48,7 +48,6 @@ public abstract class Hero extends DungeonCharacter
     private Vec2 myFacing;
     private boolean myUsingSpecial;
 
-    private Room myStartingRoom;
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
      * damage it can inflict, max speed, position, velocity, Potions and Pillars in inventory, booleans that tell which
@@ -94,12 +93,6 @@ public abstract class Hero extends DungeonCharacter
         setHitPoints(10);
         setDamage(1);
         setMaxSpeed(5);
-
-    }
-
-    public void setRoom(final Room theRoom)
-    {
-        myStartingRoom = theRoom;
     }
 
     /**

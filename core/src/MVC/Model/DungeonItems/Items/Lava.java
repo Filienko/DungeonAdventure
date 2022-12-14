@@ -17,10 +17,12 @@ public class Lava extends Item
     @Override
     public void activate(final Hero theHero)
     {
-        if(theHero.getHitPoints() >= myDamage)
-        {
-            theHero.setHitPoints(theHero.getHitPoints() - myDamage);
-        }
+//        if(theHero.getHitPoints() > myDamage)
+//        {
+//            theHero.setHitPoints(theHero.getHitPoints() - myDamage);
+//        }
+
+        theHero.setHitPoints(Math.min(0, theHero.getHitPoints() - myDamage));
         destroy();
     }
 
