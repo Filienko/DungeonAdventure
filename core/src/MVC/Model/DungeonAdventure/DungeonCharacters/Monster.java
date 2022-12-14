@@ -148,7 +148,12 @@ public class Monster extends DungeonCharacter
             myHero.applyDamage(attack());
             if (myHero.getHitPoints() <= 0)
             {
-                myHero.destroy();
+                //myHero.destroy();
+
+                myHero.setRoom(new Vec2(0,0)); //how to get entrance location from dungeon and update view?
+                //myHero.setPillars(0);
+                myHero.setHitPoints(10);
+                myHero.update();
             }
             myHero.setInvincibility(true,45);
         }

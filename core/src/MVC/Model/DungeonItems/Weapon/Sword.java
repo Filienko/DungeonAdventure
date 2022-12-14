@@ -14,17 +14,15 @@ public class Sword extends Entity implements ICollidable
 {
     private static Sword mySword;
 
-    private EntityFactory myEntityFactory; //should this be made final again? changed for constructor
-    //^^ main no longer has this??
-
+    private EntityFactory myEntityFactory;
     private final long myLifeSpan;
 
-    private Hero myHero;
+    private final Hero myHero;
 
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), theHero.getMyPos(), "Sword", theEntityFactory);
-        setMyEntityFactory(theEntityFactory); //^^ main no longer has this??
+        setMyEntityFactory(theEntityFactory);
         myLifeSpan = 15;
         setCurrentFrame(0);
         myHero = theHero;
@@ -109,5 +107,10 @@ public class Sword extends Entity implements ICollidable
         position.setMyY(myHero.getMyPos().getMyY()+48*myHero.getFacing().getMyY());
         setMyPreviousPos(getMyPos());
         setMyPos(position);
+    }
+
+    public Hero getMyHero()
+    {
+        return myHero;
     }
 }

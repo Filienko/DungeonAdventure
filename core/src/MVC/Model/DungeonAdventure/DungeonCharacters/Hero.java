@@ -1,6 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
+import MVC.Model.DungeonItems.Room;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public abstract class Hero extends DungeonCharacter
     private long myInitiatedFrame;
     private Vec2 myFacing;
     private boolean myUsingSpecial;
+
+    private Room myStartingRoom;
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
      * damage it can inflict, max speed, position, velocity, Potions and Pillars in inventory, booleans that tell which
@@ -75,6 +78,11 @@ public abstract class Hero extends DungeonCharacter
         setRight(false);
         myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
+    }
+
+    public void setRoom(final Room theRoom)
+    {
+        myStartingRoom = theRoom;
     }
 
     /**
