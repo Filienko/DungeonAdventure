@@ -12,7 +12,7 @@ public abstract class Entity
     private Vec2 myPreviousPos;
     private boolean myEntityAnimated;
     private Animation myAnimation;
-    private int myRotation;
+    private float myRotation;
     private String myType;
     private boolean myActiveStatus;
     private long myCurrentFrame;
@@ -119,12 +119,12 @@ public abstract class Entity
         myCurrentFrame++;
     }
 
-    public int getRotation() { return myRotation; }
+    public float getRotation() { return myRotation; }
 
-    public void setRotation(int theScale) {
-        if (theScale >= 0)
+    public void setRotation(float theRotation) {
+        if (theRotation >= 0)
         {
-            myRotation = theScale;
+            myRotation = theRotation;
         }
     }
 

@@ -22,9 +22,9 @@ public class Exit extends Item
         return myExit;
     }
 
-    public boolean checkFinishGame(final Hero theHero)
+    public boolean checkFinishGame()
     {
-        return theHero.getPillars() == 4;
+        return getMyEntityFactory().getEntities("worm").isEmpty();
     }
 
     public static boolean isExited() { return myExited; }
@@ -33,7 +33,7 @@ public class Exit extends Item
     public void activate(final Hero theHero)
     {
         System.out.println(theHero.getPillars());
-        if(checkFinishGame(theHero)) //is getMyEntityFactory().getHero() instead of theHero ok?
+        if(checkFinishGame()) //is getMyEntityFactory().getHero() instead of theHero ok?
         {
             myExited = true;
             theHero.destroy();
