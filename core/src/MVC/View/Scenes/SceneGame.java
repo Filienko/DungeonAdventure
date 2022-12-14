@@ -10,6 +10,7 @@ import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -24,6 +25,7 @@ public class SceneGame extends Scene
     private boolean myDrawBoundingBoxes;
     private boolean myMuted;
     private final ArrayList<String> myRenderOrder;
+    private long myLastSkitterFrame;
 
     public SceneGame(GameEngine game, String hero)
     {
@@ -63,6 +65,7 @@ public class SceneGame extends Scene
         registerAction(Input.Keys.M, "TOGGLE_SOUND");
 
         myHero = myEntityFactory.getHero();
+        myLastSkitterFrame = 0;
     }
 
     private void initialize()
@@ -83,6 +86,8 @@ public class SceneGame extends Scene
         myEntityFactory.generateRoomEntities(testRoom);
 
          */
+
+
 
     }
 
@@ -130,6 +135,7 @@ public class SceneGame extends Scene
                 animation();
             }
             camera();
+            music();
             myCurrentFrame++;
         }
 
@@ -310,12 +316,54 @@ public class SceneGame extends Scene
             Worm w = (Worm) e;
             double angle = Math.atan2(w.getVelocity().getMyY(), w.getVelocity().getMyX()) * 57.296 + 135;
             sprite.setRotation((float) angle);
+            if (((Worm) e).isKnockback())
+            {
+                long remainder = (((Worm) e).getKnockbackEndFrame() - e.getCurrentFrame()) % 6;
+                if (remainder < 3)
+                {
+                    sprite.setColor(Color.RED);
+                }
+                else if (remainder >= 3)
+                {
+                    sprite.setColor(Color.GREEN);
+                }
+            }
+            else
+            {
+                sprite.setColor(Color.WHITE);
+            }
         }
         else if (e.getType().equals("Body") || e.getType().equals("Tail"))
         {
             Vec2 vector = e.getMyPos().minus(e.getMyPreviousPos());
             double angle = Math.atan2(vector.getMyY(), vector.getMyX()) * 57.296 + 135;
             sprite.setRotation((float) angle);
+
+            Worm w;
+            if (e.getType().equals("Body"))
+            {
+                w = ((Worm.Body) e).getHead();
+            }
+            else
+            {
+                w = ((Worm.Tail) e).getHead();
+            }
+            if (w.isKnockback())
+            {
+                long remainder = (w.getKnockbackEndFrame() - w.getCurrentFrame()) % 6;
+                if (remainder < 3)
+                {
+                    sprite.setColor(Color.RED);
+                }
+                else if (remainder >= 3)
+                {
+                    sprite.setColor(Color.GREEN);
+                }
+            }
+            else
+            {
+                sprite.setColor(Color.WHITE);
+            }
         }
         sprite.draw(myRenderer.getSpriteBatch());
     }
@@ -408,6 +456,24 @@ public class SceneGame extends Scene
                 }
             }
         }
+        else if (e.getType().equals("Worm"))
+        {
+            Worm w = (Worm) e;
+            if (w.isSpawned())
+            {
+                if (w.getLastDamageFrame() == w.getCurrentFrame())
+                {
+                    myRenderer.getAssets().getSound("bossHit").play(.5f);
+                }
+                if (w.getCurrentFrame() >= myLastSkitterFrame + 16 &&
+                        Physics.getRoom(myHero.getMyPos().getMyX(), myHero.getMyPos().getMyY())
+                                .equals(Physics.getRoom(w.getMyPos().getMyX(), w.getMyPos().getMyY())))
+                {
+                    myRenderer.getAssets().getSound("bossSkitter").play(.5f);
+                    myLastSkitterFrame = w.getCurrentFrame() + 16;
+                }
+            }
+        }
         else if (e.getType().equals("Hero"))
         {
             Hero h = (Hero) e;
@@ -456,6 +522,36 @@ public class SceneGame extends Scene
         pixelPos = Physics.getPosition(roomX, roomY, 5, 5);
         font = myRenderer.getAssets().getFont("mario24");
         font.draw(myRenderer.getSpriteBatch(), "PRESS ESC TO RETURN TO MENU", pixelPos.getMyX(), pixelPos.getMyY());
+    }
+
+    private void music()
+    {
+        if (!myEntityFactory.getEntities("worm").isEmpty())
+        {
+            Worm w = (Worm) myEntityFactory.getEntities("worm").get(0);
+            if (w.isSpawned() && w.getHitPoints() > 0 &&
+                    Physics.getRoom(myHero.getMyPos().getMyX(), myHero.getMyPos().getMyY())
+                            .equals(Physics.getRoom(w.getMyPos().getMyX(), w.getMyPos().getMyY())))
+            {
+                if (!myRenderer.getAssets().getMusic("boss").isPlaying())
+                {
+                    myRenderer.getAssets().getMusic("boss").setLooping(true);
+                    myRenderer.getAssets().getMusic("boss").setVolume(.5f);
+                    myRenderer.getAssets().getMusic("boss").play();
+                }
+            }
+            else if (w.isSpawned() && w.getHitPoints() <= 0)
+            {
+                myRenderer.getAssets().getMusic("boss").stop();
+                if (!myRenderer.getAssets().getMusic("victory").isPlaying())
+                {
+                    myRenderer.getAssets().getMusic("victory").setLooping(false);
+                    myRenderer.getAssets().getMusic("victory").setVolume(.5f);
+                    myRenderer.getAssets().getMusic("victory").play();
+                }
+            }
+        }
+
     }
 
 }
