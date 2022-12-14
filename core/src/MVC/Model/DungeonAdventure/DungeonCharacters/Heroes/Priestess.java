@@ -46,7 +46,6 @@ public class Priestess extends Hero implements Healable
         if((new Random()).nextDouble()<0.05)
         {
             special();
-            setUsingSpecial(true);
         }
         return damage;
     }
@@ -59,6 +58,8 @@ public class Priestess extends Hero implements Healable
      */
     public int special()
     {
+        setUsingSpecial(true);
+
         return heal(this, MY_MAX_HEAL);
     }
 }

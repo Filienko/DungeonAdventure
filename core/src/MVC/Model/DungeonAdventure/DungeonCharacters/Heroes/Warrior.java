@@ -40,11 +40,9 @@ public class Warrior extends Hero
     {
         var damage = 0;
         var chance = Math.random();
-        if (chance < 1)
+        if (chance < 0.4)
         {
             damage = special();
-            setMyKnockbackPower(30);
-            setMyKnockbackLength(10);
         }
         else
         {
@@ -61,7 +59,11 @@ public class Warrior extends Hero
      */
     public int special()
     {
+        setUsingSpecial(true);
+        setMyKnockbackPower(30);
+        setMyKnockbackLength(10);
         Random rand = new Random();
+
         return rand.nextInt(getDamage(), getDamage()+3);
     }
 }

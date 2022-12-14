@@ -162,7 +162,7 @@ public class EntityFactory
                 int tileX = Integer.parseInt(tiles[0]);
                 int tileY = Integer.parseInt(tiles[1]);
                 pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
-                lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(62, 62));
                 lava.setMyAnimation(myAssets.getAnimation("lava"));
                 lava.setType("Lava");
                 myEntitiesToAdd.add(lava);

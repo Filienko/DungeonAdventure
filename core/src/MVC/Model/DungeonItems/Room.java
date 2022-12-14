@@ -164,7 +164,7 @@ public class Room implements Cloneable
 
     public void populateLava(double theChance)
     {
-        if(theChance < 0.10)
+        if(theChance < 0.10 && !myEntrance && !myExit)
         {
             setLava(true);
         }
@@ -193,7 +193,7 @@ public class Room implements Cloneable
             {
                 addItem("attackPotion");
             }
-            else if (randD < 0.76)
+            else if (randD < 0.75)
             {
                 addItem("speedPotion");
             }
