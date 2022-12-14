@@ -46,9 +46,8 @@ public abstract class Entity
 
     public void setMyPos(Vec2 thePos)
     {
-        if (thePos != null)  //can myPos ever be negative?
+        if (thePos != null)
         {
-            //myPos.copy(thePos);
             myPos = thePos;
         }
     }
@@ -101,7 +100,6 @@ public abstract class Entity
         if (theAnimation != null)
         {
             myAnimation = new Animation(theAnimation);
-            // why not myAnimation = theAnimation; ?
         }
     }
 
@@ -114,7 +112,7 @@ public abstract class Entity
     }
     public String getType()                     { return myType; }
 
-    protected void incrementCurrentFrame() //?
+    protected void incrementCurrentFrame()
     {
         myCurrentFrame++;
     }
@@ -156,7 +154,7 @@ public abstract class Entity
         return myEntityFactory;
     }
 
-    protected void setMyEntityFactory(final EntityFactory theEntityFactory) //should this be less visible?
+    protected void setMyEntityFactory(final EntityFactory theEntityFactory)
     {
         if (theEntityFactory != null)
         {
@@ -172,7 +170,6 @@ public abstract class Entity
     public void setRoom(final Vec2 theRoom)
     {
         if (theRoom != null) {
-            //myRoom.copy(theRoom);
             myRoom = theRoom;
         }
     }

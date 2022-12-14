@@ -32,8 +32,8 @@ public class Exit extends Item
     @Override
     public void activate(final Hero theHero)
     {
-        System.out.println(theHero.getPillars());
-        if(checkFinishGame()) //is getMyEntityFactory().getHero() instead of theHero ok?
+        //System.out.println(theHero.getPillars());
+        if(checkFinishGame() && theHero.getPillars() == 4)
         {
             myExited = true;
             theHero.destroy();

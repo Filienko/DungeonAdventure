@@ -6,7 +6,7 @@ import MVC.Model.Physics.Vec2;
 
 public class Pillar extends Item
 {
-    private String myName; //should this be changed back to final?
+    private String myName;
     private boolean myBroken;
 
     public Pillar(final EntityFactory theEntityFactory)

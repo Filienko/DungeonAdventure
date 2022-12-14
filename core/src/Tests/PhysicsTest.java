@@ -2,6 +2,7 @@ package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.Physics.Intersect;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
@@ -15,24 +16,31 @@ public class PhysicsTest
     @Test
     void testPhysics()
     {
-        //var hero = (new EntityFactory()).generateMockHero();
-        //Entity ogre = (new EntityFactory()).generateOgre();
-
         var hero = theEntityFactory.generateMockHero();
-        Entity ogre = theEntityFactory.generateOgre();
-
-        hero.setMyPos(new Vec2());
-        ogre.setMyPos(new Vec2());
+        Monster ogre = theEntityFactory.generateOgre();
 
         hero.setMyPreviousPos(new Vec2(1,1));
         ogre.setMyPreviousPos(new Vec2(-1,2));
 
-        assertTrue(Vec2.equals(new Vec2(),
+        hero.setMyPos(new Vec2(1,2));
+        ogre.setMyPos(new Vec2(1,3));
+
+        int heroXHalf = (int)hero.getMySize().getMyX()/2;
+        int heroYHalf = (int)hero.getMySize().getMyY()/2;
+
+        int ogreXHalf = (int)ogre.getMySize().getMyX()/2;
+        int ogreYHalf = (int)ogre.getMySize().getMyY()/2;
+
+        Vec2 dPos = new Vec2(Math.abs(hero.getMyPos().getMyX() - ogre.getMyPos().getMyX()),
+                Math.abs(hero.getMyPos().getMyY() - ogre.getMyPos().getMyY()));
+
+        assertTrue(Vec2.equals(new Vec2(heroXHalf + ogreXHalf - dPos.getMyX(), heroYHalf + ogreYHalf - dPos.getMyY()),
                 Physics.getOverlap(hero,ogre)));
+        assertTrue(Vec2.equals(new Vec2(heroXHalf + ogreXHalf - dPos.getMyX(), heroYHalf + ogreYHalf - dPos.getMyY()),
+                Physics.getOverlapVector(hero,ogre,hero.getMyPos(),ogre.getMyPos())));
+
         assertFalse(Vec2.equals(new Vec2(),
                 Physics.getPreviousOverlap(hero,ogre)));
-        assertTrue(Vec2.equals(new Vec2(),
-                Physics.getOverlapVector(hero,ogre,new Vec2(),new Vec2())));
         assertFalse(Physics.isInside(new Vec2(),
                 ogre));
         assertTrue(Vec2.equals(new Vec2(),

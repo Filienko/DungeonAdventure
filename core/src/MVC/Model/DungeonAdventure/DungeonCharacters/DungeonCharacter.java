@@ -1,6 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
+import MVC.Model.DungeonItems.Items.Lava;
 import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
@@ -510,7 +511,12 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                         if (!this.isInvincibility())
                         {
                             this.applyDamage(1);
+                            //((Lava)t).activate((Hero) this);
                             this.setInvincibility(true, 45);
+                            if (this.getHitPoints() <= 0)
+                            {
+                                destroy();
+                            }
                             myBurning = true;
                         }
                     }

@@ -75,7 +75,8 @@ class DoorTest
         myDoor.decrementMonsterCounter();
         assertTrue(myDoor.getActiveStatus());
         myDoor.decrementMonsterCounter();
-        assertFalse(myDoor.getActiveStatus());
+
+        assertTrue(myDoor.getActiveStatus());
 
         myDoor.update();
         assertFalse(myDoor.getActiveStatus());
