@@ -2,6 +2,7 @@ package MVC.View;
 
 import MVC.View.Animation;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +20,7 @@ public class Assets
     private ObjectMap<String, Animation> myAnimationMap;
     private ObjectMap<String, BitmapFont> myFontMap;
     private ObjectMap<String, Sound> mySoundMap;
+    private ObjectMap<String, Music> myMusicMap;
     private ArrayList<String> myAnimationNames;
 
     // Constructor
@@ -28,6 +30,7 @@ public class Assets
         myAnimationMap      = new ObjectMap<String, Animation>();
         myFontMap           = new ObjectMap<String, BitmapFont>();
         mySoundMap          = new ObjectMap<String, Sound>();
+        myMusicMap          = new ObjectMap<String, Music>();
         myAnimationNames    = new ArrayList<String>();
     }
 
@@ -60,9 +63,9 @@ public class Assets
                 {
                     addSound(attributes[0], fileName);
                 }
-                else
+                else if (fileName.contains(".mp3"))
                 {
-                    //System.out.println("Error: unknown asset type");
+                    addMusic(attributes[0], fileName);
                 }
             }
         }
@@ -123,6 +126,19 @@ public class Assets
         }
     }
 
+    private void addMusic(final String theMusicName, final String theFileName)
+    {
+        myMusicMap.put(theMusicName, Gdx.audio.newMusic(Gdx.files.internal(theFileName)));
+        if (mySoundMap.get(theMusicName) == null)
+        {
+            System.out.println("Could not load sound file: " + theFileName);
+        }
+        else
+        {
+            System.out.println("Loaded sound: " + theFileName);
+        }
+    }
+
     public Texture getTexture(final String textureName)
     {
         assert(myTextureMap.get(textureName) != null);
@@ -145,6 +161,12 @@ public class Assets
     {
         assert(mySoundMap.get(soundName) != null);
         return mySoundMap.get(soundName);
+    }
+
+    public Music getMusic(final String theMusicName)
+    {
+        assert(myMusicMap.get(theMusicName) != null);
+        return myMusicMap.get(theMusicName);
     }
 
     public ArrayList<String> getAnimationNames()
