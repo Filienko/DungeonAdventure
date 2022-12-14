@@ -511,12 +511,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                         if (!this.isInvincibility())
                         {
                             this.applyDamage(1);
-                            //((Lava)t).activate((Hero) this);
                             this.setInvincibility(true, 45);
-                            if (this.getHitPoints() <= 0)
-                            {
-                                destroy();
-                            }
                             myBurning = true;
                         }
                     }
