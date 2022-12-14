@@ -41,8 +41,6 @@ public class Thief extends Hero
         if (chance < 0.25)
         {
             damage = special();
-            setMyKnockbackPower(0);
-            setMyKnockbackLength(60);
         }
         else
         {
@@ -60,27 +58,10 @@ public class Thief extends Hero
      */
     public int special()
     {
-//        double chance = Math.random();
-//
-//        if (chance < MY_HIDDEN_CHANCE)
-//        {
-//            myHiddenStatus = true;
-//        }
-//
-//        int damage = 1;
-//        if (myHiddenStatus)
-//        {
-//            chance = Math.random();
-//            if (chance < 0.8)
-//            {
-//                damage = 3;
-//            }
-//            myHiddenStatus = false;
-//        }
-//        else
-//        {
-//            damage = super.attack();
-//        }
+        setUsingSpecial(true);
+        setMyKnockbackPower(0);
+        setMyKnockbackLength(60);
+
         return getDamage()+5;
     }
 }
