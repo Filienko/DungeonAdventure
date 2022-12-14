@@ -36,7 +36,7 @@ class SpeedPotionTest
 
         Warrior myWarrior = new Warrior(new EntityFactory());
 
-        int oldSpeed = myWarrior.getMaxSpeed();
+        float oldSpeed = myWarrior.getMaxSpeed();
 
         mySP.activate(myWarrior);
 

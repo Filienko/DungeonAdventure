@@ -263,6 +263,13 @@ public abstract class Hero extends DungeonCharacter
     public void incrementPillars()
     {
         myPillars++;
+        if (myPillars >= 4)
+        {
+            if (!getMyEntityFactory().getEntities("worm").isEmpty())
+            {
+                ((Worm) getMyEntityFactory().getEntities("worm").get(0)).spawn();
+            }
+        }
     }
 
     /**

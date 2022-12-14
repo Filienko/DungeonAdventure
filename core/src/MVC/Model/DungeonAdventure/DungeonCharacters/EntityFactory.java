@@ -84,24 +84,27 @@ public class EntityFactory
         }
 
         int monsterCounter = 0;
-        while(monsters.toString().contains(","))
+        if (!theRoom.isTheExit())
         {
-            String monster = monsters.substring(0, monsters.indexOf(",")+1);
-            monsters.delete(0, monsters.indexOf(",")+1);
-            monster = monster.substring(0,monster.indexOf(","));
-            var e = generateMonsters(monster);
-
-            if(e.getMonsterType().contentEquals("rat"))
+            while (monsters.toString().contains(","))
             {
-                e.setRoom(location,monsterCounter);
-            }
-            else
-            {
-                e.setRoom(location);
-            }
+                String monster = monsters.substring(0, monsters.indexOf(",") + 1);
+                monsters.delete(0, monsters.indexOf(",") + 1);
+                monster = monster.substring(0, monster.indexOf(","));
+                var e = generateMonsters(monster);
 
-            myEntitiesToAdd.add(e);
-            monsterCounter++;
+                if (e.getMonsterType().contentEquals("rat"))
+                {
+                    e.setRoom(location, monsterCounter);
+                }
+                else
+                {
+                    e.setRoom(location);
+                }
+
+                myEntitiesToAdd.add(e);
+                monsterCounter++;
+            }
         }
 
         if (theRoom.isN())
@@ -142,7 +145,19 @@ public class EntityFactory
             generateLava((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
         }
 
+        if (theRoom.isTheExit())
+        {
+            generateWorm(location);
+        }
+
         return myEntitiesToAdd;
+    }
+
+    private void generateWorm(final Vec2 theLocation)
+    {
+            Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
+            Worm worm = new Worm(pixelPos, this);
+            myEntitiesToAdd.add(worm);
     }
 
     private void generateLava(final int roomX, final int roomY)
@@ -415,6 +430,11 @@ public class EntityFactory
         }
 
         return new ArrayList<Entity>();
+    }
+
+    public void addEntity(Entity theEntity)
+    {
+        myEntitiesToAdd.add(theEntity);
     }
 
     public Hero getHero()

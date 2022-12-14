@@ -1,14 +1,9 @@
 package MVC.Model.DungeonItems.Weapon;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
-import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
+import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
-import MVC.View.Animation;
-import com.badlogic.gdx.graphics.Texture;
 
 public class Sword extends Entity implements ICollidable
 {
@@ -90,6 +85,33 @@ public class Sword extends Entity implements ICollidable
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
                         m.setInvincibility(true, lifespanLeft);
                         m.knockback(this, myHero.getMyKnockbackPower(), myHero.getMyKnockbackLength());
+                    }
+                }
+            }
+        }
+
+        for (var e: getMyEntityFactory().getEntities("worm"))
+        {
+            Worm w = (Worm) e;
+            Entity t = (w).getTail();
+
+            if (w.getActiveStatus() && !w.isInvincibility())
+            {
+                Vec2 overlap = Physics.getOverlap(this, t);
+                if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+                {
+                    w.applyDamage(1);
+
+                    if(w.getHitPoints()<=0)
+                    {
+                        w.die();
+                    }
+                    else
+                    {
+                        w.setInvincibility(true, 10);
+                        w.knockback(this, 0, 60);
+                        w.setMaxSpeed(w.getMaxSpeed() + Math.signum(w.getMaxSpeed()) * .5f);
+                        w.decreaseLag();
                     }
                 }
             }
