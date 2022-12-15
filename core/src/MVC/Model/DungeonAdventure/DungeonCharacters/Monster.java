@@ -15,9 +15,6 @@ public class Monster extends DungeonCharacter
      */
     private final static boolean MY_HERO_STATUS = false;
 
-    //TODO:Add variability to the monster's aggression
-    private final static int MY_AGGRESSION_DISTANCE = 25;
-
     /**
      * The specific Monster type.
      */
@@ -37,17 +34,16 @@ public class Monster extends DungeonCharacter
      * @param theMaxSpeed The Monster's maximum speed.
      * @param thePos The Monster's location.
      * @param theVelocity The Monster's velocity.
-     * @param theHero the Hero associated with the Monsters
      */
     public Monster(final String theMonsterType, final int theHitPoints, final int theDamage, final int theMaxSpeed,
-                  final Vec2 thePos, final Vec2 theVelocity, final Hero theHero, final Vec2 theDimensions,
+                  final Vec2 thePos, final Vec2 theVelocity, final Vec2 theDimensions,
                    final EntityFactory theEntityFactory)
     {
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
 
         setMonsterType(theMonsterType);
-        setHero(theHero);
+        setHero(getMyEntityFactory().getHero());
         setMaxSpeed(theMaxSpeed);
         if(getMyEntityFactory().getAssets()!=null)
         {
@@ -124,11 +120,6 @@ public class Monster extends DungeonCharacter
         if (hasSight)
         {
             direction = myHero.getMyPos().minus(npcPosition);
-            velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
-        }
-        else if (getHomePosition().getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
-        {
-            direction = getHomePosition().minus(npcPosition);
             velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
 

@@ -24,7 +24,7 @@ class MonsterTest
     void testMonsterConstructorOgre()
     {
         final Monster myMonster = new Monster("Ogre", 5, 2, 2, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         assertEquals("Ogre", myMonster.getMonsterType());
         assertFalse(myMonster.getHeroStatus());
@@ -40,7 +40,7 @@ class MonsterTest
     void testMonsterConstructorGremlin()
     {
         final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         assertEquals("Gremlin", myMonster.getMonsterType());
         assertFalse(myMonster.getHeroStatus());
@@ -56,7 +56,7 @@ class MonsterTest
     void testAttack()
     {
         final Monster myMonster = new Monster("Swarm of Rats",1 , 1, 7, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         assertEquals(myMonster.attack(), myMonster.getDamage());
     }
@@ -68,7 +68,7 @@ class MonsterTest
     void testDestroy()
     {
         final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         myEntityFactory.generatePillars();
 
@@ -100,7 +100,7 @@ class MonsterTest
     void testUpdate()
     {
         final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         long iEndFrame = myMonster.getInvincibilityEndFrame();
         myMonster.setCurrentFrame(iEndFrame+1);
@@ -151,7 +151,7 @@ class MonsterTest
     {
         //write tests for Movement
         final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         Vec2 vel1 = myMonster.getVelocity();
 
@@ -166,7 +166,7 @@ class MonsterTest
     void testCollide()
     {
         final Monster myMonster = new Monster("Gremlin", 3, 1, 3, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         myHero.setHitPoints(4);
         myMonster.setMyPos(new Vec2());
@@ -203,7 +203,7 @@ class MonsterTest
     void testGetMonsterType()
     {
         final Monster myMonster = new Monster("Ogre", 10, 3, 2, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         assertEquals(myMonster.getMonsterType(), "Ogre");
     }
@@ -215,7 +215,7 @@ class MonsterTest
     void testSetRoom()
     {
         final Monster myMonster = new Monster("Ogre", 10, 3, 2, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         Vec2 room = new Vec2(8,6);
         myMonster.setRoom(new Vec2(8,6));
@@ -231,7 +231,7 @@ class MonsterTest
     void testSetRoom2()
     {
         final Monster myMonster = new Monster("Gremlin", 10, 3, 3, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         Vec2 room = new Vec2(8,6);
         myMonster.setRoom(new Vec2(8,6), 2);
@@ -247,7 +247,7 @@ class MonsterTest
     void testToString()
     {
         final Monster myMonster = new Monster("Ogre", 10, 30, 2, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
+                new Vec2(), new Vec2(),myEntityFactory);
 
         assertEquals("Monster {myMonsterType = 'Ogre', Hero status = false, myHitPoints = 10}", myMonster.toString());
     }

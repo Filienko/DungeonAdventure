@@ -17,7 +17,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class EntityFactory implements Serializable
 {
@@ -45,8 +44,7 @@ public class EntityFactory implements Serializable
     public Monster generateMonster(final String monsterType)
     {
         SuperMonsterDB DB = new MonsterDB();
-        var monster = DB.createMonsterDB(monsterType, myHero,this);
-        return monster;
+        return DB.createMonsterDB(monsterType,this);
     }
 
     public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
@@ -141,9 +139,14 @@ public class EntityFactory implements Serializable
 
     public void generateWorm(final Vec2 theLocation)
     {
-            Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
-            Worm worm = new Worm(pixelPos, this);
-            myEntitiesToAdd.add(worm);
+        SuperMonsterDB DB = new MonsterDB();
+        Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
+        System.out.println(pixelPos.getMyX());
+        System.out.println(pixelPos.getMyY());
+        var worm = DB.createWormDB(pixelPos,this);
+        System.out.println(worm.getMyPos().getMyX());
+        System.out.println(worm.getMyPos().getMyY());
+        myEntitiesToAdd.add(worm);
     }
 
     private void generateLava(final int roomX, final int roomY)

@@ -20,11 +20,11 @@ public class Worm extends DungeonCharacter
     private long myNextCourseChange;
     final private Random myRand;
 
-    public Worm(final Vec2 thePos, final EntityFactory theEntityFactory)
+    public Worm(final String theCharacterType,final int theHitPoints,final int theDamage,final int theMaxSpeed,
+                final Vec2 theSize, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super("Worm", false, 10,
-        1, 4, new Vec2(96, 96), thePos,
-        new Vec2(0, 0), theEntityFactory);
+        super(theCharacterType, false, theHitPoints,
+                theDamage, theMaxSpeed, theSize, thePos, theVelocity, theEntityFactory);
 
         myControlPoints = new ArrayList<>();
         myRand = new Random();
@@ -62,6 +62,7 @@ public class Worm extends DungeonCharacter
 
     public Tail getTail() { return myTail; }
 
+    @Override
     public void update()
     {
         if (getCurrentFrame() >= getInvincibilityEndFrame())
@@ -170,7 +171,6 @@ public class Worm extends DungeonCharacter
 
             if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
             {
-
                 Physics.tileResolution(overlap, this, t);
                 setMaxSpeed(getMaxSpeed() * -1);
             }

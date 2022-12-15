@@ -2,8 +2,8 @@ package MVC.Model.DB;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Worm;
 import MVC.Model.Physics.Vec2;
 import org.sqlite.SQLiteDataSource;
 
@@ -19,26 +19,26 @@ public class MonsterDB extends SuperMonsterDB
     private EntityFactory myEntityFactory;
     private Hero myHero;
 
-    public Monster createMonsterDB(final String monsterType, final Hero theHero, final EntityFactory theEntityFactory)
+    public Monster createMonsterDB(final String monsterType, final EntityFactory theEntityFactory)
     {
         myEntityFactory = theEntityFactory;
-        myHero = theHero;
+        myHero = theEntityFactory.getHero();
 
         if(monsterType.contentEquals("ogre"))
         {
-            return createMonster(1,theHero);
+            return createMonster(1,myHero);
         }
         else if(monsterType.contentEquals("gremlin"))
         {
-            return createMonster(2,theHero);
+            return createMonster(2,myHero);
         }
         else if (monsterType.contentEquals("knight"))
         {
-            return createMonster(3,theHero);
+            return createMonster(3,myHero);
         }
         else if (monsterType.contains("rat"))
         {
-            return createMonster(4,theHero);
+            return createMonster(4,myHero);
         }
         return null;
     }
@@ -96,6 +96,10 @@ public class MonsterDB extends SuperMonsterDB
                 " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
                 ") VALUES (0,1,'rat',1,"+(new Random().nextInt(4,7))+",0,0,0,0,32,32)";
 
+        String wormQuery = "INSERT OR IGNORE INTO enemiesDatabase (myHero,myHitPoints, myCharacterType," +
+                " myDamage,myMaxSpeed,myX,myY,myVelocityX,myVelocityY,myDimensionX,myDimensionY" +
+                ") VALUES (0,10,'Worm',1,4,0,0,0,0,96,96)";
+
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();)
         {
@@ -107,6 +111,8 @@ public class MonsterDB extends SuperMonsterDB
 
             rv = stmt.executeUpdate(ratsQuery);
 
+            rv = stmt.executeUpdate(wormQuery);
+
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -115,13 +121,13 @@ public class MonsterDB extends SuperMonsterDB
         return ds;
     }
 
+
     @Override
-    public Monster createMonster(final int theN, final Hero theHero)
+    public Worm createWormDB(final Vec2 thePosition, final EntityFactory theEntityFactory)
     {
         //now query my database table for all its contents and display my results
-        String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + theN + "";
+        String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + 5 + "";
 
-        boolean hero = false;
         int hp = 0;
         String charType = null;
         int speed = 0;
@@ -134,13 +140,57 @@ public class MonsterDB extends SuperMonsterDB
         float dimensionY = 0;
 
         try ( Connection conn = myDS.getConnection();
-              Statement stmt = conn.createStatement(); ) {
+              Statement stmt = conn.createStatement(); )
+        {
 
             ResultSet rs = stmt.executeQuery(query);
 
             //walk through each 'row' of results, grab data by column/field name
-            //and print it
-            hero = (Boolean.parseBoolean(rs.getString( "myHero" )));
+            hp = (Integer.parseInt(rs.getString( "myHitPoints" )));
+            charType = (rs.getString( "myCharacterType" ));
+            speed = ( Integer.parseInt(rs.getString( "myMaxSpeed" )));
+            damage = (Integer.parseInt(rs.getString( "myDamage" )));
+            myX = (Float.parseFloat(rs.getString( "myX" )));
+            myY = (Float.parseFloat(rs.getString( "myY" )));
+            velocityX = (Float.parseFloat(rs.getString( "myVelocityX" )));
+            velocityY = (Float.parseFloat(rs.getString( "myVelocityY" )));
+            dimensionX = (Float.parseFloat(rs.getString( "myDimensionX" )));
+            dimensionY = (Float.parseFloat(rs.getString( "myDimensionY" )));
+        }
+        catch ( SQLException e )
+        {
+            e.printStackTrace();
+            System.exit( 0 );
+        }
+
+        return new Worm(charType,hp,damage,speed,new Vec2(myX,myY), thePosition,
+                new Vec2(dimensionX,dimensionY), theEntityFactory);
+    }
+
+    @Override
+    public Monster createMonster(final int theN, final Hero theHero)
+    {
+        //now query my database table for all its contents and display my results
+        String query = "SELECT * FROM enemiesDatabase WHERE rowid =" + theN + "";
+
+        int hp = 0;
+        String charType = null;
+        int speed = 0;
+        int damage = 0;
+        float myX = 0;
+        float myY = 0;
+        float velocityX = 0;
+        float velocityY = 0;
+        float dimensionX = 0;
+        float dimensionY = 0;
+
+        try ( Connection conn = myDS.getConnection();
+              Statement stmt = conn.createStatement(); )
+        {
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            //walk through each 'row' of results, grab data by column/field name
             hp = (Integer.parseInt(rs.getString( "myHitPoints" )));
             charType = (rs.getString( "myCharacterType" ));
             speed = ( Integer.parseInt(rs.getString( "myMaxSpeed" )));
@@ -152,11 +202,14 @@ public class MonsterDB extends SuperMonsterDB
             dimensionX = (Float.parseFloat(rs.getString( "myDimensionX" )));
             dimensionY = (Float.parseFloat(rs.getString( "myDimensionY" )));
 
-        } catch ( SQLException e ) {
+        }
+        catch ( SQLException e )
+        {
             e.printStackTrace();
             System.exit( 0 );
         }
-        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY), myHero,
+
+        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY),
                 new Vec2(dimensionX,dimensionY), myEntityFactory);
-        }
+    }
 }

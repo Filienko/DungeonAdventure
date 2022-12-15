@@ -186,9 +186,9 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             setHitPoints(0);
             myBurning = false;
-            //destroy();
+            destroy();
         }
-        else if (damageOutcome > 0)
+        else
         {
             setHitPoints(damageOutcome);
         }
