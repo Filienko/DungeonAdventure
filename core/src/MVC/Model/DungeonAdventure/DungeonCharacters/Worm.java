@@ -22,7 +22,7 @@ public class Worm extends DungeonCharacter
 
     public Worm(final Vec2 thePos, final EntityFactory theEntityFactory)
     {
-        super("Worm", false, 15,
+        super("Worm", false, 1,
         0, 0, new Vec2(0, 0), thePos,
         new Vec2(0, 0), theEntityFactory);
 
@@ -45,6 +45,8 @@ public class Worm extends DungeonCharacter
 
         mySpawned = false;
     }
+
+    public boolean isSpawned() { return mySpawned; }
 
     public void spawn()
     {
@@ -91,11 +93,7 @@ public class Worm extends DungeonCharacter
             }
             if (getHitPoints() <= 0)
             {
-                setDamage(0);
-                if (getMyAnimation().hasEnded())
-                {
-                    destroy();
-                }
+                die();
             }
             movement();
             collision();
@@ -152,10 +150,13 @@ public class Worm extends DungeonCharacter
             updateMyPos(getVelocity());
         }
 
-        myPath.add(getMyPreviousPos());
-        if (myPath.size() > 200)
+        if (getHitPoints() > 0)
         {
-            myPath.remove(0);
+            myPath.add(getMyPreviousPos());
+            if (myPath.size() > 200)
+            {
+                myPath.remove(0);
+            }
         }
     }
 
@@ -225,12 +226,39 @@ public class Worm extends DungeonCharacter
     @Override
     public void die()
     {
-        super.die();
-        for(var e : mySegments)
+        setMySize(new Vec2(0, 0));
+        mySegments.get(0).setMySize(new Vec2(0, 0));
+        mySegments.get(1).setMySize(new Vec2(0, 0));
+        mySegments.get(2).setMySize(new Vec2(0, 0));
+        myTail.setMySize((new Vec2(0, 0)));
+        if (!myTail.getMyAnimation().getName().equals("bossDeath"))
         {
-            e.destroy();
+            myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
         }
-        myTail.destroy();
+        else if (!mySegments.get(2).getMyAnimation().getName().equals("bossDeath") && myTail.getMyAnimation().hasEnded())
+        {
+            myTail.destroy();
+            mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+        }
+        else if (!mySegments.get(1).getMyAnimation().getName().equals("bossDeath") && mySegments.get(2).getMyAnimation().hasEnded())
+        {
+            mySegments.get(2).destroy();
+            mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+        }
+        else if (!mySegments.get(0).getMyAnimation().getName().equals("bossDeath") && mySegments.get(1).getMyAnimation().hasEnded())
+        {
+            mySegments.get(1).destroy();
+            mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+        }
+        else if (!getMyAnimation().getName().equals("bossDeath") && mySegments.get(0).getMyAnimation().hasEnded())
+        {
+            mySegments.get(0).destroy();
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+        }
+        else if (getMyAnimation().hasEnded())
+        {
+            destroy();
+        }
     }
 
     public void decreaseLag()
@@ -257,7 +285,7 @@ public class Worm extends DungeonCharacter
     }
 
 
-    private class Body extends Entity
+    public class Body extends Entity
     {
         final private Worm myHead;
         private float myLag;
@@ -303,9 +331,11 @@ public class Worm extends DungeonCharacter
             }
         }
 
+        public Worm getHead() { return myHead; }
+
     }
 
-    private class Tail extends Entity
+    public class Tail extends Entity
     {
         final private Worm myHead;
         private float myLag;
@@ -332,5 +362,12 @@ public class Worm extends DungeonCharacter
                 setMyPos(myHead.myPath.get(size - (int) Math.floor(myLag)));
             }
         }
+
+        public Worm getHead() { return myHead; }
+    }
+
+    public ArrayList<Body> getSegments()
+    {
+        return mySegments;
     }
 }

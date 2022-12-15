@@ -146,7 +146,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                 destroy();
             }
         }
-        else if(myHitPoints > 0 && !isKnockback())
+        else if(!isKnockback())
         {
             movement();
             collide();
@@ -188,6 +188,8 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         if (damageOutcome <= 0)
         {
             setHitPoints(0);
+            myBurning = false;
+            //destroy();
         }
         else if (damageOutcome > 0)
         {

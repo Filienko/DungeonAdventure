@@ -102,11 +102,11 @@ public class Sword extends Entity implements ICollidable
 
                     if(w.getHitPoints()<=0)
                     {
-                        w.die();
+                       // w.die();
                     }
                     else
                     {
-                        w.setInvincibility(true, 10);
+                        w.setInvincibility(true, 60);
                         w.knockback(this, 0, 60);
                         w.setMaxSpeed(w.getMaxSpeed() + Math.signum(w.getMaxSpeed()) * .5f);
                         w.decreaseLag();

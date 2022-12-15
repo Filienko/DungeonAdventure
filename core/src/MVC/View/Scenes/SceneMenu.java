@@ -2,6 +2,7 @@ package MVC.View.Scenes;
 
 import MVC.Controller.Action;
 import MVC.Controller.GameEngine;
+import MVC.Model.Saver.Saver;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -73,8 +74,8 @@ public class SceneMenu extends Scene
                     }
                     else if (myTextElements.get(myMenuIndex).equals("LOAD GAME"))
                     {
-                        // TODO: Deserialize
-
+                        myGame.setCurrentScene("Dungeon",
+                                new SceneGame(myGame, (new Saver()).loadTheGame()), false);
                         System.out.println("Selected: 'Load Game'");
                     } else if (myTextElements.get(myMenuIndex).equals("QUIT"))
                     {

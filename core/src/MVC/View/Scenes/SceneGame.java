@@ -9,7 +9,9 @@ import MVC.Model.DungeonItems.Room;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
+import MVC.Model.Saver.Saver;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -19,17 +21,16 @@ import java.util.ArrayList;
 
 public class SceneGame extends Scene
 {
-    private final Hero myHero;
+    private Hero myHero;
     private boolean myDrawTextures;
     private boolean myDrawBoundingBoxes;
     private boolean myMuted;
-    private final ArrayList<String> myRenderOrder;
+    private ArrayList<String> myRenderOrder;
+    private long myLastSkitterFrame;
 
-    public SceneGame(GameEngine game, String hero)
+    public SceneGame(GameEngine game)
     {
         super(game);
-        myEntityFactory = new EntityFactory(myRenderer.getAssets(), hero);
-        initialize();
         myDrawTextures = true;
         myDrawBoundingBoxes = false;
         myMuted = false;
@@ -62,34 +63,36 @@ public class SceneGame extends Scene
         registerAction(Input.Keys.B, "TOGGLE_BOXES");
         registerAction(Input.Keys.M, "TOGGLE_SOUND");
 
+        myLastSkitterFrame = 0;
+    }
+
+    public SceneGame(GameEngine game, String hero)
+    {
+        this(game);
+        myEntityFactory = new EntityFactory(myRenderer.getAssets(), hero);
+        myHero = myEntityFactory.getHero();
+        initialize();
+    }
+
+    public SceneGame(GameEngine game, EntityFactory theEntityFactory)
+    {
+        this(game);
+        myEntityFactory = theEntityFactory;
+        myEntityFactory.setAssets(myRenderer.getAssets());
+        myEntityFactory.initializeEntityFactory(myEntityFactory.getEntities());
         myHero = myEntityFactory.getHero();
     }
 
     private void initialize()
     {
-
         Dungeon testDungeon = new Dungeon(myEntityFactory,3);
         myEntityFactory.generateGameEntities(testDungeon);
-
-
-        /*Room testRoom = new Room(1, new Vec2(0, 0));
-        testRoom.setExitStatus(true);
-        testRoom.setLava(false);
-        testRoom.setN(false);
-        testRoom.setW(false);
-        testRoom.setE(true);
-        testRoom.setS(true);
-        //testRoom.populateMonsters(1);
-        myEntityFactory.generateRoomEntities(testRoom);
-
-         */
-
     }
 
     protected void onEnd()
     {
         // TODO: serialize
-
+        (new Saver()).saveTheGame(myEntityFactory);
         myRenderer.getCamera().position.x = 608;
         myRenderer.getCamera().position.y = 352;
         myGame.setCurrentScene("Menu", null, true);
@@ -130,6 +133,10 @@ public class SceneGame extends Scene
                 animation();
             }
             camera();
+            if (!myMuted)
+            {
+                music();
+            }
             myCurrentFrame++;
         }
 
@@ -221,7 +228,11 @@ public class SceneGame extends Scene
                     renderHealthBars(e);
                     renderAura((Hero) e);
                 }
-                else if ( e.getType().equals("Monster") || e.getType().equals("Worm"))
+                else if ( e.getType().equals("Monster"))
+                {
+                    renderHealthBars(e);
+                }
+                else if (e.getType().equals("Worm") && ((Worm) e).isSpawned())
                 {
                     renderHealthBars(e);
                 }
@@ -310,12 +321,54 @@ public class SceneGame extends Scene
             Worm w = (Worm) e;
             double angle = Math.atan2(w.getVelocity().getMyY(), w.getVelocity().getMyX()) * 57.296 + 135;
             sprite.setRotation((float) angle);
+            if (((Worm) e).isKnockback())
+            {
+                long remainder = (((Worm) e).getKnockbackEndFrame() - e.getCurrentFrame()) % 6;
+                if (remainder < 3)
+                {
+                    sprite.setColor(Color.RED);
+                }
+                else if (remainder >= 3)
+                {
+                    sprite.setColor(Color.GREEN);
+                }
+            }
+            else
+            {
+                sprite.setColor(Color.WHITE);
+            }
         }
         else if (e.getType().equals("Body") || e.getType().equals("Tail"))
         {
             Vec2 vector = e.getMyPos().minus(e.getMyPreviousPos());
             double angle = Math.atan2(vector.getMyY(), vector.getMyX()) * 57.296 + 135;
             sprite.setRotation((float) angle);
+
+            Worm w;
+            if (e.getType().equals("Body"))
+            {
+                w = ((Worm.Body) e).getHead();
+            }
+            else
+            {
+                w = ((Worm.Tail) e).getHead();
+            }
+            if (w.isKnockback())
+            {
+                long remainder = (w.getKnockbackEndFrame() - w.getCurrentFrame()) % 6;
+                if (remainder < 3)
+                {
+                    sprite.setColor(Color.RED);
+                }
+                else if (remainder >= 3)
+                {
+                    sprite.setColor(Color.GREEN);
+                }
+            }
+            else
+            {
+                sprite.setColor(Color.WHITE);
+            }
         }
         sprite.draw(myRenderer.getSpriteBatch());
     }
@@ -408,6 +461,24 @@ public class SceneGame extends Scene
                 }
             }
         }
+        else if (e.getType().equals("Worm"))
+        {
+            Worm w = (Worm) e;
+            if (w.isSpawned())
+            {
+                if (w.getLastDamageFrame() == w.getCurrentFrame())
+                {
+                    myRenderer.getAssets().getSound("bossHit").play(.5f);
+                }
+                if (w.getCurrentFrame() >= myLastSkitterFrame + 16 &&
+                        Physics.getRoom(myHero.getMyPos().getMyX(), myHero.getMyPos().getMyY())
+                                .equals(Physics.getRoom(w.getMyPos().getMyX(), w.getMyPos().getMyY())))
+                {
+                    myRenderer.getAssets().getSound("bossSkitter").play(.5f);
+                    myLastSkitterFrame = w.getCurrentFrame() + 16;
+                }
+            }
+        }
         else if (e.getType().equals("Hero"))
         {
             Hero h = (Hero) e;
@@ -456,6 +527,36 @@ public class SceneGame extends Scene
         pixelPos = Physics.getPosition(roomX, roomY, 5, 5);
         font = myRenderer.getAssets().getFont("mario24");
         font.draw(myRenderer.getSpriteBatch(), "PRESS ESC TO RETURN TO MENU", pixelPos.getMyX(), pixelPos.getMyY());
+    }
+
+    private void music()
+    {
+        if (!myEntityFactory.getEntities("worm").isEmpty())
+        {
+            Worm w = (Worm) myEntityFactory.getEntities("worm").get(0);
+            if (w.isSpawned() && w.getHitPoints() > 0 &&
+                    Physics.getRoom(myHero.getMyPos().getMyX(), myHero.getMyPos().getMyY())
+                            .equals(Physics.getRoom(w.getMyPos().getMyX(), w.getMyPos().getMyY())))
+            {
+                if (!myRenderer.getAssets().getMusic("boss").isPlaying())
+                {
+                    myRenderer.getAssets().getMusic("boss").setLooping(true);
+                    myRenderer.getAssets().getMusic("boss").setVolume(.5f);
+                    myRenderer.getAssets().getMusic("boss").play();
+                }
+            }
+            else if (w.isSpawned() && w.getHitPoints() <= 0)
+            {
+                myRenderer.getAssets().getMusic("boss").stop();
+                if (!myRenderer.getAssets().getMusic("victory").isPlaying())
+                {
+                    myRenderer.getAssets().getMusic("victory").setLooping(false);
+                    myRenderer.getAssets().getMusic("victory").setVolume(.5f);
+                    myRenderer.getAssets().getMusic("victory").play();
+                }
+            }
+        }
+
     }
 
 }

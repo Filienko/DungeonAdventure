@@ -3,15 +3,17 @@ package MVC.Model.DungeonAdventure.DungeonCharacters;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Animation;
 
+import java.io.Serializable;
 
-public abstract class Entity
+
+public abstract class Entity implements Serializable
 {
     private Vec2 mySize;
     private EntityFactory myEntityFactory;
     private Vec2 myPos;
     private Vec2 myPreviousPos;
     private boolean myEntityAnimated;
-    private Animation myAnimation;
+    private transient Animation myAnimation;
     private float myRotation;
     private String myType;
     private boolean myActiveStatus;
@@ -21,7 +23,6 @@ public abstract class Entity
     protected Entity(final Vec2 theSize, final Vec2 thePos, final String theType, final EntityFactory theEntityFactory)
     {
         setMyEntityFactory(theEntityFactory);
-        //things that inherit from Entity should also keep track of what Entity Factory spawns it
         setMySize(theSize);
         setMyPos(thePos);
         setMyPreviousPos(thePos);
