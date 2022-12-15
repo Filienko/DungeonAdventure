@@ -64,26 +64,6 @@ public class EntityFactory implements Serializable
         Vec2 location = theRoom.getLocation();
         Vec2 pixelPos;
 
-        while(items.toString().contains(","))
-        {
-            String item = items.substring(0, items.indexOf(",")+1);
-            items.delete(0, items.indexOf(",")+1);
-            var i = generateItems(item.substring(0,item.indexOf(",")));
-            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9,5);
-            }
-            else
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
-            }
-            i.setRoom(location);
-            i.setMyPos(pixelPos);
-            i.setMyPreviousPos(pixelPos);
-            myEntitiesToAdd.add(i);
-        }
-
         int monsterCounter = 0;
         while (monsters.toString().contains(","))
         {
