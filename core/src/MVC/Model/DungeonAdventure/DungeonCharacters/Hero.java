@@ -21,7 +21,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The specific Hero type.
      */
-    private String myCharacterType; //should this be changed back to final?
+    private String myCharacterType;
 
     /**
      * The Hero's weapon.

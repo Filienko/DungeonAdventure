@@ -365,4 +365,9 @@ public class Worm extends DungeonCharacter
 
         public Worm getHead() { return myHead; }
     }
+
+    public ArrayList<Body> getSegments()
+    {
+        return mySegments;
+    }
 }

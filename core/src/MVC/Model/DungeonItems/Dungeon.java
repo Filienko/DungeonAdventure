@@ -219,11 +219,6 @@ public class Dungeon implements Serializable
             return myDungeon;
         }
 
-        private Hero getHero()
-        {
-            return myHero;
-        }
-
         private List<Room> getRooms()
         {
             return myRooms;

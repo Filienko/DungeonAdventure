@@ -13,16 +13,19 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-public class EntityFactory
+public class EntityFactory implements Serializable
 {
     private ArrayList<Entity> myEntities;
     private ArrayList<Entity> myEntitiesToAdd;
-    private ObjectMap<String, ArrayList<Entity>> myEntityMap;
+    private transient ObjectMap<String, ArrayList<Entity>> myEntityMap;
     private long myTotalEntities;
-    private Assets myAssets;
+    private transient Assets myAssets;
     private static Hero myHero;
 
     public EntityFactory()
@@ -61,8 +64,6 @@ public class EntityFactory
         Vec2 location = theRoom.getLocation();
         Vec2 pixelPos;
 
-        generateWalls((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
-
         while(items.toString().contains(","))
         {
             String item = items.substring(0, items.indexOf(",")+1);
@@ -84,61 +85,26 @@ public class EntityFactory
         }
 
         int monsterCounter = 0;
-        if (!theRoom.isTheExit())
+        while (monsters.toString().contains(","))
         {
-            while (monsters.toString().contains(","))
+            String monster = monsters.substring(0, monsters.indexOf(",") + 1);
+            monsters.delete(0, monsters.indexOf(",") + 1);
+            monster = monster.substring(0, monster.indexOf(","));
+            var e = generateMonsters(monster);
+
+            if (e.getMonsterType().contentEquals("rat"))
             {
-                String monster = monsters.substring(0, monsters.indexOf(",") + 1);
-                monsters.delete(0, monsters.indexOf(",") + 1);
-                monster = monster.substring(0, monster.indexOf(","));
-                var e = generateMonsters(monster);
-
-                if (e.getMonsterType().contentEquals("rat"))
-                {
-                    e.setRoom(location, monsterCounter);
-                }
-                else
-                {
-                    e.setRoom(location);
-                }
-
-                myEntitiesToAdd.add(e);
-                monsterCounter++;
+                e.setRoom(location, monsterCounter);
             }
+            else
+            {
+                e.setRoom(location);
+            }
+            myEntitiesToAdd.add(e);
+            monsterCounter++;
         }
 
-        if (theRoom.isN())
-        {
-            generateDoor(location, monsterCounter, 9, 10, 0);
-        }
-        else
-        {
-            generateWall(location, 9, 10, 0);
-        }
-        if (theRoom.isS())
-        {
-            generateDoor(location, monsterCounter, 9, 0, 180);
-        }
-        else
-        {
-            generateWall(location, 9, 0, 180);
-        }
-        if (theRoom.isW())
-        {
-            generateDoor(location, monsterCounter, 0, 5, 90);
-        }
-        else
-        {
-            generateWall(location, 0, 5, 90);
-        }
-        if (theRoom.isE())
-        {
-            generateDoor(location, monsterCounter, 18, 5, 270);
-        }
-        else
-        {
-            generateWall(location, 18, 5, 270);
-        }
+        generateWalls(theRoom,monsterCounter);
 
         if (theRoom.isLava())
         {
@@ -178,6 +144,7 @@ public class EntityFactory
                 lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(62, 62));
                 lava.setMyAnimation(myAssets.getAnimation("lava"));
                 lava.setType("Lava");
+                lava.setAnimationAngle("lava");
                 myEntitiesToAdd.add(lava);
             }
             sc.close();
@@ -207,6 +174,7 @@ public class EntityFactory
                 int rotation = Integer.parseInt(attributes[3]);
 
                 wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+                wall.setAnimationAngle(animation);
                 wall.setMyAnimation(myAssets.getAnimation(animation));
                 wall.setRotation(rotation);
                 myEntitiesToAdd.add(wall);
@@ -215,6 +183,44 @@ public class EntityFactory
         catch (FileNotFoundException fnfe )
         {
             System.out.println("File: walls.txt not found");
+        }
+    }
+
+    void generateWalls(final Room theRoom,final int theMonterCounter)
+    {
+        var location = theRoom.getLocation();
+        generateWalls((int) location.getMyX(), (int) location.getMyY());
+        if (theRoom.isN())
+        {
+            generateDoor(location, theMonterCounter, 9, 10, 0);
+        }
+        else
+        {
+            generateWall(location, 9, 10, 0);
+        }
+        if (theRoom.isS())
+        {
+            generateDoor(location, theMonterCounter, 9, 0, 180);
+        }
+        else
+        {
+            generateWall(location, 9, 0, 180);
+        }
+        if (theRoom.isW())
+        {
+            generateDoor(location, theMonterCounter, 0, 5, 90);
+        }
+        else
+        {
+            generateWall(location, 0, 5, 90);
+        }
+        if (theRoom.isE())
+        {
+            generateDoor(location, theMonterCounter, 18, 5, 270);
+        }
+        else
+        {
+            generateWall(location, 18, 5, 270);
         }
     }
 
@@ -227,7 +233,6 @@ public class EntityFactory
         door.setRoom(theLocation);
         door.setRotation(theRotation);
         myEntitiesToAdd.add(door);
-
     }
 
     private void generateWall(final Vec2 theLocation, final int tileX, final int tileY, final int theRotation)
@@ -235,6 +240,7 @@ public class EntityFactory
         Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), tileX, tileY);
         Wall wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
         wall.setMyAnimation(myAssets.getAnimation("wall"));
+        wall.setAnimationAngle("wall");
         wall.setRotation(theRotation);
         myEntitiesToAdd.add(wall);
     }
@@ -464,5 +470,62 @@ public class EntityFactory
     public void renewSword()
     {
         myEntityMap.remove("Sword");
+    }
+
+    public void setAssets(final Assets theAssets)
+    {
+        myAssets = theAssets;
+    }
+
+    public void initializeEntityFactory(final ArrayList<Entity> theEntities)
+    {
+        myEntitiesToAdd = new ArrayList<>();
+        myEntitiesToAdd.addAll(theEntities);
+
+        for (Entity e: myEntitiesToAdd)
+        {
+            if (e instanceof Wall)
+            {
+                e.setMyAnimation(myAssets.getAnimation(((Wall)e).getAnimationAngle()));
+            }
+            else if(e instanceof Lava)
+            {
+                System.out.println("LAVA");
+                e.setMyAnimation(myAssets.getAnimation("lava"));
+            }
+            else if(e instanceof Item)
+            {
+                e.setMyAnimation(myAssets.getAnimation(e.getType()));
+            }
+            else if(e.getType().toLowerCase(Locale.ROOT).contains("monster"))
+            {
+                e.setMyAnimation(myAssets.getAnimation(((Monster)e).getMonsterType()));
+            }
+            else if(e.getType().toLowerCase(Locale.ROOT).contains("door"))
+            {
+                e.setMyAnimation(myAssets.getAnimation("door"));
+            }
+            else if(e instanceof Hero)
+            {
+                myHero = (Hero) e;
+                e.setMyAnimation(myAssets.getAnimation("runDown"));
+            }
+            else if(e.getType().toLowerCase(Locale.ROOT).contains("worm"))
+            {
+                e.setMyAnimation(myAssets.getAnimation("head"));
+                ((Worm) e).getTail().setMyAnimation(myAssets.getAnimation("tail"));
+                var segments =  ((Worm)e).getSegments();
+                for (int i = 0; i < segments.size(); i++)
+                {
+                    segments.get(0).setMyAnimation(myAssets.getAnimation("body1"));
+                    segments.get(1).setMyAnimation(myAssets.getAnimation("body1"));
+                    segments.get(2).setMyAnimation(myAssets.getAnimation("body3"));
+                }
+            }
+        }
+
+        myEntityMap = new ObjectMap<>();
+        myEntities = new ArrayList<>();
+        myTotalEntities = 0;
     }
 }

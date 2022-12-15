@@ -125,38 +125,38 @@ public class Room implements Cloneable
             populateLava(random.nextDouble());
         }
 
-        if (!myLocation.equals(new Vec2(0, 0)))
-        {
-            populateMonsters(1);
-        }
+        populateMonsters(1);
     }
 
     public void populateMonsters(final int theN)
     {
-        var ran = new Random().nextDouble();
-        for (int j = 0; j < theN; j++)
+        if (!myExit && !myEntrance)
         {
-            if(ran <= 0.25)
+            var ran = new Random().nextDouble();
+            for (int j = 0; j < theN; j++)
             {
-                for (int i = 0; i < 4; i++)
+                if(ran <= 0.25)
                 {
-                    myMonsters.append("rat,");
+                    for (int i = 0; i < 4; i++)
+                    {
+                        myMonsters.append("rat,");
+                    }
                 }
-            }
-            else if(ran <= 0.50)
-            {
-                for (int i = 0; i < 2; i++)
+                else if(ran <= 0.50)
                 {
-                    myMonsters.append("gremlin,");
+                    for (int i = 0; i < 2; i++)
+                    {
+                        myMonsters.append("gremlin,");
+                    }
                 }
-            }
-            else if(ran <= 0.75)
-            {
-                myMonsters.append("knight,");
-            }
-            else
-            {
-                myMonsters.append("ogre,");
+                else if(ran <= 0.75)
+                {
+                    myMonsters.append("knight,");
+                }
+                else
+                {
+                    myMonsters.append("ogre,");
+                }
             }
         }
     }
