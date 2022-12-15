@@ -171,7 +171,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void die()
     {
         setMySize(new Vec2(0, 0));
-        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"));
+        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"), false);
     }
 
     /**
@@ -461,7 +461,6 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void collide()
     {
         Vec2 overlap;
-        Vec2 previousOverlap;
 
         for(var t:getMyEntityFactory().getEntities())
         {
@@ -477,36 +476,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                             || t.getType().contains("Hero")
                             || (t.getType().equals("Lava") && this.getType().equals("Monster")))
                     {
-                        previousOverlap = Physics.getPreviousOverlap(this, t);
-
-                        // If the overlap is horizontal
-                        if (previousOverlap.getMyY() > 0)
-                        {
-                            // If the player came from the left, push them out to the left
-                            if (this.getMyPos().getMyX() < t.getMyPos().getMyX())
-                            {
-                                this.getMyPos().setMyX(this.getMyPos().getMyX() - (overlap.getMyX()));
-                            }
-                            // If the player came from the right push them out to the right
-                            else
-                            {
-                                this.getMyPos().setMyX(this.getMyPos().getMyX() + (overlap.getMyX()));
-                            }
-                        }
-
-                        // If the overlap is vertical
-                        if (previousOverlap.getMyX() > 0)
-                        {
-                            // If the player came from above push them up
-                            if (this.getMyPos().getMyY() < t.getMyPos().getMyY())
-                            {
-                                this.getMyPos().setMyY(this.getMyPos().getMyY() - (overlap.getMyY()));
-                            }
-                            else
-                            {
-                                this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
-                            }
-                        }
+                        Physics.tileResolution(overlap, this, t);
                     }
                     else if (t.getType().equals("Lava") && this.getType().equals("Hero"))
                     {

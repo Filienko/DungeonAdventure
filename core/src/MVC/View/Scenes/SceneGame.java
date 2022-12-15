@@ -5,8 +5,6 @@ import MVC.Controller.GameEngine;
 import MVC.Model.DungeonAdventure.DungeonCharacters.*;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Items.Exit;
-import MVC.Model.DungeonItems.Room;
-import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.Model.Saver.Saver;
@@ -14,23 +12,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
 
 public class SceneGame extends Scene
 {
-    private Hero myHero;
-    private boolean myDrawTextures;
-    private boolean myDrawBoundingBoxes;
-    private boolean myMuted;
-    private ArrayList<String> myRenderOrder;
-    private long myLastSkitterFrame;
+    private Hero                    myHero;
+    private boolean                 myDrawTextures;
+    private boolean                 myDrawBoundingBoxes;
+    private boolean                 myMuted;
+    final private ArrayList<String> myRenderOrder;
+    private long                    myLastSkitterFrame;
+    private boolean                 myVictoryMusicPlayed;
 
-    public SceneGame(GameEngine game)
+    public SceneGame(GameEngine theGame)
     {
-        super(game);
+        super(theGame);
         myDrawTextures = true;
         myDrawBoundingBoxes = false;
         myMuted = false;
@@ -64,19 +62,20 @@ public class SceneGame extends Scene
         registerAction(Input.Keys.M, "TOGGLE_SOUND");
 
         myLastSkitterFrame = 0;
+        myVictoryMusicPlayed = false;
     }
 
-    public SceneGame(GameEngine game, String hero)
+    public SceneGame(GameEngine theGame, String theHero)
     {
-        this(game);
-        myEntityFactory = new EntityFactory(myRenderer.getAssets(), hero);
+        this(theGame);
+        myEntityFactory = new EntityFactory(myRenderer.getAssets(), theHero);
         myHero = myEntityFactory.getHero();
         initialize();
     }
 
-    public SceneGame(GameEngine game, EntityFactory theEntityFactory)
+    public SceneGame(GameEngine theGame, EntityFactory theEntityFactory)
     {
-        this(game);
+        this(theGame);
         myEntityFactory = theEntityFactory;
         myEntityFactory.setAssets(myRenderer.getAssets());
         myEntityFactory.initializeEntityFactory(myEntityFactory.getEntities());
@@ -98,33 +97,32 @@ public class SceneGame extends Scene
         myGame.setCurrentScene("Menu", null, true);
     }
 
-    public  void doAction(final Action action)
+    public  void doAction(final Action theAction)
     {
-        if (action.getType().equals("START"))
+        if (theAction.getType().equals("START"))
         {
-                 if (action.getName().equals("PAUSE"))              { if (!Exit.isExited()) { setPaused(); }}
-            else if (action.getName().equals("QUIT"))               { if (!myPaused && !Exit.isExited()) {setPaused(); } else { onEnd(); }}
-            else if (action.getName().equals("UP"))                 { myHero.setUp(true); }
-            else if (action.getName().equals("DOWN"))               { myHero.setDown(true); }
-            else if (action.getName().equals("LEFT"))               { myHero.setLeft(true); }
-            else if (action.getName().equals("RIGHT"))              { myHero.setRight(true); }
-            else if (action.getName().equals("ATTACK"))             { myHero.attack(); }
-            else if (action.getName().equals("TOGGLE_TEXTURE"))     { myDrawTextures = !myDrawTextures; }
-            else if (action.getName().equals("TOGGLE_BOXES"))       { myDrawBoundingBoxes = !myDrawBoundingBoxes; }
-            else if (action.getName().equals("TOGGLE_SOUND"))       { myMuted = !myMuted; }
+                 if (theAction.getName().equals("PAUSE"))              { if (!Exit.isExited()) { setPaused(); }}
+            else if (theAction.getName().equals("QUIT"))               { if (!myPaused && !Exit.isExited()) {setPaused(); } else { onEnd(); }}
+            else if (theAction.getName().equals("UP"))                 { myHero.setUp(true); }
+            else if (theAction.getName().equals("DOWN"))               { myHero.setDown(true); }
+            else if (theAction.getName().equals("LEFT"))               { myHero.setLeft(true); }
+            else if (theAction.getName().equals("RIGHT"))              { myHero.setRight(true); }
+            else if (theAction.getName().equals("ATTACK"))             { myHero.attack(); }
+            else if (theAction.getName().equals("TOGGLE_TEXTURE"))     { myDrawTextures = !myDrawTextures; }
+            else if (theAction.getName().equals("TOGGLE_BOXES"))       { myDrawBoundingBoxes = !myDrawBoundingBoxes; }
+            else if (theAction.getName().equals("TOGGLE_SOUND"))       { myMuted = !myMuted; }
         }
-        else if (action.getType().equals("END"))
+        else if (theAction.getType().equals("END"))
         {
-                 if (action.getName().equals("UP"))     { myHero.setUp(false); }
-            else if (action.getName().equals("DOWN"))   { myHero.setDown(false); }
-            else if (action.getName().equals("LEFT"))   { myHero.setLeft(false); }
-            else if (action.getName().equals("RIGHT"))  { myHero.setRight(false); }
+                 if (theAction.getName().equals("UP"))     { myHero.setUp(false); }
+            else if (theAction.getName().equals("DOWN"))   { myHero.setDown(false); }
+            else if (theAction.getName().equals("LEFT"))   { myHero.setLeft(false); }
+            else if (theAction.getName().equals("RIGHT"))  { myHero.setRight(false); }
         }
     }
 
     public void update()
     {
-
         if (!myPaused && !Exit.isExited())
         {
             myEntityFactory.update();
@@ -133,13 +131,9 @@ public class SceneGame extends Scene
                 animation();
             }
             camera();
-            if (!myMuted)
-            {
-                music();
-            }
             myCurrentFrame++;
         }
-
+        music();
     }
 
     private void camera()
@@ -167,11 +161,13 @@ public class SceneGame extends Scene
             myHero.getMyAnimation().getSprite().setScale(1, 1);
         }
 
-        // if the build animation is different from the current then replace the current
+        // if the new animation is different from the current then replace the current
         if (!myHero.getMyAnimation().getName().equals(animationName))
         {
             myHero.setMyAnimation(myRenderer.getAssets().getAnimation(animationName));
         }
+
+        myHero.getMyAnimation().setSpeed( 15 - (long) (myHero.getMaxSpeed() - 5));
     }
 
     private String buildAnimationName()
@@ -228,11 +224,7 @@ public class SceneGame extends Scene
                     renderHealthBars(e);
                     renderAura((Hero) e);
                 }
-                else if ( e.getType().equals("Monster"))
-                {
-                    renderHealthBars(e);
-                }
-                else if (e.getType().equals("Worm") && ((Worm) e).isSpawned())
+                else if ( e.getType().equals("Monster") || e.getType().equals("Worm"))
                 {
                     renderHealthBars(e);
                 }
@@ -253,17 +245,17 @@ public class SceneGame extends Scene
         }
     }
 
-    private void renderTextures(final Entity e)
+    private void renderTextures(final Entity theEntity)
     {
         Sprite sprite;
-        e.getMyAnimation().update();
-        sprite = e.getMyAnimation().getSprite();
-        e.getMyAnimation().setPos(e.getMyPos().getMyX(), e.getMyPos().getMyY());
-        sprite.setRotation(e.getRotation());
+        theEntity.getMyAnimation().update();
+        sprite = theEntity.getMyAnimation().getSprite();
+        theEntity.getMyAnimation().setPos(theEntity.getMyPos().getMyX(), theEntity.getMyPos().getMyY());
+        sprite.setRotation(theEntity.getRotation());
 
-        if (e.getMyAnimation().getName().equals("exit"))
+        if (theEntity.getMyAnimation().getName().equals("exit"))
         {
-            if (!((Exit) e).checkFinishGame())
+            if (!Exit.isExitCondition())
             {
                 sprite.setAlpha(0.25f);
             }
@@ -272,17 +264,17 @@ public class SceneGame extends Scene
                 sprite.setAlpha(1f);
             }
         }
-        else if (e.getMyAnimation().getName().equals("rat"))
+        else if (theEntity.getMyAnimation().getName().equals("rat"))
         {
-            Monster rat = (Monster) e;
+            Monster rat = (Monster) theEntity;
             double angle = Math.atan2(rat.getVelocity().getMyY(), rat.getVelocity().getMyX()) * 57.296 + 90;
             sprite.setRotation((float) angle);
         }
-        else if (e.getType().equals("Monster"))
+        else if (theEntity.getType().equals("Monster"))
         {
-            if (((DungeonCharacter) e).isKnockback())
+            if (((DungeonCharacter) theEntity).isKnockback())
             {
-                float v = ((DungeonCharacter) e).getVelocity().getMagnitudeSquared();
+                float v = ((DungeonCharacter) theEntity).getVelocity().getMagnitudeSquared();
                 if (v == 0)
                 {
                     sprite.setColor(0.58f, 0f, 0.83f, 0.5f);
@@ -292,7 +284,7 @@ public class SceneGame extends Scene
                     sprite.setColor(1f, 0f, 0f, 0.5f);
                 }
             }
-            else if (((DungeonCharacter) e).isInvincibility())
+            else if (((DungeonCharacter) theEntity).isInvincibility())
             {
                 sprite.setColor(1, 1, 1, 0.5f);
             }
@@ -301,13 +293,13 @@ public class SceneGame extends Scene
                 sprite.setColor(1, 1, 1, 1);
             }
         }
-        else if (e.getType().equals("Hero"))
+        else if (theEntity.getType().equals("Hero"))
         {
-            if (((DungeonCharacter) e).isBurning())
+            if (((DungeonCharacter) theEntity).isBurning())
             {
                 sprite.setColor(1, .325f, .286f, 0.5f);
             }
-            else if (((DungeonCharacter) e).isInvincibility())
+            else if (((DungeonCharacter) theEntity).isInvincibility())
             {
                 sprite.setColor(1, 1, 1, 0.5f);
             }
@@ -316,86 +308,76 @@ public class SceneGame extends Scene
                 sprite.setColor(1, 1, 1, 1);
             }
         }
-        else if (e.getType().equals("Worm"))
+        else if (theEntity.getType().equals("Worm"))
         {
-            Worm w = (Worm) e;
+            Worm w = (Worm) theEntity;
             double angle = Math.atan2(w.getVelocity().getMyY(), w.getVelocity().getMyX()) * 57.296 + 135;
             sprite.setRotation((float) angle);
-            if (((Worm) e).isKnockback())
-            {
-                long remainder = (((Worm) e).getKnockbackEndFrame() - e.getCurrentFrame()) % 6;
-                if (remainder < 3)
-                {
-                    sprite.setColor(Color.RED);
-                }
-                else if (remainder >= 3)
-                {
-                    sprite.setColor(Color.GREEN);
-                }
-            }
-            else
-            {
-                sprite.setColor(Color.WHITE);
-            }
+            sprite.setColor(determineBossBodyColor(w));
         }
-        else if (e.getType().equals("Body") || e.getType().equals("Tail"))
+        else if (theEntity.getType().equals("Body") || theEntity.getType().equals("Tail"))
         {
-            Vec2 vector = e.getMyPos().minus(e.getMyPreviousPos());
+            Vec2 vector = theEntity.getMyPos().minus(theEntity.getMyPreviousPos());
             double angle = Math.atan2(vector.getMyY(), vector.getMyX()) * 57.296 + 135;
             sprite.setRotation((float) angle);
 
             Worm w;
-            if (e.getType().equals("Body"))
+            if (theEntity.getType().equals("Body"))
             {
-                w = ((Worm.Body) e).getHead();
+                w = ((Worm.Body) theEntity).getHead();
             }
             else
             {
-                w = ((Worm.Tail) e).getHead();
+                w = ((Worm.Tail) theEntity).getHead();
             }
-            if (w.isKnockback())
-            {
-                long remainder = (w.getKnockbackEndFrame() - w.getCurrentFrame()) % 6;
-                if (remainder < 3)
-                {
-                    sprite.setColor(Color.RED);
-                }
-                else if (remainder >= 3)
-                {
-                    sprite.setColor(Color.GREEN);
-                }
-            }
-            else
-            {
-                sprite.setColor(Color.WHITE);
-            }
+
+            sprite.setColor(determineBossBodyColor(w));
         }
         sprite.draw(myRenderer.getSpriteBatch());
     }
 
-    private void renderBoundingBoxes(final Entity e)
+    private Color determineBossBodyColor(final Worm theWorm)
+    {
+        if (theWorm.isKnockback())
+        {
+            long remainder = (theWorm.getKnockbackEndFrame() - theWorm.getCurrentFrame()) % 6;
+            if (remainder < 3)
+            {
+                return Color.RED;
+            }
+            else if (remainder >= 3)
+            {
+                return Color.GREEN;
+            }
+        }
+
+        return Color.WHITE;
+
+    }
+
+    private void renderBoundingBoxes(final Entity theEntity)
     {
         var box = myRenderer.getAssets().getAnimation("boundingBox");
-        if (e.getMySize().getMyX() != 64 && e.getMySize().getMyY() != 64)
+        if (theEntity.getMySize().getMyX() != 64 && theEntity.getMySize().getMyY() != 64)
         {
-            box.getSprite().setScale(e.getMySize().getMyX() / 64, e.getMySize().getMyY() / 64);
+            box.getSprite().setScale(theEntity.getMySize().getMyX() / 64, theEntity.getMySize().getMyY() / 64);
         }
         else
         {
             box.getSprite().setScale(1, 1);
         }
 
-        box.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        box.getSprite().setPosition(theEntity.getMyPos().getMyX(), theEntity.getMyPos().getMyY());
         box.getSprite().draw(myRenderer.getSpriteBatch());
 
         var pos = myRenderer.getAssets().getAnimation("pos");
-        pos.getSprite().setPosition(e.getMyPos().getMyX(), e.getMyPos().getMyY());
+        pos.getSprite().setPosition(theEntity.getMyPos().getMyX(), theEntity.getMyPos().getMyY());
         pos.getSprite().draw(myRenderer.getSpriteBatch());
     }
 
-    private void renderHealthBars(final Entity e)
+    private void renderHealthBars(final Entity theEntity)
     {
-        DungeonCharacter character = (DungeonCharacter) e;
+        DungeonCharacter character = (DungeonCharacter) theEntity;
         var health = myRenderer.getAssets().getAnimation("health");
         float x = character.getMyPos().getMyX();
         float y = character.getMyPos().getMyY() + 64;
@@ -444,11 +426,11 @@ public class SceneGame extends Scene
                 TOGGLE SOUND:M""", pixelPos.getMyX(), pixelPos.getMyY());
     }
 
-    private void sounds(final Entity e)
+    private void sounds(final Entity theEntity)
     {
-        if (e.getType().equals("Monster"))
+        if (theEntity.getType().equals("Monster"))
         {
-            Monster mon = (Monster) e;
+            Monster mon = (Monster) theEntity;
             if (mon.getLastDamageFrame() == mon.getCurrentFrame())
             {
                 if (mon.getHitPoints() > 0)
@@ -461,27 +443,26 @@ public class SceneGame extends Scene
                 }
             }
         }
-        else if (e.getType().equals("Worm"))
+        else if (theEntity.getType().equals("Worm"))
         {
-            Worm w = (Worm) e;
-            if (w.isSpawned())
+            Worm w = (Worm) theEntity;
+
+            if (w.getLastDamageFrame() == w.getCurrentFrame())
             {
-                if (w.getLastDamageFrame() == w.getCurrentFrame())
-                {
-                    myRenderer.getAssets().getSound("bossHit").play(.5f);
-                }
-                if (w.getCurrentFrame() >= myLastSkitterFrame + 16 &&
-                        Physics.getRoom(myHero.getMyPos().getMyX(), myHero.getMyPos().getMyY())
-                                .equals(Physics.getRoom(w.getMyPos().getMyX(), w.getMyPos().getMyY())))
-                {
-                    myRenderer.getAssets().getSound("bossSkitter").play(.5f);
-                    myLastSkitterFrame = w.getCurrentFrame() + 16;
-                }
+                myRenderer.getAssets().getSound("bossHit").play(.5f);
             }
+            if (w.getCurrentFrame() >= myLastSkitterFrame + 16 &&
+                    Physics.getRoom(myHero.getMyPos().getMyX(), myHero.getMyPos().getMyY())
+                            .equals(Physics.getRoom(w.getMyPos().getMyX(), w.getMyPos().getMyY())))
+            {
+                myRenderer.getAssets().getSound("bossSkitter").play(.5f);
+                myLastSkitterFrame = w.getCurrentFrame() + 16;
+            }
+
         }
-        else if (e.getType().equals("Hero"))
+        else if (theEntity.getType().equals("Hero"))
         {
-            Hero h = (Hero) e;
+            Hero h = (Hero) theEntity;
             if (h.getLastDamageFrame() == h.getCurrentFrame())
             {
                 if (h.getHitPoints() > 0)
@@ -494,16 +475,16 @@ public class SceneGame extends Scene
                 }
             }
         }
-        else if (e.getType().equals("Sword"))
+        else if (theEntity.getType().equals("Sword"))
         {
-            if (e.getCurrentFrame() == 1)
+            if (theEntity.getCurrentFrame() == 1)
             {
                 myRenderer.getAssets().getSound("slash").play(.5f);
             }
         }
-        else if (e.getType().contains("Potion"))
+        else if (theEntity.getType().contains("Potion"))
         {
-            if (!e.getActiveStatus())
+            if (!theEntity.getActiveStatus())
             {
                 myRenderer.getAssets().getSound("getItem").play(.5f);
             }
@@ -534,29 +515,43 @@ public class SceneGame extends Scene
         if (!myEntityFactory.getEntities("worm").isEmpty())
         {
             Worm w = (Worm) myEntityFactory.getEntities("worm").get(0);
-            if (w.isSpawned() && w.getHitPoints() > 0 &&
+            if (w.getHitPoints() > 0 &&
                     Physics.getRoom(myHero.getMyPos().getMyX(), myHero.getMyPos().getMyY())
                             .equals(Physics.getRoom(w.getMyPos().getMyX(), w.getMyPos().getMyY())))
             {
-                if (!myRenderer.getAssets().getMusic("boss").isPlaying())
+                if (!myRenderer.getAssets().getMusic("boss").isLooping())
                 {
                     myRenderer.getAssets().getMusic("boss").setLooping(true);
-                    myRenderer.getAssets().getMusic("boss").setVolume(.5f);
                     myRenderer.getAssets().getMusic("boss").play();
                 }
             }
-            else if (w.isSpawned() && w.getHitPoints() <= 0)
+            else if (w.getHitPoints() <= 0 && !myVictoryMusicPlayed)
             {
                 myRenderer.getAssets().getMusic("boss").stop();
-                if (!myRenderer.getAssets().getMusic("victory").isPlaying())
-                {
-                    myRenderer.getAssets().getMusic("victory").setLooping(false);
-                    myRenderer.getAssets().getMusic("victory").setVolume(.5f);
-                    myRenderer.getAssets().getMusic("victory").play();
-                }
+                myRenderer.getAssets().getMusic("victory").setLooping(false);
+                myRenderer.getAssets().getMusic("victory").play();
+                myVictoryMusicPlayed = true;
             }
+            setMusicVolume("boss");
+            setMusicVolume("victory");
         }
 
+    }
+
+    private void setMusicVolume(final String theMusicName)
+    {
+        if (myMuted)
+        {
+            myRenderer.getAssets().getMusic(theMusicName).setVolume(0f);
+        }
+        else if (myPaused)
+        {
+            myRenderer.getAssets().getMusic(theMusicName).setVolume(.05f);
+        }
+        else
+        {
+            myRenderer.getAssets().getMusic(theMusicName).setVolume(.5f);
+        }
     }
 
 }

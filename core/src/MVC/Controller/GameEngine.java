@@ -19,41 +19,39 @@ public class GameEngine extends ApplicationAdapter {
 	private MyInputProcessor 			myInputProcessor;
 
 	// Methods
-	public void setCurrentScene(final String name, final Scene scene, final boolean endCurrentScene)
+	public void setCurrentScene(final String theName, final Scene theScene, final boolean theEndCurrentScene)
 	{
-		// If a scene was passed, add it to the map with the scene name
-		if (scene != null)
+		// If a scene was passed, add it to the map with the scene theName
+		if (theScene != null)
 		{
-			mySceneMap.put(name, scene);
+			mySceneMap.put(theName, theScene);
 		}
 		else
 		{
 			// If no scene was passed and the scene name is not in the map then return a warning
-			if (mySceneMap.get(name) == null)
+			if (mySceneMap.get(theName) == null)
 			{
-				System.out.println("Warning: Scene does not exist: " + name);
+				System.out.println("Warning: Scene does not exist: " + theName);
 			}
 		}
 
-		if (endCurrentScene)
+		if (theEndCurrentScene)
 		{
 			mySceneMap.remove(myCurrentScene);
 		}
 
-		myCurrentScene = name;
+		myCurrentScene = theName;
 	}
 
-	public Scene getCurrentScene() { return mySceneMap.get(myCurrentScene); }
+	public Scene getCurrentScene() 					{ return mySceneMap.get(myCurrentScene); }
 
-	public String getCurrentSceneName() { return myCurrentScene; }
+	public String getCurrentSceneName() 			{ return myCurrentScene; }
 
-	boolean sceneExists(final String sceneName) { return mySceneMap.get(sceneName) != null; }
+	boolean sceneExists(final String theSceneName) 	{ return mySceneMap.get(theSceneName) != null; }
 
-	public boolean isRunning() { return myRunning; }
+	public boolean isRunning() 						{ return myRunning; }
 
-	public OrthographicCamera getCamera() { return myView.getCamera(); }
-
-	public MyRenderer getView() { return myView; }
+	public MyRenderer getView() 					{ return myView; }
 
 	@Override
 	public void create ()
@@ -79,9 +77,10 @@ public class GameEngine extends ApplicationAdapter {
 	@Override
 	public void dispose ()
 	{
-		// Dispose all Textures
+		// Dispose all Assets
+		myView.getAssets().dispose();
 
-		// Dispose batches
+		// Dispose batch
 		myView.getSpriteBatch().dispose();
 	}
 }

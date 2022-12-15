@@ -99,12 +99,7 @@ public class Sword extends Entity implements ICollidable
                 if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
                 {
                     w.applyDamage(1);
-
-                    if(w.getHitPoints()<=0)
-                    {
-                       // w.die();
-                    }
-                    else
+                    if(w.getHitPoints() > 0)
                     {
                         w.setInvincibility(true, 60);
                         w.knockback(this, 0, 60);

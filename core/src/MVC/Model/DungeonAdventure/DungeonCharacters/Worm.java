@@ -1,5 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
@@ -18,12 +19,11 @@ public class Worm extends DungeonCharacter
     private double myAngle;
     private long myNextCourseChange;
     final private Random myRand;
-    private boolean mySpawned;
 
     public Worm(final Vec2 thePos, final EntityFactory theEntityFactory)
     {
-        super("Worm", false, 1,
-        0, 0, new Vec2(0, 0), thePos,
+        super("Worm", false, 10,
+        1, 4, new Vec2(96, 96), thePos,
         new Vec2(0, 0), theEntityFactory);
 
         myControlPoints = new ArrayList<>();
@@ -31,97 +31,92 @@ public class Worm extends DungeonCharacter
         setRoom(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
         myTParam = 0;
         mySegments = new ArrayList<>();
-        mySegments.add(new Body(new Vec2( 0, 0), getMyPos(), getMyEntityFactory(), this, 16));
-        mySegments.add(new Body(new Vec2( 0, 0), getMyPos(), getMyEntityFactory(),  this, 28));
-        mySegments.add(new Body(new Vec2( 0, 0), getMyPos(), getMyEntityFactory(), this, 39));
-        myTail = new Tail(new Vec2(32, 32), getMyPos(), getMyEntityFactory(), this);
+        mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(), this, 16));
+        mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(),  this, 28));
+        mySegments.add(new Body(new Vec2( 48, 48), getMyPos(), getMyEntityFactory(), this, 39));
+        myTail = new Tail(new Vec2(48, 48), getMyPos(), getMyEntityFactory(), this);
+
+        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("head"));
+        mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
+        mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
+        mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body3"));
+        myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("tail"));
 
         getMyEntityFactory().addEntity(mySegments.get(0));
         getMyEntityFactory().addEntity(mySegments.get(1));
         getMyEntityFactory().addEntity(mySegments.get(2));
         getMyEntityFactory().addEntity(myTail);
 
-        myPath = new ArrayList<>();
+        setMyKnockbackPower(10);
+        setMyKnockbackLength(10);
 
-        mySpawned = false;
-    }
-
-    public boolean isSpawned() { return mySpawned; }
-
-    public void spawn()
-    {
-        setMySize(new Vec2(96, 96));
-        setMaxSpeed(4);
         myTurnSpeed = myRand.nextFloat(.05f);
         myTurnDirection = myRand.nextBoolean();
         myAngle = 0;
         myNextCourseChange = getCurrentFrame() + myRand.nextInt(61) + 15;
-        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("head"));
 
-        mySegments.get(0).setMySize(new Vec2(64, 64));
-        mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
-        mySegments.get(1).setMySize(new Vec2(64, 64));
-        mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
-        mySegments.get(2).setMySize(new Vec2(32, 32));
-        mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body3"));
+        generateControlPoints();
 
-        myTail.setMySize(new Vec2(32, 32));
-        myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("tail"));
-
-        setDamage(1);
-        setMyKnockbackPower(10);
-        setMyKnockbackLength(10);
-        setHitPoints(10);
-        mySpawned = true;
+        myPath = new ArrayList<>();
     }
-
-    public ArrayList<Body> getBody() { return mySegments; }
 
     public Tail getTail() { return myTail; }
 
     public void update()
     {
-        if (mySpawned)
+        if (getCurrentFrame() >= getInvincibilityEndFrame())
         {
-            if (getCurrentFrame() >= getInvincibilityEndFrame())
-            {
-                setInvincibility(false);
-            }
-            if (getCurrentFrame() >= getKnockbackEndFrame())
-            {
-                setKnockback(false);
-            }
-            if (getHitPoints() <= 0)
-            {
-                die();
-            }
-            movement();
-            collision();
-            incrementCurrentFrame();
+            setInvincibility(false);
         }
+        if (getCurrentFrame() >= getKnockbackEndFrame())
+        {
+            setKnockback(false);
+        }
+        if (getHitPoints() <= 0)
+        {
+            die();
+        }
+        movement();
+        collide();
+        incrementCurrentFrame();
     }
 
     public int attack() { return 0; }
 
     public void movement2()
     {
-        if (myTParam >= 1)
+        if (getHitPoints() > 0 && !isKnockback())
         {
-            generateControlPoints();
+            if (myTParam >= 1)
+            {
+                generateControlPoints();
+            }
+
+            Vec2 p0 = myControlPoints.get(0);
+            Vec2 p1 = myControlPoints.get(1);
+            Vec2 p2 = myControlPoints.get(2);
+            Vec2 p3 = myControlPoints.get(3);
+
+            myTParam += getMaxSpeed() * .0015f;
+            Vec2 newPos = Physics.calculateBezierPoint(myTParam, p0, p1, p2, p3);
+
+            setMyPreviousPos(getMyPos());
+            setMyPos(newPos);
+            Vec2 newVelocity = getMyPos().minus(getMyPreviousPos());
+            setVelocity(newVelocity);
         }
 
-        Vec2 p0 = myControlPoints.get(0);
-        Vec2 p1 = myControlPoints.get(1);
-        Vec2 p2 = myControlPoints.get(2);
-        Vec2 p3 = myControlPoints.get(3);
-
-        myTParam += getMaxSpeed() * .0015f;
-        Vec2 newPos = Physics.calculateBezierPoint( myTParam, p0, p1, p2, p3);
-
-        setMyPreviousPos(getMyPos());
-        setMyPos(newPos);
+        if (getHitPoints() > 0)
+        {
+            myPath.add(getMyPreviousPos());
+            if (myPath.size() > 200)
+            {
+                myPath.remove(0);
+            }
+        }
     }
 
+    @Override
     public void movement()
     {
         if (getHitPoints() > 0 && !isKnockback())
@@ -160,11 +155,12 @@ public class Worm extends DungeonCharacter
         }
     }
 
-    public void collision()
+    @Override
+    public void collide()
     {
         Vec2 overlap;
-        Vec2 previousOverlap;
 
+        // Collision with tiles
         ArrayList<Entity> tiles = new ArrayList<>();
         tiles.addAll(getMyEntityFactory().getEntities("Wall"));
         tiles.addAll(getMyEntityFactory().getEntities("Door"));
@@ -172,43 +168,15 @@ public class Worm extends DungeonCharacter
         for(var t: tiles) {
             overlap = Physics.getOverlap(this, t);
 
-            if (overlap.getMyX() > 0 && overlap.getMyY() > 0) {
+            if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+            {
 
-                previousOverlap = Physics.getPreviousOverlap(this, t);
-
-                // If the overlap is horizontal
-                if (previousOverlap.getMyY() > 0)
-                {
-                    // If the player came from the left, push them out to the left
-                    if (this.getMyPos().getMyX() < t.getMyPos().getMyX())
-                    {
-                        this.getMyPos().setMyX(this.getMyPos().getMyX() - (overlap.getMyX()));
-                    }
-                    // If the player came from the right push them out to the right
-                    else
-                    {
-                        this.getMyPos().setMyX(this.getMyPos().getMyX() + (overlap.getMyX()));
-                    }
-                }
-
-                // If the overlap is vertical
-                if (previousOverlap.getMyX() > 0)
-                {
-                    // If the player came from above push them up
-                    if (this.getMyPos().getMyY() < t.getMyPos().getMyY())
-                    {
-                        this.getMyPos().setMyY(this.getMyPos().getMyY() - (overlap.getMyY()));
-                    }
-                    else
-                    {
-                        this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
-                    }
-                }
-
+                Physics.tileResolution(overlap, this, t);
                 setMaxSpeed(getMaxSpeed() * -1);
             }
         }
 
+        // Collision with the hero
         Hero hero = getMyEntityFactory().getHero();
         overlap = Physics.getOverlap(this, hero);
         if (overlap.getMyX() > 0 && overlap.getMyY() > 0 && !hero.isInvincibility())
@@ -231,33 +199,36 @@ public class Worm extends DungeonCharacter
         mySegments.get(1).setMySize(new Vec2(0, 0));
         mySegments.get(2).setMySize(new Vec2(0, 0));
         myTail.setMySize((new Vec2(0, 0)));
+
+        // Dominoes the animations so the segments explode one at a time
         if (!myTail.getMyAnimation().getName().equals("bossDeath"))
         {
-            myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!mySegments.get(2).getMyAnimation().getName().equals("bossDeath") && myTail.getMyAnimation().hasEnded())
         {
             myTail.destroy();
-            mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!mySegments.get(1).getMyAnimation().getName().equals("bossDeath") && mySegments.get(2).getMyAnimation().hasEnded())
         {
             mySegments.get(2).destroy();
-            mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!mySegments.get(0).getMyAnimation().getName().equals("bossDeath") && mySegments.get(1).getMyAnimation().hasEnded())
         {
             mySegments.get(1).destroy();
-            mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!getMyAnimation().getName().equals("bossDeath") && mySegments.get(0).getMyAnimation().hasEnded())
         {
             mySegments.get(0).destroy();
-            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (getMyAnimation().hasEnded())
         {
             destroy();
+            Exit.setExitCondition(true);
         }
     }
 
