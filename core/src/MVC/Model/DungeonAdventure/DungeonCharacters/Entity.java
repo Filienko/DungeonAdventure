@@ -47,9 +47,8 @@ public abstract class Entity implements Serializable
 
     public void setMyPos(Vec2 thePos)
     {
-        if (thePos != null)  //can myPos ever be negative?
+        if (thePos != null)
         {
-            //myPos.copy(thePos);
             myPos = thePos;
         }
     }
@@ -114,7 +113,7 @@ public abstract class Entity implements Serializable
     }
     public String getType()                     { return myType; }
 
-    protected void incrementCurrentFrame() //?
+    protected void incrementCurrentFrame()
     {
         myCurrentFrame++;
     }
@@ -156,7 +155,7 @@ public abstract class Entity implements Serializable
         return myEntityFactory;
     }
 
-    protected void setMyEntityFactory(final EntityFactory theEntityFactory) //should this be less visible?
+    protected void setMyEntityFactory(final EntityFactory theEntityFactory)
     {
         if (theEntityFactory != null)
         {

@@ -133,7 +133,10 @@ public class SceneGame extends Scene
                 animation();
             }
             camera();
-            music();
+            if (!myMuted)
+            {
+                music();
+            }
             myCurrentFrame++;
         }
 
@@ -225,7 +228,11 @@ public class SceneGame extends Scene
                     renderHealthBars(e);
                     renderAura((Hero) e);
                 }
-                else if ( e.getType().equals("Monster") || e.getType().equals("Worm"))
+                else if ( e.getType().equals("Monster"))
+                {
+                    renderHealthBars(e);
+                }
+                else if (e.getType().equals("Worm") && ((Worm) e).isSpawned())
                 {
                     renderHealthBars(e);
                 }

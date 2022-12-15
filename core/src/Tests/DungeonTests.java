@@ -38,19 +38,6 @@ public class DungeonTests
     }
 
     @Test
-    void mazeGenerationWorkTest() throws IOException
-    {
-        for (int i = 3; i < 10; i++)
-        {
-            new Dungeon(myEntityFactory,i);
-            assertEquals(i*i-1, Integer.valueOf(out.toString().strip())); //this no longer passes bc a println statement was removed
-            //assertTrue(out.toString().strip().contains(String.valueOf(i*i-1)));
-
-            out.reset();
-        }
-    }
-
-    @Test
     void testRoomGeneration()
     {
         testRoomGenerationUnderValue(2);
@@ -100,6 +87,5 @@ public class DungeonTests
         assertTrue(dungeon.getRooms().size()==16);
         dungeon.setRooms(generateRooms(5));
         assertTrue(dungeon.getRooms().size()==25);
-
     }
 }

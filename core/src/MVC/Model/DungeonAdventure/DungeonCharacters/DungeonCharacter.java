@@ -1,6 +1,7 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
+import MVC.Model.DungeonItems.Items.Lava;
 import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
@@ -14,12 +15,12 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     /**
      * The specific character type.
      */
-    private String myCharacterType; //should this be changed back to final?
+    private String myCharacterType;
 
     /**
      * Hero status that describes if the character is a Hero or a Monster.
      */
-    private final boolean myHeroStatus;
+    private boolean myHeroStatus;
 
     /**
      * The amount of damage the character can inflict.
@@ -52,12 +53,12 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     private boolean myInvincibility;
 
     /**
-     * Tells if the Dungeon Character is being knocked back by an attack. -- ??
+     * Tells if the Dungeon Character is being knocked back by an attack.
      */
     private boolean myKnockback;
 
     /**
-     * The frame where a Dungeon Character stops being knocked back. -- ??
+     * The frame where a Dungeon Character stops being knocked back.
      */
     private long myKnockbackEndFrame;
 
@@ -104,7 +105,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         setMaxSpeed(theMaxSpeed);
         setMyPos(thePos);
         setVelocity(theVelocity);
-        myHeroStatus = theHeroStatus; //could i add a private setter?
+        setHeroStatus(theHeroStatus);
         myKnockback = false;
         myBurning = false;
         myHomePosition = new Vec2();
@@ -185,7 +186,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         {
             setHitPoints(0);
             myBurning = false;
-            destroy();
+            //destroy();
         }
         else if (damageOutcome > 0)
         {
@@ -219,6 +220,15 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public boolean getHeroStatus()
     {
         return myHeroStatus;
+    }
+
+    /**
+     * This method tells whether the character is a Hero.
+     * @param theHeroStatus The Character's hero status - True if the character is a Hero, false if it is a Monster.
+     */
+    private void setHeroStatus(final boolean theHeroStatus)
+    {
+        myHeroStatus = theHeroStatus;
     }
 
     /**

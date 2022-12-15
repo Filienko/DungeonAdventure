@@ -42,8 +42,6 @@ class DoorTest
     {
         Door myDoor = new Door(2, new Vec2(5,5), entityFactory);
 
-        myDoor.getMonsterCounter();
-
         assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
@@ -77,6 +75,7 @@ class DoorTest
         myDoor.decrementMonsterCounter();
         assertTrue(myDoor.getActiveStatus());
         myDoor.decrementMonsterCounter();
+
         assertTrue(myDoor.getActiveStatus());
 
         myDoor.update();

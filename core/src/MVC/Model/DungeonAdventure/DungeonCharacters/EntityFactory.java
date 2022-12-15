@@ -106,6 +106,31 @@ public class EntityFactory implements Serializable
 
         generateWalls(theRoom,monsterCounter);
 
+        while(items.toString().contains(","))
+        {
+            String item = items.substring(0, items.indexOf(",")+1);
+            items.delete(0, items.indexOf(",")+1);
+            var i = generateItems(item.substring(0,item.indexOf(",")));
+            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9,5);
+            }
+            else
+            {
+                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
+                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            }
+
+            if(i.getType().contentEquals("pillar"))
+            {
+                ((Pillar)i).setMonsterCounter(monsterCounter);
+            }
+            i.setRoom(location);
+            i.setMyPos(pixelPos);
+            i.setMyPreviousPos(pixelPos);
+            myEntitiesToAdd.add(i);
+        }
+
         if (theRoom.isLava())
         {
             generateLava((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
@@ -334,7 +359,7 @@ public class EntityFactory implements Serializable
                 return new Lava(this);
             }
             case "pillar"-> {
-                return new Pillar(theItem, this);
+                return new Pillar(theItem, 0, this);
             }
             case "exit" -> {
                 return Exit.getInstance(this);
@@ -403,10 +428,10 @@ public class EntityFactory implements Serializable
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation", this));
-        arr.add(new Pillar("Inheritance", this));
-        arr.add(new Pillar("Abstraction", this));
-        arr.add(new Pillar("Polymorphism", this));
+        arr.add(new Pillar("Encapsulation", 0, this));
+        arr.add(new Pillar("Abstraction", 0, this));
+        arr.add(new Pillar("Inheritance", 0, this));
+        arr.add(new Pillar("Polymorphism", 0, this));
 
         return arr;
     }
