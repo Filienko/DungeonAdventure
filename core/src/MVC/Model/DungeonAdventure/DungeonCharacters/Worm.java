@@ -29,6 +29,7 @@ public class Worm extends DungeonCharacter
         myControlPoints = new ArrayList<>();
         myRand = new Random();
         setRoom(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
+        System.out.println(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
         myTParam = 0;
         mySegments = new ArrayList<>();
         mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(), this, 16));
