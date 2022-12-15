@@ -516,6 +516,7 @@ public class EntityFactory implements Serializable
             else if(e instanceof Item)
             {
                 e.setMyAnimation(myAssets.getAnimation(e.getType()));
+                if(e instanceof Pillar && ((Pillar)e).isBroken()){e.setMyAnimation(myAssets.getAnimation("brokenPillar"));}
             }
             else if(e.getType().toLowerCase(Locale.ROOT).contains("monster"))
             {
