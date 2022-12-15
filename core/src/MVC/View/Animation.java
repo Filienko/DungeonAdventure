@@ -11,31 +11,34 @@ public class Animation
     final private Sprite    mySprite;
     final private long      myFrameCount;      // total number of frames of animation
     private long            myCurrentFrame;    // the current frame of animation
-    final private long      mySpeed;           // the speed to play this animation
+    private long            mySpeed;           // the speed to play this animation
     final private Vec2      mySize;            // the size of the animation frame
     final private String    myName;
+    private boolean         myRepeat;
 
     // Constructor
-    public Animation(final String animationName, final Texture texture, final int frameCount, final int speed)
+    public Animation(final String theAnimationName, final Texture theTexture, final int theFrameCount, final int theSpeed)
     {
-        myFrameCount    = frameCount;
+        myFrameCount    = theFrameCount;
         myCurrentFrame  = 0;
-        mySpeed         = speed;
-        myName          = animationName;
-        mySize          = new Vec2((float) texture.getWidth() / frameCount, texture.getHeight());
-        mySprite        = new Sprite(texture, 0, 0, (int) mySize.getMyX(), (int) mySize.getMyY());
+        mySpeed         = theSpeed;
+        myName          = theAnimationName;
+        mySize          = new Vec2((float) theTexture.getWidth() / theFrameCount, theTexture.getHeight());
+        mySprite        = new Sprite(theTexture, 0, 0, (int) mySize.getMyX(), (int) mySize.getMyY());
         mySprite.setOrigin(mySize.getMyX() / 2, mySize.getMyY() / 2);
+        myRepeat        = true;
     }
 
     // Shallow Copy Constructor
     public Animation(final Animation other)
     {
-        myFrameCount = other.myFrameCount;
-        myCurrentFrame = 0;
-        mySpeed = other.mySpeed;
-        myName = other.myName;
-        mySize = other.mySize;
-        mySprite = other.mySprite;
+        myFrameCount    = other.myFrameCount;
+        myCurrentFrame  = 0;
+        mySpeed         = other.mySpeed;
+        myName          = other.myName;
+        mySize          = other.mySize;
+        mySprite        = other.mySprite;
+        myRepeat        = other.myRepeat;
     }
 
 
@@ -53,7 +56,7 @@ public class Animation
         }
     }
 
-    public boolean hasEnded()  { return myCurrentFrame == (mySpeed * myFrameCount) - 1; }
+    public boolean hasEnded()  { return !myRepeat && myCurrentFrame >= (mySpeed * myFrameCount) - 1; }
 
     public String getName()    { return myName; }
 
@@ -68,6 +71,24 @@ public class Animation
 
 
         mySprite.setPosition(adjustedX, adjustedY);
+    }
+
+    public void setSpeed(final long theSpeed)
+    {
+        if (theSpeed > 0 && mySpeed != 0)
+        {
+            mySpeed = theSpeed;
+        }
+    }
+
+    public long getSpeed()
+    {
+        return mySpeed;
+    }
+
+    public void setRepeat(final boolean theRepeat)
+    {
+        myRepeat = theRepeat;
     }
 
 }

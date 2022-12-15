@@ -5,10 +5,10 @@ public class Action
     private final String myName;
     private final String myType;
 
-    public Action(final String name, final String type)
+    public Action(final String theName, final String theType)
     {
-        myName = name;
-        myType = type;
+        myName = theName;
+        myType = theType;
     }
 
     public String getName()     { return myName; }

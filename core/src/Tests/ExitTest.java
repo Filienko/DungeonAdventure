@@ -29,7 +29,7 @@ class ExitTest
             myWarrior.incrementPillars();
         }
 
-        assertTrue(myExit.checkFinishGame());
+        assertTrue(myExit.isExitCondition());
     }
 
     @Test
@@ -38,7 +38,7 @@ class ExitTest
         Exit myExit = Exit.getInstance(entityFactory);
         Warrior myWarrior = new Warrior(entityFactory); //initialized with 0 Pillars.
 
-        assertFalse(myExit.checkFinishGame());
+        assertFalse(myExit.isExitCondition());
     }
 
     @Test

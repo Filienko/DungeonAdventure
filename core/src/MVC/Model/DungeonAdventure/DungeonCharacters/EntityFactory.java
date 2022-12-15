@@ -136,15 +136,10 @@ public class EntityFactory implements Serializable
             generateLava((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
         }
 
-        if (theRoom.isTheExit())
-        {
-            generateWorm(location);
-        }
-
         return myEntitiesToAdd;
     }
 
-    private void generateWorm(final Vec2 theLocation)
+    public void generateWorm(final Vec2 theLocation)
     {
             Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
             Worm worm = new Worm(pixelPos, this);

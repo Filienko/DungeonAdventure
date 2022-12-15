@@ -16,12 +16,12 @@ import java.util.ArrayList;
 public class Assets
 {
     // Member fields
-    private ObjectMap<String, Texture> myTextureMap;
-    private ObjectMap<String, Animation> myAnimationMap;
-    private ObjectMap<String, BitmapFont> myFontMap;
-    private ObjectMap<String, Sound> mySoundMap;
-    private ObjectMap<String, Music> myMusicMap;
-    private ArrayList<String> myAnimationNames;
+    private final ObjectMap<String, Texture>    myTextureMap;
+    private final ObjectMap<String, Animation>  myAnimationMap;
+    private final ObjectMap<String, BitmapFont> myFontMap;
+    private final ObjectMap<String, Sound>      mySoundMap;
+    private final ObjectMap<String, Music>      myMusicMap;
+    private final ArrayList<String>             myAnimationNames;
 
     // Constructor
     public Assets()
@@ -51,7 +51,7 @@ public class Assets
 
                     if (attributes.length > 2)
                     {
-                        addAnimation(attributes[0], fileName, Integer.parseInt(attributes[1]), Integer.parseInt(attributes[2]));
+                        addAnimation(attributes[0], Integer.parseInt(attributes[1]), Integer.parseInt(attributes[2]));
                         myAnimationNames.add(attributes[0]);
                     }
                 }
@@ -71,58 +71,58 @@ public class Assets
         }
     }
 
-    private void addTexture(final String textureName, final String fileName)
+    private void addTexture(final String theTextureName, final String theFileName)
     {
-        myTextureMap.put(textureName, new Texture(Gdx.files.internal(fileName)));
-        if (myTextureMap.get(textureName) == null)
+        myTextureMap.put(theTextureName, new Texture(Gdx.files.internal(theFileName)));
+        if (myTextureMap.get(theTextureName) == null)
         {
-            System.out.println("Could not load texture file: " + fileName);
+            System.out.println("Could not load texture file: " + theFileName);
         }
         else
         {
-            System.out.println("Loaded texture: " + fileName);
+            System.out.println("Loaded texture: " + theFileName);
         }
     }
 
-    private void addAnimation(final String animationName, final String fileName, int frameCount, int speed)
+    private void addAnimation(final String theAnimationName, int theFrameCount, int theSpeed)
     {
-        myAnimationMap.put(animationName, new Animation(animationName, getTexture(animationName), frameCount, speed));
+        myAnimationMap.put(theAnimationName, new Animation(theAnimationName, getTexture(theAnimationName), theFrameCount, theSpeed));
     }
 
-    private void addFont(final String fontName, final String fileName)
+    private void addFont(final String theFontName, final String theFileName)
     {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fileName));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(theFileName));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
         parameter.color = Color.CHARTREUSE;
-        myFontMap.put(fontName + "48", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "48", generator.generateFont(parameter));
 
         parameter.size = 62;
-        myFontMap.put(fontName + "128", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "128", generator.generateFont(parameter));
 
         parameter.size = 24;
         parameter.color = Color.WHITE;
-        myFontMap.put(fontName + "24", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "24", generator.generateFont(parameter));
 
         parameter.size = 40;
-        myFontMap.put(fontName + "40", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "40", generator.generateFont(parameter));
 
         parameter.color = Color.GRAY;
-        myFontMap.put(fontName + "40Black", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "40Black", generator.generateFont(parameter));
 
         generator.dispose();
     }
 
-    private void addSound(final String soundName, final String fileName)
+    private void addSound(final String theSoundName, final String theFileName)
     {
-        mySoundMap.put(soundName, Gdx.audio.newSound(Gdx.files.internal(fileName)));
-        if (mySoundMap.get(soundName) == null)
+        mySoundMap.put(theSoundName, Gdx.audio.newSound(Gdx.files.internal(theFileName)));
+        if (mySoundMap.get(theSoundName) == null)
         {
-            System.out.println("Could not load sound file: " + fileName);
+            System.out.println("Could not load sound file: " + theFileName);
         }
         else
         {
-            System.out.println("Loaded sound: " + fileName);
+            System.out.println("Loaded sound: " + theFileName);
         }
     }
 
@@ -139,28 +139,28 @@ public class Assets
         }
     }
 
-    public Texture getTexture(final String textureName)
+    public Texture getTexture(final String theTextureName)
     {
-        assert(myTextureMap.get(textureName) != null);
-        return myTextureMap.get(textureName);
+        assert(myTextureMap.get(theTextureName) != null);
+        return myTextureMap.get(theTextureName);
     }
 
-    public Animation getAnimation(final String animationName)
+    public Animation getAnimation(final String theAnimationName)
     {
-        assert(myAnimationMap.get(animationName) != null);
-        return myAnimationMap.get(animationName);
+        assert(myAnimationMap.get(theAnimationName) != null);
+        return myAnimationMap.get(theAnimationName);
     }
 
-    public BitmapFont getFont(final String fontName)
+    public BitmapFont getFont(final String theFontName)
     {
-        assert(myFontMap.get(fontName) != null);
-        return myFontMap.get(fontName);
+        assert(myFontMap.get(theFontName) != null);
+        return myFontMap.get(theFontName);
     }
 
-    public Sound getSound(final String soundName)
+    public Sound getSound(final String theSoundName)
     {
-        assert(mySoundMap.get(soundName) != null);
-        return mySoundMap.get(soundName);
+        assert(mySoundMap.get(theSoundName) != null);
+        return mySoundMap.get(theSoundName);
     }
 
     public Music getMusic(final String theMusicName)
@@ -172,5 +172,25 @@ public class Assets
     public ArrayList<String> getAnimationNames()
     {
         return myAnimationNames;
+    }
+
+    public void dispose()
+    {
+        for (var k : myTextureMap.keys())
+        {
+            myTextureMap.get(k).dispose();
+        }
+        for (var k : myFontMap.keys())
+        {
+            myFontMap.get(k).dispose();
+        }
+        for (var k : mySoundMap.keys())
+        {
+            mySoundMap.get(k).dispose();
+        }
+        for (var k : myMusicMap.keys())
+        {
+            myMusicMap.get(k).dispose();
+        }
     }
 }

@@ -17,9 +17,9 @@ public class SceneMenu extends Scene
     final private ArrayList<String> myHeroSelections;
     boolean myHeroSelection;
 
-    public SceneMenu(GameEngine gameEngine)
+    public SceneMenu(GameEngine theGameEngine)
     {
-        super(gameEngine);
+        super(theGameEngine);
         myTitle = "Dungeon Adventure";
         myTextElements = new ArrayList<String>();
         myHeroSelections = new ArrayList<String>();
@@ -42,15 +42,15 @@ public class SceneMenu extends Scene
 
     }
 
-    protected void onEnd() { Gdx.app.exit(); }
+    protected void onEnd()  { Gdx.app.exit(); }
 
-    public void update() { myCurrentFrame++; }
+    public void update()    { myCurrentFrame++; }
 
-    public void doAction(final Action action)
+    public void doAction(final Action theAction)
     {
-        if(action.getType().equals("START"))
+        if(theAction.getType().equals("START"))
         {
-            switch (action.getName()) {
+            switch (theAction.getName()) {
                 case "UP":
                     if (myMenuIndex > 0) {
                         myMenuIndex--;

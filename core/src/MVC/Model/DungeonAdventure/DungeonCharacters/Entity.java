@@ -103,6 +103,14 @@ public abstract class Entity implements Serializable
             myAnimation = new Animation(theAnimation);
         }
     }
+    public void setMyAnimation(final Animation theAnimation, final boolean theRepeat)
+    {
+        if (theAnimation != null)
+        {
+            myAnimation = new Animation(theAnimation);
+            myAnimation.setRepeat(theRepeat);
+        }
+    }
 
     public void setType(final String theType)
     {

@@ -7,6 +7,7 @@ public class Exit extends Item
 {
     private static Exit myExit;
     private static boolean myExited = false;
+    private static boolean myExitCondition = false;
 
     private Exit(final EntityFactory theEntityFactory)
     {
@@ -22,9 +23,14 @@ public class Exit extends Item
         return myExit;
     }
 
-    public boolean checkFinishGame()
+    public static boolean isExitCondition()
     {
-        return getMyEntityFactory().getEntities("worm").isEmpty();
+        return myExitCondition;
+    }
+
+    public static void setExitCondition(final boolean theCondition)
+    {
+        myExitCondition = theCondition;
     }
 
     public static boolean isExited() { return myExited; }
@@ -33,7 +39,7 @@ public class Exit extends Item
     public void activate(final Hero theHero)
     {
         //System.out.println(theHero.getPillars());
-        if(checkFinishGame() && theHero.getPillars() == 4)
+        if(isExitCondition() && theHero.getPillars() == 4)
         {
             myExited = true;
             theHero.destroy();

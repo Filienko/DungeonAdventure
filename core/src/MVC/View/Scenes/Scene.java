@@ -28,10 +28,10 @@ public abstract class Scene
         myCurrentFrame = 0;
         myActionMap = new ObjectMap<>();
     }
-    public Scene(GameEngine gameEngine)
+    public Scene(GameEngine theGameEngine)
     {
         this();
-        myGame = gameEngine;
+        myGame = theGameEngine;
         myRenderer = myGame.getView();
     }
 
@@ -39,22 +39,22 @@ public abstract class Scene
 
     public abstract void update();
 
-    public abstract void doAction(final Action action);
+    public abstract void doAction(final Action theAction);
 
     public abstract void render();
 
-    public void setPaused() { myPaused = !myPaused; }
+    public void setPaused()                             { myPaused = !myPaused; }
 
-    public void registerAction(final int inputKey, final String actionName)
+    public void registerAction(final int theInputKey, final String theActionName)
     {
-        myActionMap.put(inputKey, actionName);
+        myActionMap.put(theInputKey, theActionName);
     }
 
-    public EntityFactory getEntityFactory() { return myEntityFactory; }
+    public EntityFactory getEntityFactory()             { return myEntityFactory; }
 
-    public ObjectMap<Integer, String> getActionMap() { return myActionMap; }
+    public ObjectMap<Integer, String> getActionMap()    { return myActionMap; }
 
-    public String getMyTitle() { return myTitle; }
+    public String getMyTitle()                          { return myTitle; }
 
-    public long getCurrentFrame()   { return myCurrentFrame; }
+    public long getCurrentFrame()                       { return myCurrentFrame; }
 }
