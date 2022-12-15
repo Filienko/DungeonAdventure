@@ -9,6 +9,7 @@ import MVC.Model.DungeonItems.Room;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
+import MVC.Model.Saver.Saver;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,18 +21,16 @@ import java.util.ArrayList;
 
 public class SceneGame extends Scene
 {
-    private final Hero myHero;
+    private Hero myHero;
     private boolean myDrawTextures;
     private boolean myDrawBoundingBoxes;
     private boolean myMuted;
-    private final ArrayList<String> myRenderOrder;
+    private ArrayList<String> myRenderOrder;
     private long myLastSkitterFrame;
 
-    public SceneGame(GameEngine game, String hero)
+    public SceneGame(GameEngine game)
     {
         super(game);
-        myEntityFactory = new EntityFactory(myRenderer.getAssets(), hero);
-        initialize();
         myDrawTextures = true;
         myDrawBoundingBoxes = false;
         myMuted = false;
@@ -64,38 +63,36 @@ public class SceneGame extends Scene
         registerAction(Input.Keys.B, "TOGGLE_BOXES");
         registerAction(Input.Keys.M, "TOGGLE_SOUND");
 
-        myHero = myEntityFactory.getHero();
         myLastSkitterFrame = 0;
+    }
+
+    public SceneGame(GameEngine game, String hero)
+    {
+        this(game);
+        myEntityFactory = new EntityFactory(myRenderer.getAssets(), hero);
+        myHero = myEntityFactory.getHero();
+        initialize();
+    }
+
+    public SceneGame(GameEngine game, EntityFactory theEntityFactory)
+    {
+        this(game);
+        myEntityFactory = theEntityFactory;
+        myEntityFactory.setAssets(myRenderer.getAssets());
+        myEntityFactory.initializeEntityFactory(myEntityFactory.getEntities());
+        myHero = myEntityFactory.getHero();
     }
 
     private void initialize()
     {
-
         Dungeon testDungeon = new Dungeon(myEntityFactory,3);
         myEntityFactory.generateGameEntities(testDungeon);
-
-
-        /*Room testRoom = new Room(1, new Vec2(0, 0));
-        testRoom.setExitStatus(true);
-        testRoom.setLava(false);
-        testRoom.setN(false);
-        testRoom.setW(false);
-        testRoom.setE(true);
-        testRoom.setS(true);
-        //testRoom.populateMonsters(1);
-        myEntityFactory.generateRoomEntities(testRoom);
-
-         */
-
-
-
-
     }
 
     protected void onEnd()
     {
         // TODO: serialize
-
+        (new Saver()).saveTheGame(myEntityFactory);
         myRenderer.getCamera().position.x = 608;
         myRenderer.getCamera().position.y = 352;
         myGame.setCurrentScene("Menu", null, true);
