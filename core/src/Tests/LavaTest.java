@@ -44,12 +44,10 @@ class LavaTest
         Lava myLava = new Lava(entityFactory);
         Thief myThief = new Thief(entityFactory);
 
-        int HP = myThief.getHitPoints();
-
+        myThief.setHitPoints(5);
         myLava.activate(myThief);
 
-        assertEquals(myThief.getHitPoints(), HP - myLava.getDamage());
+        assertEquals(myThief.getHitPoints(), (Math.max(0, 5 - myLava.getDamage())));
         assertFalse(myLava.getActiveStatus());
-
     }
 }

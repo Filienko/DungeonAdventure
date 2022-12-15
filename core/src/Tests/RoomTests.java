@@ -26,7 +26,9 @@ public class RoomTests
         room.addItem(new Pillar(entityFactory));
         room.setE(true);
 
+        room.setLocation(new Vec2(1,2));
         room.populateTheRoom(true);
+
         assertTrue(room.isLava());
         assertTrue(room.getItems().toString().contains("Potion"));
         assertTrue(room.getItems().toString().contains("pillar"));

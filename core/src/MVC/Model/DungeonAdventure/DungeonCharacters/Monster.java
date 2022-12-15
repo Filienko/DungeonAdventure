@@ -169,6 +169,15 @@ public class Monster extends DungeonCharacter
     }
 
     /**
+     * This method retrieves the Monster's aggression distance, which is ..
+     * @return The Monster's aggression distance.
+     */
+    public int getAggressionDistance()
+    {
+        return MY_AGGRESSION_DISTANCE;
+    }
+
+    /**
      * This method sets the Monster's type
      * @param theMonsterType The Monster's new type.
      */

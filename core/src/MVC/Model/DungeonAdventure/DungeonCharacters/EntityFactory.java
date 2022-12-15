@@ -158,11 +158,14 @@ public class EntityFactory
         return myEntitiesToAdd;
     }
 
-    private void generateWorm(final Vec2 theLocation)
+    //CHANGE BACK TO PRIVATE AND VOID AFTER TESTING
+    public Worm generateWorm(final Vec2 theLocation)
     {
             Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
             Worm worm = new Worm(pixelPos, this);
             myEntitiesToAdd.add(worm);
+
+            return worm;
     }
 
     private void generateLava(final int roomX, final int roomY)
@@ -403,8 +406,8 @@ public class EntityFactory
         var arr = new ArrayList<Pillar>();
 
         arr.add(new Pillar("Encapsulation", 0, this));
-        arr.add(new Pillar("Abstraction", 0, this));
         arr.add(new Pillar("Inheritance", 0, this));
+        arr.add(new Pillar("Abstraction", 0, this));
         arr.add(new Pillar("Polymorphism", 0, this));
 
         return arr;

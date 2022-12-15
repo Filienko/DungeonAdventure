@@ -40,7 +40,6 @@ class AttackPotionTest
         myAP.activate(myWarrior);
 
         assertEquals(myWarrior.getDamage(), damage + 3);
-
     }
 
     @Test

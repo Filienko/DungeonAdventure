@@ -17,9 +17,7 @@ public class Lava extends Item
     @Override
     public void activate(final Hero theHero)
     {
-        theHero.setHitPoints(Math.min(0, theHero.getHitPoints() - myDamage));
-        //moved hero.destroy to dungeoncharacter's collide for testing
-
+        theHero.setHitPoints(Math.max(0, theHero.getHitPoints() - myDamage));
         destroy();
     }
 
@@ -28,10 +26,10 @@ public class Lava extends Item
         return myDamage;
     }
 
-    public void setDamage(final int theDamageFall) {
-        if (theDamageFall > 0)
+    public void setDamage(final int theDamage) {
+        if (theDamage > 0)
         {
-            myDamage = theDamageFall;
+            myDamage = theDamage;
         }
     }
 
