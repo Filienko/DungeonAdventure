@@ -8,16 +8,6 @@ public class Thief extends Hero
 {
 
     /**
-     * Thief constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
-     * amount of damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
-     * @param theEntityFactory The Entity Factory that generated the Thief.
-     */
-    public Thief(final EntityFactory theEntityFactory)
-    {
-        super("Thief", "Thief",10, 1, 5, new Vec2(), new Vec2(), theEntityFactory);
-    }
-
-    /**
      * Thief overloaded constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
      * amount of damage it can inflict, max speed, position, and velocity.
      * @param theName The Thief's name.

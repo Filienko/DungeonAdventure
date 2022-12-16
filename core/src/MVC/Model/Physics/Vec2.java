@@ -24,17 +24,6 @@ public class Vec2 implements Serializable
     }
 
     /**
-     * Checks if two vectors have equal values
-     * @param vec1 One of two vectors
-     * @param vec2 One of two vectors
-     * @return Whether the two vectors are equals
-     */
-    public static boolean equals(final Vec2 vec1,final Vec2 vec2)
-    {
-        return vec1.getMyX()==vec2.getMyX() && vec1.getMyY()==vec2.getMyY();
-    };
-
-    /**
      * Constructor that takes zero arguments
      * and sets an initial value of zero to the x and y components
      */
@@ -129,16 +118,6 @@ public class Vec2 implements Serializable
     };
 
     /**
-     * Computes the distance between this point and the passed point
-     * @param thePoint The point to find the distance from
-     * @return The distance between the two points
-     */
-    public float computeDistance(final Vec2 thePoint)
-    {
-        return (float) Math.sqrt(getDistanceSquared(thePoint));
-    };
-
-    /**
      * Computes the squared distance between this point and the passed point
      * @param thePoint The point to find the squared distance from
      * @return The squared distance between the two points
@@ -174,27 +153,6 @@ public class Vec2 implements Serializable
         x = Float.intBitsToFloat(i);
         x *= (1.5f - xhalf * x * x);
         return x;
-    };
-
-    /**
-     * Computes the two-dimensional cross product between this vector and the passed vector
-     * @param theVector The vector to find the cross product with
-     * @return The cross product between the two vectors
-     */
-    public float crossProduct(final Vec2 theVector)
-    {
-        return myX * theVector.getMyY() - myY * theVector.getMyX();
-    };
-
-    /**
-     * Computes the dot product between this vector and the passed vector
-     * @param theVector The vector to find the dot product with
-     * @return The dot product of the two vectors
-     */
-    public float dotProduct(final Vec2 theVector)
-    {
-
-        return myX * theVector.getMyX() + myY * theVector.getMyY();
     };
 
     /**

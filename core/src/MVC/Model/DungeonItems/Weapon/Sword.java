@@ -13,11 +13,6 @@ public class Sword extends Entity implements ICollidable
     private static Sword mySword;
 
     /**
-     * The Entity Factory that generated the Sword.
-     */
-    private EntityFactory myEntityFactory;
-
-    /**
      * The Sword's lifespan.
      */
     private final long myLifeSpan;
@@ -56,12 +51,6 @@ public class Sword extends Entity implements ICollidable
         }
         return mySword;
     }
-
-    /**
-     * This method retrieves the Sword's lifespan.
-     * @return
-     */
-    public long getMyLifeSpan() { return myLifeSpan; }
 
     /**
      * Information about the Sword that is to be updated.
@@ -144,15 +133,6 @@ public class Sword extends Entity implements ICollidable
                 }
             }
         }
-    }
-
-    /**
-     * This method retrieves the Hero that is using the Sword.
-     * @return The Hero using the Sword.
-     */
-    public Hero getMyHero()
-    {
-        return myHero;
     }
 
     /**

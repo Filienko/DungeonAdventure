@@ -5,7 +5,6 @@ import MVC.View.Scenes.SceneMenu;
 import MVC.View.MyRenderer;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ObjectMap;
 
 
@@ -67,22 +66,6 @@ public class GameEngine extends ApplicationAdapter {
 	 * @return The current Scene
 	 */
 	public Scene getCurrentScene() 					{ return mySceneMap.get(myCurrentScene); }
-
-	/**
-	 * @return The name of the current scene
-	 */
-	public String getCurrentSceneName() 			{ return myCurrentScene; }
-
-	/**
-	 * @param theSceneName The name of the Scene to be checked
-	 * @return Whether any Scene exists attached to the passed name
-	 */
-	boolean sceneExists(final String theSceneName) 	{ return mySceneMap.get(theSceneName) != null; }
-
-	/**
-	 * @return Whether the game is running
-	 */
-	public boolean isRunning() 						{ return myRunning; }
 
 	/**
 	 * @return The top level View class

@@ -51,91 +51,6 @@ public class Physics
     }
 
     /**
-     * Checks whether a point is inside an Entity
-     * @param theVec1 The point
-     * @param theEntity The Entity
-     * @return Whether the point is inside the Entity
-     */
-    public static boolean isInside(Vec2 theVec1, Entity theEntity)
-    {
-        boolean inside= false;
-
-        // If the entity doesn't have animation, we can't be inside it
-        //if (theEntity.isMyEntityAnimated())
-        {
-            // Checks if a point is contained within a bounding box
-            Vec2 e_position= theEntity.getMyPos();
-            Vec2 e_half_size= theEntity.getMyPos().divide(2);
-
-            Vec2 delta= new Vec2(Math.abs(e_position.getMyX() - theVec1.getMyX()), Math.abs(e_position.getMyY() - theVec1.getMyY()));
-
-            boolean overlap_x = e_half_size.getMyX() > delta.getMyX();
-            boolean overlap_y = e_half_size.getMyY() > delta.getMyY();
-
-            inside= overlap_x && overlap_y;
-        }
-
-        return inside;
-    }
-
-    /**
-     * Checks if two lines intersect
-     * @param theVec1 One of two end points on the first line
-     * @param theVec2 One of two end points on the first line
-     * @param theVec3 One of two end points on the second line
-     * @param theVec4 One of two end points on the second line
-     * @return Whether there is an intersection between the two lines
-     */
-    public static Intersect lineIntersect(final Vec2 theVec1, final Vec2 theVec2, final Vec2 theVec3, final Vec2 theVec4)
-    {
-        Intersect result = new Intersect();
-
-        Vec2 r = (theVec2.minus(theVec1));
-        Vec2 s= (theVec4.minus(theVec3));
-        float rxs = r.crossProduct(s);
-        Vec2 cma = theVec3.minus(theVec1);
-        float t = cma.crossProduct(s) / rxs;
-        float u = cma.crossProduct(r) / rxs;
-
-        if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
-        {
-            result.setIntersectionOccurs(true);
-            result.setVec(new Vec2(theVec1.getMyX() + t * r.getMyX(),theVec1.getMyY() + t * r.getMyY()));
-        }
-
-        return result;
-    }
-
-    /**
-     * Checks whether a line intersect an Entity
-     * @param theVec1 One of two endpoints of the line
-     * @param theVec2 One of two endpoints of the line
-     * @param theEntity The Entity
-     * @return Whether the line intersects the Entity
-     */
-    public static boolean entityIntersect(final Vec2 theVec1, final Vec2 theVec2, final Entity theEntity)
-    {
-        float halfSizeX= theEntity.getMySize().divide(2).getMyX();
-        float halfSizeY= theEntity.getMySize().divide(2).getMyY();
-        Vec2 p1 = new Vec2(theEntity.getMyPos());
-        Vec2 p2 = new Vec2(theEntity.getMyPos());
-        Vec2 p3 = new Vec2(theEntity.getMyPos());
-        Vec2 p4 = new Vec2(theEntity.getMyPos());
-
-        p1.add(halfSizeX, halfSizeY);
-        p2.add(halfSizeX, -halfSizeY);
-        p3.add(-halfSizeX, -halfSizeY);
-        p4.add(-halfSizeX, halfSizeY);
-
-        if (lineIntersect(theVec1, theVec2, p1, p2).isMyIntersectionOccurs()) { return true; }
-        if (lineIntersect(theVec1, theVec2, p2, p3).isMyIntersectionOccurs()) { return true; }
-        if (lineIntersect(theVec1, theVec2, p3, p4).isMyIntersectionOccurs()) { return true; }
-        if (lineIntersect(theVec1, theVec2, p1, p4).isMyIntersectionOccurs()) { return true; }
-
-        return false;
-    }
-
-    /**
      * Returns the game world pixel position of the passed room and tile
      * @param rx The room x position
      * @param ry The room y position
@@ -167,23 +82,6 @@ public class Physics
         float roomY = (float) Math.floor(thePixelY / 704);
 
         return new Vec2(roomX, roomY);
-    }
-
-    public static Vec2 calculateBezierPoint(final float t,
-                        final Vec2 point0, final Vec2 point1, final Vec2 point2, final Vec2 point3)
-    {
-        float u = 1 - t;
-        float tt = t * t;
-        float uu = u * u;
-        float uuu = uu * u;
-        float ttt = tt * t;
-
-        Vec2 p = point0.multiply(uuu);          // first term
-        p = p.add(point1.multiply(3 * uu * t)); // second term
-        p = p.add(point2.multiply(3 * u * tt)); // third term
-        p = p.add(point3.multiply(ttt));        // fourth term
-
-        return p;
     }
 
     /**

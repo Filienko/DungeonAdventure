@@ -16,17 +16,6 @@ public class AttackPotion extends Potion
     }
 
     /**
-     * The AttackPotion's overloaded constructor that calls its parent constructor to initialize its type, strength, and
-     * the Entity Factory that generates it.
-     * @param theEntityFactory The Entity Factory that generated the Entity.
-     * @param theStrength The amount that the Hero's attack damage will be increased by.
-     */
-    public AttackPotion(final int theStrength, final EntityFactory theEntityFactory)
-    {
-        super("attackPotion",theStrength, theEntityFactory);
-    }
-
-    /**
      * The Attack Potion's activate behavior. It increases the hero's damage amount by its strength.
      * Then,the Attack Potion destroys itself.
      * @param theHero The Hero whose damage amount will be increased.

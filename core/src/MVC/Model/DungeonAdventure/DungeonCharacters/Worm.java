@@ -17,12 +17,10 @@ public class Worm extends DungeonCharacter
      * Tail that follows this Worm
      */
     final private Tail myTail;
-    final private ArrayList<Vec2> myControlPoints;
     /**
      * ArrayList of previous positions
      */
     final private ArrayList<Vec2> myPath;
-    private float myTParam;
     /**
      * How fast this Worm turns
      */
@@ -61,10 +59,8 @@ public class Worm extends DungeonCharacter
         super(theCharacterType, false, theHitPoints,
                 theDamage, theMaxSpeed, theSize, thePos,theVelocity, theEntityFactory);
 
-        myControlPoints = new ArrayList<>();
         myRand = new Random();
         setRoom(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
-        myTParam = 0;
         mySegments = new ArrayList<>();
         mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(), this, 16));
         mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(),  this, 28));
@@ -92,8 +88,6 @@ public class Worm extends DungeonCharacter
         myTurnDirection = myRand.nextBoolean();
         myAngle = 0;
         myNextCourseChange = getCurrentFrame() + myRand.nextInt(61) + 15;
-
-        generateControlPoints();
 
         myPath = new ArrayList<>();
     }
@@ -134,40 +128,7 @@ public class Worm extends DungeonCharacter
     }
 
     @Override
-    public int attack() { return 0; }
-
-    public void movement2()
-    {
-        if (getHitPoints() > 0 && !isKnockBack())
-        {
-            if (myTParam >= 1)
-            {
-                generateControlPoints();
-            }
-
-            Vec2 p0 = myControlPoints.get(0);
-            Vec2 p1 = myControlPoints.get(1);
-            Vec2 p2 = myControlPoints.get(2);
-            Vec2 p3 = myControlPoints.get(3);
-
-            myTParam += getMaxSpeed() * .0015f;
-            Vec2 newPos = Physics.calculateBezierPoint(myTParam, p0, p1, p2, p3);
-
-            setMyPreviousPos(getMyPos());
-            setMyPos(newPos);
-            Vec2 newVelocity = getMyPos().minus(getMyPreviousPos());
-            setVelocity(newVelocity);
-        }
-
-        if (getHitPoints() > 0)
-        {
-            myPath.add(getMyPreviousPos());
-            if (myPath.size() > 200)
-            {
-                myPath.remove(0);
-            }
-        }
-    }
+    public int attack() { return getDamage(); }
 
     @Override
     public void movement()
@@ -295,22 +256,6 @@ public class Worm extends DungeonCharacter
         mySegments.get(2).myLag -= 2.6;
         myTail.myLag -= 3.25;
     }
-
-    private void generateControlPoints()
-    {
-        myTParam = 0;
-        myControlPoints.removeAll(myControlPoints);
-        myControlPoints.add(getMyPos());
-        Vec2 controlPoint;
-        for (int i = 0; i < 3; i++)
-        {
-            int tileX = myRand.nextInt(17) + 1;
-            int tileY = myRand.nextInt(9) + 1;
-            controlPoint = Physics.getPosition((int) getRoom().getMyX(), (int) getRoom().getMyY(), tileX, tileY);
-            myControlPoints.add(controlPoint);
-        }
-    }
-
 
     public class Body extends Entity
     {

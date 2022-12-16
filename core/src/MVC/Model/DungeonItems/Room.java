@@ -61,20 +61,7 @@ public class Room implements Cloneable
     /**
      * The location of the Room in the Dungeon.
      */
-    private Vec2 myLocation;
-
-    /**
-     * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items.
-     */
-    public Room()
-    {
-        myNumber = 0;
-        myEntrance = false;
-        myExit = false;
-        myLocation = new Vec2();
-        myItems = new StringBuilder();
-        myMonsters = new StringBuilder();
-    }
+    final private Vec2 myLocation;
 
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items and assigns location;
@@ -90,25 +77,6 @@ public class Room implements Cloneable
         myItems = new StringBuilder();
         myMonsters = new StringBuilder();
     }
-
-    /**
-     * Room constructor that sets all of its attributes based on its parameters.
-     * @param theEntrance Boolean that tells if the Room is the Entrance to the Dungeon.
-     * @param theExit Boolean that tells if the Room is the Exit to the Dungeon.
-     * @param theItems The Items that the Room contains.
-     * @param theLocation The Room's new location in the Dungeon.
-     */
-    public Room(final boolean theEntrance, final boolean theExit,
-                final StringBuilder theMonsters, final StringBuilder theItems, final Vec2 theLocation)
-    {
-        //how to guard against both being entered as true ?
-        myExit = theExit;
-        myEntrance = theEntrance;
-        myLocation = theLocation;
-        myMonsters = theMonsters;
-        myItems = theItems;
-    }
-
 
     /**
      * Populates the rooms with random items.
@@ -180,18 +148,6 @@ public class Room implements Cloneable
     }
 
     /**
-     * Populates the Room with a Bomb, based on a variable chance of occurrence.
-     * @param theChance The chance that the Room will be populated with a Bomb.
-     */
-    public void populateBomb(double theChance)
-    {
-        if(theChance < 0.10)
-        {
-            addItem("bomb");
-        }
-    }
-
-    /**
      * Populates the Room with up to a specified number of Potions, based on a variable chance of
      * occurrence.
      * @param theRandom A Random object to generate a chance of occurrence.
@@ -219,34 +175,15 @@ public class Room implements Cloneable
     }
 
     /**
-     * This method returns a boolean that tells if the Room is the Entrance to the Dungeon.
-     * @return True if the Room is the Entrance, false if it is not the Entrance.
-     */
-    public boolean isTheEntrance()
-    {
-        return myEntrance;
-    }
-
-    /**
      * This method allows you to set the Entrance status of the Room (cannot be set to true if myExit is set to true).
      * @param theEntrance Boolean that determines whether the Room is the Entrance to the Dungeon.
      */
-    public Room setEntranceStatus(final boolean theEntrance)
+    public void setEntranceStatus(final boolean theEntrance)
     {
         if (!myExit)
         {
             myEntrance = theEntrance;
         }
-        return this;
-    }
-
-    /**
-     * This method returns a boolean that tells if the Room is the Exit to the Dungeon.
-     * @return True if the Room is the Exit, false if it is not the Exit.
-     */
-    public boolean isTheExit()
-    {
-        return myExit;
     }
 
     /**
@@ -283,34 +220,6 @@ public class Room implements Cloneable
     }
 
     /**
-     * This method adds the Items in the Room.
-     * @param theItems The Items to be contained in the Room.
-     */
-    public void addItems (List<Item> theItems)
-    {
-        for (var item:theItems)
-        {
-            myItems.append(item.getType()).append(",");
-        }
-    }
-
-    /**
-     * This method sets the Item in the Room.
-     * @param theItem The Item to be contained in the Room.
-     */
-    public void addItem (Item theItem)
-    {
-        if(theItem.getType().contentEquals("pillar"))
-        {
-            myItems.append(((Pillar) theItem).getName()).append(",");
-        }
-        else
-        {
-            myItems.append(theItem.getType()).append(",");
-        }
-    }
-
-    /**
      * This method sets the Item in the Room.
      * @param theItem The Item to be contained in the Room.
      */
@@ -318,46 +227,12 @@ public class Room implements Cloneable
     {
         myItems.append(theItem).append(",");
     }
-    /**
-     * This method removes all Items from the Room.
-     */
-    public void clearRoom () {myItems.delete(0, myItems.length()); }
 
     /**
      * This method retrieves the location of the Room in the Dungeon.
      * @return The location of the Room.
      */
     public Vec2 getLocation() { return myLocation; }
-
-    /**
-     * This method sets the location of the Room in the Dungeon.
-     * @param theLocation The new location of the Room.
-     */
-    public void setLocation(final Vec2 theLocation) { myLocation = theLocation; }
-
-    /**
-     * @return whether Room is an entrance.
-     */
-    private boolean isEntrance()
-    {
-        return myEntrance;
-    }
-
-    /**
-     * @return whether Room is an exit.
-     */
-    private boolean isExit()
-    {
-        return myExit;
-    }
-
-    /**
-     * @param theExit the Exit status of the room.
-     */
-    private void setExit(final boolean theExit)
-    {
-        myExit = theExit;
-    }
 
     /**
      * @return the number of the Room.
@@ -448,23 +323,11 @@ public class Room implements Cloneable
         return myMonsters;
     }
 
-    /**
-     * This method sets the Monsters in a Room, using the List of Monsters
-     * passed to it.
-     * @param theMonsters The Monsters to be placed in the Room.
-     */
-    public void setMonsters(final List<Monster> theMonsters)
-    {
-        for (var monster:theMonsters)
-        {
-            myMonsters.append(monster.getMonsterType()).append(",");
-        }
-    }
 
     /**
-     *
-     * @return
-     * @throws CloneNotSupportedException
+     * Creates a clone of the Room
+     * @return The clone of the Room
+     * @throws CloneNotSupportedException If a clone cannot be made
      */
     protected Room clone() throws CloneNotSupportedException
     {

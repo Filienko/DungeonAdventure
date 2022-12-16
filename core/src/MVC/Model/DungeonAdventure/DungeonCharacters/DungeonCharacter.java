@@ -54,12 +54,12 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     /**
      * Tells if the Dungeon Character is being knocked back by an attack.
      */
-    private boolean myKnockback;
+    private boolean myKnockBack;
 
     /**
      * The frame where a Dungeon Character stops being knocked back.
      */
-    private long myKnockbackEndFrame;
+    private long myKnockBackEndFrame;
 
     /**
      * Signifies if the character took damage from lava.
@@ -105,7 +105,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         setMyPos(thePos);
         setVelocity(theVelocity);
         setHeroStatus(theHeroStatus);
-        myKnockback = false;
+        myKnockBack = false;
         myBurning = false;
         myHomePosition = new Vec2();
     }
@@ -356,7 +356,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public boolean isKnockBack()
     {
-        return myKnockback;
+        return myKnockBack;
     }
 
     /**
@@ -365,7 +365,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setKnockBack(final boolean theKnockBack)
     {
-        myKnockback = theKnockBack;
+        myKnockBack = theKnockBack;
     }
 
     /**
@@ -374,7 +374,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public long getKnockBackEndFrame()
     {
-        return myKnockbackEndFrame;
+        return myKnockBackEndFrame;
     }
 
     /**
@@ -384,7 +384,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void setKnockBackEndFrame(final long theKnockBackEndFrame)
     {
         if (theKnockBackEndFrame >= 0) {
-            myKnockbackEndFrame = getCurrentFrame() + theKnockBackEndFrame;
+            myKnockBackEndFrame = getCurrentFrame() + theKnockBackEndFrame;
         }
     }
 

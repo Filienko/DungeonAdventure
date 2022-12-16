@@ -24,11 +24,6 @@ public abstract class Hero extends DungeonCharacter
     private String myCharacterType;
 
     /**
-     * The Hero's weapon.
-     */
-    private Sword myWeapon;
-
-    /**
      * A list of all the Potions in the Hero's inventory.
      */
     private List<Item> myPotions;
@@ -148,36 +143,6 @@ public abstract class Hero extends DungeonCharacter
     }
 
     /**
-     * This method moves the Hero to the specified coordinates.
-     * @param theCoordinates Coordinates that determine the Hero's new location.
-     */
-    public void moveHero(final Vec2 theCoordinates)
-    {
-        setMyPos(theCoordinates);
-    }
-
-    /**
-     * This method retrieves the Sword the Hero is using.
-     * @return The Hero's Sword.
-     */
-    public Sword getWeapon()
-    {
-        return myWeapon;
-    }
-
-    /**
-     * This method sets the Sword the Hero is using.
-     * @param theWeapon The Hero's new Sword.
-     */
-    public void setWeapon(final Sword theWeapon)
-    {
-        if (theWeapon != null)
-        {
-            myWeapon = theWeapon;
-        }
-    }
-
-    /**
      * The Hero's special skill.
      * @return The result of the Hero's special skill.
      */
@@ -209,7 +174,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public int attack()
     {
-        myWeapon = getMyEntityFactory().generateSword();
+        getMyEntityFactory().generateSword();
         return damage();
     }
 
@@ -314,19 +279,10 @@ public abstract class Hero extends DungeonCharacter
      */
     public void setPotions(final List<Item> thePotions)
     {
-        if (thePotions != null && thePotions.size() >= 0)
+        if (thePotions != null)
         {
             myPotions = thePotions;
         }
-    }
-
-    /**
-     * This method retrieves the Potions in the Hero's inventory.
-     * @return Potions in inventory.
-     */
-    public List<Item> getPotions()
-    {
-        return myPotions;
     }
 
     /**

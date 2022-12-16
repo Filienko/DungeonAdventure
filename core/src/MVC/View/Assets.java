@@ -1,6 +1,5 @@
 package MVC.View;
 
-import MVC.View.Animation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -10,11 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ObjectMap;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Assets
 {
@@ -237,14 +232,6 @@ public class Assets
     {
         assert(myMusicMap.get(theMusicName) != null);
         return myMusicMap.get(theMusicName);
-    }
-
-    /**
-     * @return The names of the Animations stored in myAnimationMap
-     */
-    public ArrayList<String> getAnimationNames()
-    {
-        return myAnimationNames;
     }
 
     /**

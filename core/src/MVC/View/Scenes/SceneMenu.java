@@ -152,9 +152,4 @@ public class SceneMenu extends Scene
         font = myRenderer.getAssets().getFont("mario24");
         font.draw(batch, "UP:W DOWN:S SELECT:D BACK:ESC", 5, 64);
     }
-
-    /**
-     * @return The element of the menu that is highlighted for selection
-     */
-    public int getMenuIndex() { return myMenuIndex; }
 }

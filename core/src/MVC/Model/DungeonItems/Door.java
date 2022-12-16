@@ -15,30 +15,6 @@ public class Door extends Entity
     /**
      * Door constructor that calls the Entity constructor to initialize its size, position, type, and the Entity
      * Factory that generated it. It also sets its monster counter.
-     * @param theEntityFactory The Entity Factory that generated the Door.
-     */
-    public Door(final EntityFactory theEntityFactory)
-    {
-        super(new Vec2(64, 64), new Vec2(),"Door", theEntityFactory);
-        setMonsterCounter(4);
-    }
-
-    /**
-     * Door constructor that calls the Entity constructor to initialize its size, position, type, and the Entity
-     * Factory that generated it. It also sets its monster counter.
-     * @param theMonsterCounter The number of Monsters in the same Room as the Door.
-     * @param theLocation The location of the Door.
-     * @param theEntityFactory The Entity Factory that generated the Door.
-     */
-    public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
-    {
-        super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
-        setMonsterCounter(theMonsterCounter);
-    }
-
-    /**
-     * Door constructor that calls the Entity constructor to initialize its size, position, type, and the Entity
-     * Factory that generated it. It also sets its monster counter.
      * @param theRoom The Room the Door is in.
      * @param theMonsterCounter The number of Monsters in the same Room as the Door.
      * @param theLocation The location of the Door.

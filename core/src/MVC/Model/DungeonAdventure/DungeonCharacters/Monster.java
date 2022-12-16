@@ -15,12 +15,6 @@ public class Monster extends DungeonCharacter
      */
     private final static boolean MY_HERO_STATUS = false;
 
-    //TODO:Add variability to the monster's aggression
-    /**
-     * The maximum distance an enemy can be from a monster to still take damage from them.
-     */
-    private final static int MY_AGGRESSION_DISTANCE = 25;
-
     /**
      * The specific Monster type.
      */
@@ -176,15 +170,6 @@ public class Monster extends DungeonCharacter
     public String getMonsterType()
     {
         return myMonsterType;
-    }
-
-    /**
-     * This method retrieves the Monster's aggression distance, which is ..
-     * @return The Monster's aggression distance.
-     */
-    public int getAggressionDistance()
-    {
-        return MY_AGGRESSION_DISTANCE;
     }
 
     /**

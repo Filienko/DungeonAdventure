@@ -11,24 +11,14 @@ import java.util.Random;
 public class Dungeon implements Serializable
 {
     /**
-     * list of the rooms with the coordiantes
+     * list of the rooms with the coordinates
      */
     private List<Room> myRooms;
 
     /**
      * the dimension of the dungeon, x by x
      */
-    private int myDimension;
-
-    /**
-     * Default constructor for the dungeon instruction set
-     */
-    public Dungeon()
-    {
-        myDimension = 4;
-        myRooms = generateRooms(myDimension);
-        myRooms = generateDungeonFromRooms(myRooms,myDimension);
-    }
+    final private int myDimension;
 
     /**
      * @param theDimension of the Dungeon
@@ -159,21 +149,5 @@ public class Dungeon implements Serializable
     public List<Room> getRooms()
     {
         return myRooms;
-    }
-
-    /**
-     * @return the dimensions of the dungeon
-     */
-    public int getDimension()
-    {
-        return myDimension;
-    }
-
-    /**
-     * @param theRooms the new rooms of the dungeon
-     */
-    public void setRooms(final List<Room> theRooms)
-    {
-        myRooms = theRooms;
     }
 }

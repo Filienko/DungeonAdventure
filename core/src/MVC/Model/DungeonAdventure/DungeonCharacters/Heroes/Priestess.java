@@ -16,16 +16,6 @@ public class Priestess extends Hero implements Healable
     private static final int MY_MAX_HEAL = 3;
 
     /**
-     * Priestess constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
-     * amount of damage it can inflict, agility, position, and velocity.
-     * @param theEntityFactory The Entity Factory that generated the Priestess.
-     */
-    public Priestess(final EntityFactory theEntityFactory)
-    {
-        super("Priestess", "Priestess", 10, 1,  5, new Vec2(), new Vec2(), theEntityFactory);
-    }
-
-    /**
      * Priestess overloaded constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
      * amount of damage it can inflict, agility, position, and velocity.
      * @param theName The Priestess's name.

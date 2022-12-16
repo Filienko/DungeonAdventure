@@ -38,11 +38,6 @@ public class EntityFactory implements Serializable
     private transient ObjectMap<String, ArrayList<Entity>> myEntityMap;
 
     /**
-     * The number of Entities the factory has generated.
-     */
-    private long myTotalEntities;
-
-    /**
      * The audio animation assets the factory utilizes to set the animations of all Entities, populated
      * by the custom renderer.
      */
@@ -62,7 +57,6 @@ public class EntityFactory implements Serializable
         myEntities = new ArrayList<>();
         myEntitiesToAdd = new ArrayList<>();
         myEntityMap = new ObjectMap<>();
-        myTotalEntities = 0;
     }
 
     /**
@@ -123,10 +117,10 @@ public class EntityFactory implements Serializable
     }
 
     /**
-     * This method generates Monsters based off the
-     * @param theMonsters
-     * @param theLocation
-     * @return
+     * This method generates Monsters for a given room
+     * @param theMonsters List of monsters to be generated
+     * @param theLocation The room in which to generate the monsters
+     * @return the number of monsters generated in the room
      */
     private int generateRoomMonsters(final StringBuilder theMonsters, final Vec2 theLocation)
     {
@@ -304,7 +298,7 @@ public class EntityFactory implements Serializable
      * @param theMonsterCounter The number of Monsters in the Room.
      * @param tileX The x position of the location to generate the Door in
      * @param tileY The y position of the location to generate the Door in
-     * @param tileX The amount that the Door should be rotated.
+     * @param theRotation The amount that the Door should be rotated.
      */
     public void generateDoor(final Vec2 theLocation, final int theMonsterCounter, final int tileX, final int tileY,
                               final int theRotation)
@@ -322,7 +316,7 @@ public class EntityFactory implements Serializable
      * @param theLocation The location to generate the Wall in.
      * @param tileX The x position of the location to generate the Wall in
      * @param tileY The y position of the location to generate the Wall in
-     * @param tileX The amount that the Wall should be rotated.
+     * @param theRotation The amount that the Wall should be rotated.
      */
     private void generateWall(final Vec2 theLocation, final int tileX, final int tileY, final int theRotation)
     {
@@ -354,7 +348,6 @@ public class EntityFactory implements Serializable
             {
                 myEntityMap.get(e.getType().toLowerCase()).add(e);
             }
-            myTotalEntities++;
         }
 
         myEntitiesToAdd.removeAll(myEntitiesToAdd);
@@ -447,27 +440,15 @@ public class EntityFactory implements Serializable
             case "speedPotion" -> {
                 return new SpeedPotion(this);
             }
-            case "lava" -> {
-                return new Lava(this);
-            }
             case "pillar"-> {
                 return new Pillar(theItem, 0, this);
             }
             case "exit" -> {
                 return Exit.getInstance(this);
             }
-            case "bomb" -> {
-                return new Bomb(this);
-            }
         }
         return new HealingPotion(this);
     }
-
-    /**
-     * This method generates Lava.
-     * @return Lava for a Room.
-     */
-    public Lava generateLava() { return new Lava(this); }
 
     /**
      * This method generates a Hero based on the String type passed to it.
@@ -631,7 +612,6 @@ public class EntityFactory implements Serializable
             {
                 var e = myEntities.remove(i);
                 myEntityMap.get(e.getType().toLowerCase()).remove(e);
-                myTotalEntities--;
             }
             else
             {
@@ -674,11 +654,6 @@ public class EntityFactory implements Serializable
             {
                 e.setMyAnimation(myAssets.getAnimation(((Wall)e).getAnimationAngle()));
             }
-            else if(e instanceof Lava)
-            {
-                System.out.println("LAVA");
-                e.setMyAnimation(myAssets.getAnimation("lava"));
-            }
             else if(e instanceof Item)
             {
                 e.setMyAnimation(myAssets.getAnimation(e.getType()));
@@ -713,6 +688,5 @@ public class EntityFactory implements Serializable
 
         myEntityMap = new ObjectMap<>();
         myEntities = new ArrayList<>();
-        myTotalEntities = 0;
     }
 }

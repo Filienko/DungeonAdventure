@@ -22,20 +22,6 @@ public class Pillar extends Item
     /**
      * Pillar constructor that calls the Item constructor to initialize its type and the Entity Factory that generated
      * it. It also sets the Pillar's name, size, monster counter, and its broken status.
-     * @param theEntityFactory The Entity Factory that generated the Pillar.
-     */
-    public Pillar(final EntityFactory theEntityFactory)
-    {
-        super("pillar", theEntityFactory);
-        setName("pillar");
-        setMySize(new Vec2(64, 64));
-        setMonsterCounter(0);
-        myBroken = false;
-    }
-
-    /**
-     * Pillar constructor that calls the Item constructor to initialize its type and the Entity Factory that generated
-     * it. It also sets the Pillar's name, size, monster counter, and its broken status.
      * @param theName The Pillar's name.
      * @param theMonsterCounter The number of Monsters in the same Room as the Pillar.
      * @param theEntityFactory The Entity Factory that generated the Pillar.
@@ -80,15 +66,6 @@ public class Pillar extends Item
      * @return The Pillar's broken status.
      */
     public boolean isBroken() { return myBroken; }
-
-    /**
-     * This method retrieves the number of Monsters in the same Room as the Pillar.
-     * @return The Pillar's monster counter.
-     */
-    public int getMonsterCounter()
-    {
-        return myMonsterCounter;
-    }
 
     /**
      * This method sets the number of Monsters in the same Room as the Pillar.

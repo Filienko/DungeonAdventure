@@ -35,10 +35,6 @@ public abstract class Scene
      */
     protected boolean myPaused;
     /**
-     * Whether this Scene has ended
-     */
-    private boolean myHasEnded;
-    /**
      * The current frame of this Scene
      */
     protected long myCurrentFrame;
@@ -112,14 +108,4 @@ public abstract class Scene
      * @return This Scene's ActionMap
      */
     public ObjectMap<Integer, String> getActionMap()    { return myActionMap; }
-
-    /**
-     * @return The title of this Scene
-     */
-    public String getMyTitle()                          { return myTitle; }
-
-    /**
-     * @return This Scene's current frame
-     */
-    public long getCurrentFrame()                       { return myCurrentFrame; }
 }
