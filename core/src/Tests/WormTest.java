@@ -21,7 +21,8 @@ public class WormTest
     @Test
     void testWormConstructor()
     {
-        Worm worm = new Worm(new Vec2(0, 0), myEntityFactory);
+        Worm worm = new Worm("Worm", 10, 1, 4,
+        new Vec2(96, 96), new Vec2(0, 0), new Vec2(0, 0), myEntityFactory);
 
         // Test construction of the Worm
         assertEquals("Worm", worm.getType());
@@ -88,7 +89,8 @@ public class WormTest
     @Test
     void updateTest()
     {
-        Worm worm = new Worm(new Vec2(0, 0), myEntityFactory);
+        Worm worm = new Worm("Worm", 10, 1, 4,
+                new Vec2(96, 96), new Vec2(0, 0), new Vec2(0, 0), myEntityFactory);
         Sword sword = Sword.getInstance(myEntityFactory, myHero);
 
         worm.setCurrentFrame(40);
@@ -106,7 +108,8 @@ public class WormTest
     @Test
     void movementTest()
     {
-        Worm worm = new Worm(new Vec2(0, 0), myEntityFactory);
+        Worm worm = new Worm("Worm", 10, 1, 4,
+                new Vec2(96, 96), new Vec2(0, 0), new Vec2(0, 0), myEntityFactory);
         Vec2 pos = worm.getMyPos();
         worm.update();
         Vec2 velocity = worm.getVelocity();
@@ -121,7 +124,8 @@ public class WormTest
     @Test
     void collisionTest1()
     {
-        Worm worm = new Worm(new Vec2(0, 0), myEntityFactory);
+        Worm worm = new Worm("Worm", 10, 1, 4,
+                new Vec2(96, 96), new Vec2(0, 0), new Vec2(0, 0), myEntityFactory);
         Wall wall = new Wall(new Vec2(85, 85), new Vec2(64, 64));
         myEntityFactory.addEntity(wall);
         myEntityFactory.update();
@@ -146,7 +150,8 @@ public class WormTest
     @Test
     void collisionTest2()
     {
-        Worm worm = new Worm(new Vec2(0, 0), myEntityFactory);
+        Worm worm = new Worm("Worm", 10, 1, 4,
+            new Vec2(96, 96), new Vec2(0, 0), new Vec2(0, 0), myEntityFactory);
         myEntityFactory.addEntity(myHero);
         myEntityFactory.update();
 

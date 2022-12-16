@@ -49,12 +49,23 @@ public class Worm extends DungeonCharacter
      * @param thePos Initial position
      * @param theEntityFactory The EntityFactory that generated this Worm
      */
+<<<<<<< Updated upstream
     public Worm(final Vec2 thePos, final EntityFactory theEntityFactory)
     {
         // Constructor call to DungeonCharacter
         super("Worm", false, 10,
         1, 4, new Vec2(96, 96), thePos,
         new Vec2(0, 0), theEntityFactory);
+=======
+    public Worm(final String theCharacterType,final int theHitPoints,final int theDamage,final int theMaxSpeed,
+    final Vec2 theSize, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
+    {
+        super(theCharacterType, false, theHitPoints,
+                theDamage, theMaxSpeed, theSize, thePos,theVelocity, theEntityFactory);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
         myControlPoints = new ArrayList<>();
         myRand = new Random();
