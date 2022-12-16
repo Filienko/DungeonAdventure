@@ -26,10 +26,12 @@ public class Worm extends DungeonCharacter
         super(theCharacterType, false, theHitPoints,
                 theDamage, theMaxSpeed, theSize, thePos, theVelocity, theEntityFactory);
 
+        System.out.println("POS"+thePos.getMyX());
+        System.out.println("POS"+thePos.getMyY());
+        System.out.println("POS"+thePos.getMyY());
         myControlPoints = new ArrayList<>();
         myRand = new Random();
         setRoom(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
-        System.out.println(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
         myTParam = 0;
         mySegments = new ArrayList<>();
         mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(), this, 16));
@@ -173,7 +175,9 @@ public class Worm extends DungeonCharacter
             if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
             {
                 Physics.tileResolution(overlap, this, t);
+                System.out.println("SPEED"+getMaxSpeed());
                 setMaxSpeed(getMaxSpeed() * -1);
+                System.out.println(getMaxSpeed());
             }
         }
 

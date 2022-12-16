@@ -141,11 +141,7 @@ public class EntityFactory implements Serializable
     {
         SuperMonsterDB DB = new MonsterDB();
         Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
-        System.out.println(pixelPos.getMyX());
-        System.out.println(pixelPos.getMyY());
         var worm = DB.createWormDB(pixelPos,this);
-        System.out.println(worm.getMyPos().getMyX());
-        System.out.println(worm.getMyPos().getMyY());
         myEntitiesToAdd.add(worm);
     }
 

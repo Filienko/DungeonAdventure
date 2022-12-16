@@ -163,8 +163,8 @@ public class MonsterDB extends SuperMonsterDB
             System.exit( 0 );
         }
 
-        return new Worm(charType,hp,damage,speed,new Vec2(myX,myY), thePosition,
-                new Vec2(0,0), theEntityFactory);
+        return new Worm(charType,hp,damage,speed,new Vec2(dimensionX,dimensionY), thePosition,
+                new Vec2(myX,myY), theEntityFactory);
     }
 
     @Override
