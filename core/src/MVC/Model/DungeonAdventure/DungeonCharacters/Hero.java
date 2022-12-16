@@ -38,16 +38,41 @@ public abstract class Hero extends DungeonCharacter
      */
     private int myPillars;
 
-
+    /**
+     * Whether the player is inputting an up direction
+     */
     private boolean myUpStatus;
+    /**
+     * Whether the player is inputting a down direction
+     */
     private boolean myDownStatus;
+    /**
+     * Whether the player is inputting a left direction
+     */
     private boolean myLeftStatus;
+    /**
+     * Whether the player is inputting a right direction
+     */
     private boolean myRightStatus;
+    /**
+     * Whether the hero is attacking
+     */
     private boolean myAttackStatus;
-    private long myInitiatedFrame;
-    private Vec2 myFacing;
+    /**
+     * The direction the hero is facing
+     */
+    final private Vec2 myFacing;
+    /**
+     * Whether the hero is using their special ability
+     */
     private boolean myUsingSpecial;
+    /**
+     * Whether the hero will respawn on death
+     */
     private boolean myRespawn;
+    /**
+     * Whether the hero is dead
+     */
     private boolean myDied;
 
     /**
@@ -78,7 +103,6 @@ public abstract class Hero extends DungeonCharacter
         setLeft(false);
         setRight(false);
         setHomePosition(getMyPos());
-        myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
         setMyKnockBackPower(4);
         setMyKnockBackLength(10);
@@ -87,8 +111,7 @@ public abstract class Hero extends DungeonCharacter
     }
 
     /**
-     * Overriding the destroy to temporarily allow Hero to go back.
-     * TODO:Delete after testing
+     * Overriding destroy() method to allow toggleable respawning for the Hero.
      */
     @Override
     public void destroy()
@@ -107,11 +130,17 @@ public abstract class Hero extends DungeonCharacter
         }
     }
 
+    /**
+     * Toggles whether the hero will respawn
+     */
     public void toggleRespawn()
     {
         myRespawn = !myRespawn;
     }
 
+    /**
+     * @return Whether the hero will respawn
+     */
     public boolean isRespawn()
     {
         return myRespawn;
@@ -340,19 +369,37 @@ public abstract class Hero extends DungeonCharacter
         }
     }
 
+    /**
+     * @return Whether the hero is attacking
+     */
     public boolean getAttackStatus() { return myAttackStatus; }
 
+    /**
+     * @param theAttackStatus Whether the hero is attacking
+     */
     public void setAttackStatus(final boolean theAttackStatus)
     {
         myAttackStatus = theAttackStatus;
     }
 
+    /**
+     * @param theUpStatus Whether the hero has an up movement direction
+     */
     public void setUp(final boolean theUpStatus) { myUpStatus = theUpStatus; }
 
+    /**
+     * @param theDownStatus Whether the hero has a down movement direction
+     */
     public void setDown(final boolean theDownStatus) { myDownStatus = theDownStatus; }
 
+    /**
+     * @param theLeftStatus Whether the hero has a left movement direction
+     */
     public void setLeft(final boolean theLeftStatus) { myLeftStatus = theLeftStatus; }
 
+    /**
+     * @param theRightStatus Whether the hero has a right movement direction
+     */
     public void setRight(final boolean theRightStatus) { myRightStatus = theRightStatus; }
 
     /**
@@ -401,8 +448,14 @@ public abstract class Hero extends DungeonCharacter
                 '}';
     }
 
+    /**
+     * @return The direction the hero is facing
+     */
     public Vec2 getFacing() { return myFacing; }
 
+    /**
+     * @return Whether the hero is dead
+     */
     public boolean getDied() { return myDied; }
 
 }

@@ -9,21 +9,50 @@ import java.io.Serializable;
  * Entity class that all Dungeon Characters, Items, and Weapons inherit from. It defines attributes and
  * behaviors that are used in animations and
  *
- * @author
- * @version 1.1 ??
+ * @version 1.0
  */
 public abstract class Entity implements Serializable
 {
+    /**
+     * The width and height of the bounding box
+     */
     private Vec2 mySize;
+    /**
+     * The EntityFactory this Entity belongs to
+     */
     private EntityFactory myEntityFactory;
+    /**
+     * The position in cartesian coordinates
+     */
     private Vec2 myPos;
+    /**
+     * The position on the previous frame in cartesian coordinates
+     */
     private Vec2 myPreviousPos;
-    private boolean myEntityAnimated;
+    /**
+     * The animation that is rendered for this Entity
+     * This breaks MVC a bit but simplified this process so much that we deemed it worth it
+     */
     private transient Animation myAnimation;
+    /**
+     * The direction the Entity is facing to be used by the View for rendering
+     */
     private float myRotation;
+    /**
+     * The type of Entity
+     */
     private String myType;
+    /**
+     * Whether this Entity is active or should be removed by the EntityFactory
+     */
     private boolean myActiveStatus;
+    /**
+     * How many frames this Entity has updated
+     */
     private long myCurrentFrame;
+    /**
+     * The dungeon room this Entity is located in
+     */
     private Vec2 myRoom;
 
     /**
@@ -133,15 +162,6 @@ public abstract class Entity implements Serializable
         {
             myPreviousPos = thePreviousPos;
         }
-    }
-
-    /**
-     * This method tells whether the Entity is animated.
-     * @return True if the Entity is animated, false if it is not.
-     */
-    public boolean isMyEntityAnimated()
-    {
-        return myEntityAnimated;
     }
 
     /**
