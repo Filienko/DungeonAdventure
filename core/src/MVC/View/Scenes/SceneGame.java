@@ -135,8 +135,10 @@ public class SceneGame extends Scene
     @Override
     protected void onEnd()
     {
-        // TODO: serialize
-        (new Saver()).saveTheGame(myEntityFactory);
+        if (!myIsEnded)
+        {
+            (new Saver()).saveTheGame(myEntityFactory);
+        }
         myRenderer.getCamera().position.x = 608;
         myRenderer.getCamera().position.y = 352;
         Exit.clean();
@@ -571,13 +573,13 @@ public class SceneGame extends Scene
             Hero h = (Hero) theEntity;
             if (h.getLastDamageFrame() == h.getCurrentFrame())
             {
-                if (h.getHitPoints() > 0)
-                {
-                    myRenderer.getAssets().getSound("linkHurt").play(.5f);
-                }
-                else
+                if (h.getDied())
                 {
                     myRenderer.getAssets().getSound("linkDie").play(.5f);
+                }
+                else if (h.getHitPoints() > 0)
+                {
+                    myRenderer.getAssets().getSound("linkHurt").play(.5f);
                 }
             }
         }

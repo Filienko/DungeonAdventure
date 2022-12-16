@@ -47,6 +47,7 @@ public abstract class Hero extends DungeonCharacter
     private Vec2 myFacing;
     private boolean myUsingSpecial;
     private boolean myRespawn;
+    private boolean myDied;
 
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -81,6 +82,7 @@ public abstract class Hero extends DungeonCharacter
         setMyKnockBackPower(4);
         setMyKnockBackLength(10);
         myRespawn = false;
+        myDied = false;
     }
 
     /**
@@ -90,6 +92,7 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public void destroy()
     {
+        myDied = true;
         if (!myRespawn)
         {
             super.destroy();
@@ -144,8 +147,12 @@ public abstract class Hero extends DungeonCharacter
          {
              myUsingSpecial = false;
          }
-        super.update();
-        incrementCurrentFrame();
+         super.update();
+         incrementCurrentFrame();
+         if (getLastDamageFrame() < getCurrentFrame())
+         {
+             myDied = false;
+         }
     }
 
     @Override
@@ -394,5 +401,7 @@ public abstract class Hero extends DungeonCharacter
     }
 
     public Vec2 getFacing() { return myFacing; }
+
+    public boolean getDied() { return myDied; }
 
 }

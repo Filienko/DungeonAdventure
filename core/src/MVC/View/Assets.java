@@ -4,6 +4,7 @@ import MVC.View.Animation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,7 +12,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Assets
 {
@@ -58,13 +61,10 @@ public class Assets
      */
     public void loadAssets()
     {
-        File dir = new File(System.getProperty("user.dir"));
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null)
-        {
-            for (File child : directoryListing)
+            FileHandle file = Gdx.files.internal("assets.txt");
+            String[] assets = file.readString().split("\r\n");
+            for (String fileName : assets)
             {
-                String fileName = child.getName();
                 String[] attributes = fileName.split("_");
                 if (fileName.contains(".png"))
                 {
@@ -89,7 +89,6 @@ public class Assets
                     addMusic(attributes[0], fileName);
                 }
             }
-        }
     }
 
     /**
@@ -185,14 +184,9 @@ public class Assets
     private void addMusic(final String theMusicName, final String theFileName)
     {
         myMusicMap.put(theMusicName, Gdx.audio.newMusic(Gdx.files.internal(theFileName)));
-        if (mySoundMap.get(theMusicName) == null)
-        {
-            System.out.println("Could not load sound file: " + theFileName);
-        }
-        else
-        {
-            System.out.println("Loaded sound: " + theFileName);
-        }
+
+        System.out.println("Loaded sound: " + theFileName);
+
     }
 
     /**

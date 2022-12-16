@@ -65,11 +65,14 @@ public class Worm extends DungeonCharacter
         mySegments.add(new Body(new Vec2( 48, 48), getMyPos(), getMyEntityFactory(), this, 39));
         myTail = new Tail(new Vec2(48, 48), getMyPos(), getMyEntityFactory(), this);
 
-        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("head"));
-        mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
-        mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
-        mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body3"));
-        myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("tail"));
+        if (getMyEntityFactory().getAssets() != null)
+        {
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("head"));
+            mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
+            mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
+            mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body3"));
+            myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("tail"));
+        }
 
         getMyEntityFactory().addEntity(mySegments.get(0));
         getMyEntityFactory().addEntity(mySegments.get(1));

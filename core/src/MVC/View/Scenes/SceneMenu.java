@@ -115,6 +115,7 @@ public class SceneMenu extends Scene
     @Override
     public void render()
     {
+
         SpriteBatch batch = myRenderer.getSpriteBatch();
         BitmapFont font = myRenderer.getAssets().getFont("mario48");
         ArrayList<String> text;
