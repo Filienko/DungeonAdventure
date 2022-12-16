@@ -6,10 +6,26 @@ import MVC.Model.Physics.Vec2;
 
 public class Pillar extends Item
 {
+    /**
+     * The Pillar's name.
+     */
     private String myName;
+
+    /**
+     * Whether the Pillar has been broken (if the Hero has retrieved it).
+     */
     private boolean myBroken;
+
+    /**
+     * The number of Monsters in the same Room as the Pillar.
+     */
     private int myMonsterCounter;
 
+    /**
+     * Pillar constructor that calls the Item constructor to initialize its type and the Entity Factory that generated
+     * it. It also sets the Pillar's name, size, monster counter, and its broken status.
+     * @param theEntityFactory The Entity Factory that generated the Pillar.
+     */
     public Pillar(final EntityFactory theEntityFactory)
     {
         super("pillar", theEntityFactory);
@@ -19,6 +35,13 @@ public class Pillar extends Item
         myBroken = false;
     }
 
+    /**
+     * Pillar constructor that calls the Item constructor to initialize its type and the Entity Factory that generated
+     * it. It also sets the Pillar's name, size, monster counter, and its broken status.
+     * @param theName The Pillar's name.
+     * @param theMonsterCounter The number of Monsters in the same Room as the Pillar.
+     * @param theEntityFactory The Entity Factory that generated the Pillar.
+     */
     public Pillar(final String theName, final int theMonsterCounter, final EntityFactory theEntityFactory)
     {
         super(theName, theEntityFactory);
@@ -28,11 +51,15 @@ public class Pillar extends Item
         myBroken = false;
     }
 
+    /**
+     * This method breaks the Pillar once the Hero has defeated all the Monsters in the same
+     * Room as the Pillar.
+     */
     public void breakPillar()
     {
         if (myMonsterCounter == 0)
         {
-            if (getMyEntityFactory().getAssets() != null) //added for testing, should i delete?
+            if (getMyEntityFactory().getAssets() != null)
             {
                 setMyAnimation(getMyEntityFactory().getAssets().getAnimation("brokenPillar"));
             }
@@ -41,18 +68,34 @@ public class Pillar extends Item
         }
     }
 
+    /**
+     * This method retrieves the Pillar's name.
+     * @return The Pillar's name.
+     */
     public String getName()
     {
         return myName;
     }
 
+    /**
+     * This method tells if the Pillar has been broken.
+     * @return The Pillar's broken status.
+     */
     public boolean isBroken() { return myBroken; }
 
+    /**
+     * This method retrieves the number of Monsters in the same Room as the Pillar.
+     * @return The Pillar's monster counter.
+     */
     public int getMonsterCounter()
     {
         return myMonsterCounter;
     }
 
+    /**
+     * This method sets the number of Monsters in the same Room as the Pillar.
+     * @param theMonsterCounter The Pillar's new monster counter.
+     */
     public void setMonsterCounter(final int theMonsterCounter)
     {
         if (theMonsterCounter > 0)
@@ -65,6 +108,9 @@ public class Pillar extends Item
         }
     }
 
+    /**
+     * This method decrements the number of Monsters in the same Room as the Pillar.
+     */
     public void decrementMonsterCounter()
     {
         if (myMonsterCounter > 0)
@@ -73,6 +119,10 @@ public class Pillar extends Item
         }
     }
 
+    /**
+     * This method sets the Pillar's name.
+     * @param theName The Pillar's new name.
+     */
     private void setName(final String theName)
     {
         if (theName != null)

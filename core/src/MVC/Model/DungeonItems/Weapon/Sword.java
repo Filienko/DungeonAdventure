@@ -8,7 +8,7 @@ import MVC.Model.Physics.Vec2;
 public class Sword extends Entity implements ICollidable
 {
     /**
-     * The Sword.
+     * The instance of the Sword.
      */
     private static Sword mySword;
 
@@ -28,7 +28,7 @@ public class Sword extends Entity implements ICollidable
     private final Hero myHero;
 
     /**
-     * Sword constructor, which calls Entity's constructor to initialize its size, position, type, lifespan,
+     * Private Sword constructor, which calls Entity's constructor to initialize its size, position, type, lifespan,
      * current frame counter, the Hero using it, and the Entity Factory that generated it.
      * @param theEntityFactory The Entity Factory that generated the Sword.
      * @param theHero The Hero who is using the Sword.
@@ -46,7 +46,7 @@ public class Sword extends Entity implements ICollidable
      * This method retrieves an instance of the Sword using the Singleton design pattern.
      * @param theEntityFactory The Entity Factory that generated the Sword.
      * @param theHero The Hero that is using the Sword.
-     * @return
+     * @return The instance of the Sword.
      */
     public static Sword getInstance(final EntityFactory theEntityFactory, final Hero theHero)
     {

@@ -1,7 +1,9 @@
 package Tests;
 
+import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 
+import MVC.Model.DungeonItems.Items.SpeedPotion;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -11,26 +13,45 @@ public class EntityFactoryTest
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
 
+    /**
+     * Test method for {@link EntityFactory#generateOgre()}
+     */
     @Test
     void testGenerateOgre()
     {
         assertEquals("ogre",entityFactory.generateOgre().getMonsterType());
     }
+
+    /**
+     * Test method for {@link EntityFactory#generateGremlin()}
+     */
     @Test
     void testGenerateGremlin()
     {
         assertEquals("gremlin",entityFactory.generateGremlin().getMonsterType());
     }
+
+    /**
+     * Test method for {@link EntityFactory#generateKnight()}
+     */
     @Test
     void testGenerateKnight()
     {
         assertEquals("knight",entityFactory.generateKnight().getMonsterType());
     }
+
+    /**
+     * Test method for {@link EntityFactory#generateRats()}
+     */
     @Test
     void testGenerateRats()
     {
         assertEquals("rat",entityFactory.generateRats().getMonsterType());
     }
+
+    /**
+     * Test method for {@link EntityFactory#generateMonsters(String)}
+     */
     @Test
     void testGenerateMonsters()
     {
@@ -40,6 +61,9 @@ public class EntityFactoryTest
         assertTrue(entityFactory.generateMonsters("gremlin").getMonsterType().contentEquals("gremlin"));
     }
 
+    /**
+     * Test method for {@link EntityFactory#generateItems(String)}
+     */
     @Test
     void testGenerateItems()
     {
@@ -52,30 +76,45 @@ public class EntityFactoryTest
         assertTrue(entityFactory.generateItems("bomb").getType().contentEquals("bomb"));
     }
 
+    /**
+     * Test method for {@link EntityFactory#addEntity(Entity)}
+     */
     @Test
-    void testAddItem()
+    void testAddEntity()
     {
         assertEquals("speedPotion",entityFactory.generateItems("speedPotion").getType());
     }
 
+    /**
+     * Test method for {@link EntityFactory#generateLava()}
+     */
     @Test
     void testGenerateLava()
     {
         assertEquals("lava",entityFactory.generateLava().getType());
     }
 
+    /**
+     * Test method for {@link EntityFactory#generateHero(String)}
+     */
     @Test
     void testGenerateHero()
     {
         assertEquals("Hero",entityFactory.generateHero("Mock").getType());
     }
 
+    /**
+     * Test method for {@link EntityFactory#generateMockHero()}
+     */
     @Test
     void testGenerateMockHero()
     {
         assertEquals("Hero",entityFactory.generateMockHero().getType());
     }
 
+    /**
+     * Test method for {@link EntityFactory#generatePillars()}
+     */
     @Test
     void testGeneratePillars()
     {
@@ -85,10 +124,13 @@ public class EntityFactoryTest
         assertEquals("Abstraction",pillars.get(2).getType());
         assertEquals("Polymorphism",pillars.get(3).getType());
     }
+
+    /**
+     * Test method for {@link EntityFactory#generateSword()}
+     */
     @Test
     void testGenerateSword()
     {
         assertEquals("Sword",entityFactory.generateSword().getType());
     }
-
 }
