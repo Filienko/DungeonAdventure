@@ -658,8 +658,10 @@ public class EntityFactory implements Serializable
     }
 
     /**
-     * This method initializes the Entity Factory.
-     * @param theEntities The ArrayList of Entities to add to the factory.
+     * This method initializes the Entity Factory and all the entities with appropriate
+     * animation after the loading of appropriate game assets.
+     * @param theEntities The ArrayList of Entities to add to the factory
+     *                   to initialize the game with the same configuration as at saving time.
      */
     public void initializeEntityFactory(final ArrayList<Entity> theEntities)
     {

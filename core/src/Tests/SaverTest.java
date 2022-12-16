@@ -13,7 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SaverTest
 {
-    //Cannot test utilizing JUNIT because of Maven's repository management
+
+    /**
+     * Testing the serialization of the game utilizing a non-playable mock hero object
+     */
     @Test
     void prepareFile()
     {
