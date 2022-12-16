@@ -11,7 +11,8 @@ public class Warrior extends Hero
 
     /**
      * Warrior constructor that calls its parent constructor to initialize the Warrior's name, character type, hero status, hit points,
-     * minimum/maximum damage it can inflict, max speed, position, and velocity.
+     * amount of damage it can inflict, max speed, position, and velocity.
+     * @param theEntityFactory The Entity Factory that generated the Warrior.
      */
     public Warrior(final EntityFactory theEntityFactory)
     {
@@ -20,9 +21,10 @@ public class Warrior extends Hero
 
     /**
      * Warrior overloaded constructor that calls its parent constructor to initialize the Warrior's name, character type, hero status, hit points,
-     * minimum/maximum damage it can inflict, max speed, position, and velocity.
+     * amount of damage it can inflict, max speed, position, and velocity.
      * @param theName The Warrior's name.
-     * @param thePos The Warrior's location.
+     * @param thePos The Warrior's position.
+     * @param theEntityFactory The Entity Factory that generated the Warrior.
      */
     public Warrior(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
@@ -31,9 +33,9 @@ public class Warrior extends Hero
 
     /**
      * The Warrior's specific attack behavior. They have a 40% chance of performing their special skill
-     * during this attack
+     * during this attack.
      *
-     * @return The amount of damage the Warrior does during their attack.
+     * @return The amount of damage the Warrior inflicts during their attack.
      */
     @Override
     public int damage()

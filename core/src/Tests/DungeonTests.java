@@ -1,6 +1,7 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonItems.Door;
 import MVC.Model.DungeonItems.Dungeon;
 import MVC.Model.DungeonItems.Room;
 import org.junit.After;
@@ -11,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static MVC.Model.DungeonItems.Dungeon.generateRooms;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +39,9 @@ public class DungeonTests
         System.setErr(originalErr);
     }
 
+    /**
+     * Test methods for {@link Dungeon#generateRooms(int)}.
+     */
     @Test
     void testRoomGeneration()
     {
@@ -45,6 +50,9 @@ public class DungeonTests
         testDungeonSetters();
     }
 
+    /**
+     * Test helper method for {@link Dungeon#generateRooms(int)}.
+     */
     void testRoomGenerationNormalValue(int theDimension)
     {
         final Dungeon myDungeon = new Dungeon(myEntityFactory,theDimension); //added new EntityFactory
@@ -53,6 +61,9 @@ public class DungeonTests
         testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
     }
 
+    /**
+     * Test helper method for {@link Dungeon#generateRooms(int)}.
+     */
     void testRoomGenerationUnderValue(int theDimension)
     {
         //Testing the edge case
@@ -62,6 +73,9 @@ public class DungeonTests
         testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
     }
 
+    /**
+     * Test helper method for {@link Dungeon#generateRooms(int)}.
+     */
     @Test
     private void testRoomGenerationWithValue(final Dungeon theMyDungeon, final Room[][] theDungeonMadeOfRooms)
     {
@@ -79,6 +93,9 @@ public class DungeonTests
         }
     }
 
+    /**
+     * Test method for {@link Dungeon#setRooms(List)}.
+     */
     @Test
     private void testDungeonSetters()
     {

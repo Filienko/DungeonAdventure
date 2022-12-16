@@ -6,6 +6,11 @@ import MVC.Model.Physics.Vec2;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The Worm (final boss).
+ * @author
+ * @version
+ */
 public class Worm extends DungeonCharacter
 {
     final private ArrayList<Body> mySegments;
@@ -20,6 +25,11 @@ public class Worm extends DungeonCharacter
     final private Random myRand;
     private boolean mySpawned;
 
+    /**
+     *
+     * @param thePos The Worm's position.
+     * @param theEntityFactory The Entity Factory that generates the Worm.
+     */
     public Worm(final Vec2 thePos, final EntityFactory theEntityFactory)
     {
         super("Worm", false, 1,
@@ -46,8 +56,15 @@ public class Worm extends DungeonCharacter
         mySpawned = false;
     }
 
+    /**
+     *
+     * @return True if the Worm has been spawned, false if it has not.
+     */
     public boolean isSpawned() { return mySpawned; }
 
+    /**
+     * This method spawns the Worm.
+     */
     public void spawn()
     {
         setMySize(new Vec2(96, 96));
@@ -75,10 +92,21 @@ public class Worm extends DungeonCharacter
         mySpawned = true;
     }
 
+    /**
+     * This method retrieves the Worm's body (segments).
+     * @return The Worm's body.
+     */
     public ArrayList<Body> getBody() { return mySegments; }
 
+    /**
+     * This method returns the Worm's tail.
+     * @return The Worm's tail.
+     */
     public Tail getTail() { return myTail; }
 
+    /**
+     * This method updates the Worm every frame.
+     */
     public void update()
     {
         if (mySpawned)
@@ -101,8 +129,15 @@ public class Worm extends DungeonCharacter
         }
     }
 
+    /**
+     * This method specifies how much damage the Worm inflicts during an attack.
+     * @return The Worm's damage amount.
+     */
     public int attack() { return 0; }
 
+    /**
+     * The Worm's movement behavior ???
+     */
     public void movement2()
     {
         if (myTParam >= 1)
@@ -122,6 +157,9 @@ public class Worm extends DungeonCharacter
         setMyPos(newPos);
     }
 
+    /**
+     * The Worm's movement behavior ???
+     */
     public void movement()
     {
         if (getHitPoints() > 0 && !isKnockback())
@@ -160,6 +198,9 @@ public class Worm extends DungeonCharacter
         }
     }
 
+    /**
+     * This method specifies what should happen when a Worm collides with specific Entities.
+     */
     public void collision()
     {
         Vec2 overlap;
@@ -223,6 +264,9 @@ public class Worm extends DungeonCharacter
         }
     }
 
+    /**
+     * This method specifies what should happen when a Worm dies.
+     */
     @Override
     public void die()
     {
@@ -261,6 +305,9 @@ public class Worm extends DungeonCharacter
         }
     }
 
+    /**
+     * This method decreases lag to improve the Worm's animation.
+     */
     public void decreaseLag()
     {
         mySegments.get(0).myLag -= 1.25;
@@ -285,11 +332,22 @@ public class Worm extends DungeonCharacter
     }
 
 
+    /**
+     * The Worm's body.
+     */
     public class Body extends Entity
     {
         final private Worm myHead;
         private float myLag;
 
+        /**
+         *
+         * @param theSize The Body's size.
+         * @param thePos The Body's position.
+         * @param theEntityFactory The Entity Factory that generates the Worm's Body.
+         * @param theHead The Head.
+         * @param theLag The lag amount.
+         */
         public Body(final Vec2 theSize, final Vec2 thePos, final EntityFactory theEntityFactory, final Worm theHead, final int theLag)
         {
             super(theSize, thePos, "Body", theEntityFactory);
@@ -297,6 +355,9 @@ public class Worm extends DungeonCharacter
             myLag = theLag;
         }
 
+        /**
+         * This method updates the Body every frame.
+         */
         public void update()
         {
             movement();
@@ -331,15 +392,29 @@ public class Worm extends DungeonCharacter
             }
         }
 
+        /**
+         * This method retrieves the Head of the Body.
+         * @return The Head.
+         */
         public Worm getHead() { return myHead; }
 
     }
 
+    /**
+     * The Worm's tail.
+     */
     public class Tail extends Entity
     {
         final private Worm myHead;
         private float myLag;
 
+        /**
+         *
+         * @param theSize The Tail's size.
+         * @param thePos The Tail's position.
+         * @param theEntityFactory The Entity Factory that generates the Tail.
+         * @param theHead The Head.
+         */
         public Tail(final Vec2 theSize, final Vec2 thePos, final EntityFactory theEntityFactory, final Worm theHead)
         {
             super(theSize, thePos, "Tail", theEntityFactory);
@@ -347,6 +422,9 @@ public class Worm extends DungeonCharacter
             myLag = 48;
         }
 
+        /**
+         * This method updates the Tail every frame.
+         */
         public void update()
         {
             movement();
@@ -363,9 +441,17 @@ public class Worm extends DungeonCharacter
             }
         }
 
+        /**
+         * This method retrieves the Head of the Body.
+         * @return The Head.
+         */
         public Worm getHead() { return myHead; }
     }
 
+    /**
+     * This method retrieves the Body in segments, represented as items in an ArrayList.
+     * @return The Worm's Body.
+     */
     public ArrayList<Body> getSegments()
     {
         return mySegments;

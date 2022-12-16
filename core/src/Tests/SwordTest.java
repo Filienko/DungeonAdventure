@@ -118,6 +118,7 @@ class SwordTest
         assertTrue(theWorm.getActiveStatus());
         assertFalse(theWorm.isInvincibility());
 
+        //this is testing the worm not the tail??
         theWorm.setHitPoints(5);
         theWorm.setMyPos(new Vec2(1,1));
         theWorm.setMySize(new Vec2(1,1));
@@ -130,16 +131,17 @@ class SwordTest
 
         assertEquals(theWorm.getHitPoints(), oldHP - 1);
         assertTrue(theWorm.isInvincibility());
-        assertEquals(theWorm.getInvincibilityEndFrame(),10);
+        assertEquals(theWorm.getInvincibilityEndFrame(),60);
         assertTrue(theWorm.isKnockback());
         assertEquals(theWorm.getKnockbackEndFrame(), 60);
         assertEquals(theWorm.getMaxSpeed(), oldMS + Math.signum(oldMS) * .5f);
 
-        theWorm.setHitPoints(0);
+        Vec2 oldSize = theWorm.getMySize();
+
         theWorm.setInvincibility(false);
 
         mySword.collide();
 
-        assertTrue(theWorm.getMySize().equals(new Vec2()));
+        assertTrue(theWorm.getMySize().equals(oldSize));
     }
 }

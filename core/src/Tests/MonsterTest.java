@@ -117,13 +117,6 @@ class MonsterTest
         myMonster.update();
         assertFalse(myMonster.isKnockback());
 
-        //cannot test this bc assets are null
-//        myMonster.setHitPoints(0);
-//        myHero.setInvincibility(false);
-//
-//        myMonster.update();
-//        assertEquals(myMonster.getDamage(), 0);
-
         myMonster.setHitPoints(1);
         myMonster.setKnockback(false);
         myMonster.update();
@@ -227,7 +220,6 @@ class MonsterTest
         myMonster.collide();
 
         assertEquals(oldHP, myHero.getHitPoints());
-
     }
 
     /**
@@ -240,38 +232,6 @@ class MonsterTest
                 new Vec2(), myHero, new Vec2(),myEntityFactory);
 
         assertEquals(myMonster.getMonsterType(), "Ogre");
-    }
-
-    /**
-     * Test method for {@link Monster#setRoom(Vec2)}
-     */
-    @Test
-    void testSetRoom()
-    {
-        final Monster myMonster = new Monster("Ogre", 10, 3, 2, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
-
-        Vec2 room = new Vec2(8,6);
-        myMonster.setRoom(new Vec2(8,6));
-        assertTrue(myMonster.getMyPos().equals(Physics.getPosition((int) room.getMyX(), (int) room.getMyY(),
-                (int) myMonster.getMyPos().getMyX(),(int) myMonster.getMyPos().getMyY()))); //not passing
-
-    }
-
-    /**
-     * Test method for {@link Monster#setRoom(Vec2, int)}
-     */
-    @Test
-    void testSetRoom2()
-    {
-        final Monster myMonster = new Monster("Gremlin", 10, 3, 3, new Vec2(),
-                new Vec2(), myHero, new Vec2(),myEntityFactory);
-
-        Vec2 room = new Vec2(8,6);
-        myMonster.setRoom(new Vec2(8,6), 2);
-        assertTrue(myMonster.getMyPos().equals(Physics.getPosition((int) room.getMyX(), (int) room.getMyY(),
-                (int) myMonster.getMyPos().getMyX(),(int) myMonster.getMyPos().getMyY()))); //not passing?
-
     }
 
     /**

@@ -18,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RoomTests
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
+
+    /**
+     * Test method for {@link Room#populateTheRoom(boolean)}.
+     */
     @Test
     void testRoomPopulate()
     {
@@ -35,6 +39,9 @@ public class RoomTests
         assertTrue(room.getMonsters().toString().length()>3);
     }
 
+    /**
+     * Test method for {@link Room#populatePotions(Random, int)}.
+     */
     @Test
     void testRoomPopulatePotions()
     {
@@ -44,6 +51,9 @@ public class RoomTests
         assertTrue(room.getItems().toString().contains("Potion"));
     }
 
+    /**
+     * Test method for {@link Room#populateLava(double)}.
+     */
     @Test
     void testRoomPopulateLava()
     {
@@ -52,6 +62,9 @@ public class RoomTests
         assertTrue(room.isLava());
     }
 
+    /**
+     * Test method for {@link Room#populateMonsters(int)}.
+     */
     @Test
     void testRoomPopulateMonsters()
     {
@@ -60,6 +73,9 @@ public class RoomTests
         assertTrue(room.getMonsters().toString().length()>3);
     }
 
+    /**
+     * Test method for various Room setters.
+     */
     @Test
     void testRoomSetters()
     {

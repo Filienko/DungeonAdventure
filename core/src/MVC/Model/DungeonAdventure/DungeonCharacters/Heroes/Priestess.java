@@ -7,6 +7,12 @@ import MVC.Model.Physics.Vec2;
 
 import java.util.Random;
 
+/**
+ * The Priestess.
+ *
+ * @authors
+ * @version
+ */
 public class Priestess extends Hero implements Healable
 {
     /**
@@ -16,7 +22,8 @@ public class Priestess extends Hero implements Healable
 
     /**
      * Priestess constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
-     * minimum/maximum damage it can inflict, agility, position, and velocity.
+     * amount of damage it can inflict, agility, position, and velocity.
+     * @param theEntityFactory The Entity Factory that generated the Priestess.
      */
     public Priestess(final EntityFactory theEntityFactory)
     {
@@ -25,9 +32,10 @@ public class Priestess extends Hero implements Healable
 
     /**
      * Priestess overloaded constructor that calls its parent constructor to initialize the Priestess's name, character type, hero status, hit points,
-     * minimum/maximum damage it can inflict, agility, position, and velocity.
+     * amount of damage it can inflict, agility, position, and velocity.
      * @param theName The Priestess's name.
-     * @param thePos The Priestess's location.
+     * @param thePos The Priestess's position.
+     * @param theEntityFactory The Entity Factory that generated the Priestess.
      */
     public Priestess(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
@@ -36,7 +44,7 @@ public class Priestess extends Hero implements Healable
 
     /**
      * The Priestess's specific attack behavior. She has a 5% chance of healing herself during her attack.
-     * @return The amount of damage the Priestess does during her attack.
+     * @return The amount of damage the Priestess inflicts during her attack.
      */
     @Override
     public int damage()

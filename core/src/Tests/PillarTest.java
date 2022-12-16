@@ -3,6 +3,7 @@ package Tests;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
+import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.DungeonItems.Items.Pillar;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,9 @@ class PillarTest
 {
     private final EntityFactory theEntityFactory = new EntityFactory(null, "Mock");
 
+    /**
+     * Test method for Pillar's constructor.
+     */
     @Test
     void testPillarConstructor()
     {
@@ -24,6 +28,9 @@ class PillarTest
         assertFalse(myPillar.isBroken());
     }
 
+    /**
+     * Test method for Pillar's overloaded constructor.
+     */
     @Test
     void testOLPillarConstructor()
     {
@@ -35,6 +42,9 @@ class PillarTest
         assertFalse(myPillar.isBroken());
     }
 
+    /**
+     * Test method for {@link Pillar#getName()}.
+     */
     @Test
     void testGetName()
     {
@@ -43,6 +53,9 @@ class PillarTest
         assertTrue(myPillar.getName().equals("Abstraction"));
     }
 
+    /**
+     * Test method for {@link Pillar#breakPillar()}.
+     */
     @Test
     void testBreakPillar()
     {
@@ -60,6 +73,9 @@ class PillarTest
         assertTrue(myPillar.isBroken());
     }
 
+    /**
+     * Test method for {@link Pillar#isBroken()}.
+     */
     @Test
     void testIsBroken()
     {
@@ -68,6 +84,9 @@ class PillarTest
         assertFalse(myPillar.isBroken());
     }
 
+    /**
+     * Test method for {@link Pillar#getMonsterCounter()}.
+     */
     @Test
     void testGetMonsterCounter()
     {
@@ -76,6 +95,9 @@ class PillarTest
         assertEquals(myPillar.getMonsterCounter(), 0);
     }
 
+    /**
+     * Test method for {@link Pillar#setMonsterCounter(int)}.
+     */
     @Test
     void testSetMonsterCounter()
     {
@@ -88,6 +110,9 @@ class PillarTest
         assertEquals(myPillar.getMonsterCounter(), 3);
     }
 
+    /**
+     * Test method for {@link Pillar#decrementMonsterCounter()}.
+     */
     @Test
     void testDecrementMonsterCounter()
     {
@@ -99,6 +124,4 @@ class PillarTest
 
         assertEquals(myPillar.getMonsterCounter(), 1);
     }
-
-
 }

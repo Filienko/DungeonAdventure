@@ -16,6 +16,9 @@ public class Monster extends DungeonCharacter
     private final static boolean MY_HERO_STATUS = false;
 
     //TODO:Add variability to the monster's aggression
+    /**
+     * The maximum distance an enemy can be from a monster to still take damage from them.
+     */
     private final static int MY_AGGRESSION_DISTANCE = 25;
 
     /**
@@ -57,6 +60,9 @@ public class Monster extends DungeonCharacter
         setMyKnockbackLength(8);
     }
 
+    /**
+     * This method specifies what should be done when a monster is destroyed (killed in combat).
+     */
     @Override
     public void destroy()
     {
@@ -93,6 +99,9 @@ public class Monster extends DungeonCharacter
         super.destroy();
     }
 
+    /**
+     * This method updates information about the Monster every frame.
+     */
     @Override
     public void update()
     {
@@ -100,12 +109,19 @@ public class Monster extends DungeonCharacter
         incrementCurrentFrame();
     }
 
+    /**
+     * This method determines how much damage a Monster inflicts during its attack.
+     * @return The amount of damage the Monster inflicts on a Hero.
+     */
     @Override
     public int attack()
     {
         return getDamage();
     }
 
+    /**
+     * This method specifies the Monster's movement behavior.
+     */
     @Override
     public void movement()
     {
@@ -189,6 +205,10 @@ public class Monster extends DungeonCharacter
         }
     }
 
+    /**
+     * This method sets the Monster's current Room.
+     * @param theRoom The Monster's new Room, expressed as a Vec2.
+     */
     @Override
     public void setRoom(final Vec2 theRoom)
     {
@@ -221,6 +241,11 @@ public class Monster extends DungeonCharacter
         setHomePosition(getMyPos());
     }
 
+    /**
+     * This method sets the Monster's current Room, when there are rats in the Room.
+     * @param theRoom The Monster's new Room, expressed as a Vec2.
+     * @param theRatPos The position of the rats in the Room.
+     */
     public void setRoom(final Vec2 theRoom, int theRatPos)
     {
         super.setRoom(theRoom);

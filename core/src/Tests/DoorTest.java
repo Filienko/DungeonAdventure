@@ -1,7 +1,9 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonItems.Door;
+import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Assets;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class DoorTest
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
+    /**
+     * Test method for Door's constructor.
+     */
     @Test
     void testDoorConstructor()
     {
@@ -19,6 +24,9 @@ class DoorTest
         assertEquals(myDoor.getMonsterCounter(), 4);
     }
 
+    /**
+     * Test method for Door's first overloaded constructor.
+     */
     @Test
     void testDoorOL1Constructor()
     {
@@ -28,6 +36,9 @@ class DoorTest
         assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
+    /**
+     * Test method for Door's second overloaded constructor.
+     */
     @Test
     void testDoorOL2Constructor()
     {
@@ -37,6 +48,9 @@ class DoorTest
         assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
+    /**
+     * Test method for {@link Door#getMonsterCounter()}.
+     */
     @Test
     void testGetMonsterCounter()
     {
@@ -45,6 +59,9 @@ class DoorTest
         assertEquals(myDoor.getMonsterCounter(), 2);
     }
 
+    /**
+     * Test method for {@link Door#setMonsterCounter(int)}.
+     */
     @Test
     void testSetMonsterCounter()
     {
@@ -55,6 +72,9 @@ class DoorTest
         assertEquals(myDoor.getMonsterCounter(), 3);
     }
 
+    /**
+     * Test method for {@link Door#decrementMonsterCounter()}.
+     */
     @Test
     void testDecrementMonsterCounter()
     {
@@ -66,6 +86,9 @@ class DoorTest
     }
 
 
+    /**
+     * Test method for {@link Door#update()}.
+     */
     @Test
     void testUpdate()
     {

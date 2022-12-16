@@ -84,7 +84,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
 
     /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
-     * minimum and maximum damage amounts, maximum speed, and position.
+     * damage amount, maximum speed, position, and velocity.
      *
      * @param theCharacterType The character's type.
      * @param theHeroStatus The character's hero status (true means Hero, false means Monster).
@@ -178,7 +178,9 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     }
 
     /**
-     * This method subtracts hit points from a character's total hit point count.
+     * This method subtracts hit points from a character's total hit point count. If this action
+     * would cause the character to have a negative number of hit points, their hit point count is set to 0 and
+     * their myBurning field is set to false. Then it sets the character's lastDamageFrame to its currentFrame.
      * @param theDamage The number of hit points to be subtracted.
      */
     public void applyDamage(final int theDamage)
@@ -326,12 +328,19 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      */
     public void setVelocity(final Vec2 theVelocity, final long theFramesLong)
     {
-        if (theVelocity != null && theFramesLong >= 0) //should these be checked in a single if?
+        if (theVelocity != null && theFramesLong >= 0)
         {
             myVelocity = theVelocity;
         }
     }
 
+    /**
+     * When a character takes damage, this method determines the knockback velocity and sets the duration of the
+     * knockback.
+     * @param e The Dungeon Character being knocked back.
+     * @param power The strength of the knockback.
+     * @param duration The duration of the knockback.
+     */
     public void knockback(Entity e, float power, long duration)
     {
         var v = this.getMyPos().minus(e.getMyPos());
@@ -446,20 +455,40 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         return myInvincibilityEndFrame;
     }
 
+    /**
+     * This method retrieves the Character's home position.
+     * @return The Character's home position, expressed as a Vec2.
+     */
     public Vec2 getHomePosition()
     {
         return myHomePosition;
     }
 
+    /**
+     * This method sets the Character's home position.
+     * @param theHomePosition  The Character's new home position, expressed as a Vec2.
+     */
     public void setHomePosition(final Vec2 theHomePosition)
     {
         myHomePosition.copy(theHomePosition);
     }
 
+    /**
+     * This method tells whether the character is burning due to Lava.
+     * @return True if the character is burning, false if it is not.
+     */
     public boolean isBurning() { return myBurning; }
 
+    /**
+     * This method retrieves the frame when the Dungeon Character last took damage. Used to ensure that
+     * a character cannot constantly take damage.
+     * @return The character's lastDamageFrame, expressed as a long.
+     */
     public long getLastDamageFrame() { return myLastDamageFrame; }
 
+    /**
+     * Dungeon Character's collision behavior.
+     */
     @Override
     public void collide()
     {
