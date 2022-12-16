@@ -16,10 +16,10 @@ public class DBTest
     void testIntegrationSQLConnection()
     {
         MonsterDB db = new MonsterDB();
-        assertEquals("Ogre",db.createMonsterDB("Ogre",hero,hero.getMyEntityFactory()).getCharacterType());
-        assertEquals("Gremlin",db.createMonsterDB("Gremlin",hero,hero.getMyEntityFactory()).getCharacterType());
-        assertEquals("Knight",db.createMonsterDB("Knight",hero,hero.getMyEntityFactory()).getCharacterType());
-        assertEquals("Swarm of Rats",db.createMonsterDB("Rats",hero,hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Ogre",db.createMonsterDB("Ogre",hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Gremlin",db.createMonsterDB("Gremlin",hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Knight",db.createMonsterDB("Knight",hero.getMyEntityFactory()).getCharacterType());
+        assertEquals("Swarm of Rats",db.createMonsterDB("Rats",hero.getMyEntityFactory()).getCharacterType());
     }
 
     @Test
