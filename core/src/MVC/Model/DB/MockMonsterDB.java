@@ -25,7 +25,6 @@ public class MockMonsterDB extends SuperMonsterDB
     public Monster createMonster(final int theN, final Hero theHero)
     {
         int hp = 0;
-        String charType = null;
         int speed = 0;
         int damage = 0;
         float myX = 0;
@@ -33,6 +32,6 @@ public class MockMonsterDB extends SuperMonsterDB
         float velocityX = 0;
         float velocityY = 0;
         var ef = new EntityFactory();
-        return new Monster(charType,hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY), new Vec2(),ef);
+        return new Monster("Mock",hp,damage,speed,new Vec2(myX,myY), new Vec2(velocityX,velocityY), new Vec2(),ef);
     }
 }

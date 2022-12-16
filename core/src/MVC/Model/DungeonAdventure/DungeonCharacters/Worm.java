@@ -4,7 +4,6 @@ import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -430,10 +429,5 @@ public class Worm extends DungeonCharacter
          */
         public Worm getHead() { return myHead; }
     }
-    public ArrayList<Body> getSegments()
-    {
-        return mySegments;
-    }
-}
-}
 
+}
