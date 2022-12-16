@@ -4,6 +4,7 @@ import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,14 +22,11 @@ public class Worm extends DungeonCharacter
     final private Random myRand;
 
     public Worm(final String theCharacterType,final int theHitPoints,final int theDamage,final int theMaxSpeed,
-                final Vec2 theSize, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
+    final Vec2 theDimension, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
         super(theCharacterType, false, theHitPoints,
-                theDamage, theMaxSpeed, theSize, thePos, theVelocity, theEntityFactory);
+                theDamage, theMaxSpeed, theDimension, thePos,theVelocity, theEntityFactory);
 
-        System.out.println("POS"+thePos.getMyX());
-        System.out.println("POS"+thePos.getMyY());
-        System.out.println("POS"+thePos.getMyY());
         myControlPoints = new ArrayList<>();
         myRand = new Random();
         setRoom(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
@@ -65,7 +63,6 @@ public class Worm extends DungeonCharacter
 
     public Tail getTail() { return myTail; }
 
-    @Override
     public void update()
     {
         if (getCurrentFrame() >= getInvincibilityEndFrame())
@@ -174,10 +171,9 @@ public class Worm extends DungeonCharacter
 
             if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
             {
+
                 Physics.tileResolution(overlap, this, t);
-                System.out.println("SPEED"+getMaxSpeed());
                 setMaxSpeed(getMaxSpeed() * -1);
-                System.out.println(getMaxSpeed());
             }
         }
 
