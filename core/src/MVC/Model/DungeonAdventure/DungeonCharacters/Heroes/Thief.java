@@ -44,8 +44,8 @@ public class Thief extends Hero
         else
         {
             damage = super.damage();
-            setMyKnockbackPower(4);
-            setMyKnockbackLength(10);
+            setMyKnockBackPower(4);
+            setMyKnockBackLength(10);
         }
 
         return damage;
@@ -58,8 +58,8 @@ public class Thief extends Hero
     public int special()
     {
         setUsingSpecial(true);
-        setMyKnockbackPower(0);
-        setMyKnockbackLength(60);
+        setMyKnockBackPower(0);
+        setMyKnockBackLength(60);
 
         return getDamage()+5;
     }

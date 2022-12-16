@@ -12,11 +12,27 @@ import java.util.ArrayList;
 
 public class SceneMenu extends Scene
 {
+    /**
+     * The menu element that is currently highlighted to be selected
+     */
     private int myMenuIndex;
+    /**
+     * The text elements to be drawn corresponding to the various menu options
+     */
     final private ArrayList<String> myTextElements;
+    /**
+     * The hero selections to be drawn for hero selection
+     */
     final private ArrayList<String> myHeroSelections;
+    /**
+     * Whether the Hero selection screen is to be drawn
+     */
     boolean myHeroSelection;
 
+    /**
+     * Constructor that takes one argument
+     * @param theGameEngine The GameEngine that this Scene belongs to
+     */
     public SceneMenu(GameEngine theGameEngine)
     {
         super(theGameEngine);
@@ -42,10 +58,13 @@ public class SceneMenu extends Scene
 
     }
 
+    @Override
     protected void onEnd()  { Gdx.app.exit(); }
 
+    @Override
     public void update()    { myCurrentFrame++; }
 
+    @Override
     public void doAction(final Action theAction)
     {
         if(theAction.getType().equals("START"))
@@ -64,6 +83,7 @@ public class SceneMenu extends Scene
                 case "SELECT":
                     if (myHeroSelection)
                     {
+                        myHeroSelection = false;
                         myGame.setCurrentScene("Dungeon",
                                 new SceneGame(myGame, myHeroSelections.get(myMenuIndex)), false);
                     }
@@ -92,6 +112,7 @@ public class SceneMenu extends Scene
         }
     }
 
+    @Override
     public void render()
     {
         SpriteBatch batch = myRenderer.getSpriteBatch();
@@ -131,5 +152,8 @@ public class SceneMenu extends Scene
         font.draw(batch, "UP:W DOWN:S SELECT:D BACK:ESC", 5, 64);
     }
 
+    /**
+     * @return The element of the menu that is highlighted for selection
+     */
     public int getMenuIndex() { return myMenuIndex; }
 }

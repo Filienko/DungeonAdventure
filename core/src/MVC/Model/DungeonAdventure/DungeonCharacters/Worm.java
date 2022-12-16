@@ -10,17 +10,46 @@ import java.util.Random;
 
 public class Worm extends DungeonCharacter
 {
+    /**
+     * ArrayList of Body instances that follow this Worm
+     */
     final private ArrayList<Body> mySegments;
+    /**
+     * Tail that follows this Worm
+     */
     final private Tail myTail;
     final private ArrayList<Vec2> myControlPoints;
+    /**
+     * ArrayList of previous positions
+     */
     final private ArrayList<Vec2> myPath;
     private float myTParam;
+    /**
+     * How fast this Worm turns
+     */
     private double myTurnSpeed;
+    /**
+     * What direction this Worm turns
+     */
     private boolean myTurnDirection;
+    /**
+     * The current angle of the movement vector
+     */
     private double myAngle;
+    /**
+     * The frame on which a new turn speed and turn direction will be randomly generated
+     */
     private long myNextCourseChange;
+    /**
+     * Random number generator
+     */
     final private Random myRand;
-
+    
+    /**
+     * Constructor that takes two arguments and initializes the Bodies and Tail to follow the Worm
+     * @param thePos Initial position
+     * @param theEntityFactory The EntityFactory that generated this Worm
+     */
     public Worm(final String theCharacterType,final int theHitPoints,final int theDamage,final int theMaxSpeed,
     final Vec2 theDimension, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
@@ -48,8 +77,8 @@ public class Worm extends DungeonCharacter
         getMyEntityFactory().addEntity(mySegments.get(2));
         getMyEntityFactory().addEntity(myTail);
 
-        setMyKnockbackPower(10);
-        setMyKnockbackLength(10);
+        setMyKnockBackPower(10);
+        setMyKnockBackLength(10);
 
         myTurnSpeed = myRand.nextFloat(.05f);
         myTurnDirection = myRand.nextBoolean();
@@ -61,17 +90,31 @@ public class Worm extends DungeonCharacter
         myPath = new ArrayList<>();
     }
 
+    /**
+     * @return The Body instances that follow this Worm
+     */
+    public ArrayList<Body> getSegments()
+    {
+        return mySegments;
+    }
+
+    /**
+     * @return The Tail instance that follows this Worm
+     */
     public Tail getTail() { return myTail; }
 
+    /**
+     * Method called every frame that governs the behavior of this Worm
+     */
     public void update()
     {
         if (getCurrentFrame() >= getInvincibilityEndFrame())
         {
             setInvincibility(false);
         }
-        if (getCurrentFrame() >= getKnockbackEndFrame())
+        if (getCurrentFrame() >= getKnockBackEndFrame())
         {
-            setKnockback(false);
+            setKnockBack(false);
         }
         if (getHitPoints() <= 0)
         {
@@ -82,11 +125,12 @@ public class Worm extends DungeonCharacter
         incrementCurrentFrame();
     }
 
+    @Override
     public int attack() { return 0; }
 
     public void movement2()
     {
-        if (getHitPoints() > 0 && !isKnockback())
+        if (getHitPoints() > 0 && !isKnockBack())
         {
             if (myTParam >= 1)
             {
@@ -120,7 +164,7 @@ public class Worm extends DungeonCharacter
     @Override
     public void movement()
     {
-        if (getHitPoints() > 0 && !isKnockback())
+        if (getHitPoints() > 0 && !isKnockBack())
         {
             if (getCurrentFrame() >= myNextCourseChange)
             {
@@ -149,7 +193,7 @@ public class Worm extends DungeonCharacter
         if (getHitPoints() > 0)
         {
             myPath.add(getMyPreviousPos());
-            if (myPath.size() > 200)
+            if (myPath.size() > 50)
             {
                 myPath.remove(0);
             }
@@ -188,7 +232,7 @@ public class Worm extends DungeonCharacter
                 hero.destroy();
             }
             hero.setInvincibility(true,45);
-            hero.knockback(this, getMyKnockbackPower(), getMyKnockbackLength());
+            hero.knockBack(this, getMyKnockBackPower(), getMyKnockBackLength());
         }
     }
 
@@ -233,6 +277,9 @@ public class Worm extends DungeonCharacter
         }
     }
 
+    /**
+     * Decreases the element that the following Body and Tail instances access in myPath
+     */
     public void decreaseLag()
     {
         mySegments.get(0).myLag -= 1.25;
@@ -259,16 +306,32 @@ public class Worm extends DungeonCharacter
 
     public class Body extends Entity
     {
+        /**
+         * The Worm that this Body follows
+         */
         final private Worm myHead;
+        /**
+         * How far behind this Body trails the Worm
+         */
         private float myLag;
 
+        /**
+         * Constructor that takes five arguments
+         * @param theSize The size of the bounding box
+         * @param thePos The initial position
+         * @param theEntityFactory The EntityFactory this belongs to
+         * @param theHead The Worm that this follows
+         * @param theLag How far behind the Worm this trails
+         */
         public Body(final Vec2 theSize, final Vec2 thePos, final EntityFactory theEntityFactory, final Worm theHead, final int theLag)
         {
+            // Constructor call to Entity
             super(theSize, thePos, "Body", theEntityFactory);
             myHead = theHead;
             myLag = theLag;
         }
 
+        @Override
         public void update()
         {
             movement();
@@ -276,6 +339,9 @@ public class Worm extends DungeonCharacter
             incrementCurrentFrame();
         }
 
+        /**
+         * Sets a new position to the Worm's previous position with lag
+         */
         private void movement()
         {
             if (myHead.myPath.size() > Math.floor(myLag))
@@ -286,6 +352,9 @@ public class Worm extends DungeonCharacter
             }
         }
 
+        /**
+         * Resolves collisions between this and the Hero
+         */
         private void collision()
         {
 
@@ -299,32 +368,53 @@ public class Worm extends DungeonCharacter
                     hero.destroy();
                 }
                 hero.setInvincibility(true,45);
-                hero.knockback(this, 3, 8);
+                hero.knockBack(this, 3, 8);
             }
         }
 
+        /**
+         * @return The Worm that this follows
+         */
         public Worm getHead() { return myHead; }
 
     }
 
     public class Tail extends Entity
     {
+        /**
+         * The Worm that this follows
+         */
         final private Worm myHead;
+        /**
+         * How far behind this Tail trails the Worm
+         */
         private float myLag;
 
+        /**
+         * Constructor that takes four arguments
+         * @param theSize The size of the bounding box
+         * @param thePos The initial position
+         * @param theEntityFactory The EntityFactory this belongs to
+         * @param theHead The Worm that this follows
+         */
         public Tail(final Vec2 theSize, final Vec2 thePos, final EntityFactory theEntityFactory, final Worm theHead)
         {
+            // Constructor call to Entity
             super(theSize, thePos, "Tail", theEntityFactory);
             myHead = theHead;
             myLag = 48;
         }
 
+        @Override
         public void update()
         {
             movement();
             incrementCurrentFrame();
         }
 
+        /**
+         * Sets a new position to the Worm's previous position with lag
+         */
         private void movement()
         {
             if (myHead.myPath.size() > Math.floor(myLag))
@@ -335,11 +425,15 @@ public class Worm extends DungeonCharacter
             }
         }
 
+        /**
+         * @return The Worm that this follows
+         */
         public Worm getHead() { return myHead; }
     }
-
     public ArrayList<Body> getSegments()
     {
         return mySegments;
     }
 }
+}
+

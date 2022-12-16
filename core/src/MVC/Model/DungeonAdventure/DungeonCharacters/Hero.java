@@ -1,7 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
-import MVC.Model.DungeonItems.Room;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 import java.util.ArrayList;
@@ -47,6 +46,7 @@ public abstract class Hero extends DungeonCharacter
     private long myInitiatedFrame;
     private Vec2 myFacing;
     private boolean myUsingSpecial;
+    private boolean myRespawn;
 
     /**
      * Hero constructor that calls its parent constructor to initialize the Hero's name, character type, hero status, hit points,
@@ -78,8 +78,9 @@ public abstract class Hero extends DungeonCharacter
         setHomePosition(getMyPos());
         myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
-        setMyKnockbackPower(4);
-        setMyKnockbackLength(10);
+        setMyKnockBackPower(4);
+        setMyKnockBackLength(10);
+        myRespawn = false;
     }
 
     /**
@@ -89,10 +90,27 @@ public abstract class Hero extends DungeonCharacter
     @Override
     public void destroy()
     {
-        setMyPos(getHomePosition());
-        setHitPoints(10);
-        setDamage(1);
-        setMaxSpeed(5);
+        if (!myRespawn)
+        {
+            super.destroy();
+        }
+        else
+        {
+            setMyPos(getHomePosition());
+            setHitPoints(10);
+            setDamage(1);
+            setMaxSpeed(5);
+        }
+    }
+
+    public void toggleRespawn()
+    {
+        myRespawn = !myRespawn;
+    }
+
+    public boolean isRespawn()
+    {
+        return myRespawn;
     }
 
     /**

@@ -35,6 +35,13 @@ public class Exit extends Item
 
     public static boolean isExited() { return myExited; }
 
+    public static void clean()
+    {
+        myExitCondition = false;
+        myExited = false;
+        myExit = null;
+    }
+
     @Override
     public void activate(final Hero theHero)
     {
