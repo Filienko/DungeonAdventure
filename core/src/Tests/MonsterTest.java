@@ -108,11 +108,11 @@ class MonsterTest
         myMonster.update();
         assertFalse(myMonster.isInvincibility());
 
-        long kEndFrame = myMonster.getKnockbackEndFrame();
+        long kEndFrame = myMonster.getKnockBackEndFrame();
         myMonster.setCurrentFrame(kEndFrame+1);
-        myMonster.setKnockback(true);
+        myMonster.setKnockBack(true);
         myMonster.update();
-        assertFalse(myMonster.isKnockback());
+        assertFalse(myMonster.isKnockBack());
 
         //cannot test this bc assets are null
 //        myMonster.setHitPoints(0);
@@ -122,7 +122,7 @@ class MonsterTest
 //        assertEquals(myMonster.getDamage(), 0);
 
         myMonster.setHitPoints(1);
-        myMonster.setKnockback(false);
+        myMonster.setKnockBack(false);
         myMonster.update();
         Vec2 pos = myMonster.getMyPos();
         Vec2 vel = myMonster.getVelocity();
@@ -130,7 +130,7 @@ class MonsterTest
         assertTrue(myMonster.getMyPos().equals(vel));
 
         myMonster.setHitPoints(1);
-        myMonster.setKnockback(true);
+        myMonster.setKnockBack(true);
         Vec2 oldPos = myMonster.getMyPos();
         Vec2 oldPrev = myMonster.getMyPreviousPos();
         Vec2 vel2 = myMonster.getVelocity();
