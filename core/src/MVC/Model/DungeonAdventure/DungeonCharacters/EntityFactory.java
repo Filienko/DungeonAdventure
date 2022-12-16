@@ -389,6 +389,7 @@ public class EntityFactory implements Serializable
     public Hero generateMockHero()
     {
         Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
+        myEntities.add(warrior);
         return warrior;
     }
 
