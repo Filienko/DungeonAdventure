@@ -38,16 +38,54 @@ public abstract class Hero extends DungeonCharacter
      */
     private int myPillars;
 
-
+    /**
+     * Tells if the Hero is moving upwards.
+     */
     private boolean myUpStatus;
+
+    /**
+     * Tells if the Hero is moving downwards.
+     */
     private boolean myDownStatus;
+
+    /**
+     * Tells if the Hero is moving to the left.
+     */
     private boolean myLeftStatus;
+
+    /**
+     * Tells if the Hero is moving to the right.
+     */
     private boolean myRightStatus;
+
+    /**
+     * Tells if the Hero is attacking an enemy.
+     */
     private boolean myAttackStatus;
+
+    /**
+     * The frame that an action was initiated on.
+     */
     private long myInitiatedFrame;
+
+    /**
+     * A Vec2 that describes where the Hero is facing.
+     */
     private Vec2 myFacing;
+
+    /**
+     * Tells if the Hero is using their special skill.
+     */
     private boolean myUsingSpecial;
+
+    /**
+     * Tells if the Hero is playing the game with the Respawn option.
+     */
     private boolean myRespawn;
+
+    /**
+     * Tells if the Hero has died.
+     */
     private boolean myDied;
 
     /**
@@ -107,11 +145,18 @@ public abstract class Hero extends DungeonCharacter
         }
     }
 
+    /**
+     * This method allows the Hero's Respawn option to be turned on or off.
+     */
     public void toggleRespawn()
     {
         myRespawn = !myRespawn;
     }
 
+    /**
+     * This method retrieves the Hero's Respawn status.
+     * @return The Hero's Respawn status.
+     */
     public boolean isRespawn()
     {
         return myRespawn;
@@ -126,11 +171,19 @@ public abstract class Hero extends DungeonCharacter
         setMyPos(theCoordinates);
     }
 
+    /**
+     * This method retrieves the Sword the Hero is using.
+     * @return The Hero's Sword.
+     */
     public Sword getWeapon()
     {
         return myWeapon;
     }
 
+    /**
+     * This method sets the Sword the Hero is using.
+     * @param theWeapon The Hero's new Sword.
+     */
     public void setWeapon(final Sword theWeapon)
     {
         if (theWeapon != null)
@@ -139,8 +192,15 @@ public abstract class Hero extends DungeonCharacter
         }
     }
 
+    /**
+     * The Hero's special skill.
+     * @return The result of the Hero's special skill.
+     */
     public abstract int special();
 
+    /**
+     * Information about the Hero that is to be updated.
+     */
     @Override
     public void update()
     {
@@ -156,6 +216,11 @@ public abstract class Hero extends DungeonCharacter
          }
     }
 
+    /**
+     * The Hero's attack behavior. It generates an instance of the Sword and returns the amount of damage the Hero can
+     * inflict.
+     * @return The amount of damage the Hero inflicts during their attack.
+     */
     @Override
     public int attack()
     {
@@ -163,11 +228,18 @@ public abstract class Hero extends DungeonCharacter
         return damage();
     }
 
+    /**
+     * This method returns the amount of damage the Hero can inflict.
+     * @return The amount of damage the Hero inflicts during their attack.
+     */
     public int damage()
     {
         return getDamage();
     }
 
+    /**
+     * The Hero's movement behavior.
+     */
     public void movement()
     {
         Vec2 newVelocity = new Vec2();
@@ -340,19 +412,43 @@ public abstract class Hero extends DungeonCharacter
         }
     }
 
+    /**
+     * This method gets the Hero's attack status.
+     * @return True if they are attacking, false if they are not.
+     */
     public boolean getAttackStatus() { return myAttackStatus; }
 
+    /**
+     * This method sets the Hero's attack status.
+     * @param theAttackStatus The Hero's new attack status. True if they are attacking, false if they are not.
+     */
     public void setAttackStatus(final boolean theAttackStatus)
     {
         myAttackStatus = theAttackStatus;
     }
 
+    /**
+     * This method sets whether the Hero is moving upward.
+     * @param theUpStatus The Hero's up status. True if they are moving up, false if they are not.
+     */
     public void setUp(final boolean theUpStatus) { myUpStatus = theUpStatus; }
 
+    /**
+     * This method sets whether the Hero is moving downward.
+     * @param theDownStatus The Hero's down status. True if they are moving down, false if they are not.
+     */
     public void setDown(final boolean theDownStatus) { myDownStatus = theDownStatus; }
 
+    /**
+     * This method sets whether the Hero is moving to the left.
+     * @param theLeftStatus The Hero's left status. True if they are moving left, false if they are not.
+     */
     public void setLeft(final boolean theLeftStatus) { myLeftStatus = theLeftStatus; }
 
+    /**
+     * This method sets whether the Hero is moving to the right.
+     * @param theRightStatus The Hero's right status. True if they are moving right, false if they are not.
+     */
     public void setRight(final boolean theRightStatus) { myRightStatus = theRightStatus; }
 
     /**
@@ -365,6 +461,10 @@ public abstract class Hero extends DungeonCharacter
         return myCharacterType;
     }
 
+    /**
+     * This method sets the Hero's specific character type.
+     * @param theCharacterType The Hero's new character type.
+     */
     @Override
     public void setCharacterType(final String theCharacterType)
     {
@@ -401,8 +501,15 @@ public abstract class Hero extends DungeonCharacter
                 '}';
     }
 
+    /**
+     * This method returns where the Hero is facing.
+     * @return A Vec2 that describes where the Hero is facing.
+     */
     public Vec2 getFacing() { return myFacing; }
 
+    /**
+     * This method tells whether the Hero has died.
+     * @return The Hero's myDied field. True if the Hero has died, false if they are alive.
+     */
     public boolean getDied() { return myDied; }
-
 }
