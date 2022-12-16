@@ -1,1 +1,25 @@
-10/24/2022 - created the Reposistory for the project.
+General Description
+A real-time platformer where a general purpose of the game is to destroy all of the pillars by killing all of the monsters in a room with a pillar 
+and then defeat the final boss in the room with an exit at the center of the room. The dungeon where the hero travels was randomly generated using Kruskal’s
+and is set to be size 3 by 3, but can be modified to any size. In order to find controls, start the game, choose the hero and press ESC to see the Control Menu. 
+Currently, three classes are available, each with separate special abilities. Press P to enable respawn. 
+
+Thank you for looking at the DungeonAdventure project!
+
+Design Patterns Used
+Entity Factory
+Mock Objects
+MVC framework
+Serialization
+Database - access, rather than manual entering of data for enemies
+
+Instructions on how to run the program in an IntelliJ IDE.
+Download the project by using the Git link or a zip file.
+Unarchive or import the project into IDE
+Find main in the desktop/src/com.game folder
+Run the main
+If assets are not recognized, specify the environment variable as [nameOfTheProject]/assets
+
+Enjoy the game!
+
+Created by: Justin Goding, Daniil Filienko, Abi Gutierrez
