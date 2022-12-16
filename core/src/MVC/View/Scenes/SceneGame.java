@@ -128,7 +128,7 @@ public class SceneGame extends Scene
      */
     private void initialize()
     {
-        Dungeon testDungeon = new Dungeon(myEntityFactory,3);
+        Dungeon testDungeon = new Dungeon(3);
         myEntityFactory.generateGameEntities(testDungeon);
     }
 

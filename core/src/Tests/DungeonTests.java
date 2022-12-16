@@ -1,17 +1,13 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
-import MVC.Model.DungeonItems.Door;
 import MVC.Model.DungeonItems.Dungeon;
-import MVC.Model.DungeonItems.Room;
 import org.junit.After;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static MVC.Model.DungeonItems.Dungeon.generateRooms;
@@ -55,10 +51,8 @@ public class DungeonTests
      */
     void testRoomGenerationNormalValue(int theDimension)
     {
-        final Dungeon myDungeon = new Dungeon(myEntityFactory,theDimension); //added new EntityFactory
-        ArrayList<Room> rooms = generateRooms(theDimension);
-        var dungeonMadeOfRooms = (new Dungeon()).generateDungeonFromRooms(rooms,theDimension);
-        testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
+        final Dungeon myDungeon = new Dungeon(theDimension); //added new EntityFactory
+        testRoomGenerationWithValue(myDungeon);
     }
 
     /**
@@ -67,30 +61,18 @@ public class DungeonTests
     void testRoomGenerationUnderValue(int theDimension)
     {
         //Testing the edge case
-        final Dungeon myDungeon = new Dungeon(myEntityFactory,theDimension); //added new EntityFactory
-        ArrayList<Room> rooms = generateRooms(Math.max(theDimension,4));
-        var dungeonMadeOfRooms = (new Dungeon()).generateDungeonFromRooms(rooms,Math.max(theDimension,4));
-        testRoomGenerationWithValue(myDungeon, dungeonMadeOfRooms);
+        final Dungeon myDungeon = new Dungeon(theDimension);
+        testRoomGenerationWithValue(myDungeon);
     }
 
     /**
      * Test helper method for {@link Dungeon#generateRooms(int)}.
      */
     @Test
-    private void testRoomGenerationWithValue(final Dungeon theMyDungeon, final Room[][] theDungeonMadeOfRooms)
+    private void testRoomGenerationWithValue(final Dungeon theMyDungeon)
     {
         assertEquals(4, theMyDungeon.getDimension());
-        assertEquals(4, theMyDungeon.getDungeon().length);
         assertEquals(16, theMyDungeon.getRooms().size());
-
-        outerLoop:
-        for (var i = 0; i< theMyDungeon.getDimension(); i++)
-        {
-            for (var j = 0; j< theMyDungeon.getDimension(); j++)
-            {
-                assertEquals(theDungeonMadeOfRooms[i][j].getNumber(), theMyDungeon.getDungeon()[i][j].getNumber());
-            }
-        }
     }
 
     /**
@@ -99,7 +81,7 @@ public class DungeonTests
     @Test
     private void testDungeonSetters()
     {
-        var dungeon = new Dungeon(myEntityFactory,4);
+        var dungeon = new Dungeon(4);
 
         assertTrue(dungeon.getRooms().size()==16);
         dungeon.setRooms(generateRooms(5));
