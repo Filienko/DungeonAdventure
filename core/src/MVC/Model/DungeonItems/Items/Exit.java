@@ -49,7 +49,6 @@ public class Exit extends Item
         if(isExitCondition() && theHero.getPillars() == 4)
         {
             myExited = true;
-            theHero.destroy();
         }
     }
 }

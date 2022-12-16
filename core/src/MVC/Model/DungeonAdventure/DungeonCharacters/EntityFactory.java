@@ -9,6 +9,8 @@ import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Assets;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.File;
@@ -136,71 +138,56 @@ public class EntityFactory implements Serializable
 
     private void generateLava(final int roomX, final int roomY)
     {
-        try
-        {
-            File file = new File("lava.txt");
-            Scanner sc = new Scanner(file);
-            Vec2 pixelPos;
-            Wall lava;
+        FileHandle file = Gdx.files.internal("lava.txt");
+        String[] layout = file.readString().split("\r\n");
+        Vec2 pixelPos;
+        Wall lava;
 
-            while (sc.hasNextLine())
-            {
-                String[] tiles = sc.nextLine().split(" ");
-                int tileX = Integer.parseInt(tiles[0]);
-                int tileY = Integer.parseInt(tiles[1]);
-                pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
-                lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(62, 62));
-                lava.setMyAnimation(myAssets.getAnimation("lava"));
-                lava.setType("Lava");
-                lava.setAnimationAngle("lava");
-                myEntitiesToAdd.add(lava);
-            }
-            sc.close();
-        }
-        catch (FileNotFoundException fnfe )
+        for (String s : layout)
         {
-            System.out.println("File: lava.txt not found");
+            String[] tiles = s.split(" ");
+            int tileX = Integer.parseInt(tiles[0]);
+            int tileY = Integer.parseInt(tiles[1]);
+            pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
+            lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(62, 62));
+            lava.setMyAnimation(myAssets.getAnimation("lava"));
+            lava.setType("Lava");
+            lava.setAnimationAngle("lava");
+            myEntitiesToAdd.add(lava);
         }
     }
 
     private void generateWalls(final int roomX, final int roomY)
     {
-        try
-        {
-            File file = new File("walls.txt");
-            Scanner sc = new Scanner(file);
-            Vec2 pixelPos;
-            Wall wall;
+        FileHandle file = Gdx.files.internal("walls.txt");
+        String[] layout = file.readString().split("\r\n");
+        Vec2 pixelPos;
+        Wall wall;
 
-            while (sc.hasNextLine())
-            {
-                String[] attributes = sc.nextLine().split(" ");
-                int tileX = Integer.parseInt(attributes[0]);
-                int tileY = Integer.parseInt(attributes[1]);
-                pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
-                String animation = attributes[2];
-                int rotation = Integer.parseInt(attributes[3]);
-
-                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
-                wall.setAnimationAngle(animation);
-                wall.setMyAnimation(myAssets.getAnimation(animation));
-                wall.setRotation(rotation);
-                myEntitiesToAdd.add(wall);
-            }
-        }
-        catch (FileNotFoundException fnfe )
+        for (String s : layout)
         {
-            System.out.println("File: walls.txt not found");
+            String[] attributes = s.split(" ");
+            int tileX = Integer.parseInt(attributes[0]);
+            int tileY = Integer.parseInt(attributes[1]);
+            pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
+            String animation = attributes[2];
+            int rotation = Integer.parseInt(attributes[3]);
+
+            wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+            wall.setAnimationAngle(animation);
+            wall.setMyAnimation(myAssets.getAnimation(animation));
+            wall.setRotation(rotation);
+            myEntitiesToAdd.add(wall);
         }
     }
 
-    void generateWalls(final Room theRoom,final int theMonterCounter)
+    void generateWalls(final Room theRoom,final int theMonsterCounter)
     {
         var location = theRoom.getLocation();
         generateWalls((int) location.getMyX(), (int) location.getMyY());
         if (theRoom.isN())
         {
-            generateDoor(location, theMonterCounter, 9, 10, 0);
+            generateDoor(location, theMonsterCounter, 9, 10, 0);
         }
         else
         {
@@ -208,7 +195,7 @@ public class EntityFactory implements Serializable
         }
         if (theRoom.isS())
         {
-            generateDoor(location, theMonterCounter, 9, 0, 180);
+            generateDoor(location, theMonsterCounter, 9, 0, 180);
         }
         else
         {
@@ -216,7 +203,7 @@ public class EntityFactory implements Serializable
         }
         if (theRoom.isW())
         {
-            generateDoor(location, theMonterCounter, 0, 5, 90);
+            generateDoor(location, theMonsterCounter, 0, 5, 90);
         }
         else
         {
@@ -224,7 +211,7 @@ public class EntityFactory implements Serializable
         }
         if (theRoom.isE())
         {
-            generateDoor(location, theMonterCounter, 18, 5, 270);
+            generateDoor(location, theMonsterCounter, 18, 5, 270);
         }
         else
         {
