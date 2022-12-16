@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class EntityFactory implements Serializable
 {
@@ -47,7 +46,8 @@ public class EntityFactory implements Serializable
     public Monster generateMonster(final String monsterType)
     {
         SuperMonsterDB DB = new MonsterDB();
-        return DB.createMonsterDB(monsterType, myHero,this);
+
+        return DB.createMonsterDB(monsterType,this);
     }
 
     public void generateGameEntities(final Dungeon theDungeon)
@@ -131,9 +131,10 @@ public class EntityFactory implements Serializable
 
     public void generateWorm(final Vec2 theLocation)
     {
-            Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
-            Worm worm = new Worm(pixelPos, this);
-            myEntitiesToAdd.add(worm);
+        SuperMonsterDB DB = new MonsterDB();
+        Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
+        var worm = DB.createWormDB(pixelPos,this);
+        myEntitiesToAdd.add(worm);
     }
 
     private void generateLava(final int roomX, final int roomY)
@@ -375,6 +376,7 @@ public class EntityFactory implements Serializable
     public Hero generateMockHero()
     {
         Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
+        myEntities.add(warrior);
         return warrior;
     }
 
@@ -491,6 +493,7 @@ public class EntityFactory implements Serializable
             else if(e instanceof Item)
             {
                 e.setMyAnimation(myAssets.getAnimation(e.getType()));
+                if(e instanceof Pillar && ((Pillar)e).isBroken()){e.setMyAnimation(myAssets.getAnimation("brokenPillar"));}
             }
             else if(e.getType().toLowerCase(Locale.ROOT).contains("monster"))
             {

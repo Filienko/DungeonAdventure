@@ -1,25 +1,24 @@
 package Tests;
 
+import MVC.Model.DB.MockMonsterDB;
 import MVC.Model.DB.MonsterDB;
+import MVC.Model.DB.SuperMonsterDB;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
+import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class DBTest
 {
-    Hero hero = new Warrior(new EntityFactory());
+    Hero hero = (new EntityFactory()).generateHero("Mock");
 
     @Test
     void testIntegrationSQLConnection()
     {
-        MonsterDB db = new MonsterDB();
-        assertEquals("Ogre",db.createMonsterDB("Ogre",hero,hero.getMyEntityFactory()).getCharacterType());
-        assertEquals("Gremlin",db.createMonsterDB("Gremlin",hero,hero.getMyEntityFactory()).getCharacterType());
-        assertEquals("Knight",db.createMonsterDB("Knight",hero,hero.getMyEntityFactory()).getCharacterType());
-        assertEquals("Swarm of Rats",db.createMonsterDB("Rats",hero,hero.getMyEntityFactory()).getCharacterType());
+        SuperMonsterDB db = new MockMonsterDB();
+        assertEquals("Monster",db.createMonsterDB("Mock",hero.getMyEntityFactory()).getCharacterType());
     }
 
     @Test
@@ -32,10 +31,14 @@ public class DBTest
     @Test
     void testUpdateMonsterData()
     {
-        MonsterDB db = new MonsterDB();
-        assertEquals("Ogre",db.createMonster(1,hero).getCharacterType());
-        assertEquals("Gremlin",db.createMonster(2,hero).getCharacterType());
-        assertEquals("Knight",db.createMonster(3,hero).getCharacterType());
-        assertEquals("Swarm of Rats",db.createMonster(4,hero).getCharacterType());
+        SuperMonsterDB db = new MockMonsterDB();
+        assertEquals("Monster",db.createMonsterDB("Mock",hero.getMyEntityFactory()).getCharacterType());
+    }
+
+    @Test
+    void testWormGeneration()
+    {
+        SuperMonsterDB db = new MockMonsterDB();
+        assertEquals(null,db.createWormDB(new Vec2(),null));
     }
 }

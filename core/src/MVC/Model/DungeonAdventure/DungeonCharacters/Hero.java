@@ -293,6 +293,7 @@ public abstract class Hero extends DungeonCharacter
         {
             Vec2 room = getMyEntityFactory().getEntities("exit").get(0).getRoom();
             getMyEntityFactory().generateWorm(room);
+
         }
     }
 
