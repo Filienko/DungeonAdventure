@@ -8,8 +8,10 @@ import java.util.List;
 
 public class Saver
 {
-    private List<EntityFactory> mySavedStates = new ArrayList<>();
-
+    /**
+     * @param theDungeon the entityFactory containing all of the entities associated with the dungeon
+     * to save a current state of the game.
+     */
     public void saveTheGame(EntityFactory theDungeon)
     {
         try
@@ -29,6 +31,9 @@ public class Saver
         }
     }
 
+    /**
+     * @return the entities with their associated states
+     */
     public EntityFactory loadTheGame()
     {
         EntityFactory game = null;
@@ -49,24 +54,4 @@ public class Saver
         }
         return game;
     }
-
-//    public void saveStateDungeon(Dungeon theDungeon) throws CloneNotSupportedException
-//    {
-//        mySavedStates.add(theDungeon.saveToMemento());
-//    }
-//
-//    public void restoreLastStateDungeon(Dungeon theDungeon)
-//    {
-//        theDungeon.restoreFromMemento(mySavedStates.get(mySavedStates.size()-1));
-//    }
-//
-//    public void restoreNthStateDungeon(Dungeon theDungeon,int thOrder)
-//    {
-//        theDungeon.restoreFromMemento(mySavedStates.get(thOrder-1));
-//    }
-//
-//    public List<Dungeon.Memento> getSavedStates()
-//    {
-//        return mySavedStates;
-//    }
 }
