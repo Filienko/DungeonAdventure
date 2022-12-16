@@ -4,6 +4,7 @@ import MVC.View.Animation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,19 +12,40 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Assets
 {
-    // Member fields
-    private ObjectMap<String, Texture> myTextureMap;
-    private ObjectMap<String, Animation> myAnimationMap;
-    private ObjectMap<String, BitmapFont> myFontMap;
-    private ObjectMap<String, Sound> mySoundMap;
-    private ObjectMap<String, Music> myMusicMap;
-    private ArrayList<String> myAnimationNames;
+    /**
+     * A map of libgdx Textures
+     */
+    private final ObjectMap<String, Texture>    myTextureMap;
+    /**
+     * A map of Animations
+     */
+    private final ObjectMap<String, Animation>  myAnimationMap;
+    /**
+     * A map of text fonts
+     */
+    private final ObjectMap<String, BitmapFont> myFontMap;
+    /**
+     * A map of libgdx Sounds
+     */
+    private final ObjectMap<String, Sound>      mySoundMap;
+    /**
+     * A map of libgdx Music
+     */
+    private final ObjectMap<String, Music>      myMusicMap;
+    /**
+     * The names of all the Animations in myAnimationMap
+     */
+    private final ArrayList<String>             myAnimationNames;
 
-    // Constructor
+    /**
+     * Constructor that takes zero arguments
+     */
     public Assets()
     {
         myTextureMap        = new ObjectMap<String, Texture>();
@@ -34,16 +56,15 @@ public class Assets
         myAnimationNames    = new ArrayList<String>();
     }
 
-    // Methods
+    /**
+     * Loads the assets from the working directory
+     */
     public void loadAssets()
     {
-        File dir = new File(System.getProperty("user.dir"));
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null)
-        {
-            for (File child : directoryListing)
+            FileHandle file = Gdx.files.internal("assets.txt");
+            String[] assets = file.readString().split("\r\n");
+            for (String fileName : assets)
             {
-                String fileName = child.getName();
                 String[] attributes = fileName.split("_");
                 if (fileName.contains(".png"))
                 {
@@ -51,7 +72,7 @@ public class Assets
 
                     if (attributes.length > 2)
                     {
-                        addAnimation(attributes[0], fileName, Integer.parseInt(attributes[1]), Integer.parseInt(attributes[2]));
+                        addAnimation(attributes[0], Integer.parseInt(attributes[1]), Integer.parseInt(attributes[2]));
                         myAnimationNames.add(attributes[0]);
                     }
                 }
@@ -68,68 +89,84 @@ public class Assets
                     addMusic(attributes[0], fileName);
                 }
             }
-        }
     }
 
-    private void addTexture(final String textureName, final String fileName)
+    /**
+     * Adds a libgdx Texture to myTextureMap
+     * @param theTextureName The name of the Texture to be added
+     * @param theFileName The file name of the texture
+     */
+    private void addTexture(final String theTextureName, final String theFileName)
     {
-        myTextureMap.put(textureName, new Texture(Gdx.files.internal(fileName)));
-        if (myTextureMap.get(textureName) == null)
+        myTextureMap.put(theTextureName, new Texture(Gdx.files.internal(theFileName)));
+        if (myTextureMap.get(theTextureName) == null)
         {
-            System.out.println("Could not load texture file: " + fileName);
+            System.out.println("Could not load texture file: " + theFileName);
         }
         else
         {
-            System.out.println("Loaded texture: " + fileName);
+            System.out.println("Loaded texture: " + theFileName);
         }
     }
 
-    private void addAnimation(final String animationName, final String fileName, int frameCount, int speed)
+    /**
+     * Adds an Animation to myAnimationMap
+     * @param theAnimationName The name of the Animation to be added
+     * @param theFrameCount The total number of frames of this animation
+     * @param theSpeed The speed at which to play the animation
+     */
+    private void addAnimation(final String theAnimationName, int theFrameCount, int theSpeed)
     {
-        myAnimationMap.put(animationName, new Animation(animationName, getTexture(animationName), frameCount, speed));
+        myAnimationMap.put(theAnimationName, new Animation(theAnimationName, getTexture(theAnimationName), theFrameCount, theSpeed));
     }
 
-    private void addFont(final String fontName, final String fileName)
+    /**
+     * Adds a font to myFontMap
+     * @param theFontName The name of the font to be added
+     * @param theFileName The file name of the font
+     */
+    private void addFont(final String theFontName, final String theFileName)
     {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fileName));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(theFileName));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 48;
         parameter.color = Color.CHARTREUSE;
-        myFontMap.put(fontName + "48", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "48", generator.generateFont(parameter));
 
         parameter.size = 62;
-        myFontMap.put(fontName + "128", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "128Green", generator.generateFont(parameter));
+
+        parameter.color = Color.RED;
+        myFontMap.put(theFontName + "128Red", generator.generateFont(parameter));
 
         parameter.size = 24;
+        parameter.color = Color.CHARTREUSE;
+        myFontMap.put(theFontName + "24Green", generator.generateFont(parameter));
+
+        parameter.color = Color.RED;
+        myFontMap.put(theFontName + "24Red", generator.generateFont(parameter));
+
         parameter.color = Color.WHITE;
-        myFontMap.put(fontName + "24", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "24", generator.generateFont(parameter));
 
         parameter.size = 40;
-        myFontMap.put(fontName + "40", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "40", generator.generateFont(parameter));
 
         parameter.color = Color.GRAY;
-        myFontMap.put(fontName + "40Black", generator.generateFont(parameter));
+        myFontMap.put(theFontName + "40Black", generator.generateFont(parameter));
 
         generator.dispose();
     }
 
-    private void addSound(final String soundName, final String fileName)
+    /**
+     * Adds a libgdx Sound to mySoundMap
+     * @param theSoundName The name of the Sound to be added
+     * @param theFileName The file name of the audio
+     */
+    private void addSound(final String theSoundName, final String theFileName)
     {
-        mySoundMap.put(soundName, Gdx.audio.newSound(Gdx.files.internal(fileName)));
-        if (mySoundMap.get(soundName) == null)
-        {
-            System.out.println("Could not load sound file: " + fileName);
-        }
-        else
-        {
-            System.out.println("Loaded sound: " + fileName);
-        }
-    }
-
-    private void addMusic(final String theMusicName, final String theFileName)
-    {
-        myMusicMap.put(theMusicName, Gdx.audio.newMusic(Gdx.files.internal(theFileName)));
-        if (mySoundMap.get(theMusicName) == null)
+        mySoundMap.put(theSoundName, Gdx.audio.newSound(Gdx.files.internal(theFileName)));
+        if (mySoundMap.get(theSoundName) == null)
         {
             System.out.println("Could not load sound file: " + theFileName);
         }
@@ -139,38 +176,97 @@ public class Assets
         }
     }
 
-    public Texture getTexture(final String textureName)
+    /**
+     * Adds a libgdx Music to myMusicMap
+     * @param theMusicName The name of the Music to be added
+     * @param theFileName The file name of the music
+     */
+    private void addMusic(final String theMusicName, final String theFileName)
     {
-        assert(myTextureMap.get(textureName) != null);
-        return myTextureMap.get(textureName);
+        myMusicMap.put(theMusicName, Gdx.audio.newMusic(Gdx.files.internal(theFileName)));
+
+        System.out.println("Loaded sound: " + theFileName);
+
     }
 
-    public Animation getAnimation(final String animationName)
+    /**
+     * @param theTextureName The name of the libgdx Texture to be retrieved
+     * @return A libgdx Texture
+     */
+    public Texture getTexture(final String theTextureName)
     {
-        assert(myAnimationMap.get(animationName) != null);
-        return myAnimationMap.get(animationName);
+        assert(myTextureMap.get(theTextureName) != null);
+        return myTextureMap.get(theTextureName);
     }
 
-    public BitmapFont getFont(final String fontName)
+    /**
+     * @param theAnimationName The name of the Animation to be retrieved
+     * @return An Animation
+     */
+    public Animation getAnimation(final String theAnimationName)
     {
-        assert(myFontMap.get(fontName) != null);
-        return myFontMap.get(fontName);
+        assert(myAnimationMap.get(theAnimationName) != null);
+        return myAnimationMap.get(theAnimationName);
     }
 
-    public Sound getSound(final String soundName)
+    /**
+     * @param theFontName The name of the font to be retrieved
+     * @return A BitMapFont
+     */
+    public BitmapFont getFont(final String theFontName)
     {
-        assert(mySoundMap.get(soundName) != null);
-        return mySoundMap.get(soundName);
+        assert(myFontMap.get(theFontName) != null);
+        return myFontMap.get(theFontName);
     }
 
+    /**
+     * @param theSoundName The name of the libgdx Sound to be retrieved
+     * @return A libgdx Sound
+     */
+    public Sound getSound(final String theSoundName)
+    {
+        assert(mySoundMap.get(theSoundName) != null);
+        return mySoundMap.get(theSoundName);
+    }
+
+    /**
+     * @param theMusicName The name of the libgdx Music to be retrieved
+     * @return A libgdx Music
+     */
     public Music getMusic(final String theMusicName)
     {
         assert(myMusicMap.get(theMusicName) != null);
         return myMusicMap.get(theMusicName);
     }
 
+    /**
+     * @return The names of the Animations stored in myAnimationMap
+     */
     public ArrayList<String> getAnimationNames()
     {
         return myAnimationNames;
+    }
+
+    /**
+     * Tells libgdx to dispose of all the stored assets
+     */
+    public void dispose()
+    {
+        for (var k : myTextureMap.keys())
+        {
+            myTextureMap.get(k).dispose();
+        }
+        for (var k : myFontMap.keys())
+        {
+            myFontMap.get(k).dispose();
+        }
+        for (var k : mySoundMap.keys())
+        {
+            mySoundMap.get(k).dispose();
+        }
+        for (var k : myMusicMap.keys())
+        {
+            myMusicMap.get(k).dispose();
+        }
     }
 }

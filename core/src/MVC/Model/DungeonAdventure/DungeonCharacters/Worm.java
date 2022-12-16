@@ -1,168 +1,172 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
+import MVC.Model.DungeonItems.Items.Exit;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * The Worm (final boss).
- * @author
- * @version
- */
 public class Worm extends DungeonCharacter
 {
+    /**
+     * ArrayList of Body instances that follow this Worm
+     */
     final private ArrayList<Body> mySegments;
+    /**
+     * Tail that follows this Worm
+     */
     final private Tail myTail;
     final private ArrayList<Vec2> myControlPoints;
+    /**
+     * ArrayList of previous positions
+     */
     final private ArrayList<Vec2> myPath;
     private float myTParam;
+    /**
+     * How fast this Worm turns
+     */
     private double myTurnSpeed;
+    /**
+     * What direction this Worm turns
+     */
     private boolean myTurnDirection;
+    /**
+     * The current angle of the movement vector
+     */
     private double myAngle;
+    /**
+     * The frame on which a new turn speed and turn direction will be randomly generated
+     */
     private long myNextCourseChange;
+    /**
+     * Random number generator
+     */
     final private Random myRand;
-    private boolean mySpawned;
 
     /**
-     *
-     * @param thePos The Worm's position.
-     * @param theEntityFactory The Entity Factory that generates the Worm.
+     * Constructor that takes two arguments and initializes the Bodies and Tail to follow the Worm
+     * @param thePos Initial position
+     * @param theEntityFactory The EntityFactory that generated this Worm
      */
-    public Worm(final Vec2 thePos, final EntityFactory theEntityFactory)
+    public Worm(final String theCharacterType,final int theHitPoints,final int theDamage,final int theMaxSpeed,
+    final Vec2 theDimension, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {
-        super("Worm", false, 1,
-        0, 0, new Vec2(0, 0), thePos,
-        new Vec2(0, 0), theEntityFactory);
+        super(theCharacterType, false, theHitPoints,
+                theDamage, theMaxSpeed, theDimension, thePos,theVelocity, theEntityFactory);
 
         myControlPoints = new ArrayList<>();
         myRand = new Random();
         setRoom(Physics.getRoom(thePos.getMyX(), thePos.getMyY()));
         myTParam = 0;
         mySegments = new ArrayList<>();
-        mySegments.add(new Body(new Vec2( 0, 0), getMyPos(), getMyEntityFactory(), this, 16));
-        mySegments.add(new Body(new Vec2( 0, 0), getMyPos(), getMyEntityFactory(),  this, 28));
-        mySegments.add(new Body(new Vec2( 0, 0), getMyPos(), getMyEntityFactory(), this, 39));
-        myTail = new Tail(new Vec2(32, 32), getMyPos(), getMyEntityFactory(), this);
+        mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(), this, 16));
+        mySegments.add(new Body(new Vec2( 64, 64), getMyPos(), getMyEntityFactory(),  this, 28));
+        mySegments.add(new Body(new Vec2( 48, 48), getMyPos(), getMyEntityFactory(), this, 39));
+        myTail = new Tail(new Vec2(48, 48), getMyPos(), getMyEntityFactory(), this);
+
+        if (getMyEntityFactory().getAssets() != null)
+        {
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("head"));
+            mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
+            mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
+            mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body3"));
+            myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("tail"));
+        }
 
         getMyEntityFactory().addEntity(mySegments.get(0));
         getMyEntityFactory().addEntity(mySegments.get(1));
         getMyEntityFactory().addEntity(mySegments.get(2));
         getMyEntityFactory().addEntity(myTail);
 
-        myPath = new ArrayList<>();
+        setMyKnockBackPower(10);
+        setMyKnockBackLength(10);
 
-        mySpawned = false;
-    }
-
-    /**
-     *
-     * @return True if the Worm has been spawned, false if it has not.
-     */
-    public boolean isSpawned() { return mySpawned; }
-
-    /**
-     * This method spawns the Worm.
-     */
-    public void spawn()
-    {
-        setMySize(new Vec2(96, 96));
-        setMaxSpeed(4);
         myTurnSpeed = myRand.nextFloat(.05f);
         myTurnDirection = myRand.nextBoolean();
         myAngle = 0;
         myNextCourseChange = getCurrentFrame() + myRand.nextInt(61) + 15;
-        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("head"));
 
-        mySegments.get(0).setMySize(new Vec2(64, 64));
-        mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
-        mySegments.get(1).setMySize(new Vec2(64, 64));
-        mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body1"));
-        mySegments.get(2).setMySize(new Vec2(32, 32));
-        mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("body3"));
+        generateControlPoints();
 
-        myTail.setMySize(new Vec2(32, 32));
-        myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("tail"));
-
-        setDamage(1);
-        setMyKnockbackPower(10);
-        setMyKnockbackLength(10);
-        setHitPoints(10);
-        mySpawned = true;
+        myPath = new ArrayList<>();
     }
 
     /**
-     * This method retrieves the Worm's body (segments).
-     * @return The Worm's body.
+     * @return The Body instances that follow this Worm
      */
-    public ArrayList<Body> getBody() { return mySegments; }
+    public ArrayList<Body> getSegments()
+    {
+        return mySegments;
+    }
 
     /**
-     * This method returns the Worm's tail.
-     * @return The Worm's tail.
+     * @return The Tail instance that follows this Worm
      */
     public Tail getTail() { return myTail; }
 
     /**
-     * This method updates the Worm every frame.
+     * Method called every frame that governs the behavior of this Worm
      */
     public void update()
     {
-        if (mySpawned)
+        if (getCurrentFrame() >= getInvincibilityEndFrame())
         {
-            if (getCurrentFrame() >= getInvincibilityEndFrame())
-            {
-                setInvincibility(false);
-            }
-            if (getCurrentFrame() >= getKnockbackEndFrame())
-            {
-                setKnockback(false);
-            }
-            if (getHitPoints() <= 0)
-            {
-                die();
-            }
-            movement();
-            collision();
-            incrementCurrentFrame();
+            setInvincibility(false);
         }
+        if (getCurrentFrame() >= getKnockBackEndFrame())
+        {
+            setKnockBack(false);
+        }
+        if (getHitPoints() <= 0)
+        {
+            die();
+        }
+        movement();
+        collide();
+        incrementCurrentFrame();
     }
 
-    /**
-     * This method specifies how much damage the Worm inflicts during an attack.
-     * @return The Worm's damage amount.
-     */
+    @Override
     public int attack() { return 0; }
 
-    /**
-     * The Worm's movement behavior ???
-     */
     public void movement2()
     {
-        if (myTParam >= 1)
+        if (getHitPoints() > 0 && !isKnockBack())
         {
-            generateControlPoints();
+            if (myTParam >= 1)
+            {
+                generateControlPoints();
+            }
+
+            Vec2 p0 = myControlPoints.get(0);
+            Vec2 p1 = myControlPoints.get(1);
+            Vec2 p2 = myControlPoints.get(2);
+            Vec2 p3 = myControlPoints.get(3);
+
+            myTParam += getMaxSpeed() * .0015f;
+            Vec2 newPos = Physics.calculateBezierPoint(myTParam, p0, p1, p2, p3);
+
+            setMyPreviousPos(getMyPos());
+            setMyPos(newPos);
+            Vec2 newVelocity = getMyPos().minus(getMyPreviousPos());
+            setVelocity(newVelocity);
         }
 
-        Vec2 p0 = myControlPoints.get(0);
-        Vec2 p1 = myControlPoints.get(1);
-        Vec2 p2 = myControlPoints.get(2);
-        Vec2 p3 = myControlPoints.get(3);
-
-        myTParam += getMaxSpeed() * .0015f;
-        Vec2 newPos = Physics.calculateBezierPoint( myTParam, p0, p1, p2, p3);
-
-        setMyPreviousPos(getMyPos());
-        setMyPos(newPos);
+        if (getHitPoints() > 0)
+        {
+            myPath.add(getMyPreviousPos());
+            if (myPath.size() > 200)
+            {
+                myPath.remove(0);
+            }
+        }
     }
 
-    /**
-     * The Worm's movement behavior ???
-     */
+    @Override
     public void movement()
     {
-        if (getHitPoints() > 0 && !isKnockback())
+        if (getHitPoints() > 0 && !isKnockBack())
         {
             if (getCurrentFrame() >= myNextCourseChange)
             {
@@ -191,21 +195,19 @@ public class Worm extends DungeonCharacter
         if (getHitPoints() > 0)
         {
             myPath.add(getMyPreviousPos());
-            if (myPath.size() > 200)
+            if (myPath.size() > 50)
             {
                 myPath.remove(0);
             }
         }
     }
 
-    /**
-     * This method specifies what should happen when a Worm collides with specific Entities.
-     */
-    public void collision()
+    @Override
+    public void collide()
     {
         Vec2 overlap;
-        Vec2 previousOverlap;
 
+        // Collision with tiles
         ArrayList<Entity> tiles = new ArrayList<>();
         tiles.addAll(getMyEntityFactory().getEntities("Wall"));
         tiles.addAll(getMyEntityFactory().getEntities("Door"));
@@ -213,43 +215,15 @@ public class Worm extends DungeonCharacter
         for(var t: tiles) {
             overlap = Physics.getOverlap(this, t);
 
-            if (overlap.getMyX() > 0 && overlap.getMyY() > 0) {
+            if (overlap.getMyX() > 0 && overlap.getMyY() > 0)
+            {
 
-                previousOverlap = Physics.getPreviousOverlap(this, t);
-
-                // If the overlap is horizontal
-                if (previousOverlap.getMyY() > 0)
-                {
-                    // If the player came from the left, push them out to the left
-                    if (this.getMyPos().getMyX() < t.getMyPos().getMyX())
-                    {
-                        this.getMyPos().setMyX(this.getMyPos().getMyX() - (overlap.getMyX()));
-                    }
-                    // If the player came from the right push them out to the right
-                    else
-                    {
-                        this.getMyPos().setMyX(this.getMyPos().getMyX() + (overlap.getMyX()));
-                    }
-                }
-
-                // If the overlap is vertical
-                if (previousOverlap.getMyX() > 0)
-                {
-                    // If the player came from above push them up
-                    if (this.getMyPos().getMyY() < t.getMyPos().getMyY())
-                    {
-                        this.getMyPos().setMyY(this.getMyPos().getMyY() - (overlap.getMyY()));
-                    }
-                    else
-                    {
-                        this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
-                    }
-                }
-
+                Physics.tileResolution(overlap, this, t);
                 setMaxSpeed(getMaxSpeed() * -1);
             }
         }
 
+        // Collision with the hero
         Hero hero = getMyEntityFactory().getHero();
         overlap = Physics.getOverlap(this, hero);
         if (overlap.getMyX() > 0 && overlap.getMyY() > 0 && !hero.isInvincibility())
@@ -260,13 +234,10 @@ public class Worm extends DungeonCharacter
                 hero.destroy();
             }
             hero.setInvincibility(true,45);
-            hero.knockback(this, getMyKnockbackPower(), getMyKnockbackLength());
+            hero.knockBack(this, getMyKnockBackPower(), getMyKnockBackLength());
         }
     }
 
-    /**
-     * This method specifies what should happen when a Worm dies.
-     */
     @Override
     public void die()
     {
@@ -275,38 +246,41 @@ public class Worm extends DungeonCharacter
         mySegments.get(1).setMySize(new Vec2(0, 0));
         mySegments.get(2).setMySize(new Vec2(0, 0));
         myTail.setMySize((new Vec2(0, 0)));
+
+        // Dominoes the animations so the segments explode one at a time
         if (!myTail.getMyAnimation().getName().equals("bossDeath"))
         {
-            myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            myTail.setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!mySegments.get(2).getMyAnimation().getName().equals("bossDeath") && myTail.getMyAnimation().hasEnded())
         {
             myTail.destroy();
-            mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            mySegments.get(2).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!mySegments.get(1).getMyAnimation().getName().equals("bossDeath") && mySegments.get(2).getMyAnimation().hasEnded())
         {
             mySegments.get(2).destroy();
-            mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            mySegments.get(1).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!mySegments.get(0).getMyAnimation().getName().equals("bossDeath") && mySegments.get(1).getMyAnimation().hasEnded())
         {
             mySegments.get(1).destroy();
-            mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            mySegments.get(0).setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (!getMyAnimation().getName().equals("bossDeath") && mySegments.get(0).getMyAnimation().hasEnded())
         {
             mySegments.get(0).destroy();
-            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"));
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("bossDeath"), false);
         }
         else if (getMyAnimation().hasEnded())
         {
             destroy();
+            Exit.setExitCondition(true);
         }
     }
 
     /**
-     * This method decreases lag to improve the Worm's animation.
+     * Decreases the element that the following Body and Tail instances access in myPath
      */
     public void decreaseLag()
     {
@@ -332,32 +306,34 @@ public class Worm extends DungeonCharacter
     }
 
 
-    /**
-     * The Worm's body.
-     */
     public class Body extends Entity
     {
+        /**
+         * The Worm that this Body follows
+         */
         final private Worm myHead;
+        /**
+         * How far behind this Body trails the Worm
+         */
         private float myLag;
 
         /**
-         *
-         * @param theSize The Body's size.
-         * @param thePos The Body's position.
-         * @param theEntityFactory The Entity Factory that generates the Worm's Body.
-         * @param theHead The Head.
-         * @param theLag The lag amount.
+         * Constructor that takes five arguments
+         * @param theSize The size of the bounding box
+         * @param thePos The initial position
+         * @param theEntityFactory The EntityFactory this belongs to
+         * @param theHead The Worm that this follows
+         * @param theLag How far behind the Worm this trails
          */
         public Body(final Vec2 theSize, final Vec2 thePos, final EntityFactory theEntityFactory, final Worm theHead, final int theLag)
         {
+            // Constructor call to Entity
             super(theSize, thePos, "Body", theEntityFactory);
             myHead = theHead;
             myLag = theLag;
         }
 
-        /**
-         * This method updates the Body every frame.
-         */
+        @Override
         public void update()
         {
             movement();
@@ -365,6 +341,9 @@ public class Worm extends DungeonCharacter
             incrementCurrentFrame();
         }
 
+        /**
+         * Sets a new position to the Worm's previous position with lag
+         */
         private void movement()
         {
             if (myHead.myPath.size() > Math.floor(myLag))
@@ -375,6 +354,9 @@ public class Worm extends DungeonCharacter
             }
         }
 
+        /**
+         * Resolves collisions between this and the Hero
+         */
         private void collision()
         {
 
@@ -388,49 +370,53 @@ public class Worm extends DungeonCharacter
                     hero.destroy();
                 }
                 hero.setInvincibility(true,45);
-                hero.knockback(this, 3, 8);
+                hero.knockBack(this, 3, 8);
             }
         }
 
         /**
-         * This method retrieves the Head of the Body.
-         * @return The Head.
+         * @return The Worm that this follows
          */
         public Worm getHead() { return myHead; }
 
     }
 
-    /**
-     * The Worm's tail.
-     */
     public class Tail extends Entity
     {
+        /**
+         * The Worm that this follows
+         */
         final private Worm myHead;
+        /**
+         * How far behind this Tail trails the Worm
+         */
         private float myLag;
 
         /**
-         *
-         * @param theSize The Tail's size.
-         * @param thePos The Tail's position.
-         * @param theEntityFactory The Entity Factory that generates the Tail.
-         * @param theHead The Head.
+         * Constructor that takes four arguments
+         * @param theSize The size of the bounding box
+         * @param thePos The initial position
+         * @param theEntityFactory The EntityFactory this belongs to
+         * @param theHead The Worm that this follows
          */
         public Tail(final Vec2 theSize, final Vec2 thePos, final EntityFactory theEntityFactory, final Worm theHead)
         {
+            // Constructor call to Entity
             super(theSize, thePos, "Tail", theEntityFactory);
             myHead = theHead;
             myLag = 48;
         }
 
-        /**
-         * This method updates the Tail every frame.
-         */
+        @Override
         public void update()
         {
             movement();
             incrementCurrentFrame();
         }
 
+        /**
+         * Sets a new position to the Worm's previous position with lag
+         */
         private void movement()
         {
             if (myHead.myPath.size() > Math.floor(myLag))
@@ -442,18 +428,9 @@ public class Worm extends DungeonCharacter
         }
 
         /**
-         * This method retrieves the Head of the Body.
-         * @return The Head.
+         * @return The Worm that this follows
          */
         public Worm getHead() { return myHead; }
     }
 
-    /**
-     * This method retrieves the Body in segments, represented as items in an ArrayList.
-     * @return The Worm's Body.
-     */
-    public ArrayList<Body> getSegments()
-    {
-        return mySegments;
-    }
 }

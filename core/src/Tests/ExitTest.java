@@ -3,7 +3,9 @@ package Tests;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Worm;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Worm;
 import MVC.Model.DungeonItems.Items.Exit;
+import MVC.Model.Physics.Vec2;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
@@ -23,19 +25,32 @@ class ExitTest
     @Test
     void testCheckFinishGameTrue()
     {
-        assertTrue(myExit.checkFinishGame()); //no worm has been added to entityFactory
+        //Exit myExit = Exit.getInstance(entityFactory);
+        Warrior myWarrior = new Warrior(entityFactory);
+
+        for (int i = 0; i < 4; i++)
+        {
+            myWarrior.incrementPillars();
+        }
+
+        assertTrue(myExit.isExitCondition());
     }
 
     @Test
     void testCheckFinishGameFalse()
     {
-        myExit.getMyEntityFactory().addEntity(new Worm(new Vec2(), entityFactory));
+        Exit myExit = Exit.getInstance(entityFactory);
+        Warrior myWarrior = new Warrior(entityFactory); //initialized with 0 Pillars.
 
-        myExit.getMyEntityFactory().update();
+        assertFalse(myExit.isExitCondition());
 
-        System.out.println(myExit.getMyEntityFactory().getEntities());
-
-        assertFalse(myExit.checkFinishGame());
+//        myExit.getMyEntityFactory().addEntity(new Worm(new Vec2(), entityFactory));
+//
+//        myExit.getMyEntityFactory().update();
+//
+//        System.out.println(myExit.getMyEntityFactory().getEntities());
+//
+//        assertFalse(myExit.checkFinishGame());
     }
 
     @Test
@@ -47,7 +62,6 @@ class ExitTest
         {
             myWarrior.incrementPillars();
         }
-
         myExit.activate(myWarrior);
 
         assertTrue(Exit.isExited());

@@ -1,7 +1,6 @@
 package MVC.Model.DungeonAdventure.DungeonCharacters;
 
 import MVC.Model.DungeonItems.Items.Item;
-import MVC.Model.DungeonItems.Items.Lava;
 import MVC.Model.Interfaces.ICollidable;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
@@ -75,12 +74,12 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     /**
      * The magnitude that this character knocks back other entities with.
      */
-    private float myKnockbackPower;
+    private float myKnockBackPower;
 
     /**
      * The duration that this character knocks back other entities.
      */
-    private long myKnockbackLength;
+    private long myKnockBackLength;
 
     /**
      * DungeonCharacter constructor that initializes the Character's character type, hero status, hit points,
@@ -133,9 +132,9 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
             setInvincibility(false);
             myBurning = false;
         }
-        if(getCurrentFrame() >= getKnockbackEndFrame())
+        if(getCurrentFrame() >= getKnockBackEndFrame())
         {
-            setKnockback(false);
+            setKnockBack(false);
         }
 
         if(myHitPoints <= 0)
@@ -146,7 +145,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                 destroy();
             }
         }
-        else if(!isKnockback())
+        else if(!isKnockBack())
         {
             movement();
             collide();
@@ -171,10 +170,11 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void die()
     {
         setMySize(new Vec2(0, 0));
-        if (getMyEntityFactory().getAssets() != null) //added for testing, should i remove?
-        {
-            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"));
-        }
+        setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"), false);
+//        if (getMyEntityFactory().getAssets() != null) //added for testing, should i remove?
+//        {
+//            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"));
+//        }
     }
 
     /**
@@ -193,7 +193,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
             myBurning = false;
             //destroy();
         }
-        else if (damageOutcome > 0)
+        else
         {
             setHitPoints(damageOutcome);
         }
@@ -341,74 +341,74 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
      * @param power The strength of the knockback.
      * @param duration The duration of the knockback.
      */
-    public void knockback(Entity e, float power, long duration)
+    public void knockBack(Entity e, float power, long duration)
     {
         var v = this.getMyPos().minus(e.getMyPos());
         var normalizedV = v.multiply(v.quickInverseMagnitude());
         setVelocity(normalizedV.multiply(power), duration);
 
-        setKnockback(true);
-        setKnockbackEndFrame(duration);
+        setKnockBack(true);
+        setKnockBackEndFrame(duration);
     }
 
     /**
      * This method tells if the character is being knocked back by an attack.
      * @return True if the character is being knocked back, false if not.
      */
-    public boolean isKnockback()
+    public boolean isKnockBack()
     {
         return myKnockback;
     }
 
     /**
-     * This method sets the character's knockback status.
-     * @param theKnockback True if the character is being knocked back, false if not.
+     * This method sets the character's knock back status.
+     * @param theKnockBack True if the character is being knocked back, false if not.
      */
-    public void setKnockback(final boolean theKnockback)
+    public void setKnockBack(final boolean theKnockBack)
     {
-        myKnockback = theKnockback;
+        myKnockback = theKnockBack;
     }
 
     /**
      * This method retrieves the frame when a character will stop being knocked back.
      * @return The frame where a character stops being knocked back.
      */
-    public long getKnockbackEndFrame()
+    public long getKnockBackEndFrame()
     {
         return myKnockbackEndFrame;
     }
 
     /**
      * This method sets the final frame where a character gets knocked back
-     * @param theKnockbackEndFrame The final frame of a knock back.
+     * @param theKnockBackEndFrame The final frame of a knock back.
      */
-    public void setKnockbackEndFrame(final long theKnockbackEndFrame)
+    public void setKnockBackEndFrame(final long theKnockBackEndFrame)
     {
-        if (theKnockbackEndFrame >= 0) { // >= 0 or > 0
-            myKnockbackEndFrame = getCurrentFrame() + theKnockbackEndFrame;
+        if (theKnockBackEndFrame >= 0) {
+            myKnockbackEndFrame = getCurrentFrame() + theKnockBackEndFrame;
         }
     }
 
     /**
-     * This method sets the knockback magnitude of this character
-     * @param thePower The magnitude applied to knockback from this character.
+     * This method sets the knock back magnitude of this character
+     * @param thePower The magnitude applied to knock back from this character.
      */
-    public void setMyKnockbackPower(float thePower)     { myKnockbackPower = thePower; }
+    public void setMyKnockBackPower(float thePower)     { myKnockBackPower = thePower; }
 
     /**
-     * @return The magnitude applied to knockback from this character.
+     * @return The magnitude applied to knock back from this character.
      */
-    public float getMyKnockbackPower()                  { return myKnockbackPower; }
+    public float getMyKnockBackPower()                  { return myKnockBackPower; }
 
     /**
-     * @param theDuration How long a knockback from this character lasts.
+     * @param theDuration How long a knock back from this character lasts.
      */
-    public void setMyKnockbackLength(long theDuration)  { myKnockbackLength = theDuration; }
+    public void setMyKnockBackLength(long theDuration)  { myKnockBackLength = theDuration; }
 
     /**
-     * @return The duration of a knockback from this character.
+     * @return The duration of a knock back from this character.
      */
-    public long getMyKnockbackLength()                  { return myKnockbackLength; }
+    public long getMyKnockBackLength()                  { return myKnockBackLength; }
 
     /**
      * Retrieves the Dungeon Character's invincible status which tells and if they can take damage.
@@ -493,7 +493,6 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     public void collide()
     {
         Vec2 overlap;
-        Vec2 previousOverlap;
 
         for(var t:getMyEntityFactory().getEntities())
         {
@@ -509,42 +508,17 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
                             || t.getType().contains("Hero")
                             || (t.getType().equals("Lava") && this.getType().equals("Monster")))
                     {
-                        previousOverlap = Physics.getPreviousOverlap(this, t);
-
-                        // If the overlap is horizontal
-                        if (previousOverlap.getMyY() > 0)
-                        {
-                            // If the player came from the left, push them out to the left
-                            if (this.getMyPos().getMyX() < t.getMyPos().getMyX())
-                            {
-                                this.getMyPos().setMyX(this.getMyPos().getMyX() - (overlap.getMyX()));
-                            }
-                            // If the player came from the right push them out to the right
-                            else
-                            {
-                                this.getMyPos().setMyX(this.getMyPos().getMyX() + (overlap.getMyX()));
-                            }
-                        }
-
-                        // If the overlap is vertical
-                        if (previousOverlap.getMyX() > 0)
-                        {
-                            // If the player came from above push them up
-                            if (this.getMyPos().getMyY() < t.getMyPos().getMyY())
-                            {
-                                this.getMyPos().setMyY(this.getMyPos().getMyY() - (overlap.getMyY()));
-                            }
-                            else
-                            {
-                                this.getMyPos().setMyY(this.getMyPos().getMyY() + (overlap.getMyY()));
-                            }
-                        }
+                        Physics.tileResolution(overlap, this, t);
                     }
                     else if (t.getType().equals("Lava") && this.getType().equals("Hero"))
                     {
                         if (!this.isInvincibility())
                         {
                             this.applyDamage(1);
+                            if (this.getHitPoints() <= 0)
+                            {
+                                this.destroy();
+                            }
                             this.setInvincibility(true, 45);
                             myBurning = true;
                         }

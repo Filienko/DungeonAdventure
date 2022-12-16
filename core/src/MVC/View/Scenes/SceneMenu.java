@@ -12,14 +12,30 @@ import java.util.ArrayList;
 
 public class SceneMenu extends Scene
 {
+    /**
+     * The menu element that is currently highlighted to be selected
+     */
     private int myMenuIndex;
+    /**
+     * The text elements to be drawn corresponding to the various menu options
+     */
     final private ArrayList<String> myTextElements;
+    /**
+     * The hero selections to be drawn for hero selection
+     */
     final private ArrayList<String> myHeroSelections;
+    /**
+     * Whether the Hero selection screen is to be drawn
+     */
     boolean myHeroSelection;
 
-    public SceneMenu(GameEngine gameEngine)
+    /**
+     * Constructor that takes one argument
+     * @param theGameEngine The GameEngine that this Scene belongs to
+     */
+    public SceneMenu(GameEngine theGameEngine)
     {
-        super(gameEngine);
+        super(theGameEngine);
         myTitle = "Dungeon Adventure";
         myTextElements = new ArrayList<String>();
         myHeroSelections = new ArrayList<String>();
@@ -42,15 +58,18 @@ public class SceneMenu extends Scene
 
     }
 
-    protected void onEnd() { Gdx.app.exit(); }
+    @Override
+    protected void onEnd()  { Gdx.app.exit(); }
 
-    public void update() { myCurrentFrame++; }
+    @Override
+    public void update()    { myCurrentFrame++; }
 
-    public void doAction(final Action action)
+    @Override
+    public void doAction(final Action theAction)
     {
-        if(action.getType().equals("START"))
+        if(theAction.getType().equals("START"))
         {
-            switch (action.getName()) {
+            switch (theAction.getName()) {
                 case "UP":
                     if (myMenuIndex > 0) {
                         myMenuIndex--;
@@ -64,6 +83,7 @@ public class SceneMenu extends Scene
                 case "SELECT":
                     if (myHeroSelection)
                     {
+                        myHeroSelection = false;
                         myGame.setCurrentScene("Dungeon",
                                 new SceneGame(myGame, myHeroSelections.get(myMenuIndex)), false);
                     }
@@ -92,8 +112,10 @@ public class SceneMenu extends Scene
         }
     }
 
+    @Override
     public void render()
     {
+
         SpriteBatch batch = myRenderer.getSpriteBatch();
         BitmapFont font = myRenderer.getAssets().getFont("mario48");
         ArrayList<String> text;
@@ -131,5 +153,8 @@ public class SceneMenu extends Scene
         font.draw(batch, "UP:W DOWN:S SELECT:D BACK:ESC", 5, 64);
     }
 
+    /**
+     * @return The element of the menu that is highlighted for selection
+     */
     public int getMenuIndex() { return myMenuIndex; }
 }

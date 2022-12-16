@@ -134,4 +134,38 @@ public class Physics
         return p;
     }
 
+    public static void tileResolution(final Vec2 theOverlap, final Entity theEntity, final Entity theTile)
+    {
+        Vec2 previousOverlap = Physics.getPreviousOverlap(theEntity, theTile);
+
+        // If the overlap is horizontal
+        if (previousOverlap.getMyY() > 0)
+        {
+            // If the entity came from the left, push them out to the left
+            if (theEntity.getMyPos().getMyX() < theTile.getMyPos().getMyX())
+            {
+                theEntity.getMyPos().setMyX(theEntity.getMyPos().getMyX() - (theOverlap.getMyX()));
+            }
+            // If the entity came from the right push them out to the right
+            else
+            {
+                theEntity.getMyPos().setMyX(theEntity.getMyPos().getMyX() + (theOverlap.getMyX()));
+            }
+        }
+
+        // If the overlap is vertical
+        if (previousOverlap.getMyX() > 0)
+        {
+            // If the entity came from above push them up
+            if (theEntity.getMyPos().getMyY() < theTile.getMyPos().getMyY())
+            {
+                theEntity.getMyPos().setMyY(theEntity.getMyPos().getMyY() - (theOverlap.getMyY()));
+            }
+            else
+            {
+                theEntity.getMyPos().setMyY(theEntity.getMyPos().getMyY() + (theOverlap.getMyY()));
+            }
+        }
+    }
+
 }

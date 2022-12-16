@@ -82,9 +82,9 @@ class SwordTest
         assertTrue(m.isInvincibility());
         assertEquals(m.getInvincibilityEndFrame(),
                 (mySword.getMyLifeSpan() - (mySword.getCurrentFrame() + 1)) + m.getCurrentFrame());
-        assertTrue(m.isKnockback());
-        assertEquals(m.getKnockbackEndFrame(),
-                mySword.getMyHero().getMyKnockbackLength() + m.getCurrentFrame());
+        assertTrue(m.isKnockBack());
+        assertEquals(m.getKnockBackEndFrame(),
+                mySword.getMyHero().getMyKnockBackLength() + m.getCurrentFrame());
 
         m.setHitPoints(0);
         m.setInvincibility(false);
@@ -132,8 +132,8 @@ class SwordTest
         assertEquals(theWorm.getHitPoints(), oldHP - 1);
         assertTrue(theWorm.isInvincibility());
         assertEquals(theWorm.getInvincibilityEndFrame(),60);
-        assertTrue(theWorm.isKnockback());
-        assertEquals(theWorm.getKnockbackEndFrame(), 60);
+        assertTrue(theWorm.isKnockBack());
+        assertEquals(theWorm.getKnockBackEndFrame(), 60);
         assertEquals(theWorm.getMaxSpeed(), oldMS + Math.signum(oldMS) * .5f);
 
         Vec2 oldSize = theWorm.getMySize();

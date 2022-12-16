@@ -9,6 +9,8 @@ import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import MVC.View.Assets;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.File;
@@ -17,7 +19,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class EntityFactory implements Serializable
 {
@@ -45,162 +46,149 @@ public class EntityFactory implements Serializable
     public Monster generateMonster(final String monsterType)
     {
         SuperMonsterDB DB = new MonsterDB();
-        var monster = DB.createMonsterDB(monsterType, myHero,this);
-        return monster;
+
+        return DB.createMonsterDB(monsterType,this);
     }
 
-    public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
+    public void generateGameEntities(final Dungeon theDungeon)
     {
         for (var room: theDungeon.getRooms())
         {
             generateRoomEntities(room);
         }
-        return myEntitiesToAdd;
     }
 
-    public ArrayList<Entity> generateRoomEntities(final Room theRoom) {
+    public void generateRoomEntities(final Room theRoom) {
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
         Vec2 location = theRoom.getLocation();
-        Vec2 pixelPos;
 
-        int monsterCounter = 0;
-        while (monsters.toString().contains(","))
-        {
-            String monster = monsters.substring(0, monsters.indexOf(",") + 1);
-            monsters.delete(0, monsters.indexOf(",") + 1);
-            monster = monster.substring(0, monster.indexOf(","));
-            var e = generateMonsters(monster);
-
-            if (e.getMonsterType().contentEquals("rat"))
-            {
-                e.setRoom(location, monsterCounter);
-            }
-            else
-            {
-                e.setRoom(location);
-            }
-            myEntitiesToAdd.add(e);
-            monsterCounter++;
-        }
+        int monsterCounter = generateRoomMonsters(monsters, location);
 
         generateWalls(theRoom,monsterCounter);
 
-        while(items.toString().contains(","))
-        {
-            String item = items.substring(0, items.indexOf(",")+1);
-            items.delete(0, items.indexOf(",")+1);
-            var i = generateItems(item.substring(0,item.indexOf(",")));
-            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9,5);
-            }
-            else
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
-            }
-
-            if(i.getType().contentEquals("pillar"))
-            {
-                ((Pillar)i).setMonsterCounter(monsterCounter);
-            }
-            i.setRoom(location);
-            i.setMyPos(pixelPos);
-            i.setMyPreviousPos(pixelPos);
-            myEntitiesToAdd.add(i);
-        }
+        generateRoomItems(items, location, monsterCounter);
 
         if (theRoom.isLava())
         {
             generateLava((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
         }
-
-        if (theRoom.isTheExit())
-        {
-            generateWorm(location);
-        }
-
-        return myEntitiesToAdd;
     }
 
-    //CHANGE BACK TO PRIVATE AND VOID AFTER TESTING
-    public Worm generateWorm(final Vec2 theLocation)
+    private int generateRoomMonsters(final StringBuilder theMonsters, final Vec2 theLocation)
     {
-            Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
-            Worm worm = new Worm(pixelPos, this);
-            myEntitiesToAdd.add(worm);
+        int monsterCounter = 0;
+        while (theMonsters.toString().contains(","))
+        {
+            String monster = theMonsters.substring(0,theMonsters.indexOf(",") + 1);
+            theMonsters.delete(0, theMonsters.indexOf(",") + 1);
+            monster = monster.substring(0, monster.indexOf(","));
+            var e = generateMonsters(monster);
 
-            return worm;
+            if (e.getMonsterType().contentEquals("rat"))
+            {
+                e.setRoom(theLocation, monsterCounter);
+            }
+            else
+            {
+                e.setRoom(theLocation);
+            }
+            myEntitiesToAdd.add(e);
+            monsterCounter++;
+        }
+
+        return monsterCounter;
+    }
+
+    private void generateRoomItems(StringBuilder theItems, final Vec2 theLocation, final int theMonsterCounter)
+    {
+        Vec2 pixelPos;
+        while(theItems.toString().contains(","))
+        {
+            String item = theItems.substring(0, theItems.indexOf(",")+1);
+            theItems.delete(0, theItems.indexOf(",")+1);
+            var i = generateItems(item.substring(0,item.indexOf(",")));
+            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
+            {
+                pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9,5);
+            }
+            else
+            {
+                pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(),
+                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            }
+
+            if(i.getType().contentEquals("pillar"))
+            {
+                ((Pillar)i).setMonsterCounter(theMonsterCounter);
+            }
+            i.setRoom(theLocation);
+            i.setMyPos(pixelPos);
+            i.setMyPreviousPos(pixelPos);
+            myEntitiesToAdd.add(i);
+        }
+    }
+
+    public void generateWorm(final Vec2 theLocation)
+    {
+        SuperMonsterDB DB = new MonsterDB();
+        Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9, 5);
+        var worm = DB.createWormDB(pixelPos,this);
+        myEntitiesToAdd.add(worm);
     }
 
     private void generateLava(final int roomX, final int roomY)
     {
-        try
-        {
-            File file = new File("lava.txt");
-            Scanner sc = new Scanner(file);
-            Vec2 pixelPos;
-            Wall lava;
+        FileHandle file = Gdx.files.internal("lava.txt");
+        String[] layout = file.readString().split("\r\n");
+        Vec2 pixelPos;
+        Wall lava;
 
-            while (sc.hasNextLine())
-            {
-                String[] tiles = sc.nextLine().split(" ");
-                int tileX = Integer.parseInt(tiles[0]);
-                int tileY = Integer.parseInt(tiles[1]);
-                pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
-                lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(62, 62));
-                lava.setMyAnimation(myAssets.getAnimation("lava"));
-                lava.setType("Lava");
-                lava.setAnimationAngle("lava");
-                myEntitiesToAdd.add(lava);
-            }
-            sc.close();
-        }
-        catch (FileNotFoundException fnfe )
+        for (String s : layout)
         {
-            System.out.println("File: lava.txt not found");
+            String[] tiles = s.split(" ");
+            int tileX = Integer.parseInt(tiles[0]);
+            int tileY = Integer.parseInt(tiles[1]);
+            pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
+            lava = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(62, 62));
+            lava.setMyAnimation(myAssets.getAnimation("lava"));
+            lava.setType("Lava");
+            lava.setAnimationAngle("lava");
+            myEntitiesToAdd.add(lava);
         }
     }
 
     private void generateWalls(final int roomX, final int roomY)
     {
-        try
-        {
-            File file = new File("walls.txt");
-            Scanner sc = new Scanner(file);
-            Vec2 pixelPos;
-            Wall wall;
+        FileHandle file = Gdx.files.internal("walls.txt");
+        String[] layout = file.readString().split("\r\n");
+        Vec2 pixelPos;
+        Wall wall;
 
-            while (sc.hasNextLine())
-            {
-                String[] attributes = sc.nextLine().split(" ");
-                int tileX = Integer.parseInt(attributes[0]);
-                int tileY = Integer.parseInt(attributes[1]);
-                pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
-                String animation = attributes[2];
-                int rotation = Integer.parseInt(attributes[3]);
-
-                wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
-                wall.setAnimationAngle(animation);
-                wall.setMyAnimation(myAssets.getAnimation(animation));
-                wall.setRotation(rotation);
-                myEntitiesToAdd.add(wall);
-            }
-        }
-        catch (FileNotFoundException fnfe )
+        for (String s : layout)
         {
-            System.out.println("File: walls.txt not found");
+            String[] attributes = s.split(" ");
+            int tileX = Integer.parseInt(attributes[0]);
+            int tileY = Integer.parseInt(attributes[1]);
+            pixelPos = Physics.getPosition(roomX, roomY, tileX, tileY);
+            String animation = attributes[2];
+            int rotation = Integer.parseInt(attributes[3]);
+
+            wall = new Wall(new Vec2(pixelPos.getMyX(), pixelPos.getMyY()), new Vec2(64, 64));
+            wall.setAnimationAngle(animation);
+            wall.setMyAnimation(myAssets.getAnimation(animation));
+            wall.setRotation(rotation);
+            myEntitiesToAdd.add(wall);
         }
     }
 
-    void generateWalls(final Room theRoom,final int theMonterCounter)
+    void generateWalls(final Room theRoom,final int theMonsterCounter)
     {
         var location = theRoom.getLocation();
         generateWalls((int) location.getMyX(), (int) location.getMyY());
         if (theRoom.isN())
         {
-            generateDoor(location, theMonterCounter, 9, 10, 0);
+            generateDoor(location, theMonsterCounter, 9, 10, 0);
         }
         else
         {
@@ -208,7 +196,7 @@ public class EntityFactory implements Serializable
         }
         if (theRoom.isS())
         {
-            generateDoor(location, theMonterCounter, 9, 0, 180);
+            generateDoor(location, theMonsterCounter, 9, 0, 180);
         }
         else
         {
@@ -216,7 +204,7 @@ public class EntityFactory implements Serializable
         }
         if (theRoom.isW())
         {
-            generateDoor(location, theMonterCounter, 0, 5, 90);
+            generateDoor(location, theMonsterCounter, 0, 5, 90);
         }
         else
         {
@@ -224,7 +212,7 @@ public class EntityFactory implements Serializable
         }
         if (theRoom.isE())
         {
-            generateDoor(location, theMonterCounter, 18, 5, 270);
+            generateDoor(location, theMonsterCounter, 18, 5, 270);
         }
         else
         {
@@ -388,6 +376,7 @@ public class EntityFactory implements Serializable
     public Hero generateMockHero()
     {
         Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
+        myEntities.add(warrior);
         return warrior;
     }
 
@@ -411,7 +400,7 @@ public class EntityFactory implements Serializable
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation", 0, this));
+        arr.add(new Pillar("Encapsulation", 0, this)); //is this the right order??
         arr.add(new Pillar("Inheritance", 0, this));
         arr.add(new Pillar("Abstraction", 0, this));
         arr.add(new Pillar("Polymorphism", 0, this));
@@ -504,6 +493,7 @@ public class EntityFactory implements Serializable
             else if(e instanceof Item)
             {
                 e.setMyAnimation(myAssets.getAnimation(e.getType()));
+                if(e instanceof Pillar && ((Pillar)e).isBroken()){e.setMyAnimation(myAssets.getAnimation("brokenPillar"));}
             }
             else if(e.getType().toLowerCase(Locale.ROOT).contains("monster"))
             {

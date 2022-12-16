@@ -40,24 +40,23 @@ public class Monster extends DungeonCharacter
      * @param theMaxSpeed The Monster's maximum speed.
      * @param thePos The Monster's location.
      * @param theVelocity The Monster's velocity.
-     * @param theHero the Hero associated with the Monsters
      */
     public Monster(final String theMonsterType, final int theHitPoints, final int theDamage, final int theMaxSpeed,
-                  final Vec2 thePos, final Vec2 theVelocity, final Hero theHero, final Vec2 theDimensions,
+                  final Vec2 thePos, final Vec2 theVelocity, final Vec2 theDimensions,
                    final EntityFactory theEntityFactory)
     {
         super("Monster", MY_HERO_STATUS, theHitPoints, theDamage, theMaxSpeed,
                 theDimensions, thePos, theVelocity, theEntityFactory);
 
         setMonsterType(theMonsterType);
-        setHero(theHero);
+        setHero(getMyEntityFactory().getHero());
         setMaxSpeed(theMaxSpeed);
         if(getMyEntityFactory().getAssets()!=null)
         {
             setMyAnimation(getMyEntityFactory().getAssets().getAnimation(myMonsterType));
         }
-        setMyKnockbackPower(3);
-        setMyKnockbackLength(8);
+        setMyKnockBackPower(3);
+        setMyKnockBackLength(8);
     }
 
     /**
@@ -142,11 +141,6 @@ public class Monster extends DungeonCharacter
             direction = myHero.getMyPos().minus(npcPosition);
             velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
         }
-        else if (getHomePosition().getDistanceSquared(npcPosition) > MY_AGGRESSION_DISTANCE)
-        {
-            direction = getHomePosition().minus(npcPosition);
-            velocity = direction.multiply(direction.quickInverseMagnitude() * this.getMaxSpeed());
-        }
 
         setVelocity(velocity);
         setMyPreviousPos(getMyPos());
@@ -171,7 +165,7 @@ public class Monster extends DungeonCharacter
                 myHero.destroy();
             }
             myHero.setInvincibility(true,45);
-            myHero.knockback(this, getMyKnockbackPower(), getMyKnockbackLength());
+            myHero.knockBack(this, getMyKnockBackPower(), getMyKnockBackLength());
         }
     }
 

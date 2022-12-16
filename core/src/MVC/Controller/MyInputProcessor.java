@@ -5,56 +5,63 @@ import com.badlogic.gdx.InputAdapter;
 
 public class MyInputProcessor extends InputAdapter
 {
+    /**
+     * The GameEngine that this class handles input for
+     */
     GameEngine myGame;
 
-    public MyInputProcessor(GameEngine game)
+    /**
+     * Constructor that takes one argument.
+     * @param theGame The GameEngine that this class handles input for
+     */
+    public MyInputProcessor(GameEngine theGame)
     {
-        myGame = game;
+        myGame = theGame;
     }
 
     @Override
-    public boolean keyDown(int keycode)
+    public boolean keyDown(int theKeycode)
     {
-        if (myGame.getCurrentScene().getActionMap().containsKey(keycode))
+        if (myGame.getCurrentScene().getActionMap().containsKey(theKeycode))
         {
-            Action action = new Action(myGame.getCurrentScene().getActionMap().get(keycode), "START");
+            Action action = new Action(myGame.getCurrentScene().getActionMap().get(theKeycode), "START");
             myGame.getCurrentScene().doAction(action);
         }
         return true;
     }
 
     @Override
-    public boolean keyUp(int keycode)
+    public boolean keyUp(int theKeycode)
     {
-        if (myGame.getCurrentScene().getActionMap().containsKey(keycode))
+        if (myGame.getCurrentScene().getActionMap().containsKey(theKeycode))
         {
-            Action action = new Action(myGame.getCurrentScene().getActionMap().get(keycode), "END");
+            Action action = new Action(myGame.getCurrentScene().getActionMap().get(theKeycode), "END");
             myGame.getCurrentScene().doAction(action);
         }
         return true;
     }
 
     @Override
-    public boolean touchDown(int x, int y, int pointer, int button)
+    public boolean touchDown(int theX, int theY, int thePointer, int theButton)
     {
-        if (button == Input.Buttons.LEFT)
+        if (theButton == Input.Buttons.LEFT)
         {
-            System.out.println("Mouse click at: " + x +", " + y);
+            System.out.println("Mouse click at: " + theX +", " + theY);
         }
-        if (myGame.getCurrentScene().getActionMap().containsKey(button))
+        if (myGame.getCurrentScene().getActionMap().containsKey(theButton))
         {
-            Action action = new Action(myGame.getCurrentScene().getActionMap().get(button), "START");
+            Action action = new Action(myGame.getCurrentScene().getActionMap().get(theButton), "START");
             myGame.getCurrentScene().doAction(action);
         }
         return true;
     }
 
     @Override
-    public boolean touchUp (int x, int y, int pointer, int button)
+    public boolean touchUp (int theX, int theY, int thePointer, int theButton)
     {
-        if (myGame.getCurrentScene().getActionMap().containsKey(button))
+        if (myGame.getCurrentScene().getActionMap().containsKey(theButton))
         {
-            Action action = new Action(myGame.getCurrentScene().getActionMap().get(button), "END");
+            Action action = new Action(myGame.getCurrentScene().getActionMap().get(theButton), "END");
             myGame.getCurrentScene().doAction(action);
         }
         return false;
