@@ -13,12 +13,16 @@ MVC framework
 Serialization
 Database - access, rather than manual entering of data for enemies
 
-Instructions on how to run the program in an IntelliJ IDE.
+Instructions on how to run the program in an IntelliJ IDE:
 Download the project by using the Git link or a zip file.
 Unarchive or import the project into IDE
 Find main in the desktop/src/com.game folder
 Run the main
 If assets are not recognized, specify the environment variable as [nameOfTheProject]/assets
+
+Instructions on how to run the program as an executable:
+Download the executable from Inno Folder
+Excecute
 
 Enjoy the game!
 
