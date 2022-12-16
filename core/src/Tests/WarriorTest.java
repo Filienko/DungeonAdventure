@@ -56,7 +56,7 @@ class WarriorTest
     }
 
     /**
-     * Test method for {@link Warrior#(DungeonCharacter)}
+     * Test method for {@link Warrior#special()}
      */
     @Test
     void testSpecial()

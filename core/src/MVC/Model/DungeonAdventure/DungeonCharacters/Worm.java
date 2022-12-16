@@ -43,7 +43,7 @@ public class Worm extends DungeonCharacter
      * Random number generator
      */
     final private Random myRand;
-    
+
     /**
      * Constructor that takes two arguments and initializes the Bodies and Tail to follow the Worm
      * @param thePos Initial position

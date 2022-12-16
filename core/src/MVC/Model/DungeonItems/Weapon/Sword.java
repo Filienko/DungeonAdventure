@@ -7,13 +7,32 @@ import MVC.Model.Physics.Vec2;
 
 public class Sword extends Entity implements ICollidable
 {
+    /**
+     * The Sword.
+     */
     private static Sword mySword;
 
+    /**
+     * The Entity Factory that generated the Sword.
+     */
     private EntityFactory myEntityFactory;
+
+    /**
+     * The Sword's lifespan.
+     */
     private final long myLifeSpan;
 
+    /**
+     * The Hero that is using the Sword.
+     */
     private final Hero myHero;
 
+    /**
+     * Sword constructor, which calls Entity's constructor to initialize its size, position, type, lifespan,
+     * current frame counter, the Hero using it, and the Entity Factory that generated it.
+     * @param theEntityFactory The Entity Factory that generated the Sword.
+     * @param theHero The Hero who is using the Sword.
+     */
     private Sword(final EntityFactory theEntityFactory, final Hero theHero)
     {
         super(new Vec2(48, 48), theHero.getMyPos(), "Sword", theEntityFactory);
@@ -23,6 +42,12 @@ public class Sword extends Entity implements ICollidable
         myHero = theHero;
     }
 
+    /**
+     * This method retrieves an instance of the Sword using the Singleton design pattern.
+     * @param theEntityFactory The Entity Factory that generated the Sword.
+     * @param theHero The Hero that is using the Sword.
+     * @return
+     */
     public static Sword getInstance(final EntityFactory theEntityFactory, final Hero theHero)
     {
         if (mySword == null || !mySword.getActiveStatus())
@@ -32,8 +57,15 @@ public class Sword extends Entity implements ICollidable
         return mySword;
     }
 
+    /**
+     * This method retrieves the Sword's lifespan.
+     * @return
+     */
     public long getMyLifeSpan() { return myLifeSpan; }
 
+    /**
+     * Information about the Sword that is to be updated.
+     */
     @Override
     public void update()
     {
@@ -51,6 +83,9 @@ public class Sword extends Entity implements ICollidable
         }
     }
 
+    /**
+     * This method destroys the Sword and marks its Hero to be destroyed as well.
+     */
     @Override
     public void destroy()
     {
@@ -111,6 +146,18 @@ public class Sword extends Entity implements ICollidable
         }
     }
 
+    /**
+     * This method retrieves the Hero that is using the Sword.
+     * @return The Hero using the Sword.
+     */
+    public Hero getMyHero()
+    {
+        return myHero;
+    }
+
+    /**
+     * This method specifies the Sword's movement behavior.
+     */
     private void movement()
     {
         Vec2 position = new Vec2();
@@ -118,10 +165,5 @@ public class Sword extends Entity implements ICollidable
         position.setMyY(myHero.getMyPos().getMyY()+48*myHero.getFacing().getMyY());
         setMyPreviousPos(getMyPos());
         setMyPos(position);
-    }
-
-    public Hero getMyHero()
-    {
-        return myHero;
     }
 }

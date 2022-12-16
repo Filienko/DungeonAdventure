@@ -5,6 +5,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class Exit extends Item
 {
+
     private static Exit myExit;
     private static boolean myExited = false;
     private static boolean myExitCondition = false;
@@ -45,7 +46,6 @@ public class Exit extends Item
     @Override
     public void activate(final Hero theHero)
     {
-        //System.out.println(theHero.getPillars());
         if(isExitCondition() && theHero.getPillars() == 4)
         {
             myExited = true;

@@ -1,8 +1,10 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Thief;
 import MVC.Model.DungeonItems.Items.Lava;
+import MVC.Model.DungeonItems.Items.SpeedPotion;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class LavaTest
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
+
+    /**
+     * Test method for Lava's constructor.
+     */
     @Test
     void testLavaConstructor()
     {
@@ -20,6 +26,9 @@ class LavaTest
         assertEquals(myLava.getDamage(), 2);
     }
 
+    /**
+     * Test method for {@link Lava#setDamage(int)}.
+     */
     @Test
     void testSetDamage()
     {
@@ -30,6 +39,9 @@ class LavaTest
         assertEquals(myLava.getDamage(), 20);
     }
 
+    /**
+     * Test method for {@link Lava#getDamage()}.
+     */
     @Test
     void testGetDamage()
     {
@@ -38,18 +50,19 @@ class LavaTest
         assertEquals(myLava.getDamage(), 2);
     }
 
+    /**
+     * Test method for {@link Lava#activate(Hero)}.
+     */
     @Test
     void testActivate()
     {
         Lava myLava = new Lava(entityFactory);
         Thief myThief = new Thief(entityFactory);
 
-        int HP = myThief.getHitPoints();
-
+        myThief.setHitPoints(5);
         myLava.activate(myThief);
 
-        assertEquals(myThief.getHitPoints(), HP - myLava.getDamage());
+        assertEquals(myThief.getHitPoints(), (Math.max(0, 5 - myLava.getDamage())));
         assertFalse(myLava.getActiveStatus());
-
     }
 }

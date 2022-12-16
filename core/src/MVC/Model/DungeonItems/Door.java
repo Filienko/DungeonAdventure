@@ -26,6 +26,7 @@ public class Door extends Entity
     {
         super(new Vec2(64, 64),theLocation,"Door", theEntityFactory);
         setMonsterCounter(theMonsterCounter);
+        setRoom(theRoom); //test this first
     }
 
     public int getMonsterCounter()

@@ -13,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PhysicsTest
 {
     private final EntityFactory theEntityFactory = new EntityFactory(null, "Mock");
+
+    /**
+     * Test methods for Physics calculations.
+     */
     @Test
     void testPhysics()
     {
@@ -49,6 +53,9 @@ public class PhysicsTest
                 Physics.lineIntersect(new Vec2(), new Vec2(),new Vec2(),hero.getMyPos()).getMyVec()));
     }
 
+    /**
+     * Test method for Vec2 operations.
+     */
     @Test
     void testVec2Operations()
     {
@@ -81,6 +88,9 @@ public class PhysicsTest
         assertEquals(5, vec.dotProduct(new Vec2(3,2)));
     }
 
+    /**
+     * Test method for Intersect operations.
+     */
     @Test
     void testIntersect()
     {

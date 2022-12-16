@@ -1,7 +1,9 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Priestess;
+import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.DungeonItems.Items.HealingPotion;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class HealingPotionTest
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
+
+    /**
+     * Test method for Healing Potion's constructor.
+     */
     @Test
     void testHPConstructor()
     {
@@ -20,6 +26,9 @@ class HealingPotionTest
         assertEquals(myHP.getStrength(), 2);
     }
 
+    /**
+     * Test method for Healing Potion's overloaded constructor.
+     */
     @Test
     void testHPOverloadedConstructor()
     {
@@ -29,6 +38,9 @@ class HealingPotionTest
         assertEquals(myHP.getStrength(), 5);
     }
 
+    /**
+     * Test method for {@link HealingPotion#activate(Hero)}.
+     */
     @Test
     void testActivateLessThan10()
     {
@@ -43,6 +55,9 @@ class HealingPotionTest
         assertEquals(myPriestess.getHitPoints(), Math.min(10,(myPriestess.getHitPoints() +  10)));
     }
 
+    /**
+     * Test method for {@link HealingPotion#activate(Hero)}.
+     */
     @Test
     void testActivateMoreThan10()
     {

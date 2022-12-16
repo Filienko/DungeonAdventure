@@ -38,6 +38,7 @@ public abstract class Hero extends DungeonCharacter
      */
     private int myPillars;
 
+
     private boolean myUpStatus;
     private boolean myDownStatus;
     private boolean myLeftStatus;

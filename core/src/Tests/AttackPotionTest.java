@@ -1,9 +1,9 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonItems.Items.AttackPotion;
-import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +12,9 @@ class AttackPotionTest
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
 
+    /**
+     * Test method for Attack Potion's constructor.
+     */
     @Test
     void testAPConstructor()
     {
@@ -20,6 +23,9 @@ class AttackPotionTest
         assertEquals(myAP.getStrength(), 1);
     }
 
+    /**
+     * Test method for Attack Potion's overloaded constructor.
+     */
     @Test
     void testAPOverloadedConstructor()
     {
@@ -28,6 +34,9 @@ class AttackPotionTest
         assertEquals(myAP.getStrength(), 4);
     }
 
+    /**
+     * Test method for {@link AttackPotion#activate(Hero)}.
+     */
     @Test
     void testActivate()
     {
@@ -40,9 +49,11 @@ class AttackPotionTest
         myAP.activate(myWarrior);
 
         assertEquals(myWarrior.getDamage(), damage + 3);
-
     }
 
+    /**
+     * Test method for {@link AttackPotion#getType()}.
+     */
     @Test
     void testGetType()
     {

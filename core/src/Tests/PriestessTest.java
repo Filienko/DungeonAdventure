@@ -68,12 +68,11 @@ class PriestessTest
      * Test method for {@link Priestess#damage()}
      */
     @Test
-    void testAttack()
+    void testDamage()
     {
         final Priestess myPriestess = new Priestess(entityFactory);
 
-        assertTrue(myPriestess.damage() == 1); //this this ok if im testing priestess^^
-
+        assertTrue(myPriestess.damage() == 1);
     }
 
     /**

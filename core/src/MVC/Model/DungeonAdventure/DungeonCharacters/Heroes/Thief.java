@@ -9,7 +9,8 @@ public class Thief extends Hero
 
     /**
      * Thief constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
-     * minimum/maximum damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
+     * amount of damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
+     * @param theEntityFactory The Entity Factory that generated the Thief.
      */
     public Thief(final EntityFactory theEntityFactory)
     {
@@ -18,7 +19,10 @@ public class Thief extends Hero
 
     /**
      * Thief overloaded constructor that calls its parent constructor to initialize the Thief's name, character type, hero status, hit points,
-     * minimum/maximum damage it can inflict, max speed, position, and velocity, and sets its hidden status to false.
+     * amount of damage it can inflict, max speed, position, and velocity.
+     * @param theName The Thief's name.
+     * @param thePos The Thief's position.
+     * @param theEntityFactory The Entity Factory that generated the Thief.
      */
     public Thief(final String theName, final Vec2 thePos, final EntityFactory theEntityFactory)
     {
@@ -29,7 +33,7 @@ public class Thief extends Hero
      * The Thief's specific attack behavior. They have a 25% chance of doing 5 extra points of damage using
      * their special skill.
      *
-     * @return The amount of damage the Thief does during their attack.
+     * @return The amount of damage the Thief inflicts during their attack.
      */
     @Override
     public int damage()

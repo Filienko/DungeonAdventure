@@ -78,6 +78,8 @@ public class Room implements Cloneable
 
     /**
      * Room constructor that creates a Room that is not the Entrance or Exit and that has no Items and assigns location;
+     * @param theNumber The Room's number.
+     * @param theLocation The Room's new location in the Dungeon.
      */
     public Room(final int theNumber, Vec2 theLocation)
     {
@@ -94,7 +96,7 @@ public class Room implements Cloneable
      * @param theEntrance Boolean that tells if the Room is the Entrance to the Dungeon.
      * @param theExit Boolean that tells if the Room is the Exit to the Dungeon.
      * @param theItems The Items that the Room contains.
-     * @param theLocation The location of the Room in the Dungeon.
+     * @param theLocation The Room's new location in the Dungeon.
      */
     public Room(final boolean theEntrance, final boolean theExit,
                 final StringBuilder theMonsters, final StringBuilder theItems, final Vec2 theLocation)
@@ -128,6 +130,10 @@ public class Room implements Cloneable
         populateMonsters(1);
     }
 
+    /**
+     * Populates the Room with Monsters.
+     * @param theN The maximum number of Monsters that could potentially be populated in the Room.
+     */
     public void populateMonsters(final int theN)
     {
         if (!myExit && !myEntrance)
@@ -161,6 +167,10 @@ public class Room implements Cloneable
         }
     }
 
+    /**
+     * Populates the Room with Lava, based on a variable chance of occurrence.
+     * @param theChance The chance that the Room will be populated with Lava.
+     */
     public void populateLava(double theChance)
     {
         if(theChance < 0.20 && !myEntrance && !myExit)
@@ -169,6 +179,10 @@ public class Room implements Cloneable
         }
     }
 
+    /**
+     * Populates the Room with a Bomb, based on a variable chance of occurrence.
+     * @param theChance The chance that the Room will be populated with a Bomb.
+     */
     public void populateBomb(double theChance)
     {
         if(theChance < 0.10)
@@ -177,8 +191,13 @@ public class Room implements Cloneable
         }
     }
 
-
-
+    /**
+     * Populates the Room with up to a specified number of Potions, based on a variable chance of
+     * occurrence.
+     * @param theRandom A Random object to generate a chance of occurrence.
+     * @param theNumber The maximum number of Potions that have the chance of being populated in
+     *                  the ROom.
+     */
     public void populatePotions(final Random theRandom, int theNumber)
     {
         for (int i = 0; i < theNumber; i++)
@@ -429,6 +448,11 @@ public class Room implements Cloneable
         return myMonsters;
     }
 
+    /**
+     * This method sets the Monsters in a Room, using the List of Monsters
+     * passed to it.
+     * @param theMonsters The Monsters to be placed in the Room.
+     */
     public void setMonsters(final List<Monster> theMonsters)
     {
         for (var monster:theMonsters)
@@ -437,6 +461,11 @@ public class Room implements Cloneable
         }
     }
 
+    /**
+     *
+     * @return
+     * @throws CloneNotSupportedException
+     */
     protected Room clone() throws CloneNotSupportedException
     {
         Room s = (Room) super.clone();
