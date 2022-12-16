@@ -19,6 +19,11 @@ public class MonsterDB extends SuperMonsterDB
     private EntityFactory myEntityFactory;
     private Hero myHero;
 
+    /**
+     * @param monsterType the type of the monster desired by the factory
+     * @param theEntityFactory that will keep track of the Monster and associated assets and updating logic
+     * @return Monster of the specified type and characteristics specified at the Database
+     */
     public Monster createMonsterDB(final String monsterType, final EntityFactory theEntityFactory)
     {
         myEntityFactory = theEntityFactory;
@@ -43,6 +48,10 @@ public class MonsterDB extends SuperMonsterDB
         return null;
     }
 
+
+    /**
+     * @return Database updated with the intended values specified by the developer team
+     */
     public static SQLiteDataSource establishConnection()
     {
         SQLiteDataSource ds = null;
@@ -122,6 +131,11 @@ public class MonsterDB extends SuperMonsterDB
     }
 
 
+    /**
+     * @param thePosition the position of the Worm [center of the exit room]
+     * @param theEntityFactory that will keep track of boss Worm and associated assets and updating logic
+     * @return Worm with the characteristics specified at the Database
+     */
     @Override
     public Worm createWormDB(final Vec2 thePosition, final EntityFactory theEntityFactory)
     {
@@ -167,6 +181,11 @@ public class MonsterDB extends SuperMonsterDB
                 new Vec2(myX,myY), theEntityFactory);
     }
 
+    /**
+     * @param theN the position of the requested monster type in the database
+     * @param theHero Hero of the game, interacting with the Monsters
+     * @return Monster with the characteristics specified at the Database
+     */
     @Override
     public Monster createMonster(final int theN, final Hero theHero)
     {
