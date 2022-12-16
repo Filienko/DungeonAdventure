@@ -18,14 +18,43 @@ import java.util.ArrayList;
 
 public class SceneGame extends Scene
 {
+    /**
+     * The playable character of this Scene
+     */
     private Hero                    myHero;
+    /**
+     * Whether to draw textures
+     */
     private boolean                 myDrawTextures;
+    /**
+     * Whether to draw bounding boxes
+     */
     private boolean                 myDrawBoundingBoxes;
+    /**
+     * Whether to play audio
+     */
     private boolean                 myMuted;
+    /**
+     * The order for Entities to be rendered
+     */
     final private ArrayList<String> myRenderOrder;
+    /**
+     * The last frame that the 'skitter' audio was played
+     */
     private long                    myLastSkitterFrame;
+    /**
+     * Whether the victory music has been played
+     */
     private boolean                 myVictoryMusicPlayed;
+    /**
+     * Whether the game is over
+     */
+    private boolean                 myIsEnded;
 
+    /**
+     * Constructor that takes one argument
+     * @param theGame the GameEngine that this Scene belongs to
+     */
     public SceneGame(GameEngine theGame)
     {
         super(theGame);
@@ -60,11 +89,18 @@ public class SceneGame extends Scene
         registerAction(Input.Keys.T, "TOGGLE_TEXTURE");
         registerAction(Input.Keys.B, "TOGGLE_BOXES");
         registerAction(Input.Keys.M, "TOGGLE_SOUND");
+        registerAction(Input.Keys.R, "TOGGLE_RESPAWN");
 
         myLastSkitterFrame = 0;
         myVictoryMusicPlayed = false;
+        myIsEnded = false;
     }
 
+    /**
+     * Constructor that takes two arguments
+     * @param theGame The GameEngine that this Scene belongs to
+     * @param theHero The playable Entity for this Scene
+     */
     public SceneGame(GameEngine theGame, String theHero)
     {
         this(theGame);
@@ -73,6 +109,11 @@ public class SceneGame extends Scene
         initialize();
     }
 
+    /**
+     * Constructor that takes three arguments
+     * @param theGame The GameEngine that this Scene belongs to
+     * @param theEntityFactory An EntityFactory for this Scene to use
+     */
     public SceneGame(GameEngine theGame, EntityFactory theEntityFactory)
     {
         this(theGame);
@@ -82,27 +123,34 @@ public class SceneGame extends Scene
         myHero = myEntityFactory.getHero();
     }
 
+    /**
+     * Initializes the Dungeon
+     */
     private void initialize()
     {
         Dungeon testDungeon = new Dungeon(myEntityFactory,3);
         myEntityFactory.generateGameEntities(testDungeon);
     }
 
+    @Override
     protected void onEnd()
     {
         // TODO: serialize
         (new Saver()).saveTheGame(myEntityFactory);
         myRenderer.getCamera().position.x = 608;
         myRenderer.getCamera().position.y = 352;
+        Exit.clean();
+        stopMusic();
         myGame.setCurrentScene("Menu", null, true);
     }
 
+    @Override
     public  void doAction(final Action theAction)
     {
         if (theAction.getType().equals("START"))
         {
-                 if (theAction.getName().equals("PAUSE"))              { if (!Exit.isExited()) { setPaused(); }}
-            else if (theAction.getName().equals("QUIT"))               { if (!myPaused && !Exit.isExited()) {setPaused(); } else { onEnd(); }}
+                 if (theAction.getName().equals("PAUSE"))              { if (!myIsEnded) { setPaused(); }}
+            else if (theAction.getName().equals("QUIT"))               { if (!myPaused && !myIsEnded) {setPaused(); } else { onEnd(); }}
             else if (theAction.getName().equals("UP"))                 { myHero.setUp(true); }
             else if (theAction.getName().equals("DOWN"))               { myHero.setDown(true); }
             else if (theAction.getName().equals("LEFT"))               { myHero.setLeft(true); }
@@ -111,6 +159,7 @@ public class SceneGame extends Scene
             else if (theAction.getName().equals("TOGGLE_TEXTURE"))     { myDrawTextures = !myDrawTextures; }
             else if (theAction.getName().equals("TOGGLE_BOXES"))       { myDrawBoundingBoxes = !myDrawBoundingBoxes; }
             else if (theAction.getName().equals("TOGGLE_SOUND"))       { myMuted = !myMuted; }
+            else if (theAction.getName().equals("TOGGLE_RESPAWN"))     { myHero.toggleRespawn(); }
         }
         else if (theAction.getType().equals("END"))
         {
@@ -121,6 +170,7 @@ public class SceneGame extends Scene
         }
     }
 
+    @Override
     public void update()
     {
         if (!myPaused && !Exit.isExited())
@@ -136,6 +186,9 @@ public class SceneGame extends Scene
         music();
     }
 
+    /**
+     * Updates the camera position
+     */
     private void camera()
     {
         Vec2 playerRoom = new Vec2();
@@ -146,6 +199,9 @@ public class SceneGame extends Scene
         myRenderer.getCamera().position.y = playerRoom.getMyY() * 704 + 352;
     }
 
+    /**
+     * Updates the Hero's animation
+     */
     private void animation()
     {
         // Build the animation name for the player based on direction and action
@@ -170,6 +226,10 @@ public class SceneGame extends Scene
         myHero.getMyAnimation().setSpeed( 15 - (long) (myHero.getMaxSpeed() - 5));
     }
 
+    /**
+     * Builds the name of the animation for the Hero to be updated with based on Hero behavior
+     * @return The name of the animation
+     */
     private String buildAnimationName()
     {
         StringBuilder animationName = new StringBuilder("");
@@ -205,6 +265,8 @@ public class SceneGame extends Scene
         return animationName.toString();
     }
 
+
+    @Override
     public void render()
     {
         for (String k : myRenderOrder)
@@ -241,10 +303,18 @@ public class SceneGame extends Scene
         }
         else if (Exit.isExited())
         {
-            renderEndScreen();
+            renderEndScreen(true);
+        }
+        else if (!myHero.getActiveStatus())
+        {
+            renderEndScreen(false);
         }
     }
 
+    /**
+     * Renders the texture of the passed Entity
+     * @param theEntity The Entity for which a texture is rendered
+     */
     private void renderTextures(final Entity theEntity)
     {
         Sprite sprite;
@@ -272,7 +342,7 @@ public class SceneGame extends Scene
         }
         else if (theEntity.getType().equals("Monster"))
         {
-            if (((DungeonCharacter) theEntity).isKnockback())
+            if (((DungeonCharacter) theEntity).isKnockBack())
             {
                 float v = ((DungeonCharacter) theEntity).getVelocity().getMagnitudeSquared();
                 if (v == 0)
@@ -336,11 +406,16 @@ public class SceneGame extends Scene
         sprite.draw(myRenderer.getSpriteBatch());
     }
 
+    /**
+     * Determines the color to render the boss Worm's body
+     * @param theWorm The Worm to be colored
+     * @return The Color to render the Worm
+     */
     private Color determineBossBodyColor(final Worm theWorm)
     {
-        if (theWorm.isKnockback())
+        if (theWorm.isKnockBack())
         {
-            long remainder = (theWorm.getKnockbackEndFrame() - theWorm.getCurrentFrame()) % 6;
+            long remainder = (theWorm.getKnockBackEndFrame() - theWorm.getCurrentFrame()) % 6;
             if (remainder < 3)
             {
                 return Color.RED;
@@ -355,6 +430,10 @@ public class SceneGame extends Scene
 
     }
 
+    /**
+     * Renders the bounding box of the passed Entity
+     * @param theEntity The Entity for which a bounding box is rendered
+     */
     private void renderBoundingBoxes(final Entity theEntity)
     {
         var box = myRenderer.getAssets().getAnimation("boundingBox");
@@ -375,6 +454,10 @@ public class SceneGame extends Scene
         pos.getSprite().draw(myRenderer.getSpriteBatch());
     }
 
+    /**
+     * Renders the health bars of the passed Entity
+     * @param theEntity The Entity for which health bars are rendered
+     */
     private void renderHealthBars(final Entity theEntity)
     {
         DungeonCharacter character = (DungeonCharacter) theEntity;
@@ -390,6 +473,10 @@ public class SceneGame extends Scene
         }
     }
 
+    /**
+     * Renders the healing aura of the Priestess
+     * @param theHero The Priestess for which a healing aura is rendered
+     */
     private void renderAura(final Hero theHero)
     {
         if (theHero.getUsingSpecial())
@@ -404,6 +491,9 @@ public class SceneGame extends Scene
         }
     }
 
+    /**
+     * Render the screen for when the game is paused
+     */
     private void renderPaused()
     {
         int roomX = (int) Math.floor(myHero.getMyPos().getMyX() / 1216);
@@ -423,9 +513,25 @@ public class SceneGame extends Scene
                 SAVE AND QUIT:ESC
                 TOGGLE TEXTURES:T
                 TOGGLE BOUNDING BOXES:B
-                TOGGLE SOUND:M""", pixelPos.getMyX(), pixelPos.getMyY());
+                TOGGLE SOUND:M
+                TOGGLE RESPAWN:R
+                RESPAWN ==""", pixelPos.getMyX(), pixelPos.getMyY());
+
+        pixelPos = Physics.getPosition(roomX, roomY, 7, 6);
+        String respawn = "FALSE";
+        font = myRenderer.getAssets().getFont("mario24Red");
+        if (myHero.isRespawn())
+        {
+            respawn = "TRUE";
+            font = myRenderer.getAssets().getFont("mario24Green");
+        }
+        font.draw(myRenderer.getSpriteBatch(), respawn, pixelPos.getMyX(), pixelPos.getMyY());
     }
 
+    /**
+     * Plays the appropriate sounds for the Entity
+     * @param theEntity The Entity for which the sounds are played
+     */
     private void sounds(final Entity theEntity)
     {
         if (theEntity.getType().equals("Monster"))
@@ -491,8 +597,14 @@ public class SceneGame extends Scene
         }
     }
 
-    private void renderEndScreen()
+    /**
+     * Renders the screen if the game is over
+     * @param theIsVictory Whether the game ended with success or fail
+     */
+    private void renderEndScreen(final boolean theIsVictory)
     {
+        myIsEnded = true;
+
         var shade = myRenderer.getAssets().getAnimation("pause");
         int roomX = (int) Math.floor(myHero.getMyPos().getMyX() / 1216);
         int roomY = (int) Math.floor(myHero.getMyPos().getMyY() / 704);
@@ -502,14 +614,24 @@ public class SceneGame extends Scene
         shade.getSprite().draw(myRenderer.getSpriteBatch());
 
         pixelPos = Physics.getPosition(roomX, roomY, 6, 7);
-        BitmapFont font = myRenderer.getAssets().getFont("mario128");
-        font.draw(myRenderer.getSpriteBatch(), "VICTORY!", pixelPos.getMyX(), pixelPos.getMyY());
+
+        BitmapFont font = myRenderer.getAssets().getFont("mario128Red");
+        String message = "YOU DIED";
+        if (theIsVictory)
+        {
+            font = myRenderer.getAssets().getFont("mario128Green");
+            message = "VICTORY!";
+        }
+        font.draw(myRenderer.getSpriteBatch(), message, pixelPos.getMyX(), pixelPos.getMyY());
 
         pixelPos = Physics.getPosition(roomX, roomY, 5, 5);
         font = myRenderer.getAssets().getFont("mario24");
         font.draw(myRenderer.getSpriteBatch(), "PRESS ESC TO RETURN TO MENU", pixelPos.getMyX(), pixelPos.getMyY());
     }
 
+    /**
+     * Plays the appropriate music for the game
+     */
     private void music()
     {
         if (!myEntityFactory.getEntities("worm").isEmpty())
@@ -538,6 +660,10 @@ public class SceneGame extends Scene
 
     }
 
+    /**
+     * Sets the volume appropriately for the passed music
+     * @param theMusicName The name of the music for which the volume is set
+     */
     private void setMusicVolume(final String theMusicName)
     {
         if (myMuted)
@@ -552,6 +678,15 @@ public class SceneGame extends Scene
         {
             myRenderer.getAssets().getMusic(theMusicName).setVolume(.5f);
         }
+    }
+
+    /**
+     * Stops all music that may be playing
+     */
+    private void stopMusic()
+    {
+        myRenderer.getAssets().getMusic("boss").stop();
+        myRenderer.getAssets().getMusic("victory").stop();
     }
 
 }

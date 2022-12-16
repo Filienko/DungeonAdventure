@@ -82,7 +82,7 @@ public class Sword extends Entity implements ICollidable
                     {
                         long lifespanLeft = (myLifeSpan - (getCurrentFrame() + 1));
                         m.setInvincibility(true, lifespanLeft);
-                        m.knockback(this, myHero.getMyKnockbackPower(), myHero.getMyKnockbackLength());
+                        m.knockBack(this, myHero.getMyKnockBackPower(), myHero.getMyKnockBackLength());
                     }
                 }
             }
@@ -102,7 +102,7 @@ public class Sword extends Entity implements ICollidable
                     if(w.getHitPoints() > 0)
                     {
                         w.setInvincibility(true, 60);
-                        w.knockback(this, 0, 60);
+                        w.knockBack(this, 0, 60);
                         w.setMaxSpeed(w.getMaxSpeed() + Math.signum(w.getMaxSpeed()) * .5f);
                         w.decreaseLag();
                     }

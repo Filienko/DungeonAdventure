@@ -1,15 +1,9 @@
 package Tests;
 
-import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
-import MVC.Model.DungeonAdventure.DungeonCharacters.Worm;
-import MVC.Model.DungeonItems.Door;
-import MVC.Model.DungeonItems.Items.Pillar;
-import MVC.Model.DungeonItems.Room;
 import MVC.Model.DungeonItems.Weapon.Sword;
-import MVC.Model.Physics.Physics;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
 
@@ -103,8 +97,8 @@ class SwordTest
         m.setHitPoints(5);
         assertTrue(m.isInvincibility());
         assertEquals(m.getInvincibilityEndFrame(), mySword.getMyLifeSpan() + 1);
-        assertTrue(m.getMyKnockbackLength() == mySword.getMyHero().getMyKnockbackLength());
-        assertTrue(m.getMyKnockbackPower() == mySword.getMyHero().getMyKnockbackPower());
+        assertTrue(m.getMyKnockBackLength() == mySword.getMyHero().getMyKnockBackLength());
+        assertTrue(m.getMyKnockBackPower() == mySword.getMyHero().getMyKnockBackPower());
 
 //        Vec2 v = m.getMyPos().minus(mySword.getMyPos());
 //        assertTrue(m.getVelocity().equals((v.multiply(v.quickInverseMagnitude())).multiply((float) 4)));

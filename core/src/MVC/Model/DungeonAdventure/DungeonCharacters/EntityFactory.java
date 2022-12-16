@@ -45,98 +45,86 @@ public class EntityFactory implements Serializable
     public Monster generateMonster(final String monsterType)
     {
         SuperMonsterDB DB = new MonsterDB();
-        var monster = DB.createMonsterDB(monsterType, myHero,this);
-        return monster;
+        return DB.createMonsterDB(monsterType, myHero,this);
     }
 
-    public ArrayList<Entity> generateGameEntities(final Dungeon theDungeon)
+    public void generateGameEntities(final Dungeon theDungeon)
     {
         for (var room: theDungeon.getRooms())
         {
             generateRoomEntities(room);
         }
-        return myEntitiesToAdd;
     }
 
-    public ArrayList<Entity> generateRoomEntities(final Room theRoom) {
+    public void generateRoomEntities(final Room theRoom) {
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
         Vec2 location = theRoom.getLocation();
-        Vec2 pixelPos;
 
-        while(items.toString().contains(","))
-        {
-            String item = items.substring(0, items.indexOf(",")+1);
-            items.delete(0, items.indexOf(",")+1);
-            var i = generateItems(item.substring(0,item.indexOf(",")));
-            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9,5);
-            }
-            else
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
-            }
-            i.setRoom(location);
-            i.setMyPos(pixelPos);
-            i.setMyPreviousPos(pixelPos);
-            myEntitiesToAdd.add(i);
-        }
-
-        int monsterCounter = 0;
-        while (monsters.toString().contains(","))
-        {
-            String monster = monsters.substring(0, monsters.indexOf(",") + 1);
-            monsters.delete(0, monsters.indexOf(",") + 1);
-            monster = monster.substring(0, monster.indexOf(","));
-            var e = generateMonsters(monster);
-
-            if (e.getMonsterType().contentEquals("rat"))
-            {
-                e.setRoom(location, monsterCounter);
-            }
-            else
-            {
-                e.setRoom(location);
-            }
-            myEntitiesToAdd.add(e);
-            monsterCounter++;
-        }
+        int monsterCounter = generateRoomMonsters(monsters, location);
 
         generateWalls(theRoom,monsterCounter);
 
-        while(items.toString().contains(","))
-        {
-            String item = items.substring(0, items.indexOf(",")+1);
-            items.delete(0, items.indexOf(",")+1);
-            var i = generateItems(item.substring(0,item.indexOf(",")));
-            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(), 9,5);
-            }
-            else
-            {
-                pixelPos = Physics.getPosition((int) location.getMyX(), (int) location.getMyY(),
-                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
-            }
-
-            if(i.getType().contentEquals("pillar"))
-            {
-                ((Pillar)i).setMonsterCounter(monsterCounter);
-            }
-            i.setRoom(location);
-            i.setMyPos(pixelPos);
-            i.setMyPreviousPos(pixelPos);
-            myEntitiesToAdd.add(i);
-        }
+        generateRoomItems(items, location, monsterCounter);
 
         if (theRoom.isLava())
         {
             generateLava((int) theRoom.getLocation().getMyX(), (int) theRoom.getLocation().getMyY());
         }
+    }
 
-        return myEntitiesToAdd;
+    private int generateRoomMonsters(final StringBuilder theMonsters, final Vec2 theLocation)
+    {
+        int monsterCounter = 0;
+        while (theMonsters.toString().contains(","))
+        {
+            String monster = theMonsters.substring(0,theMonsters.indexOf(",") + 1);
+            theMonsters.delete(0, theMonsters.indexOf(",") + 1);
+            monster = monster.substring(0, monster.indexOf(","));
+            var e = generateMonsters(monster);
+
+            if (e.getMonsterType().contentEquals("rat"))
+            {
+                e.setRoom(theLocation, monsterCounter);
+            }
+            else
+            {
+                e.setRoom(theLocation);
+            }
+            myEntitiesToAdd.add(e);
+            monsterCounter++;
+        }
+
+        return monsterCounter;
+    }
+
+    private void generateRoomItems(StringBuilder theItems, final Vec2 theLocation, final int theMonsterCounter)
+    {
+        Vec2 pixelPos;
+        while(theItems.toString().contains(","))
+        {
+            String item = theItems.substring(0, theItems.indexOf(",")+1);
+            theItems.delete(0, theItems.indexOf(",")+1);
+            var i = generateItems(item.substring(0,item.indexOf(",")));
+            if(i.getType().contentEquals("pillar") || i.getType().contentEquals("exit"))
+            {
+                pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), 9,5);
+            }
+            else
+            {
+                pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(),
+                        (int) i.getMyPos().getMyX(), (int) i.getMyPos().getMyY());
+            }
+
+            if(i.getType().contentEquals("pillar"))
+            {
+                ((Pillar)i).setMonsterCounter(theMonsterCounter);
+            }
+            i.setRoom(theLocation);
+            i.setMyPos(pixelPos);
+            i.setMyPreviousPos(pixelPos);
+            myEntitiesToAdd.add(i);
+        }
     }
 
     public void generateWorm(final Vec2 theLocation)

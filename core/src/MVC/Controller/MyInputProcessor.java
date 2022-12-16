@@ -5,8 +5,15 @@ import com.badlogic.gdx.InputAdapter;
 
 public class MyInputProcessor extends InputAdapter
 {
+    /**
+     * The GameEngine that this class handles input for
+     */
     GameEngine myGame;
 
+    /**
+     * Constructor that takes one argument.
+     * @param theGame The GameEngine that this class handles input for
+     */
     public MyInputProcessor(GameEngine theGame)
     {
         myGame = theGame;
