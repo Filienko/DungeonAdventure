@@ -155,6 +155,9 @@ public class Sword extends Entity implements ICollidable
         return myHero;
     }
 
+    /**
+     * This method specifies the Sword's movement behavior.
+     */
     private void movement()
     {
         Vec2 position = new Vec2();

@@ -1,9 +1,11 @@
 package Tests;
 
 import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
+import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Heroes.Warrior;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Monster;
 import MVC.Model.DungeonAdventure.DungeonCharacters.Worm;
+import MVC.Model.DungeonItems.Items.AttackPotion;
 import MVC.Model.DungeonItems.Weapon.Sword;
 import MVC.Model.Physics.Vec2;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,10 @@ class SwordTest
 {
     private final EntityFactory entityFactory = new EntityFactory(null, "Mock");
     private final Sword mySword = Sword.getInstance(entityFactory, new Warrior(entityFactory));
+
+    /**
+     * Test method for {@link Sword#getInstance(EntityFactory, Hero)}.
+     */
     @Test
     void testGetInstance()
     {
@@ -21,10 +27,12 @@ class SwordTest
         assertEquals(15, mySword.getMyLifeSpan());
     }
 
+    /**
+     * Test method for {@link Sword#update()}.
+     */
     @Test
     void testUpdate()
     {
-
         assertFalse(mySword.getMyHero().getAttackStatus());
 
         mySword.setCurrentFrame(mySword.getMyLifeSpan() + 1);
@@ -42,12 +50,18 @@ class SwordTest
         assertEquals(mySword.getCurrentFrame(), frame + 1);
     }
 
+    /**
+     * Test method for {@link Sword#getMyLifeSpan()}.
+     */
     @Test
     void getMyLifeSpan()
     {
         assertEquals(15, mySword.getMyLifeSpan());
     }
 
+    /**
+     * Test method for {@link Sword#destroy()}.
+     */
     @Test
     void testDestroy()
     {
@@ -58,6 +72,9 @@ class SwordTest
         assertFalse(mySword.getMyHero().getAttackStatus());
     }
 
+    /**
+     * Test method for {@link Sword#collide()}.
+     */
     @Test
     void testCollideMonster()
     {
@@ -86,13 +103,6 @@ class SwordTest
         assertEquals(m.getKnockBackEndFrame(),
                 mySword.getMyHero().getMyKnockBackLength() + m.getCurrentFrame());
 
-        m.setHitPoints(0);
-        m.setInvincibility(false);
-
-        mySword.collide();
-
-        assertTrue(m.getMySize().equals(new Vec2(0,0)));
-
         m.setInvincibility(true);
         oldHP = m.getHitPoints();
         mySword.collide();
@@ -106,10 +116,14 @@ class SwordTest
         assertTrue(m.getHitPoints() == oldHP);
     }
 
+    /**
+     * Test method for {@link Sword#collide()}.
+     */
     @Test
     void testCollideWorm()
     {
-        Worm theWorm = entityFactory.generateWorm(new Vec2());
+        Worm theWorm = new Worm("worm", 10, 2, 3, new Vec2(2,2), new Vec2(2,2),
+                new Vec2(2,2), entityFactory);
 
         entityFactory.addEntity(theWorm);
 

@@ -23,34 +23,26 @@ class ExitTest
     }
 
     @Test
-    void testCheckFinishGameTrue()
+    void testExitCondition()
     {
-        //Exit myExit = Exit.getInstance(entityFactory);
-        Warrior myWarrior = new Warrior(entityFactory);
-
-        for (int i = 0; i < 4; i++)
-        {
-            myWarrior.incrementPillars();
-        }
-
-        assertTrue(myExit.isExitCondition());
+        Exit.setExitCondition(false);
+        assertFalse(Exit.isExitCondition());
     }
 
     @Test
-    void testCheckFinishGameFalse()
+    void testSetExitCondition()
     {
-        Exit myExit = Exit.getInstance(entityFactory);
-        Warrior myWarrior = new Warrior(entityFactory); //initialized with 0 Pillars.
+        assertFalse(Exit.isExitCondition());
 
-        assertFalse(myExit.isExitCondition());
+        Exit.setExitCondition(true);
 
-//        myExit.getMyEntityFactory().addEntity(new Worm(new Vec2(), entityFactory));
-//
-//        myExit.getMyEntityFactory().update();
-//
-//        System.out.println(myExit.getMyEntityFactory().getEntities());
-//
-//        assertFalse(myExit.checkFinishGame());
+        assertTrue(Exit.isExitCondition());
+    }
+
+    @Test
+    void testIsExited()
+    {
+        assertFalse(Exit.isExited());
     }
 
     @Test
@@ -58,10 +50,9 @@ class ExitTest
     {
         Warrior myWarrior = new Warrior(entityFactory);
 
-        for (int i = 0; i < 4; i++)
-        {
-            myWarrior.incrementPillars();
-        }
+        Exit.setExitCondition(true);
+        myWarrior.setPillars(4);
+
         myExit.activate(myWarrior);
 
         assertTrue(Exit.isExited());
@@ -78,19 +69,16 @@ class ExitTest
         Exit newExit = Exit.getInstance(entityFactory);
 
         Warrior myWarrior = new Warrior(entityFactory);
+        Exit.setExitCondition(false);
 
         myWarrior.setMyPos(new Vec2(25,25));
         myWarrior.setHitPoints(2);
         myWarrior.setDamage(5);
         myWarrior.setMaxSpeed(3);
 
-        newExit.getMyEntityFactory().addEntity(new Worm(new Vec2(), entityFactory));
-
-        newExit.getMyEntityFactory().update();
-
-        assertFalse(newExit.checkFinishGame());
-
         newExit.activate(myWarrior);
+
+        assertFalse(Exit.isExitCondition());
 
         assertFalse(myWarrior.getMyPos().equals(myWarrior.getHomePosition()));
         assertNotEquals(myWarrior.getHitPoints(), 10);
@@ -99,9 +87,11 @@ class ExitTest
     }
 
     @Test
-    void testIsExited()
+    void testClean()
     {
+        Exit.setExitCondition(true);
+        Exit.clean();
+        assertFalse(Exit.isExitCondition());
         assertFalse(Exit.isExited());
     }
-
 }

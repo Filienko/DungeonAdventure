@@ -171,10 +171,10 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
     {
         setMySize(new Vec2(0, 0));
         setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"), false);
-//        if (getMyEntityFactory().getAssets() != null) //added for testing, should i remove?
-//        {
-//            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"));
-//        }
+        if (getMyEntityFactory().getAssets() != null)
+        {
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"));
+        }
     }
 
     /**

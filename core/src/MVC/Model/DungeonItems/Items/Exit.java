@@ -5,6 +5,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class Exit extends Item
 {
+
     private static Exit myExit;
     private static boolean myExited = false;
     private static boolean myExitCondition = false;

@@ -22,13 +22,40 @@ import java.util.Scanner;
 
 public class EntityFactory implements Serializable
 {
+    /**
+     * The Entities the factory has generated.
+     */
     private ArrayList<Entity> myEntities;
+
+    /**
+     * The Entities that are to be added to the list of generated Entities.
+     */
     private ArrayList<Entity> myEntitiesToAdd;
+
+    /**
+     * A map where Strings are mapped to Entities.
+     */
     private transient ObjectMap<String, ArrayList<Entity>> myEntityMap;
+
+    /**
+     * The number of Entities the factory has generated.
+     */
     private long myTotalEntities;
+
+    /**
+     * The assets the factory utilizes to set the animations of certain Entities.
+     */
     private transient Assets myAssets;
+
+    /**
+     * The Hero in the game.
+     */
     private static Hero myHero;
 
+    /**
+     * Entity Factory constructor that initializes its Entity list and map, and sets
+     * the total number of Entities to 0.
+     */
     public EntityFactory()
     {
         myEntities = new ArrayList<>();
@@ -36,13 +63,24 @@ public class EntityFactory implements Serializable
         myEntityMap = new ObjectMap<>();
         myTotalEntities = 0;
     }
+
+    /**
+     * Entity Factory constructor that calls its default constructor to initialize its Entity list and map, and sets
+     * the total number of Entities to 0. It also accepts assets to be used for animations, and a Hero to associate the
+     * Entities with.
+     */
     public EntityFactory(Assets assets, final String theHero)
     {
         this();
         myAssets = assets;
         myHero = generateHero(theHero);
     }
-    
+
+    /**
+     * This method generates a Monster of the String type passed to the method.
+     * @param monsterType The type of Monster to generate.
+     * @return A Monster of the requested type.
+     */
     public Monster generateMonster(final String monsterType)
     {
         SuperMonsterDB DB = new MonsterDB();
@@ -50,6 +88,10 @@ public class EntityFactory implements Serializable
         return DB.createMonsterDB(monsterType,this);
     }
 
+    /**
+     * This method takes in a Dungeon object and generates Entities for each of its Rooms.
+     * @param theDungeon Dungeon whose Rooms will have Entities generated inside.
+     */
     public void generateGameEntities(final Dungeon theDungeon)
     {
         for (var room: theDungeon.getRooms())
@@ -58,6 +100,10 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method generates various Entities for a Room.
+     * @param theRoom The Room to generate Entities for.
+     */
     public void generateRoomEntities(final Room theRoom) {
         var items = theRoom.getItems();
         var monsters = theRoom.getMonsters();
@@ -75,6 +121,12 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method generates Monsters based off the
+     * @param theMonsters
+     * @param theLocation
+     * @return
+     */
     private int generateRoomMonsters(final StringBuilder theMonsters, final Vec2 theLocation)
     {
         int monsterCounter = 0;
@@ -129,6 +181,10 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method generates a Worm.
+     * @param theLocation The location to generate the Worm in.
+     */
     public void generateWorm(final Vec2 theLocation)
     {
         SuperMonsterDB DB = new MonsterDB();
@@ -137,6 +193,11 @@ public class EntityFactory implements Serializable
         myEntitiesToAdd.add(worm);
     }
 
+    /**
+     * This method generates Lava in a Room.
+     * @param roomX The x-position of the Room.
+     * @param roomY The y-position of the Room.
+     */
     private void generateLava(final int roomX, final int roomY)
     {
         FileHandle file = Gdx.files.internal("lava.txt");
@@ -158,6 +219,11 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method generates Walls in a Room.
+     * @param roomX The x-position of the Room.
+     * @param roomY The y-position of the Room.
+     */
     private void generateWalls(final int roomX, final int roomY)
     {
         FileHandle file = Gdx.files.internal("walls.txt");
@@ -182,6 +248,11 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method generates Walls in a Room when there are Monsters in the Room.
+     * @param theRoom The Room to generate Walls in.
+     * @param theMonsterCounter The number of Monsters in the Room.
+     */
     void generateWalls(final Room theRoom,final int theMonsterCounter)
     {
         var location = theRoom.getLocation();
@@ -220,6 +291,14 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method generates Doors in a Room when there are Monsters in the Room.
+     * @param theLocation The location to generate Doors in.
+     * @param theMonsterCounter The number of Monsters in the Room.
+     * @param tileX The x position of the location to generate the Door in
+     * @param tileY The y position of the location to generate the Door in
+     * @param tileX The amount that the Door should be rotated.
+     */
     private void generateDoor(final Vec2 theLocation, final int theMonsterCounter, final int tileX, final int tileY,
                               final int theRotation)
     {
@@ -231,6 +310,13 @@ public class EntityFactory implements Serializable
         myEntitiesToAdd.add(door);
     }
 
+    /**
+     * This method generates Walls in a Room.
+     * @param theLocation The location to generate the Wall in.
+     * @param tileX The x position of the location to generate the Wall in
+     * @param tileY The y position of the location to generate the Wall in
+     * @param tileX The amount that the Wall should be rotated.
+     */
     private void generateWall(final Vec2 theLocation, final int tileX, final int tileY, final int theRotation)
     {
         Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), tileX, tileY);
@@ -242,6 +328,9 @@ public class EntityFactory implements Serializable
     }
 
 
+    /**
+     * Information about the Entity Factory that is to be updated.
+     */
     public void update()
     {
         // add all entities that are pending
@@ -273,26 +362,47 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method generates an ogre.
+     * @return A Monster object of type Ogre.
+     */
     public Monster generateOgre()
     {
         return generateMonster("ogre");
     }
 
+    /**
+     * This method generates a gremlin.
+     * @return A Monster object of type gremlin.
+     */
     public Monster generateGremlin()
     {
         return generateMonster("gremlin");
     }
 
+    /**
+     * This method generates a knight.
+     * @return A Monster object of type knight.
+     */
     public Monster generateKnight()
     {
         return generateMonster("knight");
     }
 
+    /**
+     * This method generates a rat.
+     * @return A Monster object of type Rat.
+     */
     public Monster generateRats()
     {
         return generateMonster("rat");
     }
 
+    /**
+     * This method generates a Monster based on the String type passed to it.
+     * @param theMonster The type of Monster to generate.
+     * @return A Monster object of the requested type.
+     */
     public Monster generateMonsters(final String theMonster)
     {
         switch (theMonster)
@@ -313,6 +423,11 @@ public class EntityFactory implements Serializable
         return generateOgre();
     }
 
+    /**
+     * This method generates an Item based on the String type passed to it.
+     * @param theItem The type of Item to generate.
+     * @return An Item object of the requested type.
+     */
     public Item generateItems(final String theItem)
     {
         switch (theItem)
@@ -342,29 +457,42 @@ public class EntityFactory implements Serializable
         return new HealingPotion(this);
     }
 
+    /**
+     * This method generates Lava.
+     * @return Lava for a Room.
+     */
     public Lava generateLava() { return new Lava(this); }
 
-    public Hero generateHero(final String type1)
+    /**
+     * This method generates a Hero based on the String type passed to it.
+     * @param theHero The type of Hero to generate.
+     * @return A Hero object of the requested type.
+     */
+    public Hero generateHero(final String theHero)
     {
-        if (type1.contentEquals("Warrior"))
+        if (theHero.contentEquals("Warrior"))
         {
             return generateWarrior();
         }
-        else if (type1.contentEquals("Thief"))
+        else if (theHero.contentEquals("Thief"))
         {
             return generateThief();
         }
-        else if (type1.contentEquals("Priestess"))
+        else if (theHero.contentEquals("Priestess"))
         {
             return generatePriestess();
         }
-        else if (type1.contentEquals("Mock"))
+        else if (theHero.contentEquals("Mock"))
         {
             return generateMockHero();
         }
         return null;
     }
 
+    /**
+     * This method generates a Warrior object.
+     * @return A Warrior.
+     */
     public Hero generateWarrior()
     {
         Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
@@ -373,6 +501,10 @@ public class EntityFactory implements Serializable
         return warrior;
     }
 
+    /**
+     * This method creates a Mock Hero object (for testing).
+     * @return A Mock Hero.
+     */
     public Hero generateMockHero()
     {
         Warrior warrior = new Warrior("Warrior", Physics.getPosition(0,0,9,5), this);
@@ -380,6 +512,10 @@ public class EntityFactory implements Serializable
         return warrior;
     }
 
+    /**
+     * This method generates a Thief object.
+     * @return A Thief.
+     */
     public Hero generateThief()
     {
         Thief thief = new Thief("Thief", Physics.getPosition(0,0,9,5), this);
@@ -388,6 +524,10 @@ public class EntityFactory implements Serializable
         return thief;
     }
 
+    /**
+     * This method generates a Priestess object.
+     * @return A Priestess.
+     */
     public Hero generatePriestess()
     {
         Priestess priestess = new Priestess("Priestess", Physics.getPosition(0,0,9,5), this);
@@ -396,11 +536,15 @@ public class EntityFactory implements Serializable
         return priestess;
     }
 
+    /**
+     * This method generates an ArrayList of the 4 required Pillars.
+     * @return An ArrayList of 4 Pillars.
+     */
     public ArrayList<Pillar> generatePillars()
     {
         var arr = new ArrayList<Pillar>();
 
-        arr.add(new Pillar("Encapsulation", 0, this)); //is this the right order??
+        arr.add(new Pillar("Encapsulation", 0, this));
         arr.add(new Pillar("Inheritance", 0, this));
         arr.add(new Pillar("Abstraction", 0, this));
         arr.add(new Pillar("Polymorphism", 0, this));
@@ -408,7 +552,10 @@ public class EntityFactory implements Serializable
         return arr;
     }
 
-    //added this method
+    /**
+     * This method gets instance of the Sword.
+     * @return The instance of the Sword.
+     */
     public Sword generateSword()
     {
         var sword = Sword.getInstance(this, myHero);
@@ -423,8 +570,16 @@ public class EntityFactory implements Serializable
         return sword;
     }
 
+    /**
+     * This method gets all the Entities that the factory has generated.
+     * @return An ArrayList of the Entities.
+     */
     public ArrayList<Entity> getEntities() { return myEntities; }
 
+    /**
+     * This method gets all the Entities in the factory's Entity Map.
+     * @return An ArrayList of the Entity Map.
+     */
     public ArrayList<Entity> getEntities(final String type)
     {
         if (myEntityMap.get(type.toLowerCase()) != null)
@@ -435,18 +590,33 @@ public class EntityFactory implements Serializable
         return new ArrayList<Entity>();
     }
 
+    /**
+     * This method adds an Entity to the list of Entities to be added to the final list of Entities.
+     * @param theEntity The Entity to add.
+     */
     public void addEntity(Entity theEntity)
     {
         myEntitiesToAdd.add(theEntity);
     }
 
+    /**
+     * This method retrieves the Hero associated with the Entities the factory has generated.
+     * @return The Hero.
+     */
     public Hero getHero()
     {
         return myHero;
     }
 
+    /**
+     * This method returns the Assets that are being used for the Entity Animations.
+     * @return The Entity Factory's Assets.
+     */
     public Assets getAssets() { return myAssets; }
 
+    /**
+     * This method removes all dead Entities from the factory's list of Entities.
+     */
     private void removeDeadEntities()
     {
         for (int i = 0; i < myEntities.size();)
@@ -464,16 +634,27 @@ public class EntityFactory implements Serializable
         }
     }
 
+    /**
+     * This method removes the Sword from the Entity Map.
+     */
     public void renewSword()
     {
         myEntityMap.remove("Sword");
     }
 
+    /**
+     * This method sets the Assets that are to be used for the Entity Animations.
+     * @param theAssets The Entity Factory's new Assets.
+     */
     public void setAssets(final Assets theAssets)
     {
         myAssets = theAssets;
     }
 
+    /**
+     * This method initializes the Entity Factory.
+     * @param theEntities The ArrayList of Entities to add to the factory.
+     */
     public void initializeEntityFactory(final ArrayList<Entity> theEntities)
     {
         myEntitiesToAdd = new ArrayList<>();
