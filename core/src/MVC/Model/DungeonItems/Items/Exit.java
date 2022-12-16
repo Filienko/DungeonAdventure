@@ -20,8 +20,9 @@ public class Exit extends Item
     private static boolean myExitCondition = false;
 
     /**
-     * Constructor for singleton Exit that takes one argument
-     * @param theEntityFactory The EntityFactory to which the Exit belongs
+     * Private Exit constructor, which calls the Item constructor to initialize its type and the
+     * Entity Factory that generates it.
+     * @param theEntityFactory The Entity Factory that generated the Exit.
      */
     private Exit(final EntityFactory theEntityFactory)
     {
@@ -29,8 +30,9 @@ public class Exit extends Item
     }
 
     /**
-     * @param theEntityFactory The EntityFactory to which the Exit belongs
-     * @return The singleton instance of the Exit
+     * This method retrieves an instance of the Exit using the Singleton design pattern.
+     * @param theEntityFactory The Entity Factory that generated the Exit.
+     * @return The instance of the Exit.
      */
     public static Exit getInstance(final EntityFactory theEntityFactory) {
         if (myExit == null) {
@@ -42,7 +44,9 @@ public class Exit extends Item
     }
 
     /**
-     * @return Whether the hero can activate the Exit
+     * This method tells if the condition for the Hero to exit the Dungeon have been met. The condition is that
+     * the Hero must have defeated the final boss, the Worm.
+     * @return True if the condition has been met, false if it has not.
      */
     public static boolean isExitCondition()
     {
@@ -50,7 +54,8 @@ public class Exit extends Item
     }
 
     /**
-     * @param theCondition Whether the hero can activate the Exit
+     * This method sets the status of the exit condition.
+     * @param theCondition True if the condition has been met, false if it has not.
      */
     public static void setExitCondition(final boolean theCondition)
     {
@@ -58,7 +63,8 @@ public class Exit extends Item
     }
 
     /**
-     * @return Whether the hero has activated the Exit
+     * This method tells if the Hero has exited the Dungeon.
+     * @return True if they have, false if they have not.
      */
     public static boolean isExited() { return myExited; }
 
@@ -72,6 +78,11 @@ public class Exit extends Item
         myExit = null;
     }
 
+    /**
+     * The Exit activate behavior. If the exit condition has been met and if the Hero has obtained all 4 Pillars,
+     * the Hero may exit. Otherwise, they will remain in the Dungeon.
+     * @param theHero The Hero who is attempting to exit the Dungeon.
+     */
     @Override
     public void activate(final Hero theHero)
     {

@@ -43,7 +43,8 @@ public class EntityFactory implements Serializable
     private long myTotalEntities;
 
     /**
-     * The assets the factory utilizes to set the animations of certain Entities.
+     * The audio animation assets the factory utilizes to set the animations of all Entities, populated
+     * by the custom renderer.
      */
     private transient Assets myAssets;
 
@@ -152,6 +153,12 @@ public class EntityFactory implements Serializable
         return monsterCounter;
     }
 
+    /**
+     *
+     * @param theItems the list of items that the room contains in the String Format
+     * @param theLocation the location of the Room to be populated
+     * @param theMonsterCounter the Monster Counter associated with the room
+     */
     private void generateRoomItems(StringBuilder theItems, final Vec2 theLocation, final int theMonsterCounter)
     {
         Vec2 pixelPos;
@@ -253,7 +260,7 @@ public class EntityFactory implements Serializable
      * @param theRoom The Room to generate Walls in.
      * @param theMonsterCounter The number of Monsters in the Room.
      */
-    void generateWalls(final Room theRoom,final int theMonsterCounter)
+    private void generateWalls(final Room theRoom,final int theMonsterCounter)
     {
         var location = theRoom.getLocation();
         generateWalls((int) location.getMyX(), (int) location.getMyY());
@@ -299,7 +306,7 @@ public class EntityFactory implements Serializable
      * @param tileY The y position of the location to generate the Door in
      * @param tileX The amount that the Door should be rotated.
      */
-    private void generateDoor(final Vec2 theLocation, final int theMonsterCounter, final int tileX, final int tileY,
+    public void generateDoor(final Vec2 theLocation, final int theMonsterCounter, final int tileX, final int tileY,
                               final int theRotation)
     {
         Vec2 pixelPos = Physics.getPosition((int) theLocation.getMyX(), (int) theLocation.getMyY(), tileX, tileY);
@@ -326,7 +333,6 @@ public class EntityFactory implements Serializable
         wall.setRotation(theRotation);
         myEntitiesToAdd.add(wall);
     }
-
 
     /**
      * Information about the Entity Factory that is to be updated.
@@ -652,8 +658,10 @@ public class EntityFactory implements Serializable
     }
 
     /**
-     * This method initializes the Entity Factory.
-     * @param theEntities The ArrayList of Entities to add to the factory.
+     * This method initializes the Entity Factory and all the entities with appropriate
+     * animation after the loading of appropriate game assets.
+     * @param theEntities The ArrayList of Entities to add to the factory
+     *                   to initialize the game with the same configuration as at saving time.
      */
     public void initializeEntityFactory(final ArrayList<Entity> theEntities)
     {

@@ -172,7 +172,7 @@ public abstract class DungeonCharacter extends Entity implements ICollidable
         setMySize(new Vec2(0, 0));
         if (getMyEntityFactory().getAssets() != null)
         {
-            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"), false);
+            setMyAnimation(getMyEntityFactory().getAssets().getAnimation("enemyDeath"),false);
         }
     }
 

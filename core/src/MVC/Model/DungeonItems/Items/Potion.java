@@ -10,10 +10,11 @@ public abstract class Potion extends Item
     private int myStrength;
 
     /**
-     * Constructor that takes three arguments
-     * @param theType The type of potion
-     * @param theStrength How much this potion alters a stat on the Hero
-     * @param theEntityFactory The EntityFactory to which this Potion belongs
+     * Potion constructor that calls the Item constructor to initialize its type and the Entity Factory that generated
+     * it. It also sets the Potion's strength.
+     * @param theType The specific Potion type.
+     * @param theStrength The Potion's strength.
+     * @param theEntityFactory The Entity Factory that generated the Potion.
      */
     protected Potion(String theType, final int theStrength, final EntityFactory theEntityFactory)
     {
@@ -22,7 +23,8 @@ public abstract class Potion extends Item
     }
 
     /**
-     * @return How much this potion alters a stat on the Hero
+     * This method retrieves the Potion's strength.
+     * @return The Potion's strength.
      */
     public int getStrength()
     {
@@ -30,7 +32,8 @@ public abstract class Potion extends Item
     }
 
     /**
-     * @param theStrength How much this potion alters a stat on the Hero
+     * This method sets the Potion's strength.
+     * @param theStrength The Potion's strength.
      */
     protected void setStrength(final int theStrength)
     {

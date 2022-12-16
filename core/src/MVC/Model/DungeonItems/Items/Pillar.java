@@ -20,8 +20,9 @@ public class Pillar extends Item
     private int myMonsterCounter;
 
     /**
-     * Constructor that takes one argument
-     * @param theEntityFactory The EntityFactory to which this Pillar belongs
+     * Pillar constructor that calls the Item constructor to initialize its type and the Entity Factory that generated
+     * it. It also sets the Pillar's name, size, monster counter, and its broken status.
+     * @param theEntityFactory The Entity Factory that generated the Pillar.
      */
     public Pillar(final EntityFactory theEntityFactory)
     {
@@ -33,10 +34,11 @@ public class Pillar extends Item
     }
 
     /**
-     * Constructor that takes three arguments
-     * @param theName The name of this Pillar
-     * @param theMonsterCounter The number of monsters linked to this Pillar that must be destroyed to break it
-     * @param theEntityFactory The EntityFactory to which this Pillar belongs
+     * Pillar constructor that calls the Item constructor to initialize its type and the Entity Factory that generated
+     * it. It also sets the Pillar's name, size, monster counter, and its broken status.
+     * @param theName The Pillar's name.
+     * @param theMonsterCounter The number of Monsters in the same Room as the Pillar.
+     * @param theEntityFactory The Entity Factory that generated the Pillar.
      */
     public Pillar(final String theName, final int theMonsterCounter, final EntityFactory theEntityFactory)
     {
@@ -48,13 +50,14 @@ public class Pillar extends Item
     }
 
     /**
-     * Breaks the Pillar and increments the number of Pillars the Hero has broken
+     * This method breaks the Pillar once the Hero has defeated all the Monsters in the same
+     * Room as the Pillar and increments the number of Pillars the Hero has broken
      */
     public void breakPillar()
     {
         if (myMonsterCounter == 0)
         {
-            if (getMyEntityFactory().getAssets() != null) //added for testing, should i delete?
+            if (getMyEntityFactory().getAssets() != null)
             {
                 setMyAnimation(getMyEntityFactory().getAssets().getAnimation("brokenPillar"));
             }
@@ -64,7 +67,8 @@ public class Pillar extends Item
     }
 
     /**
-     * @return The name of this Pillar
+     * This method retrieves the Pillar's name.
+     * @return The Pillar's name.
      */
     public String getName()
     {
@@ -72,12 +76,14 @@ public class Pillar extends Item
     }
 
     /**
-     * @return Whether this Pillar is broken
+     * This method tells if the Pillar has been broken.
+     * @return The Pillar's broken status.
      */
     public boolean isBroken() { return myBroken; }
 
     /**
-     * @return The number of monsters linked to this Pillar that must be destroyed to break it
+     * This method retrieves the number of Monsters in the same Room as the Pillar.
+     * @return The Pillar's monster counter.
      */
     public int getMonsterCounter()
     {
@@ -85,7 +91,8 @@ public class Pillar extends Item
     }
 
     /**
-     * @param theMonsterCounter The number of monsters linked to this Pillar that must be destroyed to break it
+     * This method sets the number of Monsters in the same Room as the Pillar.
+     * @param theMonsterCounter The Pillar's new monster counter.
      */
     public void setMonsterCounter(final int theMonsterCounter)
     {
@@ -111,7 +118,8 @@ public class Pillar extends Item
     }
 
     /**
-     * @param theName The name of this Pillar
+     * This method sets the Pillar's name.
+     * @param theName The Pillar's new name.
      */
     private void setName(final String theName)
     {

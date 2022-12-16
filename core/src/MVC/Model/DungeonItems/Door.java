@@ -13,8 +13,9 @@ public class Door extends Entity
     private int myMonsterCounter;
 
     /**
-     * Constructor that takes one argument
-     * @param theEntityFactory The EntityFactory to which this Door belongs
+     * Door constructor that calls the Entity constructor to initialize its size, position, type, and the Entity
+     * Factory that generated it. It also sets its monster counter.
+     * @param theEntityFactory The Entity Factory that generated the Door.
      */
     public Door(final EntityFactory theEntityFactory)
     {
@@ -23,24 +24,25 @@ public class Door extends Entity
     }
 
     /**
-     * Constructor that takes three arguments
-     * @param theMonsterCounter The number of monsters linked to this Door that must be destroyed to break it
-     * @param theLocation The initial position
-     * @param theEntityFactory The EntityFactory to which this Door belongs
+     * Door constructor that calls the Entity constructor to initialize its size, position, type, and the Entity
+     * Factory that generated it. It also sets its monster counter.
+     * @param theMonsterCounter The number of Monsters in the same Room as the Door.
+     * @param theLocation The location of the Door.
+     * @param theEntityFactory The Entity Factory that generated the Door.
      */
     public Door(final int theMonsterCounter, final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
         super(new Vec2(64, 64), theLocation,"Door", theEntityFactory);
         setMonsterCounter(theMonsterCounter);
-
     }
 
     /**
-     * Constructor that takes four arguments
-     * @param theRoom The room this Door is located in
-     * @param theMonsterCounter The number of monsters linked to this Door that must be destroyed to break it
-     * @param theLocation The initial position
-     * @param theEntityFactory The EntityFactory to which this Door belongs
+     * Door constructor that calls the Entity constructor to initialize its size, position, type, and the Entity
+     * Factory that generated it. It also sets its monster counter.
+     * @param theRoom The Room the Door is in.
+     * @param theMonsterCounter The number of Monsters in the same Room as the Door.
+     * @param theLocation The location of the Door.
+     * @param theEntityFactory The Entity Factory that generated the Door.
      */
     public Door(final Vec2 theRoom,final int theMonsterCounter,final Vec2 theLocation, final EntityFactory theEntityFactory)
     {
@@ -50,7 +52,8 @@ public class Door extends Entity
     }
 
     /**
-     * @return The number of monsters linked to this Door that must be destroyed to break it
+     * This method retrieves the number of Monsters in the same Room as the Door.
+     * @return The number of Monsters.
      */
     public int getMonsterCounter()
     {
@@ -58,7 +61,8 @@ public class Door extends Entity
     }
 
     /**
-     * @param theMonsterCounter The number of monsters linked to this Door that must be destroyed to break it
+     * This method sets the number of Monsters in the same Room as the Door.
+     * @param theMonsterCounter The new number of Monsters.
      */
     public void setMonsterCounter(final int theMonsterCounter)
     {
@@ -74,6 +78,7 @@ public class Door extends Entity
 
     /**
      * Decrements the number of monsters linked to this Door that must be destroyed to break it
+     * if doing so would not cause the counter to go below 0.
      */
     public void decrementMonsterCounter()
     {
@@ -82,6 +87,7 @@ public class Door extends Entity
             myMonsterCounter--;
         }
     }
+
 
     @Override
     public void update()
