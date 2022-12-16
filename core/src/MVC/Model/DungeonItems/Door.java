@@ -8,7 +8,7 @@ import MVC.Model.Physics.Vec2;
 public class Door extends Entity
 {
     /**
-     * The number of Monsters in the same Room as the Door.
+     * The number of monsters linked to this Door that must be destroyed to break it
      */
     private int myMonsterCounter;
 
@@ -77,7 +77,8 @@ public class Door extends Entity
     }
 
     /**
-     * This method decrements the monster counter by 1, if doing so would not cause the counter to go below 0.
+     * Decrements the number of monsters linked to this Door that must be destroyed to break it
+     * if doing so would not cause the counter to go below 0.
      */
     public void decrementMonsterCounter()
     {
@@ -87,9 +88,8 @@ public class Door extends Entity
         }
     }
 
-    /**
-     * Information about the Door that is to be updated.
-     */
+
+    @Override
     public void update()
     {
         if (myMonsterCounter <= 0)

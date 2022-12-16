@@ -7,17 +7,15 @@ import MVC.Model.Physics.Vec2;
 public class Pillar extends Item
 {
     /**
-     * The Pillar's name.
+     * The name of this Pillar
      */
     private String myName;
-
     /**
-     * Whether the Pillar has been broken (if the Hero has retrieved it).
+     * Whether this Pillar has been broken by the hero
      */
     private boolean myBroken;
-
     /**
-     * The number of Monsters in the same Room as the Pillar.
+     * The number of monsters linked to this Pillar that must be destroyed to break it
      */
     private int myMonsterCounter;
 
@@ -53,7 +51,7 @@ public class Pillar extends Item
 
     /**
      * This method breaks the Pillar once the Hero has defeated all the Monsters in the same
-     * Room as the Pillar.
+     * Room as the Pillar and increments the number of Pillars the Hero has broken
      */
     public void breakPillar()
     {
@@ -109,7 +107,7 @@ public class Pillar extends Item
     }
 
     /**
-     * This method decrements the number of Monsters in the same Room as the Pillar.
+     * Decrements the number of monsters linked to this Pillar that must be destroyed to break it
      */
     public void decrementMonsterCounter()
     {

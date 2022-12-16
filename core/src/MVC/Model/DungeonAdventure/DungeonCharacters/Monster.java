@@ -254,6 +254,9 @@ public class Monster extends DungeonCharacter
         setHomePosition(getMyPos());
     }
 
+    /**
+     * @param theHero The hero character of the Scene to which this monster belongs
+     */
     private void setHero(final Hero theHero)
     {
         if (theHero != null)

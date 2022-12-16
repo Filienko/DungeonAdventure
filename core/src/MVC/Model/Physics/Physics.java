@@ -4,16 +4,33 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Entity;
 
 public class Physics
 {
+    /**
+     * @param theEntity1 One of two entities for which overlap is being calculated
+     * @param theEntity2 One of two entities for which overlap is being calculated
+     * @return The x and y overlaps of the two entities
+     */
     public static Vec2 getOverlap(Entity theEntity1, Entity theEntity2)
     {
         return getOverlapVector(theEntity1, theEntity2, theEntity1.getMyPos(), theEntity2.getMyPos());
     }
 
+    /**
+     * @param theEntity1 One of two entities for which overlap is being calculated
+     * @param theEntity2 One of two entities for which overlap is being calculated
+     * @return The x and y overlaps of the two entities on their previous frames
+     */
     public static Vec2 getPreviousOverlap(Entity theEntity1, Entity theEntity2)
     {
         return getOverlapVector(theEntity1, theEntity2, theEntity1.getMyPreviousPos(), theEntity2.getMyPreviousPos());
     }
 
+    /**
+     * @param theEntity1 One of two entities for which overlap is being calculated
+     * @param theEntity2 One of two entities for which overlap is being calculated
+     * @param thePosition1 The position of the first Entity
+     * @param thePosition2 The position of the second Entity
+     * @return The x and y overlaps of the two entities
+     */
     public static Vec2 getOverlapVector(final Entity theEntity1, final Entity theEntity2, final Vec2 thePosition1, final Vec2 thePosition2)
     {
         if (theEntity1.getMySize().equals(new Vec2(0, 0))
@@ -33,14 +50,20 @@ public class Physics
         return new Vec2(ox, oy);
     }
 
+    /**
+     * Checks whether a point is inside an Entity
+     * @param theVec1 The point
+     * @param theEntity The Entity
+     * @return Whether the point is inside the Entity
+     */
     public static boolean isInside(Vec2 theVec1, Entity theEntity)
     {
         boolean inside= false;
 
         // If the entity doesn't have animation, we can't be inside it
-        if (theEntity.isMyEntityAnimated())
+        //if (theEntity.isMyEntityAnimated())
         {
-            // Checks fi a point is contained within a bounding box
+            // Checks if a point is contained within a bounding box
             Vec2 e_position= theEntity.getMyPos();
             Vec2 e_half_size= theEntity.getMyPos().divide(2);
 
@@ -55,6 +78,14 @@ public class Physics
         return inside;
     }
 
+    /**
+     * Checks if two lines intersect
+     * @param theVec1 One of two end points on the first line
+     * @param theVec2 One of two end points on the first line
+     * @param theVec3 One of two end points on the second line
+     * @param theVec4 One of two end points on the second line
+     * @return Whether there is an intersection between the two lines
+     */
     public static Intersect lineIntersect(final Vec2 theVec1, final Vec2 theVec2, final Vec2 theVec3, final Vec2 theVec4)
     {
         Intersect result = new Intersect();
@@ -75,6 +106,13 @@ public class Physics
         return result;
     }
 
+    /**
+     * Checks whether a line intersect an Entity
+     * @param theVec1 One of two endpoints of the line
+     * @param theVec2 One of two endpoints of the line
+     * @param theEntity The Entity
+     * @return Whether the line intersects the Entity
+     */
     public static boolean entityIntersect(final Vec2 theVec1, final Vec2 theVec2, final Entity theEntity)
     {
         float halfSizeX= theEntity.getMySize().divide(2).getMyX();
@@ -97,6 +135,14 @@ public class Physics
         return false;
     }
 
+    /**
+     * Returns the game world pixel position of the passed room and tile
+     * @param rx The room x position
+     * @param ry The room y position
+     * @param tx The tile x position
+     * @param ty The tile y position
+     * @return The game world pixel position
+     */
     public static Vec2 getPosition(final int rx, final int ry, final int tx, final int ty)
     {
         // This function takes in the room (rx, ry) coordinate
@@ -109,6 +155,12 @@ public class Physics
         return new Vec2(pixelX, pixelY);
     }
 
+    /**
+     * Returns the room of the game world pixel position
+     * @param thePixelX The x component of the pixel position
+     * @param thePixelY The y component of the pixel position
+     * @return The room the pixel position is in
+     */
     public static Vec2 getRoom(final float thePixelX, final float thePixelY)
     {
         float roomX = (float) Math.floor(thePixelX / 1216);
@@ -134,6 +186,12 @@ public class Physics
         return p;
     }
 
+    /**
+     * Resolves an overlap between a movable Entity and static tile Entity
+     * @param theOverlap The current overlap between the two Entities
+     * @param theEntity The movable Entity that overlapped the tile
+     * @param theTile The static tile Entity that should not be passed through
+     */
     public static void tileResolution(final Vec2 theOverlap, final Entity theEntity, final Entity theTile)
     {
         Vec2 previousOverlap = Physics.getPreviousOverlap(theEntity, theTile);

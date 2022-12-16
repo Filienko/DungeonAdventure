@@ -39,52 +39,39 @@ public abstract class Hero extends DungeonCharacter
     private int myPillars;
 
     /**
-     * Tells if the Hero is moving upwards.
+     * Whether the player is inputting an up direction
      */
     private boolean myUpStatus;
-
     /**
-     * Tells if the Hero is moving downwards.
+     * Whether the player is inputting a down direction
      */
     private boolean myDownStatus;
-
     /**
-     * Tells if the Hero is moving to the left.
+     * Whether the player is inputting a left direction
      */
     private boolean myLeftStatus;
-
     /**
-     * Tells if the Hero is moving to the right.
+     * Whether the player is inputting a right direction
      */
     private boolean myRightStatus;
-
     /**
-     * Tells if the Hero is attacking an enemy.
+     * Whether the hero is attacking
      */
     private boolean myAttackStatus;
-
     /**
-     * The frame that an action was initiated on.
+     * The direction the hero is facing
      */
-    private final long myInitiatedFrame;
-
+    final private Vec2 myFacing;
     /**
-     * A Vec2 that describes where the Hero is facing.
-     */
-    private Vec2 myFacing;
-
-    /**
-     * Tells if the Hero is using their special skill.
+     * Whether the hero is using their special ability
      */
     private boolean myUsingSpecial;
-
     /**
-     * Tells if the Hero is playing the game with the Respawn option.
+     * Whether the hero will respawn on death
      */
     private boolean myRespawn;
-
     /**
-     * Tells if the Hero has died.
+     * Whether the hero is dead
      */
     private boolean myDied;
 
@@ -116,7 +103,6 @@ public abstract class Hero extends DungeonCharacter
         setLeft(false);
         setRight(false);
         setHomePosition(getMyPos());
-        myInitiatedFrame = 0;
         myFacing = new Vec2(0, 1);
         setMyKnockBackPower(4);
         setMyKnockBackLength(10);
@@ -125,8 +111,7 @@ public abstract class Hero extends DungeonCharacter
     }
 
     /**
-     * Overriding the destroy to temporarily allow Hero to go back.
-     * TODO:Delete after testing
+     * Overriding destroy() method to allow toggleable respawning for the Hero.
      */
     @Override
     public void destroy()
@@ -146,7 +131,7 @@ public abstract class Hero extends DungeonCharacter
     }
 
     /**
-     * This method allows the Hero's Respawn option to be turned on or off.
+     * Toggles whether the hero will respawn
      */
     public void toggleRespawn()
     {

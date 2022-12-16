@@ -7,12 +7,7 @@ import MVC.Model.Physics.Vec2;
 
 import java.util.Random;
 
-/**
- * The Priestess.
- *
- * @authors
- * @version
- */
+
 public class Priestess extends Hero implements Healable
 {
     /**

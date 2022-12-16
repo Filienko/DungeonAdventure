@@ -5,7 +5,7 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.EntityFactory;
 public abstract class Potion extends Item
 {
     /**
-     * The strength of the Potion.
+     * How much this potion alters a stat on the Hero
      */
     private int myStrength;
 

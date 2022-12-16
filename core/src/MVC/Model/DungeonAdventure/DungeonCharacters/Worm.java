@@ -45,11 +45,16 @@ public class Worm extends DungeonCharacter
     final private Random myRand;
 
     /**
-     * Constructor that takes two arguments and initializes the Bodies and Tail to follow the Worm
-     * @param thePos Initial position
-     * @param theEntityFactory The EntityFactory that generated this Worm
+     * Constructor that takes eight arguments and initializes the Bodies and Tail to follow the Worm
+     * @param theCharacterType Which dungeon character this is which should always be 'Worm'
+     * @param theHitPoints The starting health pool
+     * @param theDamage The damage dealt to the hero on collision
+     * @param theMaxSpeed The magnitude of the movement vector
+     * @param theSize The size of the bounding box
+     * @param thePos The initial position in cartesian coordinates
+     * @param theVelocity The initial velocity
+     * @param theEntityFactory The EntityFactory this Worm belongs to
      */
-
     public Worm(final String theCharacterType,final int theHitPoints,final int theDamage,final int theMaxSpeed,
     final Vec2 theSize, final Vec2 thePos, final Vec2 theVelocity, final EntityFactory theEntityFactory)
     {

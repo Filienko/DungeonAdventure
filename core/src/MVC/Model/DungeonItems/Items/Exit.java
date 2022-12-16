@@ -5,18 +5,17 @@ import MVC.Model.DungeonAdventure.DungeonCharacters.Hero;
 
 public class Exit extends Item
 {
+
     /**
-     * The instance of the Exit.
+     * Reference to the singleton Exit instance
      */
     private static Exit myExit;
-
     /**
-     * Tells if the Hero has exited the Dungeon.
+     * Whether the hero has activated the Exit
      */
     private static boolean myExited = false;
-
     /**
-     * Tells if all the conditions for the Hero to exit have been met.
+     * Whether the hero can activate the Exit
      */
     private static boolean myExitCondition = false;
 
@@ -70,7 +69,7 @@ public class Exit extends Item
     public static boolean isExited() { return myExited; }
 
     /**
-     * This method resets the Exit object back to its original state.
+     * Resets the Exit's static class fields to an initial game state
      */
     public static void clean()
     {
