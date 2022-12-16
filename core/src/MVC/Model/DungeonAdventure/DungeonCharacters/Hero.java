@@ -66,7 +66,7 @@ public abstract class Hero extends DungeonCharacter
     /**
      * The frame that an action was initiated on.
      */
-    private long myInitiatedFrame;
+    private final long myInitiatedFrame;
 
     /**
      * A Vec2 that describes where the Hero is facing.
@@ -332,18 +332,6 @@ public abstract class Hero extends DungeonCharacter
         if (thePotions != null && thePotions.size() >= 0)
         {
             myPotions = thePotions;
-        }
-    }
-
-    /**
-     * This method adds a Potion to the Hero's inventory.
-     * @param thePotion Potion to be added into inventory.
-     */
-    public void addPotion(final Item thePotion)
-    {
-        if (thePotion != null)
-        {
-            myPotions.add(thePotion);
         }
     }
 
